@@ -1,0 +1,14 @@
+# @package pipeline_components.train_resampling
+# RandomOverSampler accepts a 2D matrix, whereas deep EEG models consume raw
+# windows as (windows, channels, time).  FunctionSampler owns the temporary
+# flattening and restores the original windows before EEGClassifier sees them.
+# A nested imblearn Pipeline cannot be an intermediate outer-pipeline step.
+step:
+  _target_: imblearn.FunctionSampler
+  _convert_: all
+  validate: false
+  func:
+    _target_: hydra.utils.get_method
+    path: pipeline.resample_eeg_train_windows
+  kw_args:
+    random_state: ${seed}

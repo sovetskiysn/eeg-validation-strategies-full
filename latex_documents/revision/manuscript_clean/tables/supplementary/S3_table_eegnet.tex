@@ -1,0 +1,71 @@
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+% Add visible, compact spacing around task-transition arrows.
+\def\!{\mskip4mu}
+% Distribute the remaining width across the 12 internal cell-side paddings.
+\setlength{\tabcolsep}{\textwidth}
+\addtolength{\tabcolsep}{-12.5cm}
+\setlength{\tabcolsep}{0.0833333\tabcolsep}
+\renewcommand{\arraystretch}{1.0}
+\begin{table}[H]
+\centering
+\caption{\textbf{Performance metrics across experimental scenarios.}}
+\label{tab:scenario_template}
+\begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
+\hline
+{\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
+\hline
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.50 & 0.50 & 0.00 & 0.50 & 0.54/0.46 \\
+ & Stratified K-fold(Full B) & 0.48 & 0.44 & -0.03 & 0.49 & 0.53/0.44 \\
+ & Stratified K-fold(B: Stroop) & 0.48 & 0.48 & -0.03 & 0.49 & 0.53/0.44 \\
+ & Stratified K-fold(B: Arithmetic) & 0.48 & 0.48 & -0.04 & 0.49 & 0.52/0.45 \\
+ & Stratified K-fold(B: Mirror) & 0.48 & 0.48 & -0.03 & 0.50 & 0.51/0.46 \\
+\hline
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.50 & 0.50 & -0.00 & 0.50 & 0.48/0.51 \\
+ & Leave-one-subject-out(Full B) & 0.50 & 0.45 & -0.01 & 0.51 & 0.55/0.45 \\
+\hline
+Cross-session & Leave-one-session-out(Full A) & 0.50 & 0.50 & 0.01 & 0.50 & 0.56/0.45 \\
+\hline
+Cross-trial & Leave-one-trial-out(Full B) & 0.48 & 0.44 & -0.03 & 0.48 & 0.53/0.43 \\
+\hline
+\multirow{12}{=}{Cross-task (Dataset~B)} & Stroop$\!\rightarrow\!$Arithmetic & 0.48 & 0.48 & -0.03 & 0.50 & 0.52/0.45 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.52 & 0.52 & 0.03 & 0.52 & 0.57/0.46 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.50 & 0.49 & -0.01 & 0.50 & 0.55/0.44 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.52 & 0.52 & 0.03 & 0.52 & 0.57/0.46 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.50 & 0.49 & -0.01 & 0.50 & 0.55/0.44 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.48 & 0.48 & -0.03 & 0.50 & 0.52/0.45 \\
+\cmidrule{2-7}
+ & Arithmetic+Mirror$\!\rightarrow\!$Stroop & 0.50 & 0.49 & -0.01 & 0.50 & 0.55/0.44 \\
+ & Stroop+Mirror$\!\rightarrow\!$Arithmetic & 0.48 & 0.48 & -0.03 & 0.50 & 0.52/0.45 \\
+ & Stroop+Arithmetic$\!\rightarrow\!$Mirror & 0.52 & 0.52 & 0.03 & 0.52 & 0.57/0.46 \\
+ & Stroop$\!\rightarrow\!$Arithmetic+Mirror & 0.50 & 0.48 & 0.01 & 0.51 & 0.55/0.46 \\
+ & Arithmetic$\!\rightarrow\!$Stroop+Mirror & 0.49 & 0.47 & -0.01 & 0.50 & 0.55/0.44 \\
+ & Mirror$\!\rightarrow\!$Stroop+Arithmetic & 0.50 & 0.48 & 0.00 & 0.51 & 0.54/0.46 \\
+\hline
+\multirow{14}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.49 & 0.47 & -0.02 & 0.44 & 0.09/0.89 \\
+ & Full B$\!\rightarrow\!$Full A & 0.50 & 0.34 & 0.00 & 0.49 & 0.01/0.99 \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop & 0.50 & 0.34 & 0.04 & 0.40 & 0.01/1.00 \\
+ & Stroop$\!\rightarrow\!$Full A & 0.50 & 0.34 & 0.00 & 0.49 & 0.01/0.99 \\
+ & Full A$\!\rightarrow\!$Arithmetic & 0.49 & 0.38 & -0.03 & 0.47 & 0.07/0.92 \\
+ & Arithmetic$\!\rightarrow\!$Full A & 0.50 & 0.34 & 0.00 & 0.49 & 0.01/0.99 \\
+ & Full A$\!\rightarrow\!$Mirror & 0.50 & 0.33 & -0.05 & 0.47 & 0.00/0.99 \\
+ & Mirror$\!\rightarrow\!$Full A & 0.50 & 0.34 & 0.00 & 0.49 & 0.01/0.99 \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop+Arithmetic & 0.50 & 0.41 & 0.07 & 0.43 & 0.01/1.00 \\
+ & Stroop+Arithmetic$\!\rightarrow\!$Full A & 0.50 & 0.34 & 0.00 & 0.49 & 0.01/0.99 \\
+ & Full A$\!\rightarrow\!$Stroop+Mirror & 0.50 & 0.41 & 0.02 & 0.43 & 0.01/1.00 \\
+ & Stroop+Mirror$\!\rightarrow\!$Full A & 0.50 & 0.34 & 0.00 & 0.49 & 0.01/0.99 \\
+ & Full A$\!\rightarrow\!$Arithmetic+Mirror & 0.50 & 0.46 & 0.00 & 0.47 & 0.09/0.91 \\
+ & Arithmetic+Mirror$\!\rightarrow\!$Full A & 0.50 & 0.34 & 0.00 & 0.49 & 0.01/0.99 \\
+\hline
+\end{tabular}
+\normalsize
+\begin{flushleft}
+\textit{Note.} Per-class recall is reported as Low/High. MCC, Matthews correlation coefficient; ROC-AUC, area under the receiver operating characteristic curve. Dashes indicate values to be filled.
+\end{flushleft}
+\end{table}
+\endgroup

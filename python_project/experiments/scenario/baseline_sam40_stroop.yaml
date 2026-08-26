@@ -1,0 +1,8 @@
+# @package _global_
+
+defaults:
+  - override /validation_strategy: baseline
+  - override /dataset: sam40
+
+dataset:
+  exclude_conditions: [arithmetic, mirror]

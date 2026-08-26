@@ -1,0 +1,33 @@
+{
+  "latex-workshop.docker.enabled": true,
+  "latex-workshop.docker.image.latex": "texlive/texlive:TL2025-historic",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.view.pdf.viewer": "tab",
+
+  // Build artifacts (aux/log/fls/fdb/out) go to a per-document .build/ instead
+  // of sitting next to the sources. The PDF and .synctex.gz stay in place so
+  // the viewer and SyncTeX keep working.
+  // Nothing auto-cleans it: the files are a fixed set that gets overwritten in
+  // place, and .fdb_latexmk is the latexmk cache that keeps rebuilds fast.
+  "latex-workshop.latex.auxDir": "%DIR%/.build",
+
+  // What auxDir cannot move away: the .build/ folder itself and the SyncTeX
+  // index, which has to stay next to the PDF.
+  // The per-extension masks below are the safety net for builds that bypass
+  // LaTeX Workshop -- pdflatex or latexmk run by hand in a source directory
+  // ignores auxDir and drops these next to the .tex. They are gitignored, so
+  // hiding them here is enough to keep them out of sight; "make clean" in
+  // latex_documents/ deletes them for real.
+  "files.exclude": {
+    "latex_documents/**/.build": true,
+    "latex_documents/**/*.synctex.gz": true,
+    "latex_documents/**/*.aux": true,
+    "latex_documents/**/*.log": true,
+    "latex_documents/**/*.out": true,
+    "latex_documents/**/*.fls": true,
+    "latex_documents/**/*.fdb_latexmk": true,
+    "latex_documents/**/*.bbl": true,
+    "latex_documents/**/*.blg": true,
+    "latex_documents/**/*.toc": true
+  }
+}

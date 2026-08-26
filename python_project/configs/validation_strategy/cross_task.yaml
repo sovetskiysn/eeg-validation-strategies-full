@@ -1,0 +1,8 @@
+defaults:
+  - override /dataset@_global_.dataset: transfer
+
+name: cross_task
+# Every fold holds one participant out of the source task and tests that same
+# unseen participant in the target task; task and subject identity cannot leak.
+protocol:
+  _target_: validation.build_cross_task

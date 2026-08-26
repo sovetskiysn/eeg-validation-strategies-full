@@ -1,0 +1,20 @@
+TY  - JOUR
+AU  - Chen, Jingjing
+AU  - Wang, Xiaobin
+AU  - Huang, Chen
+AU  - Hu, Xin
+AU  - Shen, Xinke
+AU  - Zhang, Dan
+PY  - 2023
+DA  - 2023/10/25
+TI  - A Large Finer-grained Affective Computing EEG Dataset
+JO  - Scientific Data
+SP  - 740
+VL  - 10
+IS  - 1
+AB  - Affective computing based on electroencephalogram (EEG) has gained increasing attention for its objectivity in measuring emotional states. While positive emotions play a crucial role in various real-world applications, such as human-computer interactions, the state-of-the-art EEG datasets have primarily focused on negative emotions, with less consideration given to positive emotions. Meanwhile, these datasets usually have a relatively small sample size, limiting exploration of the important issue of cross-subject affective computing. The proposed Finer-grained Affective Computing EEG Dataset (FACED) aimed to address these issues by recording 32-channel EEG signals from 123 subjects. During the experiment, subjects watched 28 emotion-elicitation video clips covering nine emotion categories (amusement, inspiration, joy, tenderness; anger, fear, disgust, sadness, and neutral emotion), providing a fine-grained and balanced categorization on both the positive and negative sides of emotion. The validation results show that emotion categories can be effectively recognized based on EEG signals at both the intra-subject and the cross-subject levels. The FACED dataset is expected to contribute to developing EEG-based affective computing algorithms for real-world applications.
+SN  - 2052-4463
+UR  - https://doi.org/10.1038/s41597-023-02650-w
+DO  - 10.1038/s41597-023-02650-w
+ID  - Chen2023
+ER  - 

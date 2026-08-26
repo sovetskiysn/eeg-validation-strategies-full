@@ -1,0 +1,9 @@
+# @package _global_
+
+# A decoder is one scientifically valid bundle of representation and fitted
+# pipeline. Component implementations and numeric parameters remain in configs/.
+defaults:
+  - override /features: classical_ml
+  - override /pipeline/1_input_scaling@pipeline_components.input_scaling: standard_scaling
+  - override /pipeline/2_train_resampling@pipeline_components.train_resampling: classical_oversampling
+  - override /pipeline/3_estimator@pipeline_components.model: logistic_regression

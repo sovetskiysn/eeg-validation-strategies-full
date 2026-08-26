@@ -1,0 +1,57 @@
+% Main results table -- performance metrics across all experimental scenarios.
+%
+% ORIGIN. Copied over from the superseded Frontiers manuscript
+% (latex_documents/superseded_frontiers_article/frontiers.tex, Table 2) and
+% re-fitted to the PLOS single-column layout: plain bordered tabular, in the
+% same style as Table~\ref{tab:label_mapping} above -- no adjustwidth, no
+% multirow, no custom row stretch, so it does not stand out visually from the
+% rest of the manuscript. Fits inside the normal \textwidth (5.25in).
+%
+% WARNING. The numbers below are the OLD-PIPELINE numbers. They are here as the
+% structural placeholder for the table the Results section must contain, not as
+% citable results. Do not report them in the prose until the runs are redone.
+%
+% NOTE ON THE FILENAME. "make pull-artifacts" copies the generated
+% tables/results.tex and tables/paired_tests.tex over this directory; this file
+% is named results_scenarios.tex so that it is never clobbered by that copy.
+%
+\begin{table}[!ht]
+\centering
+\caption{\textbf{Performance metrics across all experimental scenarios.}}
+\label{tab:results}
+\begin{tabular}{|l|l|c|c|c|c|}
+\hline
+\textbf{Scenario} & \textbf{Validation Method} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} \\
+\hline
+Baseline (within)  & Stratified K-fold (Full A)                & 0.86 & 0.86 & 0.86 & 0.86 \\
+Baseline (within)  & Stratified K-fold (Full B)                & 0.81 & 0.81 & 0.97 & 0.88 \\
+Baseline (within)  & Stratified K-fold (B: Stroop only)        & 0.78 & 0.78 & 0.79 & 0.78 \\
+Baseline (within)  & Stratified K-fold (B: Arithmetic only)    & 0.72 & 0.71 & 0.72 & 0.72 \\
+Baseline (within)  & Stratified K-fold (B: Mirror only)        & 0.75 & 0.75 & 0.77 & 0.76 \\
+\hline
+Cross-subject      & Leave-one-subject-out (Full A)            & 0.63 & 0.61 & 0.68 & 0.64 \\
+Cross-subject      & Leave-one-subject-out (Full B)            & 0.73 & 0.77 & 0.90 & 0.83 \\
+\hline
+Cross-session      & Leave-one-session-out (Full A)             & 0.64 & 0.63 & 0.71 & 0.66 \\
+Cross-session      & Leave-one-session-out (Full B)             & 0.76 & 0.78 & 0.94 & 0.85 \\
+\hline
+Cross-task (only B) & Stroop $\rightarrow$ Arithmetic  & 0.57 & 0.58 & 0.57 & 0.56 \\
+Cross-task (only B) & Stroop $\rightarrow$ Mirror      & 0.70 & 0.80 & 0.70 & 0.67 \\
+Cross-task (only B) & Arithmetic $\rightarrow$ Stroop  & 0.59 & 0.60 & 0.59 & 0.59 \\
+Cross-task (only B) & Arithmetic $\rightarrow$ Mirror  & 0.54 & 0.54 & 0.54 & 0.53 \\
+Cross-task (only B) & Mirror $\rightarrow$ Stroop      & 0.78 & 0.84 & 0.78 & 0.78 \\
+Cross-task (only B) & Mirror $\rightarrow$ Arithmetic  & 0.52 & 0.57 & 0.52 & 0.43 \\
+\hline
+Cross-dataset       & Full A $\rightarrow$ Full B             & 0.75 & 0.73 & 0.75 & 0.64 \\
+Cross-dataset       & Full B $\rightarrow$ Full A             & 0.49 & 0.49 & 0.49 & 0.48 \\
+Cross-dataset       & Full A $\rightarrow$ Stroop only        & 0.50 & 0.67 & 0.50 & 0.34 \\
+Cross-dataset       & Full A $\rightarrow$ Arithmetic only    & 0.50 & 0.64 & 0.50 & 0.33 \\
+Cross-dataset       & Full A $\rightarrow$ Mirror only        & 0.50 & 0.56 & 0.50 & 0.34 \\
+Cross-dataset       & Stroop only $\rightarrow$ Full A        & 0.50 & 0.50 & 0.50 & 0.50 \\
+Cross-dataset       & Arithmetic only $\rightarrow$ Full A    & 0.50 & 0.50 & 0.50 & 0.45 \\
+Cross-dataset       & Mirror only $\rightarrow$ Full A        & 0.48 & 0.47 & 0.48 & 0.43 \\
+\hline
+\end{tabular}
+\end{table}
+
+Precision, Recall and F1-score are weighted averages over the two classes.

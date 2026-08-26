@@ -1,0 +1,22 @@
+# @package pipeline_components.model
+# Compact EEG-specific convolutional network (Lawhern et al., 2018).
+name: eegnet
+params:
+  _target_: braindecode.EEGClassifier
+  module:
+    _target_: hydra.utils.get_class
+    path: braindecode.models.EEGNet
+  # Braindecode defaults supply the compact F1=8, D=2 and 64-sample temporal
+  # kernel (and derive F2=F1*D).  A larger dropout is deliberate: these models
+  # are trained from scratch on comparatively small EEG datasets.
+  module__drop_prob: 0.5
+  optimizer:
+    _target_: hydra.utils.get_class
+    path: torch.optim.AdamW
+  max_epochs: 100
+  batch_size: 64
+  lr: 0.001
+  optimizer__weight_decay: 0.0001
+  device: cuda
+  train_split: null
+  verbose: 0

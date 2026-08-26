@@ -1,0 +1,24 @@
+# @package pipeline_components.model
+# One epoch with two temporal and spatial filters is only an execution check.
+name: shallownet_test
+params:
+  _target_: braindecode.EEGClassifier
+  module:
+    _target_: hydra.utils.get_class
+    path: braindecode.models.ShallowFBCSPNet
+  module__n_filters_time: 2
+  module__filter_time_length: 10
+  module__n_filters_spat: 2
+  module__pool_time_length: 128
+  module__pool_time_stride: 128
+  module__drop_prob: 0.0
+  optimizer:
+    _target_: hydra.utils.get_class
+    path: torch.optim.AdamW
+  max_epochs: 1
+  # One full train fold fits in this batch, so one epoch is one optimiser step.
+  batch_size: 16384
+  lr: 1.0
+  device: cuda
+  train_split: null
+  verbose: 0

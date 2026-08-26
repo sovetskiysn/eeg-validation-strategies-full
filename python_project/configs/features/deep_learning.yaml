@@ -1,0 +1,12 @@
+# The common Stage 1 artifact itself: filtered, rereferenced, ICA-cleaned,
+# resampled and channel-aligned EEG windows. Deep Learning models receive no
+# handcrafted Stage 2 features and learn their representation from this tensor
+# of shape (windows, channels, time).
+#
+# No numeric operation belongs here: V -> microV is a deep-model input-scaling
+# treatment in configs/pipeline, while this option must expose the raw prepared
+# window itself.
+name: deep_learning
+transform:
+  _target_: sklearn.preprocessing.FunctionTransformer
+  validate: false

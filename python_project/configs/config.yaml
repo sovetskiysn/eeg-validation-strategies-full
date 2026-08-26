@@ -1,0 +1,23 @@
+defaults:
+  - dataset: sam40
+  - preparation: default
+  - features: classical_ml
+  - pipeline: default
+  - validation_strategy: baseline
+  - _self_
+
+seed: 42
+# The decoder sweep is sequential. Feature extraction is CPU-bound and its
+# worker count can be tuned independently of GPU decoder CPU-side work.
+feature_n_jobs: 8
+# GPU decoders still use CPU threads for dispatch and tensor preparation; keep
+# this budget separate from the classical feature-extraction workers.
+torch_num_threads: 4
+
+hydra:
+  mode: MULTIRUN
+  job:
+    chdir: false
+  sweep:
+    dir: results/${hydra.job.config_name} (${now:%Y-%m-%d | %H-%M-%S})
+    subdir: ${hydra.job.override_dirname}

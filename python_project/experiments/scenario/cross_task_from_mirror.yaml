@@ -1,0 +1,16 @@
+# @package _global_
+
+defaults:
+  - override /validation_strategy: cross_task
+  - override /dataset@dataset.source: sam40
+
+dataset:
+  source:
+    exclude_conditions: [stroop, arithmetic]
+  targets:
+    - name: sam40
+      exclude_conditions: [stroop, mirror]
+    - name: sam40
+      exclude_conditions: [arithmetic, mirror]
+    - name: sam40
+      exclude_conditions: [mirror]

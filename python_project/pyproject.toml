@@ -1,0 +1,52 @@
+[project]
+name = "eeg-validation-strategies"
+version = "0.1.0"
+description = "EEG validation strategy experiments and dataset preparation notebooks."
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "braindecode>=1.5,<1.6",
+    # Its Pipeline runs a sampler during fit only. Raw EEG is losslessly
+    # flattened and restored around RandomOverSampler in src/pipeline.py.
+    "imbalanced-learn>=0.14,<0.15",
+    "matplotlib",
+    "mne",
+    "mne-features",
+    "numpy",
+    "openpyxl",
+    "pandas",
+    # Engine behind `DataFrame.to_parquet`: the per-window predictions of one
+    # experiment are a typed table, not a spreadsheet.
+    "pyarrow",
+    "scipy",
+    "scikit-learn",
+    "seaborn",
+    # `multipletests` in run_analysis.py: the reviewers ask for corrected paired
+    # comparisons, and this removes that code instead of adding a layer.
+    "statsmodels",
+    "xgboost",
+    "mne-bids>=0.19.0",
+    "pybv>=0.8.1",
+    "kagglehub",
+    # Клиент OpenNeuro для датасетов-кандидатов: возобновляемая параллельная
+    # загрузка с проверкой размера и md5 и include-паттернами. На десятках
+    # гигабайт это заменяет рукописный загрузчик, а не добавляет слой.
+    "openneuro-py>=2026.7",
+    "libarchive-c",
+    "requests",
+    "xlrd>=2.0.1",
+    "hydra-core>=1.3,<1.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["src"]
+sources = ["src"]
+
+[dependency-groups]
+dev = [
+    "ipykernel",
+    "jupyterlab",
+]

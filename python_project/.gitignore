@@ -1,0 +1,19 @@
+# Local Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.ruff_cache/
+.env
+
+# Dataset contents are local; retain directory placeholders
+datasets/archive/*
+!datasets/archive/.gitkeep
+datasets/bids/*
+!datasets/bids/.gitkeep
+datasets/prepared_cache/*
+!datasets/prepared_cache/.gitkeep
+
+# Experiment outputs are local; retain the directory placeholder
+results/*
+!results/.gitkeep

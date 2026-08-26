@@ -1,0 +1,7 @@
+# @package _global_
+
+defaults:
+  - override /features: deep_learning
+  - override /pipeline/1_input_scaling@pipeline_components.input_scaling: microvolt_scaling
+  - override /pipeline/2_train_resampling@pipeline_components.train_resampling: deep_oversampling
+  - override /pipeline/3_estimator@pipeline_components.model: eegconformer

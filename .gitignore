@@ -1,0 +1,29 @@
+# python_project
+python_project/.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+python_project/.env
+python_project/uv.lock
+
+# Dataset contents kept out of the repo, folders kept as empty placeholders
+python_project/datasets/archive/*
+!python_project/datasets/archive/.gitkeep
+python_project/datasets/bids/*
+!python_project/datasets/bids/.gitkeep
+python_project/datasets/prepared_cache/*
+!python_project/datasets/prepared_cache/.gitkeep
+python_project/results/*
+!python_project/results/.gitkeep
+
+# latex_documents: build artifacts
+# LaTeX Workshop is configured (.vscode/settings.json) to drop aux files here
+latex_documents/**/.build/
+latex_documents/**/*.aux
+latex_documents/**/*.log
+latex_documents/**/*.out
+latex_documents/**/*.fls
+latex_documents/**/*.fdb_latexmk
+latex_documents/**/*.synctex.gz
+latex_documents/**/*.bbl
+latex_documents/**/*.blg

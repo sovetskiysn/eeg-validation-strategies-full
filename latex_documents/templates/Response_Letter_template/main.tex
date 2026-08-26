@@ -1,0 +1,227 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Academic Paper Response Letter. 
+% LaTeX Template
+% Version 1.0 (20/07/2023)
+% 
+% This template refers to the toolbox tutorial (in Chinese):
+% https://liam.page/2016/07/22/using-the-tcolorbox-package-to-create-a-new-theorem-environment/
+% Please refer to the tutorial for your customization. 
+% 
+% Template license: Creative Commons CC BY 4.0
+%
+% Author: Yuhan Xie
+% Contact email: yhxie0107@gmail.com
+% Any revision advice is welcome!
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage{times} % make the section title in Times New Roman
+
+\usepackage{booktabs}
+\usepackage{tabu}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=2.5cm,bottom=2cm,left=1.7cm,right=1.7cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{threeparttable} 
+\usepackage{multirow}
+\usepackage{url}
+
+
+\usepackage[most]{tcolorbox}
+
+
+%% Comment box environment used throughout the letter
+\newtcbtheorem[auto counter, number within = section]{cmt}{Comment}{
+	colbacktitle = black!60!white, colframe = black!60!white,
+	colback = black!5!white,
+	fonttitle=\bfseries,%fontupper=\itshape,
+}{t}
+
+
+\begin{document}
+
+\noindent
+Dear Editor and Reviewers:
+
+\vspace{0.2cm}
+\noindent
+Thank you for the effort in reviewing our manuscript xxx, "xxx". 
+A short summary of your revision.
+
+\vspace{0.2cm}
+\noindent
+Yours sincerely,
+
+%\vspace{0.2cm}
+\noindent
+Author A, Author B...
+
+
+
+\section*{Response to the Editor} 
+\begin{cmt*}{}{}
+Editor Comments.
+\end{cmt*}
+
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Your response. 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Rewiewer 1
+\newpage
+\section{Response to reviewer 1} 
+
+%%%%%%%%%%%%% Comment 1.1
+\begin{cmt}{}{}
+
+Comments 1.1
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Your Response 1.1
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Comment 1.0
+\begin{cmt*}{}{}        %% use * when do not need enumerate
+
+Comments
+
+\end{cmt*}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Your Response 
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Comment 1.2
+\begin{cmt}{}{}
+
+Comments 1.2
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Your Response 1.2
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Comment 1.3
+\begin{cmt}{}{}
+
+Comments 1.3
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Your Response 1.3
+
+\vspace{0.3cm}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Rewiewer 2
+\newpage
+\section{Response to reviewer 2}
+
+%%%%%%%%%%%%% Comment 2.1
+\begin{cmt}{}{}
+
+Comments 2.1
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Your Response 2.1
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Comment 2.2
+\begin{cmt}{}{}
+
+Comments 2.2
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Your Response 2.2
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Comment 2.3
+\begin{cmt}{}{}
+
+Comments 2.3
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Your Response 2.3
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Comment 2.4
+\begin{cmt}{}{}
+
+Comments 2.4
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Your Response 2.4
+
+\vspace{0.3cm}
+
+\end{document}

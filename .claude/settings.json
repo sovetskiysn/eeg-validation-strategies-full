@@ -1,0 +1,25 @@
+{
+  "enabledPlugins": {
+    "plos-one-review@plos-one-skill": true,
+    "claude-scholar@claude-scholar": true
+  },
+  "extraKnownMarketplaces": {
+    "plos-one-skill": {
+      "source": {
+        "source": "github",
+        "repo": "matteospanio/plos-one-skill"
+      }
+    },
+    "claude-scholar": {
+      "source": {
+        "source": "github",
+        "repo": "Galaxy-Dawn/claude-scholar"
+      }
+    }
+  },
+  "permissions": {
+    "allow": [
+      "Bash(uv run *)"
+    ]
+  }
+}

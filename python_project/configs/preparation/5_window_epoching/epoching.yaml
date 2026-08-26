@@ -1,0 +1,4 @@
+# Window geometry and common channels.
+window_size: 5.0
+overlap: 0.5
+channels: [F3, F4, F7, F8, FC5, FC6, O1, O2, P7, P8, T7, T8]

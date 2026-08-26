@@ -1,0 +1,24 @@
+# @package pipeline_components.model
+# Convolution plus self-attention EEG architecture (Song et al., 2022).
+# Its larger capacity is deliberately compared with compact EEGNet rather than
+# being treated as a replacement for the classical feature-based models.
+name: eegconformer
+params:
+  _target_: braindecode.EEGClassifier
+  module:
+    _target_: hydra.utils.get_class
+    path: braindecode.models.EEGConformer
+  # The encoder is intentionally smaller than Braindecode's 6-layer, 10-head
+  # default to keep repeated group-aware CV runs feasible on 12 x 640 windows.
+  module__num_layers: 4
+  module__num_heads: 8
+  optimizer:
+    _target_: hydra.utils.get_class
+    path: torch.optim.AdamW
+  max_epochs: 100
+  batch_size: 64
+  lr: 0.0005
+  optimizer__weight_decay: 0.0001
+  device: cuda
+  train_split: null
+  verbose: 0

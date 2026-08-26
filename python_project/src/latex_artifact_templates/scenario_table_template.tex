@@ -1,0 +1,71 @@
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+% Add visible, compact spacing around task-transition arrows.
+\def\!{\mskip4mu}
+% Distribute the remaining width across the 12 internal cell-side paddings.
+\setlength{\tabcolsep}{\textwidth}
+\addtolength{\tabcolsep}{-12.5cm}
+\setlength{\tabcolsep}{0.0833333\tabcolsep}
+\renewcommand{\arraystretch}{1.0}
+\begin{table}[H]
+\centering
+\caption{\textbf{Performance metrics across experimental scenarios.}}
+\label{tab:scenario_template}
+\begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
+\hline
+{\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
+\hline
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & - & - & - & - & - \\
+ & Stratified K-fold(Full B) & - & - & - & - & - \\
+ & Stratified K-fold(B: Stroop) & - & - & - & - & - \\
+ & Stratified K-fold(B: Arithmetic) & - & - & - & - & - \\
+ & Stratified K-fold(B: Mirror) & - & - & - & - & - \\
+\hline
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & - & - & - & - & - \\
+ & Leave-one-subject-out(Full B) & - & - & - & - & - \\
+\hline
+Cross-session & Leave-one-session-out(Full A) & - & - & - & - & - \\
+\hline
+Cross-trial & Leave-one-trial-out(Full B) & - & - & - & - & - \\
+\hline
+\multirow{12}{=}{Cross-task (Dataset~B)} & Stroop$\!\rightarrow\!$Arithmetic & - & - & - & - & - \\
+ & Stroop$\!\rightarrow\!$Mirror & - & - & - & - & - \\
+ & Arithmetic$\!\rightarrow\!$Stroop & - & - & - & - & - \\
+ & Arithmetic$\!\rightarrow\!$Mirror & - & - & - & - & - \\
+ & Mirror$\!\rightarrow\!$Stroop & - & - & - & - & - \\
+ & Mirror$\!\rightarrow\!$Arithmetic & - & - & - & - & - \\
+\cmidrule{2-7}
+ & Arithmetic+Mirror$\!\rightarrow\!$Stroop & - & - & - & - & - \\
+ & Stroop+Mirror$\!\rightarrow\!$Arithmetic & - & - & - & - & - \\
+ & Stroop+Arithmetic$\!\rightarrow\!$Mirror & - & - & - & - & - \\
+ & Stroop$\!\rightarrow\!$Arithmetic+Mirror & - & - & - & - & - \\
+ & Arithmetic$\!\rightarrow\!$Stroop+Mirror & - & - & - & - & - \\
+ & Mirror$\!\rightarrow\!$Stroop+Arithmetic & - & - & - & - & - \\
+\hline
+\multirow{14}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & - & - & - & - & - \\
+ & Full B$\!\rightarrow\!$Full A & - & - & - & - & - \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop & - & - & - & - & - \\
+ & Stroop$\!\rightarrow\!$Full A & - & - & - & - & - \\
+ & Full A$\!\rightarrow\!$Arithmetic & - & - & - & - & - \\
+ & Arithmetic$\!\rightarrow\!$Full A & - & - & - & - & - \\
+ & Full A$\!\rightarrow\!$Mirror & - & - & - & - & - \\
+ & Mirror$\!\rightarrow\!$Full A & - & - & - & - & - \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop+Arithmetic & - & - & - & - & - \\
+ & Stroop+Arithmetic$\!\rightarrow\!$Full A & - & - & - & - & - \\
+ & Full A$\!\rightarrow\!$Stroop+Mirror & - & - & - & - & - \\
+ & Stroop+Mirror$\!\rightarrow\!$Full A & - & - & - & - & - \\
+ & Full A$\!\rightarrow\!$Arithmetic+Mirror & - & - & - & - & - \\
+ & Arithmetic+Mirror$\!\rightarrow\!$Full A & - & - & - & - & - \\
+\hline
+\end{tabular}
+\normalsize
+\begin{flushleft}
+\textit{Note.} Per-class recall is reported as Low/High. MCC, Matthews correlation coefficient; ROC-AUC, area under the receiver operating characteristic curve. Dashes indicate values to be filled.
+\end{flushleft}
+\end{table}
+\endgroup

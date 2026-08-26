@@ -1,0 +1,12 @@
+# @package _global_
+
+defaults:
+  - override /validation_strategy: cross_dataset
+  - override /dataset@dataset.source: sam40
+
+dataset:
+  source:
+    exclude_conditions: [arithmetic]
+  targets:
+    - name: distinguishing
+      exclude_conditions: [drowsy]

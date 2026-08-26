@@ -1,0 +1,29 @@
+name: classical_ml
+transform:
+  _target_: mne_features.feature_extraction.FeatureExtractor
+  sfreq: ${preparation.filtering.resample_sfreq}
+  # One fixed conventional feature representation for Logistic Regression and
+  # XGBoost.  The functions previously lived in spectral, entropy and
+  # statistical alternatives; keeping them together makes feature engineering
+  # part of the prespecified Classical ML decoder rather than a score-driven
+  # sweep dimension.
+  selected_funcs:
+    - pow_freq_bands
+    - spect_entropy
+    - app_entropy
+    - samp_entropy
+    - svd_entropy
+    - mean
+    - std
+    - variance
+    - skewness
+    - kurtosis
+  params:
+    pow_freq_bands__freq_bands:
+      - [0.5, 4.0]
+      - [4.0, 8.0]
+      - [8.0, 13.0]
+      - [13.0, 30.0]
+      - [30.0, 45.0]
+    pow_freq_bands__log: true
+  n_jobs: ${feature_n_jobs}

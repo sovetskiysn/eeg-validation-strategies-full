@@ -1,0 +1,29 @@
+# Критерий отбора записей: конфиг называет исключения, BIDS подтверждает факты.
+#
+# Запись выбывает из Stage 1, если значение названной колонки её строки в
+# sessions.tsv попало в список этой колонки. Колонка не названа — по ней ничего
+# не отбрасывается. Код не знает ни одного имени колонки и ни одного значения:
+# он читает то, что названо здесь, и сверяет с тем, что лежит в таблице.
+#
+# Уровень ровно один — сессия. exclude_subject_values и exclude_scans_values не
+# заводятся: в participants.tsv и scans.tsv нет ни одной колонки, отбор по
+# которой был бы критерием, а не перечислением ответа (`{participant_id:
+# [sub-01]}` — это дословно запрещённое datasets.md перечисление).
+#
+# Датасет без sessions.tsv проходит целиком: у SAM40 сессий нет, и требовать от
+# него таблицу значило бы требовать метаданные, которых нет в источнике.
+#
+# Это словарь, а Hydra словари сливает, а не заменяет. Поэтому из CLI список
+# колонки переопределяется (preparation.exclude_session_values.session_quality=[]),
+# а сама колонка убирается только через
+# `~preparation.exclude_session_values.session_role`.
+exclude_session_values:
+  session_role:    [habituation] # available: habituation, experimental
+  session_quality: []            # available: ok, incomplete
+
+# Run-level exclusions use the same form (metadata column -> values to exclude).
+# Current recording-level metadata are the BIDS scans.tsv columns below.
+exclude_run_values:
+  filename: [] # BIDS-relative EEG filename; unique for each recording
+  acq_time: [] # acquisition time; all current records: n/a
+  source: []   # original raw filename; unique provenance for each recording

@@ -1,0 +1,7 @@
+# @package pipeline_components.train_resampling
+# With ``sampling_strategy='auto'`` this is a no-op for a balanced train fold;
+# otherwise it duplicates only minority-class training windows.  It sits in
+# the imblearn pipeline, so test windows are never resampled.
+step:
+  _target_: imblearn.over_sampling.RandomOverSampler
+  random_state: ${seed}

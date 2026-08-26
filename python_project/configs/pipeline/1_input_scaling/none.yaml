@@ -1,0 +1,4 @@
+# @package pipeline_components.input_scaling
+# Tree splits are invariant to a positive linear rescaling of one feature, so
+# XGBoost needs no fitted input scaling.
+step: passthrough

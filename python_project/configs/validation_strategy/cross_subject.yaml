@@ -1,0 +1,3 @@
+name: cross_subject
+protocol:
+  _target_: validation.build_cross_subject

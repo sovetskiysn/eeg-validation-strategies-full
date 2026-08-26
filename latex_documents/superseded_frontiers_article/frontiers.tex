@@ -1,0 +1,296 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is just an example/guide for you to refer to when submitting manuscripts to Frontiers, it is not mandatory to use Frontiers .cls files nor frontiers.tex  %
+% This will only generate the Manuscript, the final article will be typeset by Frontiers after acceptance.   
+%                                              %
+%                                                                                                                                                         %
+% When submitting your files, remember to upload this *tex file, the pdf generated with it, the *bib file (if bibliography is not within the *tex) and all the figures.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Version 3.4 Generated 2022/06/14 %%%
+%%% You will need to have the following packages installed: datetime, fmtcount, etoolbox, fcprefix, which are normally inlcuded in WinEdt. %%%
+%%% In http://www.ctan.org/ you can find the packages and how to install them, if necessary. %%%
+%%%  NB logo1.jpg is required in the path in order to correctly compile front page header %%%
+
+\documentclass[utf8]{FrontiersinHarvard} % for articles in journals using the Harvard Referencing Style (Author-Date), for Frontiers Reference Styles by Journal: https://zendesk.frontiersin.org/hc/en-us/articles/360017860337-Frontiers-Reference-Styles-by-Journal
+%\documentclass[utf8]{FrontiersinVancouver} % for articles in journals using the Vancouver Reference Style (Numbered), for Frontiers Reference Styles by Journal: https://zendesk.frontiersin.org/hc/en-us/articles/360017860337-Frontiers-Reference-Styles-by-Journal
+%\documentclass[utf8]{frontiersinFPHY_FAMS} % Vancouver Reference Style (Numbered) for articles in the journals "Frontiers in Physics" and "Frontiers in Applied Mathematics and Statistics" 
+
+%\setcitestyle{square} % for articles in the journals "Frontiers in Physics" and "Frontiers in Applied Mathematics and Statistics" 
+\usepackage{url,hyperref,lineno,microtype,subcaption}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{tabularx}
+\usepackage{array} % обязательно для новых типов колонок
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}} % левое выравнивание с фикс. шириной
+\newcolumntype{C}{>{\centering\arraybackslash}X} % центрированная X-колонка
+% \linenumbers
+
+
+ 
+
+% Leave a blank line between paragraphs instead of using \\
+
+
+\def\keyFont{\fontsize{8}{11}\helveticabold }
+\def\firstAuthorLast{Sovet~{et~al.}}
+\def\Authors{Sanzhar Sovet\,$^{1,*}$, Medet Mukushev\,$^{2}$ and Beibit Abdikenov\,$^{1,2}$}
+
+
+\def\Address{$^{1}$Research Center ``Artificial Intelligence'', Astana IT University, Nur-Sultan, Kazakhstan}
+\def\corrAuthor{Sanzhar Sovet}
+
+\def\corrEmail{sansan503451@gmail.com}
+
+
+
+
+\begin{document}
+\onecolumn
+\firstpage{1}
+
+\title[Running Title]{Evaluation of validation strategies and transferability  of EEG attention decoding: comparative analysis on open datasets} 
+
+\author[\firstAuthorLast ]{\Authors} %This field will be automatically populated
+\address{} %This field will be automatically populated
+\correspondance{} %This field will be automatically populated
+
+\extraAuth{}% If there are more than 1 corresponding author, comment this line and uncomment the next one.
+%\extraAuth{corresponding Author2 \\ Laboratory X2, Institute X2, Department X2, Organization X2, Street X2, City X2 , State XX2 (only USA, Canada and Australia), Zip Code2, X2 Country X2, email2@uni2.edu}
+
+
+\maketitle
+
+
+\begin{abstract}
+Robust EEG-based attention decoding remains challenging because EEG signals are highly sensitive to subject variability, session non-stationarity, task context, and paradigm-level distribution shifts. In this work, two publicly available EEG datasets with compatible acquisition settings were used: one containing explicitly labeled focused, unfocused, and drowsy states during a low-interaction simulation task, and another containing cognitively demanding tasks, including Stroop, arithmetic, and mirror image recognition. The datasets were harmonized using a binary attention-state mapping that distinguishes low-attention from high-attention conditions across both experimental paradigms, and were processed using a standard data preparation pipeline, including channel alignment, filtering, ICA-based artifact removal, windowed segmentation, and STFT-based spectral feature extraction. The analysis compared within-dataset validation, cross-subject validation, cross-session validation, cross-task transfer, and cross-dataset/cross-paradigm transfer. Results showed strong within-dataset performance but a consistent decline under stricter validation settings. Cross-task transfer was partially successful only between cognitively similar tasks, while cross-dataset and cross-paradigm transfer remained unstable and often approached chance-level performance. These findings suggest that conventional EEG attention classifiers primarily capture dataset- and paradigm-specific patterns rather than invariant neural markers of attention, highlighting the need for more rigorous validation and stronger transfer learning approaches.
+
+
+
+\tiny
+ \keyFont{ \section{Keywords:} EEG, cross-session, cross-subject, cross-task, cross-dataset, attention decoding} %All article types: you may provide up to 8 keywords; at least 5 are mandatory.
+\end{abstract}
+
+
+\section{Introduction}
+Electroencephalography (EEG) is a technique for recording brain activity using multichannel scalp electrodes that measure voltage signals reflecting underlying cognitive processes. It is widely used in neuroscience and brain–computer interface (BCI) research due to its non-invasive nature, high temporal resolution, portability and relatively low cost  \citep{verma2023attentionet}, which make it suitable for real-time cognitive monitoring, adaptive human–computer
+interaction, and brain–computer interfaces \citep{chen2025hybrid}. At the same time, EEG signals are inherently noisy, non-stationary, and exhibit high inter-subject and inter-session variability \citep{wu2022transfer_eeg_bci, Zhang2020SensorsEEGTransfer}.
+In addition, these challenges are compounded by the scarcity of large, diverse, and well-annotated open EEG datasets \citep{sun2025attention_eeg_review}.
+Consequently,  developing a robust decoding model with strong generalization capabilities across subjects, sessions and tasks remains an open and central challenge \citep{li2025foundation_models_survey, wu2022transfer_eeg_bci}. 
+
+
+One promising approach to solve these problems is transfer learning (TL). The principle of TL is realizing the knowledge transfer from different but related tasks, i.e., using existing knowledge learned from accomplished tasks to help with new tasks \citep{Zhang2020SensorsEEGTransfer}. Its success depends not only on modeling and learning strategies but also on the degree of domain and label compatibility between source and target datasets. For cognitive constructs such as attention, this compatibility is difficult to guarantee because attention has always been an ambiguous concept and lacks a single widely accepted definition \citep{sun2025attention_eeg_review, hommel2019noone}, As a result, different datasets may represent different attention-related cognitive states while assigning them the same nominal labels. For instance, datasets designed to assess attention may rely on different attentional types, such as selective, sustained, alternating, divided, or focused attention. Consequently, the alignment between source and target datasets may vary, leading to label mismatch and inconsistent decision boundaries under domain shift in transfer learning.
+
+
+
+
+% "One question that has not been addressed in the current studies is the efficacy of knowledge transfer and adaptation across different EEG datasets." \citep{Lan2019DomainAdaptationEEG}
+
+In this context, prior studies highlight that the effectiveness of cross-dataset knowledge transfer and adaptation remains an open question in EEG decoding \citep{Lan2019DomainAdaptationEEG}. Here, we contribute to addressing this gap by systematically evaluating zero-shot generalization in EEG-based attention decoding across multiple validation strategies, including cross-subject, cross-session, cross-task, and cross-dataset (cross-paradigm) transfer. This analysis quantifies the extent to which attention decoding models generalize across domains and establishes a baseline for transfer-learning methods under cross-domain shift.
+
+\section{Related work}
+The development of EEG-based classification models that generalize across subjects, sessions, and tasks is an active area of research in brain--computer interface (BCI) and cognitive monitoring fields. A growing body of work has explored how different validation strategies affect the robustness and transferability of EEG models. This section reviews relevant studies on cross-validation, domain adaptation, and cross-task EEG analysis, with a specific focus on attention and cognitive state recognition.
+
+One of the most prominent lines of research involves domain adaptation techniques to reduce the discrepancy between training and testing distributions. For instance, \cite{Lan2019DomainAdaptationEEG} conducted a comprehensive evaluation of feature-based domain adaptation methods, including MIDA, TCA, GFK, and others, on two widely used emotion-related EEG datasets: DEAP and SEED. Their experiments included leave-one-subject-out and cross-dataset validation, where models were trained on one dataset and tested on the other. The results revealed limited improvements, which the authors attributed to substantial differences in recording hardware and data distributions between the datasets. This finding underscores the importance of technical consistency in cross-dataset evaluations, a factor addressed in the present study, where both datasets were collected using Emotiv EEG headsets with comparable specifications.
+
+
+~\cite{chen2025hybrid} proposed a hybrid feature extraction approach for classifying mental attention states under cross-session and cross-subject scenarios. Their method combines spectral features obtained via short-time Fourier transform (STFT) with measures of functional and effective brain connectivity and employs a two-stage feature selection strategy to enhance model generalization. Experiments on two publicly available datasets, EEG data for Mental Attention State Detection and MEMA, demonstrated high classification accuracy (up to 94.01\% in cross-subject evaluation), confirming the potential of integrating spectral and network-based features to improve the robustness of attention decoding. However, this work focuses on cross-session and cross-subject scenarios and does not address the transferability of models across different tasks, datasets, or paradigms. The present study is aimed at filling this gap by examining the extent to which attention-related neural markers retain their discriminative power when transferred across cognitive paradigms.
+
+
+Several studies have investigated the cross-task generalization of EEG features. In a notable example, \cite{zhang2021cross} analyzed the cross-task consistency of EEG-based mental workload indicators using a custom dataset involving two distinct paradigms: the N-back task and the Multi-Attribute Task Battery (MATB). The authors compared the performance of classifiers trained and tested within the same task versus across tasks. Their findings suggested that while task-specific models performed better, certain EEG features, especially in the power spectral domain, exhibited moderate stability across task contexts.
+
+Task generalization has also been studied in attention recognition. For example, in their single-channel attention classification study, Nguyen et al.~\cite{nguyen2022kalman} proposed a Kalman filtering-based model and evaluated its robustness across multiple datasets, including the open-access \textit{EEG data for Mental Attention State Detection} dataset. Their results demonstrated the feasibility of cross-dataset attention classification, although model performance degraded when shifting between tasks with differing structures.
+
+While these studies highlight the potential for EEG-based cross-task transfer, they often suffer from two key limitations. First, many rely on custom or proprietary datasets, which reduces reproducibility and hinders broader benchmarking. Second, differences in data acquisition hardware often confound comparisons and make it difficult to isolate the true effect of task variability.
+
+In contrast, our study contributes to this line of work by focusing on attention-related EEG datasets that are both publicly available and technically compatible. We specifically investigate whether attention-related neural patterns, learned from data collected in one paradigm (passive observation with explicit labeling), can generalize to a different paradigm (active cognitive testing), without the confounding effects of sensor mismatch. To our knowledge, this is among the first studies to conduct a comparative evaluation of cross-paradigm transferability using open EEG datasets recorded with the same device.
+
+
+\section{Open Access datasets}
+
+\subsection{EEG data for Mental Attention State Detection}
+The dataset described in \cite{aci2019attention} comprises \textbf{34 EEG recordings} collected from \textbf{five participants} over the course of \textbf{seven days}, with the fifth participant completing only \textbf{six sessions}. During each session, participants operated a virtual train using the \textit{Microsoft Train Simulator}. Each recording lasted approximately \textbf{35 to 55 minutes}. All experiments in this study were performed with healthy volunteer participants chosen among students. 
+
+To ensure consistency, all sessions were conducted on the same predefined route, designed to require minimal interaction. This setup constitutes a \textbf{low-intensity control task}, minimizing variability due to task demands and aligning with \textit{naturalistic stimulus-based protocols} as described in \cite{chen2025hybrid}. Each session was divided into \textbf{three sequential phases}, each designed to reflect a different target mental state: \textbf{\textit{focused}, \textit{unfocused}, and \textit{drowsy}}. The participants simulated these mental states based on standardized instructions provided by the experiment supervisor:
+
+
+
+
+
+
+\begin{itemize}
+  \item \textbf{Focused (0--10 min):} Participants actively monitored and mentally engaged with the simulator, maintaining sustained attention to the virtual controls and screen events.
+  \item \textbf{Unfocused (10--20 min):} Participants disengaged from the task, ceasing interaction and intentionally avoiding attentional focus, while being instructed to keep their eyes open and remain awake.
+  \item \textbf{Drowsy (20--30 min):} Participants were allowed to relax, close their eyes, and enter a drowsy or lightly dozing state, simulating reduced cognitive arousal.
+\end{itemize}
+
+EEG signals were recorded using a \textbf{modified Emotiv headset}, equipped with wet electrodes and supporting wireless Bluetooth transmission. The device recorded data at a \textbf{sampling rate of 128 Hz} and with a \textbf{voltage resolution of 0.51~$\mu$V}. The dataset includes \textbf{14 EEG channels}, labeled according to the 10--20 international system: \texttt{AF3}, \texttt{F7}, \texttt{F3}, \texttt{FC5}, \texttt{T7}, \texttt{P7}, \texttt{O1}, \texttt{O2}, \texttt{P8}, \texttt{T8}, \texttt{FC6}, \texttt{F4}, \texttt{F8}, and \texttt{AF4}.
+
+\subsection{SAM 40: Dataset of 40 Subject EEG Recordings}
+The \textbf{SAM-40} dataset, described in \cite{ghosh2022sam40}, contains electroencephalogram (EEG) recordings from 40 healthy participants (14 females and 26 males) with a mean age of 21.5 years. The purpose of data collection was to investigate short-term stress responses induced by the performance of various cognitive tasks,which correspond to a \textit{continuous cognitive engagement} paradigm as described in \cite{chen2025hybrid}.The experimental protocol included four conditions:
+\begin{itemize}
+    \item \textbf{Resting state} — EEG recording during relaxation while listening to music.
+    \item \textbf{Stroop Color-Word Test} — participants were required to identify the color of the ink in which a word was printed, while ignoring the word’s semantic meaning. The task included two types of stimuli: \textit{congruent} (the color name matched the ink color) and \textit{incongruent} (the color name and ink color differed). Each execution of the task included 11 stimuli.
+    \item \textbf{Arithmetic problem solving} — participants mentally solved a mathematical problem and determined whether the presented answer was correct, responding with a ``thumbs up'' or ``thumbs down'' gesture. Each execution of the task included 6 arithmetic stimuli.
+    \item \textbf{Mirror Image Recognition} — participants were shown images and asked to determine whether they were mirror-symmetric or asymmetric, responding with the same gestures. Each execution of the task included 8 images.
+\end{itemize}
+
+
+Each task lasted 25 seconds, with 5-second rest intervals and a 10-second instruction period preceding the next task. After the completion of each trial, participants rated the level of stress experienced for each task on a 10-point scale (1 — minimal stress, 10 — maximal stress). For each participant, three trials were recorded using different sets of stimuli. 
+
+EEG signals were recorded using an Emotiv Epoc Flex headset with 32 wet electrodes, labeled according to the international 10--20 system. Data were acquired at a sampling rate of 128~Hz and a voltage resolution of 0.51~$\mu$V. The 32 channels included in the dataset are: \textit{Cz, Fz, Fp1, F7, F3, FC1, C3, FC5, FT9, T7, CP5, CP1, P3, P7, PO9, O1, Pz, Oz, O2, PO10, P8, P4, CP2, CP6, T8, FT10, FC6, C4, FC2, F4, F8, Fp2}.
+
+
+\section{Methodology}
+
+The methodological design of this study was developed to evaluate the generalizability and transferability of EEG-based attention decoding across different recording conditions, participants, and task paradigms. To this end, we adopted two publicly available datasets that differ in experimental protocols but share compatible technical specifications, which allows for a controlled comparative analysis. The datasets were harmonized through a unified labeling scheme that distinguishes between low-attention and high-attention states, enabling consistent evaluation across scenarios. This section outlines the rationale for dataset alignment, the strategies employed for cross-validation, and the experimental settings designed to assess within-dataset performance as well as cross-subject, cross-session, cross-task, and cross-dataset generalization.
+
+\subsection{Dataset Alignment and Integration Rationale}
+
+Effective evaluation of cross-task and cross-dataset generalization relies on the availability of datasets that are compatible both technically and conceptually. In this study, we integrate two publicly available EEG datasets that differ in their original purpose and labeling schemes, yet share critical properties enabling a unified analysis of attentional states.
+
+A major strength of this dataset combination lies in their acquisition setup. Both datasets were recorded using consumer-grade Emotiv EEG headsets with identical electrode configurations, sampling rate (128~Hz), and voltage resolution. This uniformity eliminates a key source of variability, namely hardware-induced distribution shifts, that frequently hinder cross-dataset transferability as in \cite{Lan2019DomainAdaptationEEG} research. Consequently, performance differences observed in our experiments can be attributed primarily to task and participant factors, rather than to mismatched recording systems.
+
+Although the first dataset contains explicit attention state labels (\textit{Focused}, \textit{Unfocused}, \textit{Drowsy}) collected during a low-interaction simulation task, and the second was originally designed for stress assessment, both capture cognitive conditions strongly tied to attentional processes. The second dataset includes tasks widely recognized in cognitive neuroscience for eliciting high levels of attentional engagement:  
+\begin{itemize}
+    \item \textbf{Stroop Color Test} — probes both \textit{selective} and \textit{sustained attention}, requiring participants to suppress automatic reading responses and continually focus on the ink color throughout the task~\cite{macleod1991stroop, scarpina2017stroop, esterman2013neural}.
+    \item \textbf{Mental arithmetic task} — demands \textit{sustained internal attention} and working memory for continuous manipulation of numerical information~\cite{grabner2007math, zhou2010eeg}.  
+    \item \textbf{Mirror image recognition task} — engages visuospatial processing and requires both \textit{selective} and \textit{sustained attention} to discriminate between symmetric and asymmetric patterns, relying on mental rotation processes that demand continuous cognitive effort~\cite{shepard1971mental, hyun2007visual, voyer2011performance}.
+\end{itemize}
+
+These two datasets correspond to the \textit{naturalistic stimulus-based protocols} and \textit{continuous cognitive engagement} paradigms described in~\cite{chen2025hybrid}. The simulator-based dataset reflects the former, as it involves low-interaction control tasks, while the task-based dataset represents the latter, characterized by sustained mental effort with minimal downtime. In this unified labeling scheme, conditions such as \textit{Rest} or \textit{Unfocused} are treated as low-attention states, whereas \textit{Focused}, \textit{Stroop}, \textit{Arithmetic}, and \textit{Mirror recognition} are treated as high-attention states. This mapping is summarized in Table~\ref{tab:label_mapping}.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Attention State} & \textbf{Conditions} \\
+\hline
+High Attention & Focused, Stroop, Arithmetic, Mirror \\
+Low Attention  & Unfocused, Rest \\
+\hline
+\end{tabular}
+\caption{Unified binary attention label mapping across datasets.}
+\label{tab:label_mapping}
+\end{table}
+
+
+
+\subsection{Experimental Design}
+The experimental design was structured to capture different dimensions of model generalization, ranging from subject- and session-level variability to cross-task and cross-paradigm transferability. Instead of relying on a single evaluation scheme, we combined multiple validation strategies, each addressing a distinct source of variability. This approach provides both an estimate of the upper bound of performance within a given dataset and a systematic assessment of model stability under transfer conditions. By integrating controlled and more challenging scenarios, the design enables a balanced evaluation that reflects methodological reliability as well as practical applicability, and highlights the true extent of model generalizability. To this end, we adopted five complementary validation strategies:  
+
+\textbf{Baseline (within-dataset evaluation).}  
+Within-dataset performance was estimated using stratified K-fold cross-validation applied separately to each dataset. This setting provides an upper bound of model performance when training and testing distributions are identical, serving as a reference for subsequent generalization analyses.  
+
+\textbf{Cross-subject validation.}  
+Generalization across individuals was examined using a leave-one-subject-out (LOSO) protocol. In each iteration, data from one participant were held out for testing, while the model was trained on all remaining participants. This evaluation reflects the model’s ability to adapt to previously unseen subjects.  
+
+\textbf{Cross-session validation.}  
+To test robustness against intra-individual variability (e.g., electrode placement shifts, fatigue, or day-to-day differences), a leave-one-session-out scheme was adopted for the multi-session dataset. Here, the model was trained on all but one recording session of a participant and tested on the held-out session.  
+
+\textbf{Cross-task validation.}  
+Cross-task generalization was assessed within Dataset~B, which includes multiple cognitive tasks (Stroop, Arithmetic, and Mirror recognition). The model was trained exclusively on one task and evaluated on another (e.g., Stroop $\rightarrow$ Arithmetic). This protocol probes whether neural markers of attention learned in one cognitive paradigm retain discriminative power in a different paradigm. Similar cross-task transfer analyses have been conducted in prior studies on EEG workload and attention~\citep{zhang2021cross}.  
+
+\textbf{Cross-dataset validation.}  
+Finally, cross-dataset transferability was investigated by training models on one entire dataset and testing them on the other (Dataset~A $\rightarrow$ Dataset~B, and vice versa). Additionally, subset experiments were performed (e.g., training on Dataset~A and testing only on Stroop trials of Dataset~B). Importantly, this protocol can also be interpreted as a form of \textit{cross-paradigm} evaluation in the taxonomy proposed by \cite{chen2025hybrid}, which distinguishes between event-related tasks, continuous cognitive engagement, and naturalistic stimuli-based protocols. Specifically, the task in \cite{aci2019attention} corresponds to the \textit{naturalistic stimuli-based} category, while the neurocognitive tests in \cite{ghosh2022sam40} fall under \textit{continuous cognitive engagement}. This design evaluates whether attention-related features extracted from one dataset or paradigm can generalize to a distinct experimental context, provided technical compatibility of acquisition systems. The approach follows established cross-dataset validation protocols  used in EEG research ~\citep{Lan2019DomainAdaptationEEG,nguyen2022kalman}.  
+
+
+For performance evaluation, we report four widely used classification metrics: \textit{Accuracy}, \textit{Precision}, \textit{Recall}, and \textit{F1-score}. To ensure fair assessment in the presence of class imbalance, particularly in Dataset~B, \textit{Precision}, \textit{Recall}, and \textit{F1-score} were computed using a weighted averaging scheme. These metrics were consistently calculated across all validation scenarios to enable reliable comparisons.
+
+
+\subsection{Machine learning pipeline}
+
+
+As the two datasets were recorded with different electrode montages (14 vs.\ 32 channels), only the common subset of 12 electrodes was retained for analysis: F3, F4, F7, F8, FC5, FC6, O1, O2, P7, P8, T7, and T8. Restricting the analysis to this overlapping set ensured consistency in the spatial representation of EEG signals and eliminated potential biases due to non-matching channel configurations.
+
+Following channel selection, all EEG recordings were preprocessed using a standardized pipeline implemented in the MNE-Python library. Signals were bandpass-filtered in the range of 0.5--45~Hz to suppress line noise. Independent Component Analysis (ICA) was subsequently applied to identify and remove components associated with ocular artifacts. The exclusion of components was determined iteratively, with two components typically removed. This adaptive procedure provided a balance between effective artifact suppression and preservation of neural activity.
+
+After preprocessing, the EEG signals were transformed into the time--frequency domain using the Short-Time Fourier Transform (STFT). Instead of analyzing the entire broadband spectrum, the resulting spectrograms were decomposed into five canonical frequency bands that are most relevant for cognitive load and attentional processes: \textit{delta} (0.5--4~Hz), \textit{theta} (4--8~Hz), \textit{alpha} (8--13~Hz), \textit{beta} (13--30~Hz), and \textit{gamma} (30--45~Hz). This band-specific representation provides a more interpretable characterization of neural oscillations linked to task-related cognitive states.
+
+The continuous EEG recordings were segmented into overlapping windows of 1 second duration with a step size of 0.125 seconds. This windowing strategy was chosen as it better approximates the requirements of real-time applications and provides greater practical relevance, while still maintaining sufficient temporal and spectral resolution for robust analysis. Through this combination of channel alignment, filtering, ICA-based artifact removal, STFT-based spectral decomposition, and windowed segmentation, we obtained clean and directly comparable EEG representations suitable for classification experiments.
+
+The classification models were implemented using the XGBoost algorithm, which is well suited for tabular, high-dimensional EEG feature sets and has been shown to perform robustly in EEG-based decoding tasks. For reproducibility, the complete preprocessing and evaluation pipeline is publicly available at \url{https://github.com/sovetskiysn/eeg-validation-strategies}.
+
+
+
+
+\section{Results and Discussion}
+All experimental results are summarized in Table~\ref{tab:results}. 
+The dataset introduced in \cite{aci2019attention} is denoted as \textit{Full A}, while the dataset described in \cite{ghosh2022sam40} is denoted as \textit{Full B}. This unified presentation facilitates direct comparison of validation schemes and transfer scenarios across both datasets.
+\begin{table*}[ht]
+\centering
+\caption{Performance metrics across all experimental scenarios.}
+\label{tab:results}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{L{2.7cm} L{6.3cm} c c c c}
+\hline
+\textbf{Scenario} & \textbf{Validation Method} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} \\
+\hline
+
+\multirow{5}{*}{\makecell[l]{Baseline\\(within)}} 
+& Stratified K-fold (Full A)            & 0.86 & 0.86 & 0.86 & 0.86 \\
+& Stratified K-fold (Full B)            & 0.81 & 0.81 & 0.97 & 0.88 \\
+& Stratified K-fold (B: Stroop only)        & 0.78 & 0.78 & 0.79 & 0.78 \\
+& Stratified K-fold (B: Arithmetic only)    & 0.72 & 0.71 & 0.72 & 0.72 \\
+& Stratified K-fold (B: Mirror only)        & 0.75 & 0.75 & 0.77 & 0.76 \\
+\hline
+
+\multirow{2}{*}{Cross-subject} 
+& Leave-one-subject-out (Full A)        & 0.63 & 0.61 & 0.68 & 0.64 \\
+& Leave-one-subject-out (Full B)        & 0.73 & 0.77 & 0.90 & 0.83 \\
+\hline
+
+\multirow{2}{*}{Cross-session} 
+& Leave-one-session-out (Full A)        & 0.64 & 0.63 & 0.71 & 0.66 \\
+& Leave-one-session-out (Full B)        & 0.76 & 0.78 & 0.94 & 0.85 \\
+\hline
+
+\multirow{6}{*}{\makecell[l]{Cross-task\\(only B)}} 
+& Stroop $\rightarrow$ Arithmetic  & 0.57 & 0.58 & 0.57 & 0.56 \\
+& Stroop $\rightarrow$ Mirror      & 0.70 & 0.80 & 0.70 & 0.67 \\
+& Arithmetic $\rightarrow$ Stroop  & 0.59 & 0.60 & 0.59 & 0.59 \\
+& Arithmetic $\rightarrow$ Mirror  & 0.54 & 0.54 & 0.54 & 0.53 \\
+& Mirror $\rightarrow$ Stroop      & 0.78 & 0.84 & 0.78 & 0.78 \\
+& Mirror $\rightarrow$ Arithmetic  & 0.52 & 0.57 & 0.52 & 0.43 \\
+\hline
+
+\multirow{8}{*}{Cross-dataset} 
+& Full A $\rightarrow$ Full B             & 0.75 & 0.73 & 0.75 & 0.64 \\
+& Full B $\rightarrow$ Full A             & 0.49 & 0.49 & 0.49 & 0.48 \\
+& Full A $\rightarrow$ Stroop only        & 0.50 & 0.67 & 0.50 & 0.34 \\
+& Full A $\rightarrow$ Arithmetic only    & 0.50 & 0.64 & 0.50 & 0.33 \\
+& Full A $\rightarrow$ Mirror only        & 0.50 & 0.56 & 0.50 & 0.34 \\
+& Stroop only $\rightarrow$ Full A        & 0.50 & 0.50 & 0.50 & 0.50 \\
+& Arithmetic only $\rightarrow$ Full A    & 0.50 & 0.50 & 0.50 & 0.45 \\
+& Mirror only $\rightarrow$ Full A        & 0.48 & 0.47 & 0.48 & 0.43 \\
+\hline
+
+\end{tabularx}
+\end{table*}
+
+
+The evaluation revealed a consistent degradation of performance as validation protocols became more stringent. Within-dataset validation (stratified k-fold) yielded the highest scores, with Dataset A reaching 0.86 in all metrics, and Dataset B performing comparably with 0.81 accuracy and 0.88 F1-score. Notably, when Dataset B tasks were considered separately, performance was lower for Stroop (0.78 F1), Arithmetic (0.72 F1), and Mirror (0.76 F1). However, when combined into a unified dataset, the model achieved superior overall performance, particularly in recall (0.97). This suggests that task aggregation amplifies the salience of attentional markers by capturing complementary neural mechanisms across paradigms, resulting in stronger discriminability than task-specific decoders.
+
+In cross-subject and cross-session evaluations, accuracy dropped to 0.63–0.64 for Dataset A and 0.73–0.76 for Dataset B, reflecting the well-documented challenges of inter-individual variability and session non-stationarity in EEG data. Despite this degradation, Dataset B maintained relatively high F1-scores (up to 0.85), suggesting that task-induced attentional engagement provides more transferable features across individuals. These findings align with previous studies emphasizing the fragility of within-subject models when exposed to distributional shifts and highlight the potential of task-driven paradigms for mitigating such variability~\cite{chen2025hybrid}.
+
+Cross-task transfers showed that generalization strongly depends on the cognitive similarity of tasks. Transfers between Stroop and Mirror achieved moderate success (up to 0.78 accuracy), suggesting that these paradigms engage partially overlapping attentional mechanisms. In contrast, transfers involving Arithmetic were consistently weaker (0.54–0.59 accuracy). This discrepancy likely arises from the substantial differences between the neurocognitive tasks: while Stroop and Mirror share elements of selective attention and visual discrimination, Arithmetic introduces a fundamentally distinct mode of processing. These results emphasize that the heterogeneity of task demands directly impacts the stability of attention-related neural markers and limits their transferability.
+
+Cross-dataset transfers remained the most challenging scenario. Training on Dataset A and testing on Dataset B yielded moderate accuracy (0.75), but the relatively low F1-score (0.64) indicates a bias toward the majority class, suggesting limited extraction of task-invariant attention features. Conversely, transfers in the opposite direction collapsed to chance-level performance (0.49–0.50 across metrics), underscoring the strong dataset-specific nature of EEG representations. These findings further demonstrate that while cross-subject, cross-session, and even certain cross-task evaluations suggest partial preservation of attention-related neural markers, such markers do not necessarily generalize across datasets. The near-random performance observed in cross-dataset settings highlights the fragility of these features when confronted with paradigm-level variability.
+
+Taken together, these results illustrate that while EEG-based models can reliably capture attentional states within a single dataset, their performance does not extend robustly across subjects, sessions, tasks, or paradigms. The observed failures in transferability emphasize that current classifiers exploit features tied to specific experimental conditions rather than invariant neural signatures of attention. Addressing this limitation will require methodological advances capable of disentangling paradigm-specific effects from more generalizable neural markers.
+
+\section{Conclusion}
+
+This work systematically evaluated EEG-based attention classification under multiple validation schemes, ranging from within-dataset baselines to the most challenging cross-dataset transfers. The results reveal a consistent pattern: while within-dataset models achieve high accuracy, their robustness declines once exposed to new subjects, sessions, tasks, or paradigms. Cross-task generalization is only partially successful when cognitive mechanisms overlap, as in Stroop and Mirror, but fails for tasks that rely on fundamentally different processes such as arithmetic. Notably, although individual tasks in Dataset B yielded lower scores in isolation, their combination produced the strongest overall performance, suggesting that aggregating cognitively diverse paradigms enhances the salience of attention-related neural markers. Most critically, cross-dataset/cross-paradigm transfer remains an unsolved problem, as paradigm-specific variability introduces distributional shifts that substantially limit the effectiveness of conventional classifiers.
+
+
+
+\bibliographystyle{Frontiers-Harvard} %  Many Frontiers journals use the Harvard referencing system (Author-date), to find the style and resources for the journal you are submitting to: https://zendesk.frontiersin.org/hc/en-us/articles/360017860337-Frontiers-Reference-Styles-by-Journal. For Humanities and Social Sciences articles please include page numbers in the in-text citations 
+%\bibliographystyle{Frontiers-Vancouver} % Many Frontiers journals use the numbered referencing system, to find the style and resources for the journal you are submitting to: https://zendesk.frontiersin.org/hc/en-us/articles/360017860337-Frontiers-Reference-Styles-by-Journal
+\bibliography{test}
+
+%%% Make sure to upload the bib file along with the tex file and PDF
+%%% Please see the test.bib file for some examples of references
+
+\end{document}

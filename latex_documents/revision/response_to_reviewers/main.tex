@@ -1,0 +1,1505 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Academic Paper Response Letter. 
+% LaTeX Template
+% Version 1.0 (20/07/2023)
+% 
+% This template refers to the toolbox tutorial (in Chinese):
+% https://liam.page/2016/07/22/using-the-tcolorbox-package-to-create-a-new-theorem-environment/
+% Please refer to the tutorial for your customization. 
+% 
+% Template license: Creative Commons CC BY 4.0
+%
+% Author: Yuhan Xie
+% Contact email: yhxie0107@gmail.com
+% Any revision advice is welcome!
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage{times} % make the section title in Times New Roman
+
+\usepackage{booktabs}
+\usepackage{tabu}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=2.5cm,bottom=2cm,left=1.7cm,right=1.7cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{threeparttable} 
+\usepackage{multirow}
+\usepackage{url}
+
+
+\usepackage[most]{tcolorbox}
+
+
+%% Comment box environment used throughout the letter
+\newtcbtheorem[auto counter]{cmt}{Comment}{
+	colbacktitle = black!60!white, colframe = black!60!white,
+	colback = black!5!white,
+	fonttitle=\bfseries,%fontupper=\itshape,
+}{t}
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Response to Reviewers -- PONE-D-26-28965
+%
+% Structure follows POINT_BREAKDOWN.md (preliminary-structure version):
+% four sections, no separate "Response to the Editor" section --- the
+% journal-side items are grouped under "Journal Requirements".
+%   1. Journal Requirements ........  7 items
+%   2. Reviewer #1 ................. 11 items
+%   3. Reviewer #2 ................. 14 items
+%   4. Reviewer #3 ................. 12 items
+%   Total ......................... 44 response items
+%
+% Comment boxes quote the review verbatim. The state of each response is marked
+% visibly in the body of the letter (see the banner on the first page), never
+% here: %-comments do not reach the PDF that the authors actually read.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{center}
+{\Large\bfseries Response to Reviewers}
+
+\vspace{0.2cm}
+Manuscript PONE-D-26-28965
+
+\vspace{0.1cm}
+\textit{Evaluation of validation strategies and transferability of EEG attention
+decoding: a comparative analysis on open datasets}
+\end{center}
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{[TODO --- working state of this letter; this banner is not part of the
+submission.]} Every response below is in one of three states. A response with no
+marker is backed both by the code in \texttt{python\_project/} and by text that is
+actually present in \texttt{manuscript\_clean/manuscript.tex}. A response
+followed by a \textbf{[TODO]} paragraph is only partly backed: the
+implementation exists, but the manuscript does not yet say so, or the numbers it
+refers to have not been computed. A response consisting only of \textbf{[TODO]}
+is not answered at all yet. The manuscript is mid-rewrite --- its Abstract,
+Background, Models and Results sections are cleared placeholders --- the full
+sweep in \texttt{python\_project/results/} is still running, and no analysis has
+been produced from it. Until that changes, no response here may cite a number, a
+table, a figure or a manuscript passage. All markers must be gone before the
+letter is uploaded.
+
+\vspace{0.3cm}
+\noindent
+Dear Editor and Reviewers,
+
+\vspace{0.2cm}
+\noindent
+We thank the Editor and the Reviewers for their careful evaluation of our
+manuscript and for their constructive comments. We have carefully considered all
+comments and are preparing a revised version of the manuscript that addresses
+the issues raised during peer review.
+
+\vspace{0.2cm}
+\noindent
+The major revisions will include:
+
+\begin{itemize}
+	\item \textbf{[TODO --- major revision 1: redefinition of the target
+	      construct.]} The direction is settled --- the study claims
+	      discrimination between operationally defined experimental conditions
+	      rather than decoding of attention as a psychological construct --- but
+	      the manuscript does not yet carry it: Table~1 still names its classes
+	      ``High Attention'' and ``Low Attention'', and no label-mapping
+	      sensitivity analysis exists in the code. Only the exclusion of drowsy
+	      epochs from the primary analysis is in place. Rewrite this bullet
+	      together with the responses to MR1 and Comments~3.1, 3.2 and 4.5.
+	\item \emph{[Major revision 2 --- to be completed after the corresponding manuscript changes are finalized.]}
+	\item \emph{[Major revision 3 --- to be completed after the corresponding manuscript changes are finalized.]}
+	\item \emph{[Additional major revision, if needed.]}
+\end{itemize}
+
+\noindent
+For clarity, our response is organized into four sections:
+
+\begin{enumerate}
+	\item \textbf{Journal Requirements}
+	\item \textbf{Reviewer \#1}
+	\item \textbf{Reviewer \#2}
+	\item \textbf{Reviewer \#3}
+\end{enumerate}
+
+\noindent
+Reviewer and journal comments are reproduced below and followed by our
+point-by-point responses. Where a single original paragraph contains several
+independent criticisms or requests, it is divided into separate response points
+so that each issue can be addressed explicitly. Changes to the manuscript are
+identified with the corresponding page and line numbers wherever applicable.
+
+\vspace{0.4cm}
+\noindent
+Yours sincerely,
+
+\vspace{0.2cm}
+\noindent
+\emph{[TODO: author list]}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Journal Requirements
+\newpage
+\setcounter{tcb@cnt@cmt}{0}
+\section*{Journal Requirements}
+
+\noindent
+The seven requirements listed in the decision letter are addressed below.
+
+\vspace{0.3cm}
+
+%%%%%%%%%%%%% Journal Requirement 1
+\begin{cmt}{}{}
+
+Please ensure that your manuscript meets PLOS ONE's style requirements,
+including those for file naming. The PLOS ONE style templates can be found at
+\url{https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf}
+and
+\url{https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf}
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Journal Requirement 2
+\begin{cmt}{}{}
+
+Please note that PLOS One has specific guidelines on code sharing for
+submissions in which author-generated code underpins the findings in the
+manuscript. In these cases, we expect all author-generated code to be made
+available without restrictions upon publication of the work. Please review our
+guidelines at
+\url{https://journals.plos.org/plosone/s/materials-and-software-sharing#loc-sharing-code}
+and ensure that your code is shared in a way that follows best practice and
+facilitates reproducibility and reuse.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+%%%%%%%%%%%%% Journal Requirement 3
+\begin{cmt}{}{}
+
+We note that the grant information you provided in the `Funding Information'
+and `Financial Disclosure' sections do not match.
+When you resubmit, please ensure that you provide the correct grant numbers for
+the awards you received for your study in the `Funding Information' section.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Journal Requirement 4
+\begin{cmt}{}{}
+
+Thank you for stating the following financial disclosure:
+
+``The author(s) declared that financial support was received for this work
+and/or its publication. This research was funded by the Committee of Science of
+the Ministry of Science and Higher Education of the Republic of Kazakhstan
+(Grant no. BR27198099).''
+
+Please state what role the funders took in the study. If the funders had no
+role, please state: ``The funders had no role in study design, data collection
+and analysis, decision to publish, or preparation of the manuscript.''
+
+If this statement is not correct you must amend it as needed.
+
+Please include this amended Role of Funder statement in your cover letter; we
+will change the online submission form on your behalf.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Journal Requirement 5
+\begin{cmt}{}{}
+
+Please note that your Data Availability Statement is currently missing the
+repository name and/or the DOI/accession number of each dataset OR a direct link
+to access each database. If your manuscript is accepted for publication, you
+will be asked to provide these details on a very short timeline. We therefore
+suggest that you provide this information now, though we will not hold up the
+peer review process if you are unable.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Journal Requirement 6
+\begin{cmt}{}{}
+
+We notice that your supplementary figures are uploaded with the file type
+`Figure'. Please amend the file type to `Supporting Information'. Please ensure
+that each Supporting Information file has a legend listed in the manuscript
+after the references list.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%% Journal Requirement 7
+\begin{cmt}{}{}
+
+If the reviewer comments include a recommendation to cite specific previously
+published works, please review and evaluate these publications to determine
+whether they are relevant and should be cited. There is no requirement to cite
+these works unless the editor has indicated otherwise.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Reviewer 1
+\newpage
+\setcounter{tcb@cnt@cmt}{0}
+\section*{Reviewer \#1}
+
+\vspace{0.4cm}
+
+%%%%%%%%%%%% Comment 2.1 -- MR1
+\begin{cmt}{}{}
+
+MR1. The binary attention labels have uncertain construct validity. Dataset B
+was collected for stress analysis rather than attention measurement, while
+Dataset A uses instructed states presented in a fixed temporal sequence.
+Drowsiness also involves eye closure. Consequently, the classes confound
+attention with stress, arousal, visual input, ocular activity and time-on-task.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\textbf{[TODO --- this response must be written again from scratch; the previous
+draft described a manuscript that does not exist.]} It claimed a renamed Table~1
+with operationally defined classes, a paragraph after Table~1 stating what the
+labels do not denote, a Limitations subsection treating the Reviewer's five
+confounds one by one, a M\"{u}hl et al.\ (2014) framing of stress as an affective
+context, and five label-mapping sensitivity arms. None of these are in
+\texttt{manuscript.tex}: Table~1 is unchanged (``Unified binary attention label
+mapping'', classes ``High Attention'' and ``Low Attention''), there is no
+Limitations subsection at all although two passages of Methodology already refer
+the reader to one, \verb|muhl2014workload| sits in \texttt{refs.bib} uncited, and
+neither the configuration nor the sweep contains any label-mapping arm beyond
+\texttt{dataset.exclude\_conditions}.
+
+\textbf{[TODO --- what is true today and may be reused.]} Drowsy epochs are
+excluded from the primary analysis, and the exclusion happens at the head of the
+preparation pipeline, before channel selection, filtering, ICA and windowing, so
+that no drowsy sample reaches the ICA decomposition or the feature scaler. This
+holds in the code and is stated in the Data preparation subsection. The two
+factual observations about the datasets --- that the authors of Dataset~A report
+that no independent objective control could be introduced, and that the public
+release of Dataset~B omits the participants' responses --- are also sound and can
+be carried over.
+
+\textbf{[TODO --- what the answer has to argue.]} The construct problem is not
+solved by renaming the classes. The answer must concede that \emph{attention} is
+an umbrella term with no single operational definition, reframe the target
+accordingly, and present the label mapping as an explicit operational choice
+whose consequences are measured rather than assumed; see
+\texttt{thinking\_about\_introduction\_section/} in the repository root. It can
+only be written after the corresponding paragraphs exist in the Introduction and
+Materials sections of the manuscript.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 2.2 -- MR2
+\begin{cmt}{}{}
+
+MR2. The principal within-dataset baseline is affected by substantial
+information leakage. One-second windows separated by only 0.125 seconds share
+87.5\% of their samples, yet temporally adjacent windows are distributed across
+stratified folds. Acknowledging this issue as a limitation does not make the
+reported baseline scientifically valid.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We agree. We reconstructed the within-dataset baseline using group-aware
+splitting at the recording-unit level. Thus, all overlapping windows derived
+from a physical recording are assigned wholly to either the training or the
+test partition of a fold; no temporally adjacent overlapping windows are split
+between them. We also replaced the previous one-second windowing scheme with
+five-second windows and a 0.5-second overlap. The baseline results are being
+recomputed under this leakage-free design.
+
+\textbf{[TODO --- not yet in the manuscript, and not yet recomputed.]} The
+recording-unit grouping and the 5\,s window with 0.5\,s overlap exist in the
+code, but the Data preparation subsection of the manuscript still describes 1\,s
+windows with a 0.125\,s step --- the very geometry the Reviewer objects to --- and
+the leakage-free baseline has not been computed: the sweep is still running and
+no analysis has been produced from it. Reconcile the manuscript and confirm the
+numbers before this response is treated as final.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 2.3 -- MR3
+\begin{cmt}{}{}
+
+MR3. Several validation procedures are insufficiently defined. Dataset B
+trials appear to be treated as sessions without justification; the
+composition of the ``task-only'' datasets is unclear; class counts are
+absent; and cross-task testing does not separate task transfer from
+participant identity.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We agree and have corrected the terminology and validation design throughout.
+
+\emph{Dataset B trials treated as sessions.} The SAM40 repeated task
+recordings are treated as trials rather than as independent physical
+sessions. Cross-session validation is now restricted to the dataset with
+documented session entities, whereas SAM40 is evaluated with a separately
+named cross-trial protocol.
+
+\emph{Composition of the ``task-only'' datasets.} We now define every
+analytical subset explicitly by the conditions retained from the complete
+dataset mapping. The exact excluded conditions are stored in the resolved
+configuration and in the identity of the prepared data artifact, so that each
+task-specific result can be reconstructed unambiguously.
+
+\emph{Missing class counts.} We have added training and test class counts
+for every fold, together with per-class support in the classification
+tables. The revised Table~2 will report the relevant sample sizes alongside
+its performance measures.
+
+\emph{Subject-identity confounding in cross-task testing.} We rebuilt
+cross-task validation as leave-one-subject-out transfer: for each fold, the
+source-task training data exclude subject $S$, and the target-task test data
+contain only subject $S$. Source and target partitions are therefore
+subject-disjoint by construction.
+
+\textbf{[TODO --- the class-count part is not true yet.]} Fold composition and
+per-class support are computed by the analysis script, but the analysis has not
+been run and the manuscript contains no Table~2: the Results section is a cleared
+placeholder. The three other parts of this response --- session versus trial
+terminology, explicit subset composition, subject-disjoint cross-task transfer
+--- are implemented in the code and stated in the manuscript.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 2.4 -- MR4
+\begin{cmt}{}{}
+
+MR4. Reproducibility is incomplete within the manuscript. Filter type and order,
+ICA implementation and rejection criteria, STFT window and FFT parameters,
+feature dimensionality, scaler-fitting scope, XGBoost hyperparameters, tuning
+procedure, random seeds and fold construction are not adequately reported.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We expanded the reproducibility specification. The versioned configuration now
+records filtering, ICA method and EOG-proxy criterion, epoching, channel set,
+feature extraction, model hyperparameters, random seed, and validation
+protocol. Each run retains its resolved configuration. Hyperparameters are
+fixed a priori for the benchmark comparison; no data-driven hyperparameter
+tuning is performed, and this will be stated explicitly in the Methods.
+
+\textbf{[TODO --- the configuration half is done, the manuscript half is not.]}
+The versioned configuration does record filtering, ICA, epoching, channel set,
+features, model hyperparameters, seed and protocol, and every run stores its
+resolved configuration. The manuscript reports none of it: the Models subsection
+is a cleared placeholder, and the model family its text names (XGBoost) still has
+to be reconciled with the set of models actually configured --- logistic
+regression, XGBoost, EEGNet, EEGConformer and ShallowNet. Write the
+Methods first, then finalise this response.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 2.5 -- R1
+\begin{cmt}{}{}
+
+R1. The metric reporting is internally inconsistent. In single-label
+classification, support-weighted recall is mathematically equal to accuracy.
+Table 2 nevertheless reports, for example, 0.81 accuracy and 0.97 weighted
+recall for Full B, and 0.73 accuracy and 0.90 weighted recall for its
+cross-subject evaluation. Either the averaging description or the results are
+incorrect.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We agree and recompute all reported metrics from the saved window-level
+predictions rather than from independently maintained summary values. The
+revised analysis exports confusion matrices, per-class precision, recall and
+F1, balanced accuracy, macro-F1, MCC, AUROC where defined, and the
+training-fold majority-class baseline. The corrected Table~2 will replace the
+inconsistent earlier values.
+
+\textbf{[TODO --- no corrected metrics exist yet.]} Recomputation from saved
+window-level predictions is implemented in the analysis script, but it has not
+been run, and there is no Table~2 in the manuscript to correct. This response
+cannot be sent before the recomputed values exist and the inconsistency the
+Reviewer identified is demonstrably gone from them.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 2.6 -- R2
+\begin{cmt}{}{}
+
+R2. Revise the presentation and interpretation. Figure 1 should include every
+validation family with uncertainty; Figure 2 should distinguish diagonal
+baselines from transfer cells.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We have redesigned Figure~1 to report every validation family and to show
+participant-level 95\% confidence intervals for the displayed metric. The
+figure is generated directly from the recomputed results, rather than from a
+manually maintained plotting table.
+
+We have also redesigned Figure~2 as a source--target transfer matrix. Matched
+within-composition baselines occupy the diagonal and are visually marked as
+such; all off-diagonal cells represent transfer. This separates the relevant
+within-condition reference from cross-condition performance.
+
+\textbf{[TODO --- both figures are code, not manuscript.]} The two designs
+described here are implemented in the analysis script, but neither figure has
+been generated, and the Results section of the manuscript currently contains no
+figures at all. The past tense is justified only once they are produced and
+included.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 2.7 -- R3
+\begin{cmt}{}{}
+
+R3. The 15 references are relevant and include the original publications for
+both datasets, established cognitive-task literature and selected studies on EEG
+transfer. However, the coverage is too limited for the broad methodological
+claims advanced. Statements concerning DANN, ADDA, CORAL, TCA, Riemannian
+alignment, transformer architectures, self-supervised learning, XGBoost
+performance and low-density ICA are presented without appropriate citations.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We thank the reviewer for this comment, which prompted a full audit of the
+bibliography rather than a simple expansion of it. We have acted on it in two
+ways.
+
+\textbf{(a) Expanded framing and citations in the Introduction.} The
+Introduction previously moved directly from the general difficulty of EEG
+generalization to the aims of the study, without grounding the central
+hypothesis. We have added two paragraphs. The first states why cross-paradigm
+transfer is expected to be fragile: transfer learning depends on domain
+\emph{and label} compatibility between source and target, and attention lacks a
+single accepted operational definition, so datasets nominally labelled for
+``attention'' may in fact probe different attentional types, producing label
+mismatch under domain shift. The second states the gap explicitly, adopts the
+term \emph{zero-shot generalization} for what is measured here, and positions
+the study as a baseline against which transfer-learning and domain-adaptation
+methods can be compared. These paragraphs add five references that were absent
+from the submitted version (Wu et al. 2022; Zhang et al. 2020; Hommel et al.
+2019; Sun et al. 2025; Li et al. 2025).
+
+\textbf{(b) Verification of the entire reference list.} Prompted by the
+reviewer's remark on reference quality, every entry in the bibliography was
+resolved against Crossref, arXiv or the publisher record. This uncovered errors
+in the submitted reference list that we correct here and regret. Specifically:
+the cross-task workload study cited in Background was printed with an author
+list that does not belong to it (the correct authors are Ke et al., Front
+Neurosci 2021;15:703139); the single-channel Kalman/ELM study was printed with
+an incorrect author list, journal, year and DOI (the correct record is He et
+al., Front Hum Neurosci 2025;18:1481493); and three further cited entries could
+not be resolved to any existing publication and have been replaced by verified
+sources supporting the same statements (Esterman et al., Cereb Cortex
+2013;23:2712--2723 for sustained attention; Kitaura et al., Clin Neurophysiol
+Pract 2017;2:193--200 for attentional demand during mental arithmetic; Tomasino
+and Gremese, Front Hum Neurosci 2016;9:693 for the mental-rotation network).
+Duplicate entries for the same work, and several entries with incorrect author
+names, volumes or DOIs, were also corrected. The revised reference list has been
+checked to contain no unresolved or duplicated records.
+
+We note that part of this comment remains open. The passages discussing
+domain-adversarial and adversarial discriminative adaptation, correlation
+alignment, transfer component analysis, Riemannian alignment, transformer-based
+and self-supervised representation learning, gradient-boosting performance on
+EEG features, and the stability of ICA on low-density montages are still stated
+without supporting citations. We will supply appropriate references for each of
+these claims in the next revision round, together with the specific recent works
+requested by Reviewer~3.
+
+\textbf{[TODO --- two uncited entries, and Background does not exist.]} Part (a)
+is accurate: the two Introduction paragraphs and their five citations are in the
+manuscript. \verb|verma2023attentionet| and \verb|muhl2014workload|, however, are
+present in \texttt{refs.bib} but cited nowhere, so they do not enter the
+reference list; either cite them or drop them, and keep the count above in
+agreement with what is actually cited. The Background section --- where the
+missing citations for domain adaptation, alignment, transformers,
+self-supervised learning, gradient boosting and low-density ICA belong --- is a
+cleared placeholder, which is why the closing paragraph of this response is
+accurate today; rewrite it once that section exists.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Reviewer 2
+\newpage
+\setcounter{tcb@cnt@cmt}{0}
+\section*{Reviewer \#2}
+
+\vspace{0.4cm}
+
+%%%%%%%%%%%% Comment 3.1
+\begin{cmt}{}{}
+
+Reconsider the target construct. The problem should be presented either as
+discrimination between operationally defined experimental conditions or as
+attention classification supported by independent attention measurements.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We have adopted the first of the two formulations the Reviewer permits, and the
+revised manuscript is built around it throughout.
+
+The second formulation is unavailable for these data, and the manuscript now
+demonstrates this rather than assuming it. The authors of Dataset~A report that
+no independent objective control could be introduced, because active probing of
+a disengaged participant destroys the state being measured and no external
+correlate of passive focus could be identified. The public release of Dataset~B
+comprises raw and filtered recordings, artifact-removed signals, electrode
+coordinates and per-trial subjective stress ratings, but not the participants'
+responses, so performance-based labels cannot be constructed from it. Neither
+dataset can therefore support attention classification anchored to an
+independent measurement of attention.
+
+\textbf{[TODO --- the manuscript does not yet carry this formulation.]} What
+exists: the Methods state that the model was trained to predict, from the
+spectral features of a window, whether the participant was completing a
+high-demand or a low-demand condition during that window, and not to predict a
+level of attention. What does not exist: Table~1 still carries the classes
+``High Attention'' and ``Low Attention'', no paragraph follows it stating what
+the labels do not denote, and the Abstract is a cleared placeholder, so it says
+nothing about the sense in which ``attention decoding'' is used in the title.
+The five label-mapping arms have no counterpart in the code either --- see
+Comment~3.2. Rewrite this response together with the response to MR1, once the
+corresponding manuscript paragraphs are written.
+
+We would add that this constraint is not peculiar to our two datasets. The same
+criticism has been published against vigilance and workload decoders whose
+labels encode the condition of the protocol rather than the state of the
+participant. The revision makes this the subject of the study rather than a
+caveat to it: since publicly available attention datasets supply protocol-defined
+labels, the question that can honestly be answered is how much of a decoder's
+performance survives when the operational definition of its labels is changed.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.2
+\begin{cmt}{}{}
+
+Sensitivity analyses should exclude drowsy or eyes-closed epochs and evaluate
+alternative label mappings.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We agree that drowsiness should not be silently merged with awake unfocused
+behaviour. The primary analysis now excludes the explicitly labelled drowsy
+segment, and alternative condition mappings are represented as separate,
+reproducible analyses. We cannot validly identify or exclude eyes-closed epochs
+from the available recordings: they contain no EOG channel, video, or
+epoch-level eye-state annotation. Frontal EEG channels were used only as proxies
+to identify EOG-like ICA components; they do not provide ground truth for eye
+closure. We therefore do not claim eyes-closed epoch rejection, because an
+unvalidated amplitude-based proxy could remove meaningful EEG activity.
+
+\textbf{[TODO --- the alternative mappings do not exist.]} There is no
+label-mapping sensitivity analysis anywhere: a run selects its conditions through
+\texttt{dataset.exclude\_conditions}, and the sweep defined in the Makefile varies
+the validation protocol, the dataset and the model --- never the mapping. No
+M0--M4 arms are defined in the manuscript or in the configuration, and none are
+being computed. Either implement the arms and describe them in the manuscript, or
+answer this comment with the narrower thing that is true --- the drowsy exclusion
+above, and the per-task subsets already used for cross-task transfer --- and say
+plainly that a full mapping-sensitivity analysis is outside the scope of this
+revision.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.3
+\begin{cmt}{}{}
+
+Reconstruct all validation splits at the participant, session, or trial level
+before window segmentation.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We reconstructed all validation protocols around recording-level metadata
+(participant, documented session, or trial) before assigning windows to folds.
+Every window from a recording unit remains on one side of a split. The revised
+Methods distinguish cross-session and cross-trial validation rather than using
+the terms interchangeably.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.4
+\begin{cmt}{}{}
+
+Every preprocessing transformation, including scaling and data-dependent feature
+processing, should be fit exclusively using the training data.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+All learned transformations, including standardization, are contained in the
+estimator pipeline and are fit separately within each training fold. The
+handcrafted feature transforms are deterministic functions of an individual
+window and estimate no parameter from the data; they therefore have no fitting
+scope that could transmit information across folds.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.5
+\begin{cmt}{}{}
+
+Cross-task experiments should also use subject-disjoint source and target
+partitions.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We agree and rebuilt cross-task validation as leave-one-subject-out transfer.
+For each held-out participant, the source-task training partition excludes that
+participant and the target-task test partition contains only that participant.
+The source and target partitions are consequently subject-disjoint.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.6
+\begin{cmt}{}{}
+
+Audit and recompute all metrics from the saved predictions. Class counts,
+confusion matrices, per-class precision and recall, balanced accuracy, macro-F1,
+MCC, and AUROC should be reported alongside majority-class baselines.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+All performance measures are now recomputed from saved window-level
+predictions. The revised outputs include fold composition, confusion matrices,
+per-class precision, recall and F1, balanced accuracy, macro-F1, MCC, AUROC
+where defined, and majority-class baselines. Table~2 will report these metrics
+and their definitions consistently.
+
+\textbf{[TODO --- implemented, but neither computed nor reported.]} Every
+measure listed here is implemented in the analysis script and none of it is
+invented; none has been produced yet, because the sweep is still running and the
+analysis has not been run over it. The manuscript has no Table~2 at present.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.7
+\begin{cmt}{}{}
+
+Fold- or participant-level distributions, confidence intervals, and appropriate
+paired statistical comparisons are also required.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+The revised analysis reports fold-level and participant-level distributions and
+95\% confidence intervals with their aggregation unit stated explicitly. It
+also performs paired, participant-level Wilcoxon comparisons only when runs
+share the same target data, with Holm and false-discovery-rate adjustments for
+multiple comparisons.
+
+\textbf{[TODO --- as for Comment~3.6.]} Fold- and participant-level
+distributions, 95\% confidence intervals and paired Wilcoxon tests with Holm and
+false-discovery-rate correction exist in the analysis script; they have not been
+run, and the manuscript reports none of them.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.8
+\begin{cmt}{}{}
+
+Provide a complete and reproducible description of the methods, including filter
+characteristics, the ICA procedure, STFT settings, band-power calculations,
+feature dimensions, hyperparameters, tuning strategy, and random seeds.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We have expanded the Methods and the versioned configuration to specify the
+filtering recipe, ICA method and EOG-proxy criterion, window geometry, channel
+selection, feature extraction, model hyperparameters, random seed, and fold
+construction. Hyperparameters are fixed before the benchmark comparison; no
+data-driven tuning is performed. Each run stores its resolved configuration so
+that the exact analysis can be reproduced.
+
+\textbf{[TODO --- see the response to MR4.]} The configuration side is done, the
+Methods side is not: the Models subsection of the manuscript is a cleared
+placeholder, and the model family named in its text contradicts the models
+actually configured.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.9
+\begin{cmt}{}{}
+
+At least simple linear and tree-based benchmark models should be included.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We added logistic regression as a linear benchmark and gradient-boosted decision
+trees (XGBoost) as a tree-based benchmark, evaluated under the same validation
+protocols as the deep models.
+
+\textbf{[TODO --- confirm the final benchmark set, then report it.]} The models
+configured today are logistic regression, XGBoost, EEGNet, EEGConformer and
+ShallowNet; the SVM and ExtraTrees named in earlier drafts of this
+letter are no longer in \texttt{configs/model/}. The Models subsection of the
+manuscript names none of them, and no results exist for them yet.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.10
+\begin{cmt}{}{}
+
+An alignment or domain-adaptation baseline would further strengthen the transfer
+analysis.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.11
+\begin{cmt}{}{}
+
+Revise the presentation and interpretation. Figure 1 should include every
+validation category with corresponding uncertainty estimates.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Figure~1 has been redesigned to include every validation family and
+participant-level 95\% confidence intervals, generated directly from the
+recomputed results.
+
+\textbf{[TODO --- see the response to Comment~R2 of Reviewer~1.]} The figure is
+implemented in the analysis script, has not been generated, and is not in the
+manuscript.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.12
+\begin{cmt}{}{}
+
+Figure 2 should distinguish diagonal baseline results from transfer cells.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+Figure~2 has been redesigned as a source--target matrix in which matched
+within-composition baselines occupy and are explicitly marked on the diagonal;
+off-diagonal cells represent transfer.
+
+\textbf{[TODO --- see the response to Comment~R2 of Reviewer~1.]} The figure is
+implemented in the analysis script, has not been generated, and is not in the
+manuscript.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.13
+\begin{cmt}{}{}
+
+Table 2 should include sample sizes and corrected metric definitions.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+The revised Table~2 will include the number of participants, windows, and
+class support for each analysis, together with metrics recomputed from the
+saved predictions and clearly defined aggregation units.
+
+\textbf{[TODO --- there is no Table~2 yet.]} The Results section of the
+manuscript is a cleared placeholder; the sample sizes and metric definitions
+promised here can be written only after the analysis has been run.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 3.14
+\begin{cmt}{}{}
+
+Claims regarding hardware, causal language, references, and the secondary
+data-use ethics statement should also be corrected.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Reviewer 3
+\newpage
+\setcounter{tcb@cnt@cmt}{0}
+\section*{Reviewer \#3}
+
+\vspace{0.4cm}
+
+%%%%%%%%%%%% Comment 4.1
+\begin{cmt}{}{}
+
+I have carefully reviewed the article. At a first glance, this paper would have
+been really very interesting but unfortunately it is really too short and
+superficial for the promises it makes at the beginning. The authors set up a
+compelling premise in the introduction, promising to systematically evaluate how
+neural markers of attention transfer across diverse paradigms and validation
+strategies. However, the execution falls completely flat. It would be necessary
+to compare all the most advanced deep models for EEG decoding at the state of
+the art and see if, by passing from one task to another, they do better or
+worse. Instead, here unfortunately there are very few discussions on state of
+the art models and on datasets used for many tasks such as motor imagery, sleep,
+and other cognitive states. The entire methodology relies on a simplistic
+feature extraction pipeline combined with a traditional machine learning
+classifier, which completely ignores the massive advancements made in deep
+representation learning for electroencephalography over the last several years.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We appreciate this concern. The revised benchmark evaluates classical
+feature-based models alongside EEG-specific deep architectures --- EEGNet,
+EEGConformer and ShallowNet --- which receive the prepared EEG windows
+directly rather than handcrafted spectral features and are evaluated under the
+same validation protocols. We have also narrowed the manuscript's claims to the
+two available datasets and their operationally defined conditions.
+
+\textbf{[TODO --- the results and the state-of-the-art discussion are both
+missing.]} The deep models are configured and are being run, but no results exist
+for them, and the Background section that would review deep EEG decoding is a
+cleared placeholder. This response cannot stand as written until both are in
+place.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.2
+\begin{cmt}{}{}
+
+When discussing the state of the art in electroencephalography decoding, it is
+entirely unacceptable to limit the analysis to gradient boosted decision trees
+like XGBoost fed with basic short time Fourier transform spectral power
+features. The field has moved well beyond these classical baselines. Advanced
+deep models such as convolutional neural networks specifically designed for time
+series, spatial temporal graph convolutional networks, and transformer based
+architectures have become the standard for brain computer interfaces and
+cognitive state monitoring. The manuscript barely touches upon these
+architectures, briefly mentioning transformers in the related work but failing
+to implement or benchmark any of them. To truly understand whether neural
+signatures of attention are invariant across paradigms, one must leverage models
+capable of learning hierarchical spatial and temporal representations directly
+from the raw or minimally preprocessed signals. By relying on predefined
+spectral bands and overlapping windows, the authors impose a rigid inductive
+bias that likely destroys the subtle, task invariant dynamics they claim to be
+looking for. Therefore, the conclusion that current classifiers capture context
+dependent features rather than invariant signatures is heavily confounded by the
+fact that the authors used a very rudimentary classifier that lacks the capacity
+to learn invariant representations in the first place.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We added EEG-specific deep architectures --- EEGNet, EEGConformer and
+ShallowNet --- as end-to-end benchmarks on the prepared raw EEG windows, alongside the
+feature-based logistic regression and XGBoost baselines. This comparison tests
+whether the observed validation-pattern differences persist when models can learn
+representations directly from the signal rather than only from predefined
+spectral features.
+
+\textbf{[TODO --- as for Comment~4.1, no results exist yet.]} Earlier drafts of
+this letter also named SVM and ExtraTrees, which are no longer configured; keep
+the list here in agreement with \texttt{configs/model/} and with the Models
+subsection of the manuscript once that subsection is written.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.3
+\begin{cmt}{}{}
+
+Furthermore, the narrow focus on a passive control task and short cognitive
+tests like the Stroop test and mental arithmetic severely limits the scope of
+the claims regarding cross task generalization. A comprehensive evaluation
+should have included datasets spanning a much wider variety of neurological
+tasks. For instance, motor imagery is one of the most widely studied paradigms
+in the field, and analyzing how attentional engagement during motor imagery
+transfers to active cognitive tests or sleep staging would have provided a much
+stronger foundation for the paper. Sleep datasets, in particular, offer a
+continuous spectrum of arousal and attentional states that could have perfectly
+complemented the drowsy condition in the first dataset. The lack of discussion
+on these broader applications and the datasets commonly used for them makes the
+paper feel isolated from the broader brain computer interface community and
+leaves the reader wondering how these models would perform in real world
+clinical scenarios.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We do not extend the evaluation to motor imagery or sleep staging, and we want
+to be explicit about why this is a scope boundary rather than a limitation we
+intend to resolve with more data. Motor imagery and sleep staging are defined
+by different operational constructs than the sustained-attention and
+cognitive-load states this paper targets: motor imagery decoding identifies
+sensorimotor-rhythm modulation tied to imagined movement, and sleep staging
+assigns polysomnography-defined vigilance stages. Neither is a measure of
+attentional engagement during an ongoing task. Adding them would not test
+whether attention-decoding models transfer across attention-related paradigms;
+it would test transfer across constructs the models were never designed to
+represent, which is a different research question from the one this paper asks.
+We therefore keep cross-task and cross-dataset evaluation within operationally
+defined attention-related paradigms and state this as an intentional scope
+boundary in the manuscript, rather than implying that a wider survey of
+unrelated BCI paradigms would have strengthened the present claims.
+
+\textbf{[TODO --- this scope boundary is nowhere in the manuscript.]} The
+argument stands on its own and needs no new data, but no section currently makes
+it: the Background section, where it belongs together with the discussion of the
+motor-imagery and sleep paradigms the Reviewer asks about, is a cleared
+placeholder.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.4
+\begin{cmt}{}{}
+
+To rectify these significant omissions, the authors must update their literature
+review and theoretical framework by citing and discussing recent works that
+successfully apply deep learning to complex electroencephalography tasks. I
+strongly require the authors to cite the paper titled \textit{Investigating the
+impact of rational dilated wavelet transform on motor imagery EEG decoding with
+deep learning models} published in the year 2025. It is extremely important to
+cite this work because it clearly demonstrates how advanced time frequency
+transforms can be integrated with deep learning models to significantly improve
+decoding performance on complex tasks like motor imagery. This highlights the
+inadequacy of the standard short time Fourier transform approach used in the
+current manuscript. Additionally, the authors must cite the paper titled
+\textit{RatioWaveNet: A Learnable RDWT Front-End for Robust and Interpretable
+EEG Motor-Imagery Classification}, also published in 2025. Citing this paper is
+crucial because it showcases the current state of the art in developing robust,
+interpretable front ends that are completely learnable, effectively replacing
+the static feature extraction pipelines that the authors currently rely on.
+Since these papers are very recent, they represent the cutting edge of the field
+and provide exactly the kind of state of the art methodological context that
+this superficial manuscript currently lacks.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.5
+\begin{cmt}{}{}
+
+Moving to the semantic and conceptual issues within the manuscript, there are
+several major flaws that undermine the validity of the unified labeling scheme.
+The authors decided to merge the drowsy state, the unfocused state, and the
+resting state into a single low attention class. This is a severe semantic
+error. From a neurophysiological perspective, drowsiness involves a transition
+into early stage sleep, characterized by the emergence of theta waves, vertex
+sharp waves, and a general withdrawal of environmental awareness. This is
+fundamentally different from an awake but unfocused state, which might involve
+default mode network activation and mind wandering, or a resting state with eyes
+open or closed, which is typically dominated by posterior alpha oscillations. By
+grouping these distinct physiological phenomena into a single binary class, the
+authors create an artificially heterogeneous category that confuses the
+classifier. This semantic misalignment invalidates many of the cross dataset
+conclusions, as the model is likely learning to distinguish arousal levels
+rather than attention levels.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We accept this criticism and have acted on it rather than argued against it. We
+agree that drowsiness is not interchangeable with an awake unfocused state or
+with eyes-open rest, and that the neurophysiological grounds the Reviewer gives
+--- the transition towards early-stage sleep, with its own signature and with
+sustained eye closure --- are sufficient reason not to place these conditions in
+one class.
+
+Drowsy epochs are therefore excluded from the primary analysis entirely, and not
+reassigned or flagged as a limitation. The exclusion is implemented as a step of
+the data-preparation pipeline, ahead of channel selection, filtering, artifact
+removal and windowing, so that drowsy data do not enter the ICA decomposition or
+the fitting of the feature scaler either. The low-demand class of the primary
+mapping now contains only the unfocused and resting conditions, and the
+manuscript states the Reviewer's own reasoning as the justification for the
+exclusion.
+
+\textbf{[TODO --- the remainder of this response describes a manuscript that does
+not exist.]} Table~1 has not been renamed: it is still ``Unified binary attention
+label mapping'' with the classes ``High Attention'' and ``Low Attention'', and no
+paragraph follows it. There is no sensitivity arm~M0, in the manuscript or in the
+code, so the Reviewer's inference about arousal is still not testable. There is
+no Limitations subsection at all, although two passages of Methodology already
+refer the reader to one. Write the Table~1 reframe and the Limitations subsection
+first; only then can this response state what the arousal objection is actually
+answered with.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.6
+\begin{cmt}{}{}
+
+Furthermore, framing mental arithmetic purely as an attention task ignores the
+massive working memory load it requires, which produces entirely different
+cortical activation patterns compared to the simple visual monitoring required
+in the train simulator task.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We accept the observation and have not attempted to argue it away. Under the
+operational definition adopted in this revision, the working-memory load of
+mental arithmetic is not a confound to be removed from an attention contrast but
+a constituent of the high-demand condition, and mental arithmetic is no longer
+framed as a pure attention task.
+
+We also draw the broader consequence that follows from the Reviewer's point. The
+attention-decoding and mental-workload-decoding literatures operationalize their
+targets in the same way --- task versus rest, or high versus low demand --- and
+are to that extent operationally indistinguishable. This is a further instance of
+the main argument of the revision rather than an exception to it: where the label
+is supplied by the protocol condition, the boundary between the two constructs is
+not drawn by the data.
+
+\textbf{[TODO --- three claims were removed from this response, each
+unsupported.]} (i) That cross-task transfers involving arithmetic were
+consistently the weakest: those numbers come from the superseded pipeline, were
+removed from the manuscript, and have not been recomputed. (ii) Label-mapping
+arm~M4, which would keep the Dataset~B tasks separate: no such arm exists in the
+configuration or in the sweep, and nothing of the kind is being computed. (iii)
+The alpha-desynchronization and frontal-midline-theta rationale for aligning the
+two protocols: the manuscript still argues that alignment from the psychological
+labels of the individual tasks, which is exactly what the Reviewers did not
+accept. Rewrite this response once the manuscript carries a mechanism-based
+rationale and once cross-task numbers exist.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.7
+\begin{cmt}{}{}
+
+Similarly, the grammatical and syntactic quality of the manuscript leaves much
+to be desired. There are numerous instances of poor phrasing and missing
+punctuation that disrupt the reading flow and obscure the scientific meaning.
+For example, in the description of Dataset A, the authors write that all
+experiments were performed with volunteer participants chosen among students.
+This phrasing is awkward and unscientific; it would be much better to state that
+the participant cohort consisted of university student volunteers. In the
+description of Dataset B, there are glaring punctuation errors in the
+descriptions of the tasks. The text reads Stroop Color Word Test participants
+were required to identify the color, and Arithmetic problem solving participants
+mentally solved a mathematical problem, and Mirror Image Recognition
+participants were shown images. In all these cases, there is a missing colon or
+em dash after the name of the task, making it seem like the participants
+themselves are named after the tasks. These are careless grammatical errors that
+should have been caught during proofreading. Furthermore, the phrasing in the
+results section, specifically the sentence stating that accuracy and F1 score
+reaching 0.86 for Dataset A and 0.81 and 0.88 respectively for Dataset B, is
+disjointed and confusingly structured. The authors also failed to properly
+format the cross dataset directions in their text, sometimes omitting the
+necessary words to explain the direction of the transfer.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\emph{[TODO]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.8
+\begin{cmt}{}{}
+
+Another critical methodological failure that must be addressed is the cross task
+validation experimental design. The authors openly admit in the limitations
+section that in their cross task experiments, the source and target tasks were
+drawn from the same pool of Dataset B participants, and consequently, task
+transfer and subject identity are not fully disentangled. This is not just a
+minor limitation; it is a fatal flaw for a study whose entire premise is about
+evaluating transferability and generalization. If the model is evaluated on a
+new task but with the same subjects it was trained on, any successful transfer
+could merely be the result of the classifier learning subject specific noise
+profiles, baseline anatomical features, or electrode impedance artifacts, rather
+than genuine task invariant attention markers. A true cross task evaluation must
+be performed using a leave one subject out approach across tasks, ensuring that
+the model is tested on both unseen tasks and unseen subjects simultaneously, or
+at the very least, evaluated on completely disjoint subsets of subjects.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We agree and rebuilt the cross-task protocol as leave-one-subject-out transfer.
+In each fold, source-task training data exclude the held-out participant and
+target-task testing uses only that participant. The revised design therefore
+tests both an unseen task composition and an unseen participant.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.9
+\begin{cmt}{}{}
+
+The authors also acknowledge that their within dataset baselines are likely
+overly optimistic due to the use of densely overlapping windows. They state that
+overlapping one second windows with a zero point one two five second step size
+lead to highly autocorrelated samples, and that splitting these windows randomly
+across cross validation folds causes temporal leakage. While it is good that
+they acknowledge this, merely stating it in the limitations is insufficient for
+a paper focused on validation strategies. The core contribution of this paper is
+supposed to be a rigorous evaluation of validation schemes, yet they purposefully
+include a flawed baseline that they know is leaking data. They should have
+implemented the group aware splitting by trial or session that they suggest as
+future work directly in this manuscript. Presenting inflated within dataset
+metrics undermines the entire comparative analysis, as the drop in performance
+observed in cross subject and cross session scenarios might just be the result
+of removing data leakage rather than actual domain shift. The failure to correct
+this known issue makes the baseline metrics virtually meaningless.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We agree and removed this leakage from the baseline. Overlapping windows are
+grouped by their recording unit, and group-aware cross-validation assigns every
+window from a unit to either training or testing, never both. The revised
+baseline results are recomputed with this procedure.
+
+\textbf{[TODO --- the manuscript still describes the old windows.]} Group-aware
+splitting is implemented, but the Data preparation subsection still states 1\,s
+windows with a 0.125\,s step, which is the geometry the Reviewer objects to; the
+configuration now uses 5\,s windows with 0.5\,s overlap. The recomputed baseline
+does not exist yet.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.10
+\begin{cmt}{}{}
+
+Additionally, the reliance on a reduced twelve channel montage significantly
+limits the potential of the study. While aligning the spatial resolution of the
+two datasets is a logical step for cross dataset evaluation, dropping from
+thirty two channels down to twelve discards a massive amount of spatial
+information that could be vital for deep learning models to learn invariant
+representations. The authors note that this low density configuration limits the
+stability of the independent component analysis used for artifact removal, which
+introduces yet another confounding variable. If the artifacts were not cleanly
+removed due to the lack of spatial channels, the classifier might simply be
+tracking eye movements, blinks, or muscle tension rather than cortical attention
+networks. This is especially problematic given that the Stroop test and mental
+arithmetic often elicit different physical responses, facial microexpressions,
+and stress induced muscle artifacts compared to a passive train driving
+simulator. The failure to adequately separate these physiological artifacts from
+true neural signals casts doubt on whether the model is actually decoding
+attention at all.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We clarify that the shared 12-channel montage is selected only after artifact
+correction. For each recording unit, ICA is fitted to, and applied on, all EEG
+channels available in that original recording; channel selection occurs only
+after ICA application and before epoching and model fitting. The common-channel
+restriction therefore does not reduce the dimensionality of the ICA
+decomposition. It is used only to give the cross-dataset models an identical
+set of input channels.
+
+We nevertheless acknowledge an important residual limitation. Neither source
+dataset provides an independent EOG channel, so ocular-component candidates are
+identified using pre-specified frontal EEG channels as EOG proxies. This permits
+consistent automated component selection, but it is not ground-truth validation
+of ocular-artifact removal. We have made this limitation explicit and have
+restricted our interpretation accordingly: the analyses compare classification
+of operationally defined experimental conditions and do not establish that the
+models isolate cortical attention signals from all possible physiological
+artifacts.
+
+\textbf{[TODO --- the manuscript contradicts this response.]} The code does what
+is described here: ICA is fitted and applied on all channels of the original
+recording, and the common 12-channel montage is picked afterwards
+(\texttt{src/preparation.py}). The Data preparation subsection of the manuscript
+states the opposite order --- channel selection first, ICA afterwards. Fix the
+manuscript before this response is sent.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.11
+\begin{cmt}{}{}
+
+Finally, the absence of any discussion regarding model explainability or feature
+importance is a missed opportunity. Even with a simpler model like XGBoost, the
+authors could have analyzed which spectral bands and channels were most critical
+for the cross task and cross dataset predictions. Without an analysis of the
+underlying features driving the decisions, the claim that models capture context
+dependent features remains purely speculative. State of the art deep models,
+such as the ones recommended for citation earlier, often include interpretability
+modules or attention mechanisms that allow researchers to visualize the spatial
+and temporal features the network relies on. By neglecting this aspect, the
+authors fail to provide any neuroscientific insights into why the transfers
+failed, leaving the paper as a purely empirical exercise in applied machine
+learning with poor experimental controls.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We added fold-wise feature attribution for the models that expose it directly:
+coefficients for logistic regression and gain-based importances for XGBoost. The
+analysis maps these values back to the configured channel order and frequency
+bands and reports their fold average. We present this as model-specific
+descriptive evidence, not as an explanation of the deep models.
+
+\textbf{[TODO --- saved, but not yet aggregated or reported.]} Per-fold
+attributions are stored with every run, but the analysis that aggregates them has
+not been run and the manuscript has no section reporting them. Earlier drafts of
+this letter named ExtraTrees, which is no longer configured.
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Comment 4.12
+\begin{cmt}{}{}
+
+In conclusion, the manuscript fails to deliver on its ambitious initial
+premises. To be considered for publication, it requires a complete overhaul. The
+authors must replace their obsolete feature extraction and gradient boosting
+pipeline with a suite of advanced deep learning architectures, comparing their
+performance across various transfer scenarios. They must expand their dataset
+inclusion to encompass a wider variety of cognitive states and tasks,
+particularly motor imagery and sleep stages, to provide a true measure of
+paradigm invariance. They must correct the severe semantic errors in their label
+harmonization process, particularly the grouping of sleep related states with
+resting states, and fix all grammatical mistakes and punctuation omissions
+throughout the text. Most importantly, they must implement rigorous, leakage
+free validation schemes for all their baselines and ensure that cross task
+evaluations are completely separated from subject identity confounds. Without
+these major revisions and a significant expansion in scope, the paper remains
+too superficial and methodologically flawed to contribute meaningfully to the
+state of the art in electroencephalography decoding.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+We appreciate the detailed assessment. The revision replaces the leaking
+baseline and the subject-confounded cross-task protocol, recomputes metrics from
+saved predictions, adds participant-level uncertainty and paired comparisons, and
+benchmarks linear and tree-based models against EEG-specific deep architectures
+(EEGNet, EEGConformer, ShallowNet). We also exclude the explicitly
+labelled drowsy segment from the primary analysis and narrow the interpretation
+to operationally defined attention-related conditions, deliberately outside the
+scope of unrelated BCI constructs such as motor imagery or sleep staging. The
+remaining detailed responses specify the corresponding changes and limitations.
+
+\textbf{[TODO --- summary response, to be finalised last.]} It can only be
+written once the individual responses above are settled: the sweep is still
+running, no analysis has been produced from it, and the Abstract, Background,
+Models and Results sections of the manuscript are cleared placeholders.
+
+\vspace{0.3cm}
+
+\end{document}

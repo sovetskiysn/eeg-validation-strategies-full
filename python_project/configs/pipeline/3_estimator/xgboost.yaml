@@ -1,0 +1,7 @@
+# @package pipeline_components.model
+name: xgboost
+params:
+  _target_: xgboost.XGBClassifier
+  random_state: ${seed}
+  tree_method: hist
+  device: cuda

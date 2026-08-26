@@ -1,0 +1,5 @@
+# @package pipeline_components.input_scaling
+# Logistic Regression estimates weights with a scale-sensitive optimiser and
+# penalty, so its feature vectors are standardised from each train fold only.
+step:
+  _target_: sklearn.preprocessing.StandardScaler
