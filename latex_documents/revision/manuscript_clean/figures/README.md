@@ -1,23 +1,23 @@
 # Figures for the clean manuscript
 
 The completed analysis was pulled from `/home/datalake/models_test/analysis` with
-`make pull-artifacts`, then arranged by editorial role. `manuscript.tex` embeds the three
-files in `main/` as complete figure--caption blocks in Results. The neural-network
-per-decoder figures are supporting files, cited in the Results text and captioned after
-the bibliography.
+`make pull-artifacts`. `manuscript.tex` embeds the main-text figures as complete
+figure--caption blocks in Results. The neural-network per-decoder figures are
+supporting files, cited in the Results text and captioned after the bibliography.
 
 | Role | Manuscript label | Raster source |
 | --- | --- | --- |
-| Main | Fig 1 | `main/fig1_logistic_regression_all_scenarios.png` |
-| Main | Fig 2 | `main/xgboost_all_scenarios.png` |
-| Main | Fig 3 (cross-subject model comparison) | `main/cross_subject_model_comparison.png` |
-| Supplementary | S1 Fig. (EEGNet) | `supplementary/S3_fig_eegnet_all_scenarios.png` |
-| Supplementary | S2 Fig. (ShallowFBCSPNet) | `supplementary/S4_fig_shallownet_all_scenarios.png` |
-| Supplementary | S3 Fig. (EEGConformer) | `supplementary/S5_fig_eegconformer_all_scenarios.png` |
+| Main | Fig 1 | `all_scenarios_absolute_accuracy_logistic_regression.png` |
+| Main | Fig 2 (cross-subject model comparison) | `cross_subject_model_comparison.png` |
+| Main | Fig 3 (scenario-by-decoder comparison) | `scenario_by_decoder_slope.png` |
+| Supplementary | S1 Fig. (EEGNet) | `all_scenarios_absolute_accuracy_eegnet.png` |
+| Supplementary | S2 Fig. (ShallowFBCSPNet) | `all_scenarios_absolute_accuracy_shallownet.png` |
+| Supplementary | S3 Fig. (EEGConformer) | `all_scenarios_absolute_accuracy_eegconformer.png` |
 
-`source_svg/` retains the vector originals from the analysis, including the
-vector version of the main figure. The historical `fig*.jpg` files remain
-unchanged for provenance only and are not cited by the clean manuscript.
+The same filenames with the `.svg` extension are the vector originals from the
+analysis. The historical `fig*.jpg` files and the older manually arranged
+subdirectories remain unchanged for provenance only and are not cited by the
+clean manuscript.
 
 ## Do not strip the graphics by hand
 

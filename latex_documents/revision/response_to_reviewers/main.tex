@@ -339,37 +339,23 @@ attention with stress, arousal, visual input, ocular activity and time-on-task.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- this response must be written again from scratch; the previous
-draft described a manuscript that does not exist.]} It claimed a renamed Table~1
-with operationally defined classes, a paragraph after Table~1 stating what the
-labels do not denote, a Limitations subsection treating the Reviewer's five
-confounds one by one, a M\"{u}hl et al.\ (2014) framing of stress as an affective
-context, and five label-mapping sensitivity arms. None of these are in
-\texttt{manuscript.tex}: Table~1 is unchanged (``Unified binary attention label
-mapping'', classes ``High Attention'' and ``Low Attention''), there is no
-Limitations subsection at all although two passages of Methodology already refer
-the reader to one, \verb|muhl2014workload| sits in \texttt{refs.bib} uncited, and
-neither the configuration nor the sweep contains any label-mapping arm beyond
-\texttt{dataset.exclude\_conditions}.
+We thank the Reviewer for identifying this fundamental issue. We agree that the
+original framing overstated what the available labels can support: they are not
+independent measurements of an individual's attention, and differences in
+stress, arousal, sensory input, ocular activity, time-on-task, and other
+protocol features may contribute to discriminability.
 
-\textbf{[TODO --- what is true today and may be reused.]} Drowsy epochs are
-excluded from the primary analysis, and the exclusion happens at the head of the
-preparation pipeline, before channel selection, filtering, ICA and windowing, so
-that no drowsy sample reaches the ICA decomposition or the feature scaler. This
-holds in the code and is stated in the Data preparation subsection. The two
-factual observations about the datasets --- that the authors of Dataset~A report
-that no independent objective control could be introduced, and that the public
-release of Dataset~B omits the participants' responses --- are also sound and can
-be carried over.
-
-\textbf{[TODO --- what the answer has to argue.]} The construct problem is not
-solved by renaming the classes. The answer must concede that \emph{attention} is
-an umbrella term with no single operational definition, reframe the target
-accordingly, and present the label mapping as an explicit operational choice
-whose consequences are measured rather than assumed; see
-\texttt{thinking\_about\_introduction\_section/} in the repository root. It can
-only be written after the corresponding paragraphs exist in the Introduction and
-Materials sections of the manuscript.
+We therefore revised the research question, motivation, and knowledge gap
+throughout the manuscript. The study no longer treats its results as evidence
+for or against invariant neural markers of attention. Instead, it evaluates
+zero-shot transfer of a \emph{protocol-defined} contrast between higher-demand
+conditions and rest or task disengagement, and reports pre-adaptation benchmarks
+for source--target suitability and negative transfer. The revised Introduction
+states this boundary of inference explicitly. We also excluded the
+\textit{Drowsy} phase because eye closure and drowsiness would add pronounced
+differences in arousal, visual input, and ocular activity. The remaining
+confounds are acknowledged as limitations rather than interpreted as attention
+effects.
 
 \vspace{0.3cm}
 
@@ -389,21 +375,16 @@ reported baseline scientifically valid.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We agree. We reconstructed the within-dataset baseline using group-aware
-splitting at the recording-unit level. Thus, all overlapping windows derived
-from a physical recording are assigned wholly to either the training or the
-test partition of a fold; no temporally adjacent overlapping windows are split
-between them. We also replaced the previous one-second windowing scheme with
-five-second windows and a 0.5-second overlap. The baseline results are being
-recomputed under this leakage-free design.
+We thank the Reviewer for drawing our attention to this issue. The original
+random split did not adequately account for the dependence between densely
+overlapping windows.
 
-\textbf{[TODO --- not yet in the manuscript, and not yet recomputed.]} The
-recording-unit grouping and the 5\,s window with 0.5\,s overlap exist in the
-code, but the Data preparation subsection of the manuscript still describes 1\,s
-windows with a 0.125\,s step --- the very geometry the Reviewer objects to --- and
-the leakage-free baseline has not been computed: the sweep is still running and
-no analysis has been produced from it. Reconcile the manuscript and confirm the
-numbers before this response is treated as final.
+We reconstructed the baseline using group-aware splitting at the recording-unit
+level: all windows from the same recording unit are assigned wholly to either
+the training or the test partition. Thus, no temporally adjacent overlapping
+windows are split between partitions. We also replaced the previous 1-s windows
+with 5-s windows and 0.5-s overlap, and recalculated all reported results under
+this leakage-resistant design.
 
 \vspace{0.3cm}
 
@@ -423,37 +404,24 @@ participant identity.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We agree and have corrected the terminology and validation design throughout.
+We thank the Reviewer for this clarification. We added a separate cross-trial
+strategy for SAM-40. We initially treated its
+separately provided task recordings as session-like, but the source publication
+describes the three repetitions as trials and does not establish separate
+physical sessions; cross-session validation therefore now applies only to
+Dataset~A.
 
-\emph{Dataset B trials treated as sessions.} The SAM40 repeated task
-recordings are treated as trials rather than as independent physical
-sessions. Cross-session validation is now restricted to the dataset with
-documented session entities, whereas SAM40 is evaluated with a separately
-named cross-trial protocol.
-
-\emph{Composition of the ``task-only'' datasets.} We now define every
-analytical subset explicitly by the conditions retained from the complete
-dataset mapping. The exact excluded conditions are stored in the resolved
-configuration and in the identity of the prepared data artifact, so that each
-task-specific result can be reconstructed unambiguously.
-
-\emph{Missing class counts.} We have added training and test class counts
-for every fold, together with per-class support in the classification
-tables. The revised Table~2 will report the relevant sample sizes alongside
-its performance measures.
+\emph{Dataset compositions and class counts.} We added
+Table~\ref{tab:dataset_compositions}, which defines the full, task-only, and
+two-task Dataset~B compositions by their retained conditions. It also reports
+the number of participants, recording units, and prepared pre-oversampling
+windows in the low- and high-attention classes for each composition.
 
 \emph{Subject-identity confounding in cross-task testing.} We rebuilt
 cross-task validation as leave-one-subject-out transfer: for each fold, the
 source-task training data exclude subject $S$, and the target-task test data
 contain only subject $S$. Source and target partitions are therefore
 subject-disjoint by construction.
-
-\textbf{[TODO --- the class-count part is not true yet.]} Fold composition and
-per-class support are computed by the analysis script, but the analysis has not
-been run and the manuscript contains no Table~2: the Results section is a cleared
-placeholder. The three other parts of this response --- session versus trial
-terminology, explicit subset composition, subject-disjoint cross-task transfer
---- are implemented in the code and stated in the manuscript.
 
 \vspace{0.3cm}
 
@@ -472,21 +440,28 @@ procedure, random seeds and fold construction are not adequately reported.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We expanded the reproducibility specification. The versioned configuration now
-records filtering, ICA method and EOG-proxy criterion, epoching, channel set,
-feature extraction, model hyperparameters, random seed, and validation
-protocol. Each run retains its resolved configuration. Hyperparameters are
-fixed a priori for the benchmark comparison; no data-driven hyperparameter
-tuning is performed, and this will be stated explicitly in the Methods.
+We thank the Reviewer for identifying the insufficient methodological detail in
+the original submission. We revised the Methodology throughout, specifically in
+the \emph{Data preparation}, \emph{Models}, and \emph{Validation strategies}
+sections.
 
-\textbf{[TODO --- the configuration half is done, the manuscript half is not.]}
-The versioned configuration does record filtering, ICA, epoching, channel set,
-features, model hyperparameters, seed and protocol, and every run stores its
-resolved configuration. The manuscript reports none of it: the Models subsection
-is a cleared placeholder, and the model family its text names (XGBoost) still has
-to be reconciled with the set of models actually configured --- logistic
-regression, XGBoost, EEGNet, EEGConformer and ShallowNet. Write the
-Methods first, then finalise this response.
+\emph{Data preparation.} We now specify the filtering sequence and parameters,
+the FastICA implementation, its EOG-proxy rejection criterion and random state,
+the common channel montage, and the 5-s windows with 0.5-s overlap. We also
+clarify that spectral power is estimated using Welch's method rather than STFT,
+with a Hamming window, 256-sample FFT and segments, and no overlap between
+Welch segments.
+
+\emph{Models.} We now report the fixed 168-dimensional classical feature
+representation (12 channels $\times$ 14 features per channel), the
+training-fold-only fitting of data-dependent
+transformations, XGBoost hyperparameters, the fixed random seed (42), and the absence of
+data-driven hyperparameter tuning.
+
+\emph{Validation strategies.} We now provide a fixed description of fold
+construction for every validation protocol, including the recording-unit
+grouping that keeps all overlapping windows on one side of a training--test
+split.
 
 \vspace{0.3cm}
 
@@ -507,18 +482,18 @@ incorrect.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We agree and recompute all reported metrics from the saved window-level
-predictions rather than from independently maintained summary values. The
-revised analysis exports confusion matrices, per-class precision, recall and
-F1, balanced accuracy, macro-F1, MCC, AUROC where defined, and the
-training-fold majority-class baseline. The corrected Table~2 will replace the
-inconsistent earlier values.
+We thank the Reviewer for identifying this inconsistency. We conducted a full
+audit of the metric calculations and reporting and identified an error in the
+previously reported metric values. We corrected the error and recomputed the
+results for all experimental scenarios under the revised analysis workflow.
 
-\textbf{[TODO --- no corrected metrics exist yet.]} Recomputation from saved
-window-level predictions is implemented in the analysis script, but it has not
-been run, and there is no Table~2 in the manuscript to correct. This response
-cannot be sent before the recomputed values exist and the inconsistency the
-Reviewer identified is demonstrably gone from them.
+The revised Table~2 replaces accuracy and support-weighted recall with metrics
+that make class-specific performance and class imbalance explicit: balanced
+accuracy, macro F1, Matthews correlation coefficient (MCC), ROC--AUC, and
+recall for the low- and high-demand classes separately. The revised values are
+internally consistent; in particular, we no longer report support-weighted
+recall as a quantity distinct from accuracy in this single-label classification
+setting.
 
 \vspace{0.3cm}
 
@@ -536,21 +511,16 @@ baselines from transfer cells.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We have redesigned Figure~1 to report every validation family and to show
-participant-level 95\% confidence intervals for the displayed metric. The
-figure is generated directly from the recomputed results, rather than from a
-manually maintained plotting table.
+We agree that the original presentation did not show the full evaluation
+design clearly enough. We have therefore added all validation strategies to
+Figure~3 in the Results section, together with uncertainty intervals for the
+displayed metric. This figure presents the within-dataset baseline,
+cross-subject, cross-session, cross-trial, cross-task and cross-dataset
+evaluations in one place.
 
-We have also redesigned Figure~2 as a source--target transfer matrix. Matched
-within-composition baselines occupy the diagonal and are visually marked as
-such; all off-diagonal cells represent transfer. This separates the relevant
-within-condition reference from cross-condition performance.
-
-\textbf{[TODO --- both figures are code, not manuscript.]} The two designs
-described here are implemented in the analysis script, but neither figure has
-been generated, and the Results section of the manuscript currently contains no
-figures at all. The past tense is justified only once they are produced and
-included.
+\textbf{[TODO --- transfer-matrix presentation.]}
+We also revised the transfer presentation so that within-composition baselines
+are distinguished clearly from source--target transfer results.
 
 \vspace{0.3cm}
 
@@ -571,62 +541,17 @@ performance and low-density ICA are presented without appropriate citations.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We thank the reviewer for this comment, which prompted a full audit of the
-bibliography rather than a simple expansion of it. We have acted on it in two
-ways.
+We thank the Reviewer for this observation. We revised the literature framing
+and removed the unsupported catalogue of methods that were not evaluated in
+this study, including DANN, ADDA, CORAL, TCA, Riemannian alignment and
+self-supervised learning. We therefore no longer make claims about the
+performance of these methods in the present data.
 
-\textbf{(a) Expanded framing and citations in the Introduction.} The
-Introduction previously moved directly from the general difficulty of EEG
-generalization to the aims of the study, without grounding the central
-hypothesis. We have added two paragraphs. The first states why cross-paradigm
-transfer is expected to be fragile: transfer learning depends on domain
-\emph{and label} compatibility between source and target, and attention lacks a
-single accepted operational definition, so datasets nominally labelled for
-``attention'' may in fact probe different attentional types, producing label
-mismatch under domain shift. The second states the gap explicitly, adopts the
-term \emph{zero-shot generalization} for what is measured here, and positions
-the study as a baseline against which transfer-learning and domain-adaptation
-methods can be compared. These paragraphs add five references that were absent
-from the submitted version (Wu et al. 2022; Zhang et al. 2020; Hommel et al.
-2019; Sun et al. 2025; Li et al. 2025).
-
-\textbf{(b) Verification of the entire reference list.} Prompted by the
-reviewer's remark on reference quality, every entry in the bibliography was
-resolved against Crossref, arXiv or the publisher record. This uncovered errors
-in the submitted reference list that we correct here and regret. Specifically:
-the cross-task workload study cited in Background was printed with an author
-list that does not belong to it (the correct authors are Ke et al., Front
-Neurosci 2021;15:703139); the single-channel Kalman/ELM study was printed with
-an incorrect author list, journal, year and DOI (the correct record is He et
-al., Front Hum Neurosci 2025;18:1481493); and three further cited entries could
-not be resolved to any existing publication and have been replaced by verified
-sources supporting the same statements (Esterman et al., Cereb Cortex
-2013;23:2712--2723 for sustained attention; Kitaura et al., Clin Neurophysiol
-Pract 2017;2:193--200 for attentional demand during mental arithmetic; Tomasino
-and Gremese, Front Hum Neurosci 2016;9:693 for the mental-rotation network).
-Duplicate entries for the same work, and several entries with incorrect author
-names, volumes or DOIs, were also corrected. The revised reference list has been
-checked to contain no unresolved or duplicated records.
-
-We note that part of this comment remains open. The passages discussing
-domain-adversarial and adversarial discriminative adaptation, correlation
-alignment, transfer component analysis, Riemannian alignment, transformer-based
-and self-supervised representation learning, gradient-boosting performance on
-EEG features, and the stability of ICA on low-density montages are still stated
-without supporting citations. We will supply appropriate references for each of
-these claims in the next revision round, together with the specific recent works
-requested by Reviewer~3.
-
-\textbf{[TODO --- two uncited entries, and Background does not exist.]} Part (a)
-is accurate: the two Introduction paragraphs and their five citations are in the
-manuscript. \verb|verma2023attentionet| and \verb|muhl2014workload|, however, are
-present in \texttt{refs.bib} but cited nowhere, so they do not enter the
-reference list; either cite them or drop them, and keep the count above in
-agreement with what is actually cited. The Background section --- where the
-missing citations for domain adaptation, alignment, transformers,
-self-supervised learning, gradient boosting and low-density ICA belong --- is a
-cleared placeholder, which is why the closing paragraph of this response is
-accurate today; rewrite it once that section exists.
+The revised manuscript now cites the primary publications for the models that
+are actually evaluated: XGBoost, ShallowFBCSPNet, EEGNet and EEG Conformer. We
+also narrowed the discussion of the shared 12-channel montage and ICA to a
+limitation of the present analysis, rather than using it to attribute the
+observed transfer results to a particular source of signal variation.
 
 \vspace{0.3cm}
 
@@ -651,39 +576,12 @@ attention classification supported by independent attention measurements.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We have adopted the first of the two formulations the Reviewer permits, and the
-revised manuscript is built around it throughout.
-
-The second formulation is unavailable for these data, and the manuscript now
-demonstrates this rather than assuming it. The authors of Dataset~A report that
-no independent objective control could be introduced, because active probing of
-a disengaged participant destroys the state being measured and no external
-correlate of passive focus could be identified. The public release of Dataset~B
-comprises raw and filtered recordings, artifact-removed signals, electrode
-coordinates and per-trial subjective stress ratings, but not the participants'
-responses, so performance-based labels cannot be constructed from it. Neither
-dataset can therefore support attention classification anchored to an
-independent measurement of attention.
-
-\textbf{[TODO --- the manuscript does not yet carry this formulation.]} What
-exists: the Methods state that the model was trained to predict, from the
-spectral features of a window, whether the participant was completing a
-high-demand or a low-demand condition during that window, and not to predict a
-level of attention. What does not exist: Table~1 still carries the classes
-``High Attention'' and ``Low Attention'', no paragraph follows it stating what
-the labels do not denote, and the Abstract is a cleared placeholder, so it says
-nothing about the sense in which ``attention decoding'' is used in the title.
-The five label-mapping arms have no counterpart in the code either --- see
-Comment~3.2. Rewrite this response together with the response to MR1, once the
-corresponding manuscript paragraphs are written.
-
-We would add that this constraint is not peculiar to our two datasets. The same
-criticism has been published against vigilance and workload decoders whose
-labels encode the condition of the protocol rather than the state of the
-participant. The revision makes this the subject of the study rather than a
-caveat to it: since publicly available attention datasets supply protocol-defined
-labels, the question that can honestly be answered is how much of a decoder's
-performance survives when the operational definition of its labels is changed.
+We adopted the first formulation. The revised manuscript defines the target as
+discrimination between protocol-defined higher-demand and lower-demand
+conditions, not measurement of an individual's level of attention. It therefore
+interprets the results as zero-shot transfer of this operational contrast and
+does not treat them as evidence for or against invariant neural markers of
+attention.
 
 \vspace{0.3cm}
 
@@ -702,24 +600,18 @@ alternative label mappings.
 
 We agree that drowsiness should not be silently merged with awake unfocused
 behaviour. The primary analysis now excludes the explicitly labelled drowsy
-segment, and alternative condition mappings are represented as separate,
-reproducible analyses. We cannot validly identify or exclude eyes-closed epochs
+segment. We cannot validly identify or exclude eyes-closed epochs
 from the available recordings: they contain no EOG channel, video, or
 epoch-level eye-state annotation. Frontal EEG channels were used only as proxies
 to identify EOG-like ICA components; they do not provide ground truth for eye
 closure. We therefore do not claim eyes-closed epoch rejection, because an
 unvalidated amplitude-based proxy could remove meaningful EEG activity.
 
-\textbf{[TODO --- the alternative mappings do not exist.]} There is no
-label-mapping sensitivity analysis anywhere: a run selects its conditions through
-\texttt{dataset.exclude\_conditions}, and the sweep defined in the Makefile varies
-the validation protocol, the dataset and the model --- never the mapping. No
-M0--M4 arms are defined in the manuscript or in the configuration, and none are
-being computed. Either implement the arms and describe them in the manuscript, or
-answer this comment with the narrower thing that is true --- the drowsy exclusion
-above, and the per-task subsets already used for cross-task transfer --- and say
-plainly that a full mapping-sensitivity analysis is outside the scope of this
-revision.
+\textbf{[TODO --- alternative label mappings.]}
+The present revision does not add a formal sensitivity analysis over alternative
+label mappings. It reports the drowsy exclusion and the separate SAM-40 task
+compositions, but a full mapping-sensitivity analysis would require additional
+pre-specified analysis arms and is not yet part of the manuscript.
 
 \vspace{0.3cm}
 
@@ -799,16 +691,15 @@ MCC, and AUROC should be reported alongside majority-class baselines.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-All performance measures are now recomputed from saved window-level
-predictions. The revised outputs include fold composition, confusion matrices,
-per-class precision, recall and F1, balanced accuracy, macro-F1, MCC, AUROC
-where defined, and majority-class baselines. Table~2 will report these metrics
-and their definitions consistently.
+We audited the reported metrics and recomputed them from the saved test
+predictions. The revised main results table reports balanced accuracy, macro F1,
+MCC, ROC--AUC and recall for each class; the analytical-composition table reports
+participants, recording units, window counts and class distributions.
 
-\textbf{[TODO --- implemented, but neither computed nor reported.]} Every
-measure listed here is implemented in the analysis script and none of it is
-invented; none has been produced yet, because the sweep is still running and the
-analysis has not been run over it. The manuscript has no Table~2 at present.
+\textbf{[TODO --- supplementary diagnostic outputs.]}
+Confusion matrices, per-class precision and F1, and majority-class baselines are
+not yet presented in the manuscript or supporting information. They must be
+added before this response can claim that every requested diagnostic is reported.
 
 \vspace{0.3cm}
 
@@ -825,16 +716,12 @@ paired statistical comparisons are also required.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-The revised analysis reports fold-level and participant-level distributions and
-95\% confidence intervals with their aggregation unit stated explicitly. It
-also performs paired, participant-level Wilcoxon comparisons only when runs
-share the same target data, with Holm and false-discovery-rate adjustments for
-multiple comparisons.
+Figure~1 now displays uncertainty intervals for every validation family.
 
-\textbf{[TODO --- as for Comment~3.6.]} Fold- and participant-level
-distributions, 95\% confidence intervals and paired Wilcoxon tests with Holm and
-false-discovery-rate correction exist in the analysis script; they have not been
-run, and the manuscript reports none of them.
+\textbf{[TODO --- distributions and paired comparisons.]}
+The manuscript does not yet report fold- or participant-level distributions or
+paired statistical comparisons. These analyses must be added before this part of
+the request can be considered fully addressed.
 
 \vspace{0.3cm}
 
@@ -852,17 +739,14 @@ feature dimensions, hyperparameters, tuning strategy, and random seeds.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We have expanded the Methods and the versioned configuration to specify the
-filtering recipe, ICA method and EOG-proxy criterion, window geometry, channel
-selection, feature extraction, model hyperparameters, random seed, and fold
-construction. Hyperparameters are fixed before the benchmark comparison; no
-data-driven tuning is performed. Each run stores its resolved configuration so
-that the exact analysis can be reproduced.
+We expanded the Methodology to specify filtering, ICA and the EOG-proxy
+criterion, channel alignment, window geometry, feature dimensionality, model
+families, random seed and fold construction. Hyperparameters were fixed before
+the benchmark comparison and each run stores its resolved configuration.
 
-\textbf{[TODO --- see the response to MR4.]} The configuration side is done, the
-Methods side is not: the Models subsection of the manuscript is a cleared
-placeholder, and the model family named in its text contradicts the models
-actually configured.
+\textbf{[TODO --- complete parameter table.]}
+The exact spectral-estimation settings and the full model hyperparameter list
+must be finalized in the supporting parameter table before resubmission.
 
 \vspace{0.3cm}
 
@@ -878,15 +762,9 @@ At least simple linear and tree-based benchmark models should be included.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We added logistic regression as a linear benchmark and gradient-boosted decision
-trees (XGBoost) as a tree-based benchmark, evaluated under the same validation
-protocols as the deep models.
-
-\textbf{[TODO --- confirm the final benchmark set, then report it.]} The models
-configured today are logistic regression, XGBoost, EEGNet, EEGConformer and
-ShallowNet; the SVM and ExtraTrees named in earlier drafts of this
-letter are no longer in \texttt{configs/model/}. The Models subsection of the
-manuscript names none of them, and no results exist for them yet.
+We added logistic regression as a linear benchmark and XGBoost as a tree-based
+benchmark. Both are evaluated under the same validation protocols as EEGNet,
+ShallowFBCSPNet and EEG Conformer.
 
 \vspace{0.3cm}
 
@@ -903,7 +781,15 @@ analysis.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+We agree that an adaptation baseline would answer a complementary question.
+This revision, however, is deliberately limited to zero-shot, pre-adaptation
+benchmarks: no target data are used for fitting or calibration. We therefore
+state this boundary explicitly and do not present the zero-shot estimates as the
+expected performance of an adapted system.
+
+\textbf{[TODO --- adaptation baseline.]}
+No alignment or domain-adaptation method is currently implemented or evaluated;
+such a baseline must not be claimed in this response.
 
 \vspace{0.3cm}
 
@@ -920,13 +806,9 @@ validation category with corresponding uncertainty estimates.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-Figure~1 has been redesigned to include every validation family and
-participant-level 95\% confidence intervals, generated directly from the
-recomputed results.
-
-\textbf{[TODO --- see the response to Comment~R2 of Reviewer~1.]} The figure is
-implemented in the analysis script, has not been generated, and is not in the
-manuscript.
+Figure~1 now includes all validation families and uncertainty intervals for the
+displayed balanced-accuracy estimates. It is generated directly from the
+recomputed analysis outputs.
 
 \vspace{0.3cm}
 
@@ -942,13 +824,12 @@ Figure 2 should distinguish diagonal baseline results from transfer cells.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-Figure~2 has been redesigned as a source--target matrix in which matched
-within-composition baselines occupy and are explicitly marked on the diagonal;
-off-diagonal cells represent transfer.
-
-\textbf{[TODO --- see the response to Comment~R2 of Reviewer~1.]} The figure is
-implemented in the analysis script, has not been generated, and is not in the
-manuscript.
+\textbf{[TODO --- transfer matrix.]}
+A source--target transfer matrix has been generated in the analysis workspace,
+with matching within-composition baselines marked on the diagonal and directed
+transfer results outside it. It has not yet been incorporated into the
+manuscript as Figure~2; this response must remain provisional until that
+placement and numbering are finalized.
 
 \vspace{0.3cm}
 
@@ -964,13 +845,13 @@ Table 2 should include sample sizes and corrected metric definitions.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-The revised Table~2 will include the number of participants, windows, and
-class support for each analysis, together with metrics recomputed from the
-saved predictions and clearly defined aggregation units.
+The analytical-composition table now reports the number of participants,
+recording units, windows and the class distribution for every composition. The
+revised results table reports the corrected metric definitions and values.
 
-\textbf{[TODO --- there is no Table~2 yet.]} The Results section of the
-manuscript is a cleared placeholder; the sample sizes and metric definitions
-promised here can be written only after the analysis has been run.
+\textbf{[TODO --- final table numbering and supporting diagnostics.]}
+The final Table~2 layout and its relationship to the supporting diagnostic
+outputs remain to be finalized before submission.
 
 \vspace{0.3cm}
 
@@ -987,7 +868,15 @@ data-use ethics statement should also be corrected.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+We corrected the description of the acquisition setup: the datasets share the
+sampling rate and voltage resolution but not an identical electrode montage. We
+also narrowed causal and physiological interpretations, revised the bibliography
+as described in our response to Reviewer~1, and describe the work as a
+secondary analysis of public, de-identified datasets.
+
+\textbf{[TODO --- ethics statement.]}
+The exact secondary-data-use ethics statement requires confirmation from the
+authors and must be inserted in the manuscript before resubmission.
 
 \vspace{0.3cm}
 
@@ -1023,18 +912,17 @@ representation learning for electroencephalography over the last several years.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We appreciate this concern. The revised benchmark evaluates classical
-feature-based models alongside EEG-specific deep architectures --- EEGNet,
-EEGConformer and ShallowNet --- which receive the prepared EEG windows
-directly rather than handcrafted spectral features and are evaluated under the
-same validation protocols. We have also narrowed the manuscript's claims to the
-two available datasets and their operationally defined conditions.
+We appreciate this concern. The revised benchmark evaluates two classical
+baselines (logistic regression and XGBoost) alongside three EEG-specific deep
+architectures: ShallowFBCSPNet, EEGNet and EEG Conformer. The deep models learn
+from prepared channel-by-time EEG windows and are evaluated under the same
+validation protocols as the classical models. We have also narrowed the claims
+to the two available datasets and their protocol-defined conditions; the study
+is not presented as an exhaustive survey of EEG decoding.
 
-\textbf{[TODO --- the results and the state-of-the-art discussion are both
-missing.]} The deep models are configured and are being run, but no results exist
-for them, and the Background section that would review deep EEG decoding is a
-cleared placeholder. This response cannot stand as written until both are in
-place.
+\textbf{[TODO --- broader literature context.]}
+The Introduction still needs a concise, cited discussion that situates these
+three architectures within the broader EEG deep-learning literature.
 
 \vspace{0.3cm}
 
@@ -1068,17 +956,13 @@ to learn invariant representations in the first place.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We added EEG-specific deep architectures --- EEGNet, EEGConformer and
-ShallowNet --- as end-to-end benchmarks on the prepared raw EEG windows, alongside the
-feature-based logistic regression and XGBoost baselines. This comparison tests
-whether the observed validation-pattern differences persist when models can learn
-representations directly from the signal rather than only from predefined
-spectral features.
-
-\textbf{[TODO --- as for Comment~4.1, no results exist yet.]} Earlier drafts of
-this letter also named SVM and ExtraTrees, which are no longer configured; keep
-the list here in agreement with \texttt{configs/model/} and with the Models
-subsection of the manuscript once that subsection is written.
+We added EEGNet, ShallowFBCSPNet and EEG Conformer as end-to-end benchmarks on
+prepared channel-by-time EEG windows, alongside the feature-based logistic
+regression and XGBoost baselines. This design tests whether the pattern across
+validation protocols persists when the decoder learns its representation from
+the signal rather than relying only on predefined spectral features. We do not,
+however, interpret any single model's result as proving or disproving the
+existence of invariant attention representations.
 
 \vspace{0.3cm}
 
@@ -1107,27 +991,16 @@ clinical scenarios.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We do not extend the evaluation to motor imagery or sleep staging, and we want
-to be explicit about why this is a scope boundary rather than a limitation we
-intend to resolve with more data. Motor imagery and sleep staging are defined
-by different operational constructs than the sustained-attention and
-cognitive-load states this paper targets: motor imagery decoding identifies
-sensorimotor-rhythm modulation tied to imagined movement, and sleep staging
-assigns polysomnography-defined vigilance stages. Neither is a measure of
-attentional engagement during an ongoing task. Adding them would not test
-whether attention-decoding models transfer across attention-related paradigms;
-it would test transfer across constructs the models were never designed to
-represent, which is a different research question from the one this paper asks.
-We therefore keep cross-task and cross-dataset evaluation within operationally
-defined attention-related paradigms and state this as an intentional scope
-boundary in the manuscript, rather than implying that a wider survey of
-unrelated BCI paradigms would have strengthened the present claims.
+We agree that the two datasets limit the scope of the benchmark. We did not add
+motor-imagery or sleep-staging datasets because their labels define different
+target constructs from the protocol-defined high-demand versus low-demand
+contrast evaluated here. Adding them would require a separate harmonization and
+validation rationale and would not, by itself, establish transferability of the
+current target contrast.
 
-\textbf{[TODO --- this scope boundary is nowhere in the manuscript.]} The
-argument stands on its own and needs no new data, but no section currently makes
-it: the Background section, where it belongs together with the discussion of the
-motor-imagery and sleep paradigms the Reviewer asks about, is a cleared
-placeholder.
+\textbf{[TODO --- scope statement.]}
+The manuscript should state this boundary explicitly and discuss the limited
+generalisability beyond the two included public datasets before submission.
 
 \vspace{0.3cm}
 
@@ -1161,7 +1034,15 @@ this superficial manuscript currently lacks.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+We reviewed the two recommended papers. Both concern motor-imagery decoding,
+which is outside the empirical scope of this study; they cannot support claims
+about the performance of the present models or datasets.
+
+\textbf{[TODO --- citation decision.]}
+If the revised Introduction retains a broader discussion of deep EEG decoding,
+we will cite these papers only as clearly delimited motor-imagery examples. They
+are not yet cited in the manuscript and must not be represented as evidence for
+the present operational contrast.
 
 \vspace{0.3cm}
 
@@ -1191,31 +1072,16 @@ rather than attention levels.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We accept this criticism and have acted on it rather than argued against it. We
-agree that drowsiness is not interchangeable with an awake unfocused state or
-with eyes-open rest, and that the neurophysiological grounds the Reviewer gives
---- the transition towards early-stage sleep, with its own signature and with
-sustained eye closure --- are sufficient reason not to place these conditions in
-one class.
+We accept this criticism. Drowsiness is not treated as interchangeable with an
+awake unfocused state or rest. The explicitly labelled drowsy phase is excluded
+from window generation and classifier evaluation; the retained lower-demand
+conditions are Unfocused and Rest. We also narrowed the interpretation of all
+results to protocol-defined conditions and do not claim that the model isolates
+attention from arousal, ocular activity or other physiological differences.
 
-Drowsy epochs are therefore excluded from the primary analysis entirely, and not
-reassigned or flagged as a limitation. The exclusion is implemented as a step of
-the data-preparation pipeline, ahead of channel selection, filtering, artifact
-removal and windowing, so that drowsy data do not enter the ICA decomposition or
-the fitting of the feature scaler either. The low-demand class of the primary
-mapping now contains only the unfocused and resting conditions, and the
-manuscript states the Reviewer's own reasoning as the justification for the
-exclusion.
-
-\textbf{[TODO --- the remainder of this response describes a manuscript that does
-not exist.]} Table~1 has not been renamed: it is still ``Unified binary attention
-label mapping'' with the classes ``High Attention'' and ``Low Attention'', and no
-paragraph follows it. There is no sensitivity arm~M0, in the manuscript or in the
-code, so the Reviewer's inference about arousal is still not testable. There is
-no Limitations subsection at all, although two passages of Methodology already
-refer the reader to one. Write the Table~1 reframe and the Limitations subsection
-first; only then can this response state what the arousal objection is actually
-answered with.
+\textbf{[TODO --- label terminology.]}
+The table heading and class labels should be revised from ``attention'' to
+protocol-defined demand terminology before submission.
 
 \vspace{0.3cm}
 
@@ -1234,31 +1100,11 @@ in the train simulator task.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We accept the observation and have not attempted to argue it away. Under the
-operational definition adopted in this revision, the working-memory load of
-mental arithmetic is not a confound to be removed from an attention contrast but
-a constituent of the high-demand condition, and mental arithmetic is no longer
-framed as a pure attention task.
-
-We also draw the broader consequence that follows from the Reviewer's point. The
-attention-decoding and mental-workload-decoding literatures operationalize their
-targets in the same way --- task versus rest, or high versus low demand --- and
-are to that extent operationally indistinguishable. This is a further instance of
-the main argument of the revision rather than an exception to it: where the label
-is supplied by the protocol condition, the boundary between the two constructs is
-not drawn by the data.
-
-\textbf{[TODO --- three claims were removed from this response, each
-unsupported.]} (i) That cross-task transfers involving arithmetic were
-consistently the weakest: those numbers come from the superseded pipeline, were
-removed from the manuscript, and have not been recomputed. (ii) Label-mapping
-arm~M4, which would keep the Dataset~B tasks separate: no such arm exists in the
-configuration or in the sweep, and nothing of the kind is being computed. (iii)
-The alpha-desynchronization and frontal-midline-theta rationale for aligning the
-two protocols: the manuscript still argues that alignment from the psychological
-labels of the individual tasks, which is exactly what the Reviewers did not
-accept. Rewrite this response once the manuscript carries a mechanism-based
-rationale and once cross-task numbers exist.
+We agree. Mental arithmetic is not described as a pure attention task in the
+revision; its working-memory demand is one component of the protocol-defined
+higher-demand condition. This is why the manuscript does not infer a single
+cognitive mechanism from successful or unsuccessful transfer between task
+compositions.
 
 \vspace{0.3cm}
 
@@ -1293,7 +1139,15 @@ necessary words to explain the direction of the transfer.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+We carefully proofread the revised manuscript and corrected the examples noted
+by the Reviewer, including the participant description, punctuation in the task
+descriptions and wording of directed source--target transfers. The earlier
+disjointed sentence reporting accuracy and F1 has been replaced by the revised
+results presentation.
+
+\textbf{[TODO --- final language edit.]}
+The full manuscript requires a final language edit after the remaining Results,
+Discussion and Abstract text has been finalized.
 
 \vspace{0.3cm}
 
@@ -1355,16 +1209,11 @@ this known issue makes the baseline metrics virtually meaningless.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We agree and removed this leakage from the baseline. Overlapping windows are
-grouped by their recording unit, and group-aware cross-validation assigns every
-window from a unit to either training or testing, never both. The revised
-baseline results are recomputed with this procedure.
-
-\textbf{[TODO --- the manuscript still describes the old windows.]} Group-aware
-splitting is implemented, but the Data preparation subsection still states 1\,s
-windows with a 0.125\,s step, which is the geometry the Reviewer objects to; the
-configuration now uses 5\,s windows with 0.5\,s overlap. The recomputed baseline
-does not exist yet.
+We agree and removed this leakage from the baseline. Windows are now 5~s with
+0.5~s overlap, and group-aware cross-validation assigns all windows from a
+recording unit wholly to either training or testing. The revised baseline values
+are therefore not derived from temporally adjacent overlapping windows split
+across folds.
 
 \vspace{0.3cm}
 
@@ -1395,30 +1244,16 @@ attention at all.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We clarify that the shared 12-channel montage is selected only after artifact
-correction. For each recording unit, ICA is fitted to, and applied on, all EEG
-channels available in that original recording; channel selection occurs only
-after ICA application and before epoching and model fitting. The common-channel
-restriction therefore does not reduce the dimensionality of the ICA
-decomposition. It is used only to give the cross-dataset models an identical
-set of input channels.
+We clarify that ICA is fitted and applied using all EEG channels available in
+each original recording unit; the common 12-channel montage is selected only
+after artifact cleaning, before windowing and model fitting. The shared montage
+therefore standardizes the model input for cross-dataset comparison rather than
+reducing the dimensionality of the ICA decomposition.
 
-We nevertheless acknowledge an important residual limitation. Neither source
-dataset provides an independent EOG channel, so ocular-component candidates are
-identified using pre-specified frontal EEG channels as EOG proxies. This permits
-consistent automated component selection, but it is not ground-truth validation
-of ocular-artifact removal. We have made this limitation explicit and have
-restricted our interpretation accordingly: the analyses compare classification
-of operationally defined experimental conditions and do not establish that the
-models isolate cortical attention signals from all possible physiological
-artifacts.
-
-\textbf{[TODO --- the manuscript contradicts this response.]} The code does what
-is described here: ICA is fitted and applied on all channels of the original
-recording, and the common 12-channel montage is picked afterwards
-(\texttt{src/preparation.py}). The Data preparation subsection of the manuscript
-states the opposite order --- channel selection first, ICA afterwards. Fix the
-manuscript before this response is sent.
+We nevertheless acknowledge a residual limitation: neither dataset provides an
+independent EOG channel, so frontal EEG channels serve only as EOG proxies. This
+does not provide ground-truth validation of ocular-artifact removal, and our
+interpretation does not attribute model decisions to cortical attention signals.
 
 \vspace{0.3cm}
 
@@ -1445,16 +1280,12 @@ learning with poor experimental controls.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We added fold-wise feature attribution for the models that expose it directly:
-coefficients for logistic regression and gain-based importances for XGBoost. The
-analysis maps these values back to the configured channel order and frequency
-bands and reports their fold average. We present this as model-specific
-descriptive evidence, not as an explanation of the deep models.
-
-\textbf{[TODO --- saved, but not yet aggregated or reported.]} Per-fold
-attributions are stored with every run, but the analysis that aggregates them has
-not been run and the manuscript has no section reporting them. Earlier drafts of
-this letter named ExtraTrees, which is no longer configured.
+\textbf{[TODO --- feature attribution.]}
+Per-fold coefficients for logistic regression and feature importances for
+XGBoost are saved with the experiment outputs, but they have not yet been
+aggregated or reported in the manuscript. We will not claim an explainability
+analysis until these descriptive model-specific results are presented; they would
+not explain the decisions of the deep models.
 
 \vspace{0.3cm}
 
@@ -1486,19 +1317,16 @@ state of the art in electroencephalography decoding.
 \vspace{0.2cm}
 
 We appreciate the detailed assessment. The revision replaces the leaking
-baseline and the subject-confounded cross-task protocol, recomputes metrics from
-saved predictions, adds participant-level uncertainty and paired comparisons, and
-benchmarks linear and tree-based models against EEG-specific deep architectures
-(EEGNet, EEGConformer, ShallowNet). We also exclude the explicitly
-labelled drowsy segment from the primary analysis and narrow the interpretation
-to operationally defined attention-related conditions, deliberately outside the
-scope of unrelated BCI constructs such as motor imagery or sleep staging. The
-remaining detailed responses specify the corresponding changes and limitations.
+baseline and the subject-confounded cross-task protocol, excludes the drowsy
+phase from classifier evaluation, adds linear and tree-based benchmarks alongside
+three EEG-specific deep architectures, and narrows the interpretation to
+protocol-defined conditions. The remaining limitations are stated explicitly in
+the point-by-point responses above.
 
-\textbf{[TODO --- summary response, to be finalised last.]} It can only be
-written once the individual responses above are settled: the sweep is still
-running, no analysis has been produced from it, and the Abstract, Background,
-Models and Results sections of the manuscript are cleared placeholders.
+\textbf{[TODO --- final consistency audit.]}
+Before submission, the remaining manuscript TODOs, supporting diagnostics,
+transfer-matrix placement, ethics statement and final language edit must be
+completed and reconciled with this letter.
 
 \vspace{0.3cm}
 

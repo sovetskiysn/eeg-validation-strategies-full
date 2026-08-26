@@ -11,6 +11,8 @@ from analysis import (
     craft_all_scenarios_absolute_accuracy_figure,
     craft_cross_subject_model_comparison_figure,
     craft_main_table,
+    craft_scenario_by_decoder_slope_figure,
+    craft_transfer_matrix_figure,
 )
 from utils import PROJECT_ROOT, REPOSITORY_ROOT
 
@@ -46,6 +48,24 @@ def main() -> None:
     figure = craft_cross_subject_model_comparison_figure(ANALYSIS_INPUT_DIR)
     for suffix in ("svg", "png"):
         figure_path = figures_dir / f"cross_subject_model_comparison.{suffix}"
+        figure.savefig(figure_path, dpi=300)
+        print(f"Wrote {figure_path}")
+    plt.close(figure)
+
+    figure = craft_transfer_matrix_figure(
+        str(ANALYSIS_INPUT_DIR / "+decoder=logistic_regression,+scenario=*")
+    )
+    for suffix in ("svg", "png"):
+        figure_path = figures_dir / f"transfer_matrix_logistic_regression.{suffix}"
+        figure.savefig(figure_path, dpi=300)
+        print(f"Wrote {figure_path}")
+    plt.close(figure)
+
+    figure = craft_scenario_by_decoder_slope_figure(
+        str(ANALYSIS_INPUT_DIR / "+decoder=*,+scenario=*")
+    )
+    for suffix in ("svg", "png"):
+        figure_path = figures_dir / f"scenario_by_decoder_slope.{suffix}"
         figure.savefig(figure_path, dpi=300)
         print(f"Wrote {figure_path}")
     plt.close(figure)

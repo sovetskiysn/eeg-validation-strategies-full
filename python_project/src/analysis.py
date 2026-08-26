@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.figure import Figure
+from matplotlib.patches import Rectangle
 from matplotlib.ticker import MaxNLocator
 from omegaconf import OmegaConf
 from sklearn.metrics import (
@@ -120,6 +121,13 @@ def scenario_key(cfg) -> tuple[object, ...]:
 
 def craft_main_table(scenario_glob: str) -> str:
     """Fill the scenario-table template from one complete scenario-run glob."""
+    model_display_names = {
+        "logistic_regression": "logistic regression",
+        "xgboost": "XGBoost",
+        "eegnet": "EEGNet",
+        "shallownet": "ShallowFBCSPNet",
+        "eegconformer": "EEGConformer",
+    }
     job_dirs = discover_scenario_results(scenario_glob)
     if len(job_dirs) != len(SCENARIO_ORDER):
         raise ValueError(
@@ -128,8 +136,13 @@ def craft_main_table(scenario_glob: str) -> str:
         )
 
     metrics_by_scenario: dict[tuple[str, str, str], tuple[str, str, str, str, str]] = {}
+    decoder_names = set()
     for job_dir in job_dirs:
         cfg, windows, folds = read_scenario_result(job_dir)
+        decoder = str(cfg.pipeline_components.model.name).removesuffix("_test")
+        if decoder not in model_display_names:
+            raise ValueError(f"{job_dir}: unsupported decoder for article table: {decoder}.")
+        decoder_names.add(decoder)
         scenario = scenario_key(cfg)
         if scenario in metrics_by_scenario:
             raise ValueError(f"Duplicate scenario for one decoder: {scenario}.")
@@ -164,8 +177,14 @@ def craft_main_table(scenario_glob: str) -> str:
         missing = list((expected - actual).elements())
         unexpected = list((actual - expected).elements())
         raise ValueError(f"Scenario set does not match the table template; missing={missing}, unexpected={unexpected}.")
+    if len(decoder_names) != 1:
+        raise ValueError(f"A main scenario table needs one decoder, got {sorted(decoder_names)}.")
+    decoder = decoder_names.pop()
 
     template = (LATEX_ARTIFACT_TEMPLATES_DIR / "scenario_table_template.tex").read_text()
+    template = template.replace("MODEL_DISPLAY_NAME", model_display_names[decoder]).replace(
+        "MODEL_SLUG", decoder
+    )
     lines = template.splitlines(keepends=True)
     metric_lines = []
     for index, line in enumerate(lines):
@@ -379,6 +398,136 @@ def craft_all_scenarios_absolute_accuracy_figure(scenario_glob: str) -> Figure:
     return fig
 
 
+def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
+    """Build source-on-row matrices for all directed transfer scenarios.
+
+    A confusion matrix would describe predicted labels within one evaluation;
+    it cannot show which data composition trained a decoder.  These matrices
+    instead use source compositions as rows and target compositions as columns.
+    The diagonal is the matching within-composition baseline where the sweep
+    contains one; every other populated cell is a directed zero-shot transfer
+    estimate. Gray cells are source--target compositions the sweep did not run.
+    """
+    dataset_a = ("distinguishing", ("drowsy",))
+    dataset_b = ("sam40", ())
+    stroop = ("sam40", ("arithmetic", "mirror"))
+    arithmetic = ("sam40", ("mirror", "stroop"))
+    mirror = ("sam40", ("arithmetic", "stroop"))
+    stroop_arithmetic = ("sam40", ("mirror",))
+    stroop_mirror = ("sam40", ("arithmetic",))
+    arithmetic_mirror = ("sam40", ("stroop",))
+    matrix_specs = (
+        (
+            "Cross-task transfer (Dataset B)",
+            (
+                ("Stroop", stroop),
+                ("Arithmetic", arithmetic),
+                ("Mirror", mirror),
+                ("Stroop+\nArithmetic", stroop_arithmetic),
+                ("Stroop+\nMirror", stroop_mirror),
+                ("Arithmetic+\nMirror", arithmetic_mirror),
+            ),
+            "cross_task",
+        ),
+        (
+            "Cross-dataset transfer",
+            (
+                ("Dataset A", dataset_a),
+                ("Full B", dataset_b),
+                ("Stroop", stroop),
+                ("Arithmetic", arithmetic),
+                ("Mirror", mirror),
+                ("Stroop+\nArithmetic", stroop_arithmetic),
+                ("Stroop+\nMirror", stroop_mirror),
+                ("Arithmetic+\nMirror", arithmetic_mirror),
+            ),
+            "cross_dataset",
+        ),
+    )
+
+    scores: dict[tuple[object, ...], float] = {}
+    for job_dir in discover_scenario_results(scenario_glob):
+        cfg, windows, folds = read_scenario_result(job_dir)
+        scenario = scenario_key(cfg)
+        if scenario in scores:
+            raise ValueError(f"Duplicate scenario in transfer matrix: {scenario}.")
+        if windows["window_index"].duplicated().any():
+            raise ValueError(f"{job_dir}: windows.parquet has duplicate window indices.")
+        test = folds.loc[folds["part"] == "test"].merge(
+            windows[["window_index", "y_true"]],
+            on="window_index",
+            how="left",
+            validate="many_to_one",
+        )
+        if test.empty or test[["y_true", "y_pred"]].isna().any().any():
+            raise ValueError(f"{job_dir}: incomplete test predictions for transfer matrix.")
+        if not test["window_index"].is_unique:
+            raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
+        if test["y_true"].nunique() != 2:
+            raise ValueError(f"{job_dir}: expected exactly two tested classes.")
+        scores[scenario] = balanced_accuracy_score(test["y_true"], test["y_pred"])
+
+    fig, axes = plt.subplots(1, 2, figsize=(13.2, 6.2), layout="constrained")
+    cmap = plt.colormaps["RdYlBu_r"].copy()
+    cmap.set_bad("#F1F3F5")
+    image = None
+    for ax, (title, sides, transfer_protocol) in zip(axes, matrix_specs, strict=True):
+        labels, compositions = zip(*sides, strict=True)
+        values = np.full((len(compositions), len(compositions)), np.nan)
+        for row, source in enumerate(compositions):
+            for column, target in enumerate(compositions):
+                protocol = "baseline" if row == column else transfer_protocol
+                scenario = (protocol, source, target)
+                if scenario in scores:
+                    values[row, column] = scores[scenario]
+
+        image = ax.imshow(values, cmap=cmap, vmin=0.4, vmax=0.7, aspect="equal")
+        for row in range(len(compositions)):
+            for column in range(len(compositions)):
+                baseline = row == column
+                label = (
+                    f"{values[row, column]:.2f}" + ("\nbaseline" if baseline else "")
+                    if not np.isnan(values[row, column])
+                    else "—"
+                )
+                ax.text(
+                    column,
+                    row,
+                    label,
+                    ha="center",
+                    va="center",
+                    fontsize=8 if len(compositions) > 6 else 9,
+                    fontweight="bold" if baseline and not np.isnan(values[row, column]) else "normal",
+                    color="#6B7280" if np.isnan(values[row, column]) else "#111827",
+                )
+                if baseline and not np.isnan(values[row, column]):
+                    ax.add_patch(
+                        Rectangle(
+                            (column - 0.5, row - 0.5), 1, 1,
+                            fill=False,
+                            edgecolor="#1E293B",
+                            linewidth=2.2,
+                        )
+                    )
+        ax.set_xticks(range(len(labels)), labels, fontsize=8)
+        ax.set_yticks(range(len(labels)), labels, fontsize=8)
+        ax.set_xlabel("Target (test)", fontweight="bold")
+        ax.set_ylabel("Source (train)", fontweight="bold")
+        ax.set_title(title, fontweight="bold", pad=10)
+        ax.tick_params(length=0)
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+    colorbar = fig.colorbar(image, ax=axes, shrink=0.83, pad=0.03)
+    colorbar.set_label("Balanced accuracy", fontweight="bold")
+    fig.suptitle(
+        "Directed zero-shot transfer: diagonal cells are within-composition baselines when available",
+        fontweight="bold",
+    )
+    fig.text(0.5, 0.01, "Gray cells were not evaluated in the sweep.", ha="center", color="#6B7280", fontsize=9)
+    return fig
+
+
 def craft_cross_subject_model_comparison_figure(analysis_input_dir: Path) -> Figure:
     """Build the separate Dataset A/B cross-subject decoder comparison figure."""
     decoder_specs = (
@@ -509,7 +658,7 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
     """Build the four-panel figure that reads every scenario across the decoders.
 
     The all-scenarios figure asks how far a scenario falls; this one asks whether
-    that fall belongs to the data or to the model reading it. The six decoders
+    that fall belongs to the data or to the model reading it. The five decoders
     become the horizontal steps and each scenario walks across them as one line,
     so a line that stays flat is a scenario whose difficulty no decoder undoes.
     Panels follow the protocol families, because comparing a baseline line with a
@@ -523,15 +672,15 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
         ("eegconformer", "EEG\nConformer"),
     )
     scenario_labels = (
-        "K-fold · Full A",
-        "K-fold · Full B",
-        "K-fold · B: Stroop",
-        "K-fold · B: Arithmetic",
-        "K-fold · B: Mirror",
-        "LOSO · Full A",
-        "LOSO · Full B",
-        "Leave-one-session-out · Full A",
-        "Leave-one-trial-out · Full B",
+        "Stratified K-fold(Full A)",
+        "Stratified K-fold(Full B)",
+        "Stratified K-fold(B: Stroop)",
+        "Stratified K-fold(B: Arithmetic)",
+        "Stratified K-fold(B: Mirror)",
+        "Leave-one-subject-out(Full A)",
+        "Leave-one-subject-out(Full B)",
+        "Leave-one-session-out(Full A)",
+        "Leave-one-trial-out(Full B)",
         "Stroop → Arithmetic",
         "Stroop → Mirror",
         "Arithmetic → Stroop",
@@ -566,21 +715,18 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
     # inside one group: the same two channels the mockup used, in HLS.
     hue_angles = {"rust": 0.055, "olive": 0.270, "teal": 0.490, "cyan": 0.570, "violet": 0.790}
     tone = lambda hue, level: colorsys.hls_to_rgb(hue_angles[hue], 0.40 + 0.34 * level, 0.55)
-    # (panel title, panel subtitle, per-scenario (hue, lightness)) in scenario order
+    # (panel title, per-scenario (hue, lightness)) in scenario order
     panel_specs = (
         (
             "Baseline",
-            "Train and test inside the same recordings: the ceiling the other panels are read against.",
             (("rust", 0.34), ("olive", 0.72), ("teal", 0.22), ("cyan", 0.72), ("violet", 0.34)),
         ),
         (
-            "Cross-subject · Cross-session · Cross-trial",
-            "Three protocols holding out a different slice of the same release; hue separates the protocol.",
+            "Cross-subject, Cross-session, Cross-trial",
             (("rust", 0.26), ("rust", 0.66), ("cyan", 0.66), ("olive", 0.62)),
         ),
         (
-            "Cross-task (Dataset B)",
-            "Hue is the task transferred into; the shades of one hue are the sources it was reached from.",
+            "Cross-task (Dataset B; single/double-task transfers)",
             (
                 ("cyan", 0.18), ("olive", 0.18), ("rust", 0.18), ("olive", 0.50),
                 ("rust", 0.50), ("cyan", 0.50), ("rust", 0.80), ("cyan", 0.80),
@@ -589,14 +735,13 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
         ),
         (
             "Cross-dataset",
-            "Hue is the direction of transfer; lightness runs down the SAM-40 side of the pair.",
             tuple(
                 ("rust" if index % 2 == 0 else "cyan", (index // 2) / 6)
                 for index in range(14)
             ),
         ),
     )
-    panel_sizes = tuple(len(colours) for _, _, colours in panel_specs)
+    panel_sizes = tuple(len(colours) for _, colours in panel_specs)
     if sum(panel_sizes) != len(SCENARIO_ORDER):
         raise RuntimeError("Slope-figure panels must cover every scenario exactly once.")
 
@@ -678,7 +823,7 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
     label_x = len(decoder_specs) - 1 + 0.62
     fig, axes = plt.subplots(2, 2, figsize=(17.0, 11.5), layout="constrained")
     scenario_start = 0
-    for ax, (title, subtitle, colours) in zip(axes.ravel(), panel_specs, strict=True):
+    for ax, (title, colours) in zip(axes.ravel(), panel_specs, strict=True):
         panel_start = scenario_start
         panel = range(panel_start, panel_start + len(colours))
         scenario_start += len(colours)
@@ -724,7 +869,6 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
 
         ax.text(0.0, 1.075, f"{title}  ({len(colours)} scenarios)", transform=ax.transAxes,
                 fontweight="bold", fontsize=12, va="bottom")
-        ax.text(0.0, 1.02, subtitle, transform=ax.transAxes, color="#6B7383", fontsize=8.5, va="bottom")
         ax.set_xlim(-0.3, label_x + 0.05)
         ax.set_ylim(y_low, y_high)
         ax.set_xticks(decoder_positions, [label for _, label in decoder_specs], fontsize=9)
