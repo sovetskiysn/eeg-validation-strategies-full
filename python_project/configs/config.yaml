@@ -7,12 +7,9 @@ defaults:
   - _self_
 
 seed: 42
-# The decoder sweep is sequential. Feature extraction is CPU-bound and its
-# worker count can be tuned independently of GPU decoder CPU-side work.
-feature_n_jobs: 8
 # GPU decoders still use CPU threads for dispatch and tensor preparation; keep
 # this budget separate from the classical feature-extraction workers.
-torch_num_threads: 4
+torch_num_threads: 6
 
 hydra:
   mode: MULTIRUN
@@ -21,3 +18,8 @@ hydra:
   sweep:
     dir: results/${hydra.job.config_name} (${now:%Y-%m-%d %% %H-%M-%S})
     subdir: ${hydra.job.override_dirname}
+  callbacks:
+    hardware_trace:
+      _target_: hydra_setup.HardwareTraceCallback
+    log_job_return:
+      _target_: hydra.experimental.callbacks.LogJobReturnCallback

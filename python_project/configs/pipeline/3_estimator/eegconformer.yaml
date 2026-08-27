@@ -17,8 +17,28 @@ params:
     path: torch.optim.AdamW
   max_epochs: 100
   batch_size: 64
-  lr: 0.0005
-  optimizer__weight_decay: 0.0001
+  # Use the same conservative EEGClassifier optimisation recipe as the
+  # Braindecode convolutional baselines. The smaller 4-layer/8-head encoder
+  # above is retained because this study repeatedly fits 12 x 640 windows.
+  lr: 0.000625
+  optimizer__weight_decay: 0.0
+  # Do not silently discard an entire small train fold (60 balanced windows in
+  # cross-trial) merely because it is smaller than batch_size.
+  iterator_train__drop_last: false
+  callbacks:
+    - _target_: skorch.callbacks.LRScheduler
+      policy: CosineAnnealingLR
+      T_max: 99
+    - _target_: skorch.callbacks.EarlyStopping
+      monitor: valid_loss
+      patience: 10
+      load_best: true
   device: cuda
-  train_split: null
+  # Validation comes only from the corresponding outer train fold, never from
+  # its held-out test fold.
+  train_split:
+    _target_: skorch.dataset.ValidSplit
+    cv: 0.2
+    stratified: true
+    random_state: ${seed}
   verbose: 0

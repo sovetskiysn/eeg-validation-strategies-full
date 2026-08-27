@@ -1,0 +1,10 @@
+defaults:
+  - /config
+  - _self_
+
+# Two within-dataset baselines for the one fixed Classical ML decoder.
+hydra:
+  sweeper:
+    params:
+      +scenario: baseline_distinguishing,baseline_sam40
+      +decoder: logistic_regression

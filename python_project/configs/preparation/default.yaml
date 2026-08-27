@@ -5,6 +5,7 @@ defaults:
   - 1_preparation_version@provenance: version
   - 2_recording_selection@selection: selection
   - 3_signal_filtering@filtering: filtering
-  - 4_ica_cleaning@ica: ica
-  - 5_window_epoching@epoching: epoching
+  - 4_signal_quality@quality: quality
+  - 5_ica_cleaning@ica: ica
+  - 6_window_epoching@epoching: epoching
   - _self_

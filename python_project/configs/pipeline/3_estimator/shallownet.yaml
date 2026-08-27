@@ -16,8 +16,27 @@ params:
     path: torch.optim.AdamW
   max_epochs: 100
   batch_size: 64
-  lr: 0.001
-  optimizer__weight_decay: 0.0001
+  # Braindecode's reference shallow-network recipe: AdamW, lr=0.0625*0.01,
+  # and no weight decay.
+  lr: 0.000625
+  optimizer__weight_decay: 0.0
+  # Keep incomplete batches: the smallest balanced cross-trial fold has only
+  # 60 windows, below the reference batch size of 64.
+  iterator_train__drop_last: false
+  callbacks:
+    - _target_: skorch.callbacks.LRScheduler
+      policy: CosineAnnealingLR
+      T_max: 99
+    - _target_: skorch.callbacks.EarlyStopping
+      monitor: valid_loss
+      patience: 10
+      load_best: true
   device: cuda
-  train_split: null
+  # This is an internal stratified validation split of the outer train fold;
+  # the outer cross-validation test fold remains unavailable to callbacks.
+  train_split:
+    _target_: skorch.dataset.ValidSplit
+    cv: 0.2
+    stratified: true
+    random_state: ${seed}
   verbose: 0

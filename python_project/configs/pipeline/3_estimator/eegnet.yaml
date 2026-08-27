@@ -6,17 +6,37 @@ params:
   module:
     _target_: hydra.utils.get_class
     path: braindecode.models.EEGNet
-  # Braindecode defaults supply the compact F1=8, D=2 and 64-sample temporal
-  # kernel (and derive F2=F1*D).  A larger dropout is deliberate: these models
-  # are trained from scratch on comparatively small EEG datasets.
-  module__drop_prob: 0.5
+  # Keep Braindecode's published EEGNet architecture defaults (F1=8, D=2,
+  # 64-sample temporal kernel and drop_prob=0.25). They are the library's
+  # compact baseline; architecture tuning belongs in a dedicated train-only
+  # tuning study, not in the final protocol sweep.
   optimizer:
     _target_: hydra.utils.get_class
     path: torch.optim.AdamW
   max_epochs: 100
   batch_size: 64
-  lr: 0.001
-  optimizer__weight_decay: 0.0001
+  # Braindecode's EEGClassifier examples use AdamW with this learning rate and
+  # no weight decay for trial-wise EEG decoding.
+  lr: 0.000625
+  optimizer__weight_decay: 0.0
+  # EEGClassifier defaults to drop_last=True. Cross-trial's smallest balanced
+  # train fold has 60 windows, so the default would otherwise emit no batch and
+  # take zero optimizer steps in every epoch.
+  iterator_train__drop_last: false
+  callbacks:
+    - _target_: skorch.callbacks.LRScheduler
+      policy: CosineAnnealingLR
+      T_max: 99
+    - _target_: skorch.callbacks.EarlyStopping
+      monitor: valid_loss
+      patience: 10
+      load_best: true
   device: cuda
-  train_split: null
+  # The validation partition is created only from the outer train fold;
+  # `cross_validate` keeps its held-out test fold untouched.
+  train_split:
+    _target_: skorch.dataset.ValidSplit
+    cv: 0.2
+    stratified: true
+    random_state: ${seed}
   verbose: 0

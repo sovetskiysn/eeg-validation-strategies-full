@@ -2,16 +2,25 @@
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import hydra
 import numpy as np
 import pandas as pd
+import sklearn
 import torch
 from hydra.core.hydra_config import HydraConfig
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
 from sklearn.model_selection import cross_validate
+
+# LogisticRegressionCV's inner group-aware split (configs/pipeline/3_estimator/
+# logistic_regression.yaml) needs `groups` routed to it from the outer
+# `cross_validate` call below; sklearn only does this when routing is enabled.
+sklearn.set_config(enable_metadata_routing=True)
+
+log = logging.getLogger(__name__)
 
 @hydra.main(version_base=None, config_path="../configs", config_name="config")
 def main(cfg: DictConfig) -> None:
@@ -65,7 +74,7 @@ def main(cfg: DictConfig) -> None:
         X=X,
         y=y,
         cv=cv,
-        groups=groups,
+        params={"groups": groups},
         scoring=None,
         return_train_score=False,
         return_indices=True,
@@ -135,11 +144,15 @@ def main(cfg: DictConfig) -> None:
     # attributes -- `coef_` on the pipeline itself is always absent.
     # LogisticRegression fills `coef`, xgboost fills `feature_importance`,
     # and the networks fill neither, and that is not an error.
+    # `LogisticRegressionCV`/`GridSearchCV` wrap the search around the fitted
+    # model rather than being it: unwrap to the winning estimator first, or
+    # `coef_`/`feature_importances_` below would silently read as absent.
     feature_names = getattr(transform, "get_feature_names_out", None)
     feature_names = None if feature_names is None else feature_names()
     importance_frames = []
     for fold, estimator in enumerate(estimators):
         model = estimator.steps[-1][1] if hasattr(estimator, "steps") else estimator
+        model = getattr(model, "best_estimator_", model)
         coef = getattr(model, "coef_", None)
         feature_importance = getattr(model, "feature_importances_", None)
         if coef is None and feature_importance is None:
@@ -238,9 +251,10 @@ def main(cfg: DictConfig) -> None:
             result_dirs.append(target_dir)
 
     # `test_score` is accuracy over every target of a fold at once. It is the
-    # liveness print and nothing else; every reported metric is recomputed by
-    # `run_analysis.py` from the tables above.
-    print(
+    # liveness check and nothing else; every reported metric is recomputed by
+    # `run_analysis.py` from the tables above. Logged rather than printed so it
+    # lands in Hydra's own per-job log file, not only on the console.
+    log.info(
         f"Completed {HydraConfig.get().job.name}: {len(result_dirs)} result(s) under "
         f"{output_dir} (mean accuracy {results['test_score'].mean():.3f})"
     )

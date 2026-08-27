@@ -18,7 +18,7 @@ import mne
 import mne_bids
 import numpy as np
 import pandas as pd
-from mne.preprocessing import ICA
+from mne.preprocessing import ICA, annotate_amplitude, find_bad_channels_lof
 from omegaconf import DictConfig, OmegaConf
 from utils import BIDS_DIR, PREPARED_CACHE_ROOT
 
@@ -100,6 +100,21 @@ def _prepare_dataset_artifact(
     """Run the EEG recipe and atomically publish a new artifact."""
     dataset_name = ds_cfg.name
     window_size = prep_cfg.epoching.window_size
+
+    if prep_cfg.quality.peak_uv <= 0:
+        raise ValueError("quality.peak_uv must be positive.")
+    if prep_cfg.quality.flat_uv < 0:
+        raise ValueError("quality.flat_uv must be non-negative.")
+    if prep_cfg.quality.min_duration_s <= 0:
+        raise ValueError("quality.min_duration_s must be positive.")
+    if not 0 < prep_cfg.quality.bad_percent <= 100:
+        raise ValueError("quality.bad_percent must lie in (0, 100].")
+    if prep_cfg.quality.lof_n_neighbors < 1:
+        raise ValueError("quality.lof_n_neighbors must be positive.")
+    if prep_cfg.quality.lof_threshold <= 0:
+        raise ValueError("quality.lof_threshold must be positive.")
+    if prep_cfg.quality.max_auto_bad_channels < 0:
+        raise ValueError("quality.max_auto_bad_channels must be non-negative.")
 
     # The analysis is the full listing of the release minus the names the config
     # asks to drop; the class's position is the label. Everything below works
@@ -329,9 +344,9 @@ def _prepare_dataset_artifact(
         # fitting the shared ICA.  The two releases arrive with 14 and 32 EEG
         # channels respectively; applying an average reference first would make
         # the retained 12 channels depend on those dataset-specific extras.
-        # Selecting the fixed intersection before both rereferencing and ICA
-        # makes the continuous representation identical on both sides of a
-        # cross-dataset transfer.
+        # Selecting the fixed intersection before QC, rereferencing and ICA makes
+        # the continuous representation identical on both sides of a cross-dataset
+        # transfer.
         unit_raws = []
         for recording in unit_recordings:
             raw = mne_bids.read_raw_bids(recording, verbose=False).load_data().pick("eeg")
@@ -347,6 +362,63 @@ def _prepare_dataset_artifact(
                 prep_cfg.filtering.l_freq, prep_cfg.filtering.h_freq, verbose=False
             )
             raw.pick(prep_cfg.epoching.channels)
+
+            # Gross transient and flatline detection is deliberately condition-blind:
+            # it sees the full valid recording (including drowsy when it is not a
+            # classification condition) and only annotates signal quality.  These
+            # BAD_* spans are retained through ICA fitting and Epochs creation.
+            quality_annotations, amplitude_bads = annotate_amplitude(
+                raw,
+                peak={"eeg": prep_cfg.quality.peak_uv * 1e-6},
+                flat={"eeg": prep_cfg.quality.flat_uv * 1e-6},
+                bad_percent=prep_cfg.quality.bad_percent,
+                min_duration=prep_cfg.quality.min_duration_s,
+                verbose=False,
+            )
+            raw.set_annotations(raw.annotations + quality_annotations)
+
+            if prep_cfg.quality.lof_n_neighbors >= len(raw.ch_names):
+                raise ValueError(
+                    f"{recording.basename}: quality.lof_n_neighbors="
+                    f"{prep_cfg.quality.lof_n_neighbors} needs fewer than the "
+                    f"{len(raw.ch_names)} selected channels."
+                )
+            lof_bads, lof_scores = find_bad_channels_lof(
+                raw,
+                n_neighbors=prep_cfg.quality.lof_n_neighbors,
+                threshold=prep_cfg.quality.lof_threshold,
+                return_scores=True,
+                verbose=False,
+            )
+            auto_bads = sorted(set(amplitude_bads) | set(lof_bads))
+            if len(auto_bads) > prep_cfg.quality.max_auto_bad_channels:
+                raise ValueError(
+                    f"{recording.basename}: automatic QC found {len(auto_bads)} bad "
+                    f"channels {auto_bads} (amplitude={sorted(amplitude_bads)}, "
+                    f"LOF={sorted(lof_bads)}). The recipe permits at most "
+                    f"{prep_cfg.quality.max_auto_bad_channels}; inspect this recording "
+                    "rather than silently interpolating several channels."
+                )
+
+            annotation_counts = Counter(quality_annotations.description)
+            annotation_duration_s = sum(quality_annotations.duration)
+            lof_score_text = ", ".join(
+                f"{name}={score:.2f}"
+                for name, score in zip(raw.ch_names, lof_scores, strict=True)
+            )
+            if auto_bads:
+                raw.info["bads"] = sorted(set(raw.info["bads"]) | set(auto_bads))
+                # Keep the fixed 12-channel geometry, but prevent the faulty signal
+                # from influencing average reference or ICA.
+                raw.interpolate_bads(reset_bads=True, verbose=False)
+            if quality_annotations or auto_bads:
+                print(
+                    f"{recording.basename}: QC BAD_peak={annotation_counts['BAD_peak']} "
+                    f"BAD_flat={annotation_counts['BAD_flat']} "
+                    f"spans={annotation_duration_s:.2f}s amplitude={sorted(amplitude_bads)} "
+                    f"LOF={sorted(lof_bads)} interpolated={auto_bads} "
+                    f"LOF_scores=[{lof_score_text}]"
+                )
             raw.set_eeg_reference(prep_cfg.filtering.reference, projection=False, verbose=False)
             unit_raws.append(raw)
 
@@ -415,6 +487,12 @@ def _prepare_dataset_artifact(
                 continue
 
             events = np.concatenate(block_events)
+            windows_before = Counter(
+                np.repeat(
+                    [ann["description"] for ann in blocks],
+                    [len(block) for block in block_events],
+                )
+            )
             window_onsets = (events[:, 0] - raw.first_samp) / sfreq
             recording_epochs = mne.Epochs(
                 raw,
@@ -447,12 +525,24 @@ def _prepare_dataset_artifact(
                         "window_stop_s": window_onsets + window_duration,
                     }
                 ),
+                reject=dict(eeg=prep_cfg.epoching.reject_peak_to_peak_uv * 1e-6),
                 reject_by_annotation=True,
                 verbose=False,
             )
             # `reject_by_annotation` has already done its work above, and the
             # artifact itself carries no annotations.
             if len(recording_epochs):
+                windows_after = Counter(recording_epochs.metadata["condition"])
+                dropped_counts = {
+                    condition: windows_before[condition] - windows_after[condition]
+                    for condition in windows_before
+                }
+                if any(dropped_counts.values()):
+                    dropped = ", ".join(
+                        f"{condition}={dropped_counts[condition]}/{windows_before[condition]}"
+                        for condition in sorted(windows_before)
+                    )
+                    print(f"{recording.basename}: epoch rejection by condition {dropped}")
                 dataset_epochs.append(recording_epochs.set_annotations(None))
 
     # =============================================================================

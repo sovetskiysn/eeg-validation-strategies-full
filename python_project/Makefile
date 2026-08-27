@@ -1,6 +1,8 @@
-.PHONY: sync download standardize ingestion
+.PHONY: sync standardize
 .PHONY: sweep-scenario-decoder sweep-scenario-decoder-detached sweep-scenario-only
+.PHONY: baseline-logistic-regression
 .PHONY: analysis
+.PHONY: hello-world
 .PHONY: clean-results clean-cache clean-archive clean-bids clean-all
 
 .ONESHELL:
@@ -14,10 +16,14 @@ sweep-scenario-decoder:
 	uv run python scripts/run_experiment.py --config-dir experiments --config-name scenario_decoder
 
 sweep-scenario-decoder-detached:
-	tmux new-session -d -s scenario_decoder_full 'bash scripts/run_scenario_decoder_detached.sh'
+	tmux new-session -d -s scenario_decoder_full 'make sweep-scenario-decoder && make analysis'
 
 sweep-scenario-only:
 	uv run python scripts/run_experiment.py --config-dir experiments --config-name scenario_only
+
+baseline-logistic-regression:
+	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
+	uv run python scripts/run_experiment.py --config-dir experiments --config-name baseline_logistic_regression
 
 # The directory is an address of existing output, not an experiment override:
 #   make analysis
@@ -27,13 +33,11 @@ sweep-scenario-only:
 analysis:
 	uv run python scripts/run_analysis.py
 
-download:
-	uv run python scripts/run_download.py
-
 standardize:
 	uv run python scripts/run_standardization.py
 
-ingestion: download standardize
+hello-world:
+	uv run python scripts/hello_world.py
 
 clean-results:
 	find results -mindepth 1 -maxdepth 1 ! -name .gitkeep -exec rm -rf -- {} +

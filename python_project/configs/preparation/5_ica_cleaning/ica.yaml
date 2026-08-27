@@ -1,0 +1,14 @@
+# ICA fitting and automatic EOG-proxy candidate detection.
+ica_method: fastica
+# float -> variance fraction, int -> component count. The two are different in
+# MNE, so this value is deliberately not normalised before hashing.
+ica_n_components: 0.99
+ica_random_state: ${seed}
+ica_fit_l_freq: 1.0
+ica_fit_h_freq: 40.0
+ica_eog_proxy_channels: [F3, F4, F7, F8]
+ica_eog_threshold: 2.4
+
+# ICA candidates are selected by the fixed EOG-proxy threshold.  Explicit
+# recording-specific overrides, if scientifically justified, must be represented
+# in source provenance rather than in this generic preparation recipe.
