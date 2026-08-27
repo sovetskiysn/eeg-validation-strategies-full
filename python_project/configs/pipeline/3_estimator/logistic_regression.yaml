@@ -16,3 +16,13 @@ params:
   # on a `fit_resample` step). Plain LogisticRegression sidesteps that: no
   # inner split, no groups needed here at all.
   C: 1.0
+  # newton-cholesky is an exact second-order solver (full Hessian) rather than
+  # lbfgs' quasi-Newton approximation; sklearn recommends it specifically for
+  # n_samples >> n_features * n_classes, which holds by roughly 30x here
+  # (~6200 windows vs 108 features * 2 classes). Only l1_ratio=0 (pure L2) is
+  # supported on this solver -- elastic-net needs saga instead, and is a
+  # separate, unneeded lever now that the feature set itself was pruned for
+  # multicollinearity (configs/features/classical_ml.yaml) rather than relying
+  # on L1 to zero out redundant correlated coefficients.
+  solver: newton-cholesky
+  l1_ratio: 0.0
