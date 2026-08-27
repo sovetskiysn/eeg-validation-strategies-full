@@ -13,8 +13,6 @@ python_project/datasets/bids/*
 !python_project/datasets/bids/.gitkeep
 python_project/datasets/prepared_cache/*
 !python_project/datasets/prepared_cache/.gitkeep
-python_project/results/*
-!python_project/results/.gitkeep
 
 # latex_documents: build artifacts
 # LaTeX Workshop is configured (.vscode/settings.json) to drop aux files here

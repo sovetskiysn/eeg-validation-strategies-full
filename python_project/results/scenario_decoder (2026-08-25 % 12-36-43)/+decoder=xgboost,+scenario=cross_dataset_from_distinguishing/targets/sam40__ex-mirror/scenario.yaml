@@ -1,0 +1,14 @@
+validation_strategy:
+  name: cross_dataset
+dataset:
+  source:
+    name: distinguishing
+    exclude_conditions:
+    - drowsy
+  target:
+    name: sam40
+    exclude_conditions:
+    - mirror
+pipeline_components:
+  model:
+    name: xgboost

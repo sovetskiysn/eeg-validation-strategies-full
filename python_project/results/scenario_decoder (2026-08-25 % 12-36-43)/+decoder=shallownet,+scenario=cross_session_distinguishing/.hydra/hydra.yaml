@@ -1,0 +1,176 @@
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: results/${hydra.job.config_name} (${now:%Y-%m-%d | %H-%M-%S})
+    subdir: ${hydra.job.override_dirname}
+  launcher:
+    _target_: hydra._internal.core_plugins.basic_launcher.BasicLauncher
+  sweeper:
+    _target_: hydra._internal.core_plugins.basic_sweeper.BasicSweeper
+    max_batch_size: null
+    params:
+      +scenario: glob(*)
+      +decoder: glob(*)
+  help:
+    app_name: ${hydra.job.name}
+    header: '${hydra.help.app_name} is powered by Hydra.
+
+      '
+    footer: 'Powered by Hydra (https://hydra.cc)
+
+      Use --hydra-help to view Hydra specific help
+
+      '
+    template: '${hydra.help.header}
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (group=option)
+
+
+      $APP_CONFIG_GROUPS
+
+
+      == Config ==
+
+      Override anything in the config (foo.bar=value)
+
+
+      $CONFIG
+
+
+      ${hydra.help.footer}
+
+      '
+  hydra_help:
+    template: 'Hydra (${hydra.runtime.version})
+
+      See https://hydra.cc for more info.
+
+
+      == Flags ==
+
+      $FLAGS_HELP
+
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (For example, append hydra/job_logging=disabled
+      to command line)
+
+
+      $HYDRA_CONFIG_GROUPS
+
+
+      Use ''--cfg hydra'' to Show the Hydra config.
+
+      '
+    hydra_help: ???
+  hydra_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][HYDRA] %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+    root:
+      level: INFO
+      handlers:
+      - console
+    loggers:
+      logging_example:
+        level: DEBUG
+    disable_existing_loggers: false
+  job_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][%(name)s][%(levelname)s] - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        formatter: simple
+        filename: ${hydra.runtime.output_dir}/${hydra.job.name}.log
+    root:
+      level: INFO
+      handlers:
+      - console
+      - file
+    disable_existing_loggers: false
+  env: {}
+  mode: MULTIRUN
+  searchpath: []
+  callbacks: {}
+  output_subdir: .hydra
+  overrides:
+    hydra: []
+    task:
+    - +scenario=cross_session_distinguishing
+    - +decoder=shallownet
+  job:
+    name: run_experiment
+    chdir: false
+    override_dirname: +decoder=shallownet,+scenario=cross_session_distinguishing
+    id: '82'
+    num: 82
+    config_name: scenario_decoder
+    env_set: {}
+    env_copy: []
+    config:
+      override_dirname:
+        kv_sep: '='
+        item_sep: ','
+        exclude_keys: []
+  runtime:
+    version: 1.3.5
+    version_base: '1.3'
+    cwd: /home/datalake/models_test/python_project
+    config_sources:
+    - path: hydra.conf
+      schema: pkg
+      provider: hydra
+    - path: /home/datalake/models_test/python_project/configs
+      schema: file
+      provider: main
+    - path: /home/datalake/models_test/python_project/experiments
+      schema: file
+      provider: command-line
+    - path: ''
+      schema: structured
+      provider: schema
+    output_dir: /home/datalake/models_test/python_project/results/scenario_decoder
+      (2026-08-25 | 12-36-43)/+decoder=shallownet,+scenario=cross_session_distinguishing
+    choices:
+      decoder: shallownet
+      scenario: cross_session_distinguishing
+      validation_strategy: cross_session
+      pipeline: default
+      pipeline/3_estimator@pipeline_components.model: shallownet
+      pipeline/2_train_resampling@pipeline_components.train_resampling: deep_oversampling
+      pipeline/1_input_scaling@pipeline_components.input_scaling: microvolt_scaling
+      features: deep_learning
+      preparation: default
+      preparation/5_window_epoching@preparation.epoching: epoching
+      preparation/4_ica_cleaning@preparation.ica: ica
+      preparation/3_signal_filtering@preparation.filtering: filtering
+      preparation/2_recording_selection@preparation.selection: selection
+      preparation/1_preparation_version@preparation.provenance: version
+      dataset: distinguishing
+      hydra/env: default
+      hydra/callbacks: null
+      hydra/job_logging: default
+      hydra/hydra_logging: default
+      hydra/hydra_help: default
+      hydra/help: default
+      hydra/sweeper: basic
+      hydra/launcher: basic
+      hydra/output: default
+  verbose: false

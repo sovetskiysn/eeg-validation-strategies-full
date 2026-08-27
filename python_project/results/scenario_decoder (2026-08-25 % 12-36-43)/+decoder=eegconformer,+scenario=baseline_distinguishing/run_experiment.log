@@ -1,0 +1,15 @@
+[2026-08-25 12:36:57,158][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 12:36:57,159][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('num_layers', 4), ('num_heads', 8)]).
+[2026-08-25 12:36:57,159][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.
+[2026-08-25 12:40:36,777][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 12:40:36,777][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('num_layers', 4), ('num_heads', 8)]).
+[2026-08-25 12:40:36,777][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.
+[2026-08-25 12:44:07,103][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 12:44:07,103][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('num_layers', 4), ('num_heads', 8)]).
+[2026-08-25 12:44:07,103][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.
+[2026-08-25 12:47:45,854][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 12:47:45,854][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('num_layers', 4), ('num_heads', 8)]).
+[2026-08-25 12:47:45,855][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.
+[2026-08-25 12:51:21,693][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 12:51:21,693][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('num_layers', 4), ('num_heads', 8)]).
+[2026-08-25 12:51:21,693][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.

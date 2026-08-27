@@ -1,0 +1,15 @@
+validation_strategy:
+  name: cross_task
+dataset:
+  source:
+    name: sam40
+    exclude_conditions:
+    - stroop
+  target:
+    name: sam40
+    exclude_conditions:
+    - arithmetic
+    - mirror
+pipeline_components:
+  model:
+    name: shallownet

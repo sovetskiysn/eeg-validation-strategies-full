@@ -1,0 +1,120 @@
+[2026-08-25 20:31:21,090][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:31:21,090][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:31:21,090][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:31:59,504][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:31:59,504][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:31:59,504][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:32:37,332][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:32:37,332][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:32:37,332][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:33:10,003][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:33:10,003][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:33:10,003][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:33:48,245][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:33:48,245][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:33:48,245][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:34:26,277][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:34:26,277][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:34:26,277][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:35:04,657][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:35:04,657][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:35:04,657][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:35:42,517][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:35:42,517][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:35:42,517][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:36:21,094][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:36:21,094][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:36:21,094][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:36:59,423][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:36:59,424][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:36:59,424][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:37:38,009][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:37:38,009][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:37:38,009][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:38:15,020][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:38:15,020][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:38:15,020][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:38:53,001][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:38:53,001][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:38:53,001][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:39:30,691][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:39:30,691][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:39:30,691][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:40:08,555][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:40:08,555][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:40:08,555][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:40:46,591][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:40:46,591][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:40:46,591][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:41:24,100][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:41:24,101][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:41:24,101][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:42:01,511][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:42:01,511][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:42:01,511][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:42:39,803][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:42:39,804][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:42:39,804][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:43:18,018][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:43:18,019][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:43:18,019][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:43:58,359][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:43:58,360][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:43:58,360][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:44:38,145][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:44:38,145][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:44:38,145][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:45:16,272][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:45:16,272][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:45:16,272][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:45:54,695][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:45:54,695][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:45:54,695][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:46:32,680][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:46:32,680][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:46:32,680][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:47:10,616][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:47:10,616][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:47:10,616][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:47:48,275][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:47:48,275][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:47:48,275][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:48:26,422][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:48:26,422][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:48:26,422][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:49:04,452][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:49:04,452][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:49:04,452][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:49:42,465][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:49:42,465][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:49:42,466][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:50:20,598][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:50:20,598][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:50:20,598][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:50:58,846][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:50:58,846][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:50:58,846][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:51:36,489][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:51:36,489][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:51:36,489][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:52:14,292][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:52:14,293][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:52:14,293][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:52:51,171][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:52:51,171][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:52:51,171][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:53:28,554][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:53:28,554][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:53:28,554][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:54:06,091][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:54:06,091][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:54:06,091][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:54:43,874][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:54:43,874][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:54:43,874][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:55:22,586][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:55:22,586][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:55:22,586][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-25 20:56:01,135][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-25 20:56:01,136][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('drop_prob', 0.5)]).
+[2026-08-25 20:56:01,136][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.

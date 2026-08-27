@@ -14,6 +14,4 @@ datasets/bids/*
 datasets/prepared_cache/*
 !datasets/prepared_cache/.gitkeep
 
-# Experiment outputs are local; retain the directory placeholder
-results/*
-!results/.gitkeep
+# Experiment outputs are versioned to preserve completed analyses.
