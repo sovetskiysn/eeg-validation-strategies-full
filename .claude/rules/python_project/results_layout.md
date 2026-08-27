@@ -9,7 +9,7 @@ paths:
 Hydra-рецепты в `experiments/`.
 
 - Базовый Hydra-конфиг пишет в
-  `results/${hydra.job.config_name} (${now:%Y-%m-%d | %H-%M-%S})`. Поэтому
+  `results/${hydra.job.config_name} (${now:%Y-%m-%d %% %H-%M-%S})`. Поэтому
   имя каталога совпадает с выбранным experiment YAML, а timestamp изолирует
   повторные прогоны.
 - Makefile только выбирает YAML и запускает runner; прямой вызов runner'а и

@@ -346,10 +346,11 @@ def standardize_distinguishing(replace: bool = True) -> None:
         raise FileNotFoundError(
             f"Distinguishing source directory does not exist: {DISTINGUISHING_SOURCE_DIR}"
         )
-    # The archive nests the recordings, so they are found by name, not by a fixed
-    # relative path.
+    # ``download_distinguishing`` retains the canonical 34 files directly in this
+    # directory.  The Kaggle archive also carries a nested byte-identical copy;
+    # recursing here would turn it into 34 false duplicate recordings.
     recording_paths: dict[int, Path] = {}
-    for path in DISTINGUISHING_SOURCE_DIR.rglob("eeg_record*.mat"):
+    for path in DISTINGUISHING_SOURCE_DIR.glob("eeg_record*.mat"):
         index_text = path.stem.removeprefix("eeg_record")
         if not index_text.isdigit():
             raise ValueError(f"Unexpected Distinguishing recording filename: {path}")

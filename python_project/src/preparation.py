@@ -325,7 +325,13 @@ def _prepare_dataset_artifact(
         )
         print(f"[{dataset_name} {unit_index}] {unit_id}")
 
-        # Load and filter each recording before fitting the shared ICA.
+        # Load, filter and place every recording in the common sensor space before
+        # fitting the shared ICA.  The two releases arrive with 14 and 32 EEG
+        # channels respectively; applying an average reference first would make
+        # the retained 12 channels depend on those dataset-specific extras.
+        # Selecting the fixed intersection before both rereferencing and ICA
+        # makes the continuous representation identical on both sides of a
+        # cross-dataset transfer.
         unit_raws = []
         for recording in unit_recordings:
             raw = mne_bids.read_raw_bids(recording, verbose=False).load_data().pick("eeg")
@@ -340,6 +346,7 @@ def _prepare_dataset_artifact(
             raw.filter(
                 prep_cfg.filtering.l_freq, prep_cfg.filtering.h_freq, verbose=False
             )
+            raw.pick(prep_cfg.epoching.channels)
             raw.set_eeg_reference(prep_cfg.filtering.reference, projection=False, verbose=False)
             unit_raws.append(raw)
 
@@ -378,7 +385,6 @@ def _prepare_dataset_artifact(
             ica.apply(raw, verbose=False)
             # A no-op when the recording is already at the target rate.
             raw.resample(prep_cfg.filtering.resample_sfreq, verbose=False)
-            raw.pick(prep_cfg.epoching.channels)
 
             sfreq = raw.info["sfreq"]
             # The configured window snapped to this recording's sample grid.

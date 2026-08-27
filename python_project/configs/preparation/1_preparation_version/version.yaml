@@ -7,4 +7,4 @@
 # without changing the hash that addresses it. Renaming a class counts too: the
 # name is written into the `event_id` of the Epochs file itself. It is available
 # as `preparation.provenance.version` after Hydra composition.
-version: epochs_dataset_v8
+version: epochs_dataset_v9

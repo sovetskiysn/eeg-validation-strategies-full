@@ -20,7 +20,7 @@ from utils import PROJECT_ROOT, REPOSITORY_ROOT
 ANALYSIS_INPUT_DIR = Path(
     os.environ.get(
         "ANALYZE_DIR",
-        PROJECT_ROOT / "results" / "scenario_decoder (2026-08-24 | 15-13-34)",
+        PROJECT_ROOT / "results" / "scenario_decoder (2026-08-25 % 12-36-43)",
     )
 )
 ANALYSIS_OUTPUT_DIR = REPOSITORY_ROOT / "analysis"

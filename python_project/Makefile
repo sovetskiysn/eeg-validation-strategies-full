@@ -21,7 +21,7 @@ sweep-scenario-only:
 
 # The directory is an address of existing output, not an experiment override:
 #   make analysis
-#   make analysis ANALYZE_DIR="results/sweep-scenario-decoder (2026-08-17 | 06-25-13)"
+#   make analysis ANALYZE_DIR="results/sweep-scenario-decoder (2026-08-17 % 06-25-13)"
 # Make exports command-line variables to the recipe. Without one, analysis uses
 # the newest top-level directory under results/.
 analysis:

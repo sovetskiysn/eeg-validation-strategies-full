@@ -19,5 +19,5 @@ hydra:
   job:
     chdir: false
   sweep:
-    dir: results/${hydra.job.config_name} (${now:%Y-%m-%d | %H-%M-%S})
+    dir: results/${hydra.job.config_name} (${now:%Y-%m-%d %% %H-%M-%S})
     subdir: ${hydra.job.override_dirname}
