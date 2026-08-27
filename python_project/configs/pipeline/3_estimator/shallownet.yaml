@@ -7,6 +7,10 @@
 name: shallownet
 params:
   _target_: braindecode.EEGClassifier
+  # Without this, the instantiated `callbacks` stays a ListConfig; skorch's
+  # internal `get_default_callbacks() + callbacks` then tries to append a
+  # plain callback instance into it and OmegaConf rejects it as non-primitive.
+  _convert_: all
   module:
     _target_: hydra.utils.get_class
     path: braindecode.models.ShallowFBCSPNet

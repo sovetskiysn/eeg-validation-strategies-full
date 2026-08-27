@@ -1,2 +1,0 @@
-timestamp_utc,gpu_name,gpu_memory_total_mib,gpu_memory_used_mib,gpu_utilization_pct,gpu_memory_utilization_pct,gpu_temperature_c,gpu_power_w,ram_total_mib,ram_used_mib,ram_available_mib,load_1m,disk_available_gib
-# sample failed: [Errno 2] No such file or directory: 'nvidia-smi'

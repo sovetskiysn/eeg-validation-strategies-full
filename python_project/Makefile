@@ -1,7 +1,8 @@
-.PHONY: sync standardize
-.PHONY: sweep-scenario-decoder sweep-scenario-decoder-detached sweep-scenario-only
+.PHONY: download standardize ingestion
+.PHONY: sweep-scenario-decoder sweep-scenario-only
 .PHONY: baseline-logistic-regression
 .PHONY: analysis
+.PHONY: full-pipeline
 .PHONY: hello-world
 .PHONY: clean-results clean-cache clean-archive clean-bids clean-all
 
@@ -15,14 +16,7 @@
 sweep-scenario-decoder:
 	uv run python scripts/run_experiment.py --config-dir experiments --config-name scenario_decoder
 
-sweep-scenario-decoder-detached:
-	tmux new-session -d -s scenario_decoder_full 'make sweep-scenario-decoder && make analysis'
-
-sweep-scenario-only:
-	uv run python scripts/run_experiment.py --config-dir experiments --config-name scenario_only
-
 baseline-logistic-regression:
-	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
 	uv run python scripts/run_experiment.py --config-dir experiments --config-name baseline_logistic_regression
 
 # The directory is an address of existing output, not an experiment override:
@@ -33,8 +27,15 @@ baseline-logistic-regression:
 analysis:
 	uv run python scripts/run_analysis.py
 
+download:
+	uv run python scripts/run_download.py
+
 standardize:
 	uv run python scripts/run_standardization.py
+
+ingestion: download standardize
+
+full-pipeline: ingestion sweep-scenario-decoder
 
 hello-world:
 	uv run python scripts/hello_world.py
