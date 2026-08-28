@@ -1,0 +1,4 @@
+[2026-08-28 06:39:07,878][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-28 06:39:07,878][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-28 06:39:22,060][__main__][INFO] - Completed run_experiment: 1 result(s) under /work/python_project/results/scenario_decoder (2026-08-28 % 05-36-44)/+decoder=eegnet,+scenario=cross_dataset_from_sam40_arithmetic_mirror (mean accuracy 0.518)
+[2026-08-28 06:39:22,064][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

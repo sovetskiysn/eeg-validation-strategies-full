@@ -1,0 +1,2 @@
+[2026-08-28 09:36:33,005][__main__][INFO] - Completed run_experiment: 3 result(s) under /work/python_project/results/scenario_decoder (2026-08-28 % 05-36-44)/+decoder=logistic_regression,+scenario=cross_task_from_stroop (mean accuracy 0.535)
+[2026-08-28 09:36:33,007][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

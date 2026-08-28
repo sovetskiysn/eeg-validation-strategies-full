@@ -1,0 +1,12 @@
+[2026-08-28 07:32:55,241][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-28 07:32:55,242][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-08-28 07:33:05,154][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-28 07:33:05,154][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-08-28 07:33:15,044][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-28 07:33:15,044][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-08-28 07:33:27,881][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-28 07:33:27,881][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-08-28 07:33:35,539][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-28 07:33:35,539][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-08-28 07:33:47,148][__main__][INFO] - Completed run_experiment: 1 result(s) under /work/python_project/results/scenario_decoder (2026-08-28 % 05-36-44)/+decoder=shallownet,+scenario=cross_subject_distinguishing (mean accuracy 0.597)
+[2026-08-28 07:33:47,155][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

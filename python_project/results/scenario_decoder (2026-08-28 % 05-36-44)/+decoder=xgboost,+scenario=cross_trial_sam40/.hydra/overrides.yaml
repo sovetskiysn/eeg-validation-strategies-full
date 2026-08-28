@@ -1,0 +1,2 @@
+- +scenario=cross_trial_sam40
+- +decoder=xgboost
