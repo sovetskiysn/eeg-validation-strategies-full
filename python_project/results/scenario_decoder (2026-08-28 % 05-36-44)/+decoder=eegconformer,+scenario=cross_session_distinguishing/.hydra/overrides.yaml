@@ -1,0 +1,2 @@
+- +scenario=cross_session_distinguishing
+- +decoder=eegconformer

@@ -1,0 +1,3 @@
+- +scenario=baseline_sam40
+- +decoder=logistic_regression
+- preparation=default

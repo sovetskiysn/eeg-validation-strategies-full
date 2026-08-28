@@ -1,6 +1,6 @@
 .PHONY: download standardize ingestion
 .PHONY: sweep-scenario-decoder sweep-scenario-only
-.PHONY: baseline-logistic-regression
+.PHONY: baseline-logistic-regression ica-ablation
 .PHONY: analysis
 .PHONY: full-pipeline
 .PHONY: hello-world
@@ -18,6 +18,9 @@ sweep-scenario-decoder:
 
 baseline-logistic-regression:
 	uv run python scripts/run_experiment.py --config-dir experiments --config-name baseline_logistic_regression
+
+ica-ablation:
+	uv run python scripts/run_experiment.py --config-dir experiments --config-name ica_ablation
 
 # The directory is an address of existing output, not an experiment override:
 #   make analysis

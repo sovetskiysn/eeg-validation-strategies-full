@@ -1,0 +1,2 @@
+- +scenario=cross_dataset_from_distinguishing
+- +decoder=eegnet

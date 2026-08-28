@@ -19,7 +19,8 @@ braindecode. Слоя трекинга экспериментов нет нам�
 
 Смежные правила: `datasets.md` — каталог `datasets/`; `scripts.md` — Makefile
 и устройство `scripts/`; `results_layout.md` — раскладка выходов sweep;
-`notebooks.md` — ноутбуки.
+`notebooks.md` — ноутбуки; `ml_metrics_diagnostics.md` — разбор причин низких
+метрик, ошибки evaluation/preprocessing и EEG-специфичные leakage-ловушки.
 
 ## Принципы
 

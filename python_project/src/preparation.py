@@ -422,39 +422,41 @@ def _prepare_dataset_artifact(
             raw.set_eeg_reference(prep_cfg.filtering.reference, projection=False, verbose=False)
             unit_raws.append(raw)
 
-        # Drifts below ica_fit_l_freq destabilise the decomposition, but
-        # removing them from the analysis signal itself is not wanted --
-        # hence a separate, more aggressively high-passed copy to fit on.
-        ica_fit_raw = mne.concatenate_raws([raw.copy() for raw in unit_raws], verbose=False).filter(
-            prep_cfg.ica.ica_fit_l_freq, prep_cfg.ica.ica_fit_h_freq, verbose=False
-        )
-        ica = ICA(
-            n_components=prep_cfg.ica.ica_n_components,
-            method=prep_cfg.ica.ica_method,
-            random_state=prep_cfg.ica.ica_random_state,
-            max_iter="auto",
-        )
-        ica.fit(ica_fit_raw, reject_by_annotation=True, verbose=False)
+        if prep_cfg.ica.ica_enabled:
+            # Drifts below ica_fit_l_freq destabilise the decomposition, but
+            # removing them from the analysis signal itself is not wanted --
+            # hence a separate, more aggressively high-passed copy to fit on.
+            ica_fit_raw = mne.concatenate_raws(
+                [raw.copy() for raw in unit_raws], verbose=False
+            ).filter(prep_cfg.ica.ica_fit_l_freq, prep_cfg.ica.ica_fit_h_freq, verbose=False)
+            ica = ICA(
+                n_components=prep_cfg.ica.ica_n_components,
+                method=prep_cfg.ica.ica_method,
+                random_state=prep_cfg.ica.ica_random_state,
+                max_iter="auto",
+            )
+            ica.fit(ica_fit_raw, reject_by_annotation=True, verbose=False)
 
-        # Candidates are found once at the configured threshold: never chase a
-        # target component count.
-        eog_indices, _ = ica.find_bads_eog(
-            ica_fit_raw,
-            ch_name=[
-                ch
-                for ch in prep_cfg.ica.ica_eog_proxy_channels
-                if ch in ica_fit_raw.ch_names
-            ],
-            threshold=prep_cfg.ica.ica_eog_threshold,
-            measure="zscore",
-            verbose=False,
-        )
-        ica.exclude = sorted(set(eog_indices))
+            # Candidates are found once at the configured threshold: never chase a
+            # target component count.
+            eog_indices, _ = ica.find_bads_eog(
+                ica_fit_raw,
+                ch_name=[
+                    ch
+                    for ch in prep_cfg.ica.ica_eog_proxy_channels
+                    if ch in ica_fit_raw.ch_names
+                ],
+                threshold=prep_cfg.ica.ica_eog_threshold,
+                measure="zscore",
+                verbose=False,
+            )
+            ica.exclude = sorted(set(eog_indices))
 
         # The session ICA is applied to every recording of the unit separately,
         # and each recording is then cut into its own labelled windows.
         for recording, raw in zip(unit_recordings, unit_raws, strict=True):
-            ica.apply(raw, verbose=False)
+            if prep_cfg.ica.ica_enabled:
+                ica.apply(raw, verbose=False)
             # A no-op when the recording is already at the target rate.
             raw.resample(prep_cfg.filtering.resample_sfreq, verbose=False)
 

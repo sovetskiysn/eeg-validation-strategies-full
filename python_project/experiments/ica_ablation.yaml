@@ -1,0 +1,14 @@
+# Paired ICA-vs-no-ICA ablation on two classical decoders, everything else
+# held fixed: isolates the contribution of the F3/F4/F7/F8 EOG-proxy step
+# (see SAM40_ICA_EOG_PROXY_DIAGNOSIS.md) rather than sweeping the full
+# scenario x decoder grid.
+defaults:
+  - /config
+  - _self_
+
+hydra:
+  sweeper:
+    params:
+      +scenario: baseline_sam40,cross_subject_sam40,baseline_distinguishing
+      +decoder: logistic_regression,xgboost
+      preparation: default,no_ica

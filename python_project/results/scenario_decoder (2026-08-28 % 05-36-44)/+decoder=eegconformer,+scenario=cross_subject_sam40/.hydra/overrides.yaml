@@ -1,0 +1,2 @@
+- +scenario=cross_subject_sam40
+- +decoder=eegconformer

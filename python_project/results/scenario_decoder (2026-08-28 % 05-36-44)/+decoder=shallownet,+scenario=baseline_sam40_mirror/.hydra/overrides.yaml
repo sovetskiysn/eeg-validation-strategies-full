@@ -1,0 +1,2 @@
+- +scenario=baseline_sam40_mirror
+- +decoder=shallownet

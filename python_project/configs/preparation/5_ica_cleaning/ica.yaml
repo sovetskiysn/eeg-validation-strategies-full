@@ -1,4 +1,5 @@
 # ICA fitting and automatic EOG-proxy candidate detection.
+ica_enabled: true
 ica_method: fastica
 # float -> variance fraction, int -> component count. The two are different in
 # MNE, so this value is deliberately not normalised before hashing.
