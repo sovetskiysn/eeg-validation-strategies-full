@@ -16,17 +16,20 @@ def download_sam40() -> None:
     """Download and unpack the SAM 40 Figshare archive."""
     destination = ARCHIVE_DIR / "SAM 40 dataset"
     if destination.exists():
+        print(f"SAM 40: archive already present at {destination}, skipping download")
         return
 
     with tempfile.TemporaryDirectory() as temporary_directory:
         temporary_directory = Path(temporary_directory)
         archive_path = temporary_directory / "Data.rar"
+        print("SAM 40: downloading archive from Figshare")
         with requests.get("https://ndownloader.figshare.com/files/27956376", stream=True) as response:
             response.raise_for_status()
             with open(archive_path, "wb") as file:
                 for chunk in response.iter_content(chunk_size=1024 * 1024):
                     file.write(chunk)
 
+        print("SAM 40: extracting archive")
         extracted = temporary_directory / "extracted"
         extracted.mkdir()
         with libarchive.file_reader(str(archive_path)) as archive:
@@ -45,6 +48,7 @@ def download_sam40() -> None:
             matches = list(extracted.rglob(name))
             if matches:
                 shutil.move(str(matches[0]), str(destination / name))
+        print(f"SAM 40: archive ready at {destination}")
 
 
 def download_distinguishing() -> None:
@@ -56,13 +60,18 @@ def download_distinguishing() -> None:
     """
     data_subdir = "EEG Data"
     destination = ARCHIVE_DIR / "Distinguishing"
-    if not destination.exists():
-        source = kagglehub.dataset_download(
-            "inancigdem/eeg-data-for-mental-attention-state-detection"
+    if destination.exists():
+        print(f"Distinguishing: archive already present at {destination}, skipping download")
+        return
+
+    print("Distinguishing: downloading archive from Kaggle")
+    source = kagglehub.dataset_download(
+        "inancigdem/eeg-data-for-mental-attention-state-detection"
+    )
+    source_data = Path(source) / data_subdir
+    if not source_data.is_dir():
+        raise FileNotFoundError(
+            f"Expected {data_subdir!r} directory in Kaggle download: {source}"
         )
-        source_data = Path(source) / data_subdir
-        if not source_data.is_dir():
-            raise FileNotFoundError(
-                f"Expected {data_subdir!r} directory in Kaggle download: {source}"
-            )
-        shutil.copytree(source_data, destination)
+    shutil.copytree(source_data, destination)
+    print(f"Distinguishing: archive ready at {destination}")

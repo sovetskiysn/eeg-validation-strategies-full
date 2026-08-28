@@ -525,7 +525,11 @@ def _prepare_dataset_artifact(
                         "window_stop_s": window_onsets + window_duration,
                     }
                 ),
-                reject=dict(eeg=prep_cfg.epoching.reject_peak_to_peak_uv * 1e-6),
+                reject=(
+                    dict(eeg=prep_cfg.epoching.reject_peak_to_peak_uv * 1e-6)
+                    if prep_cfg.epoching.reject_peak_to_peak_uv is not None
+                    else None
+                ),
                 reject_by_annotation=True,
                 verbose=False,
             )

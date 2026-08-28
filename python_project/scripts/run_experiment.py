@@ -8,17 +8,11 @@ from pathlib import Path
 import hydra
 import numpy as np
 import pandas as pd
-import sklearn
 import torch
 from hydra.core.hydra_config import HydraConfig
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
 from sklearn.model_selection import cross_validate
-
-# LogisticRegressionCV's inner group-aware split (configs/pipeline/3_estimator/
-# logistic_regression.yaml) needs `groups` routed to it from the outer
-# `cross_validate` call below; sklearn only does this when routing is enabled.
-sklearn.set_config(enable_metadata_routing=True)
 
 log = logging.getLogger(__name__)
 
@@ -74,7 +68,7 @@ def main(cfg: DictConfig) -> None:
         X=X,
         y=y,
         cv=cv,
-        params={"groups": groups},
+        groups=groups,
         scoring=None,
         return_train_score=False,
         return_indices=True,

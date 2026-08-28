@@ -219,6 +219,7 @@ def standardize_sam40(replace: bool = True) -> None:
     # has none, and the directory below the root is sub-XX/eeg.
     subject_dirs: dict[Path, tuple[BIDSPath, dict[str, str]]] = {}
     for source_task, bids_task in task_names.items():
+        print(f"sam40: writing {bids_task} recordings ({written} written so far)")
         for subject in range(1, 41):
             for trial in range(1, 4):
                 mat_path = raw_data_dir / f"{source_task}_sub_{subject}_trial{trial}.mat"
@@ -449,8 +450,13 @@ def standardize_distinguishing(replace: bool = True) -> None:
     # Role and quality are established while each recording is built; collecting
     # rows by subject avoids reading the output again later.
     session_rows: dict[str, list[dict[str, str]]] = {}
+    previous_subject: int | None = None
     for index in sorted(recording_paths):
         mat_path = recording_paths[index]
+        current_subject = min((index - 1) // 7 + 1, 5)
+        if current_subject != previous_subject:
+            print(f"distinguishing: writing sub-{current_subject:02d} ({written} written so far)")
+            previous_subject = current_subject
         source_data = loadmat(mat_path)["o"][0][0]["data"]
         # Kaggle's data card uses one-based indices: EEG is columns 4--17.
         # Python's half-open slice is therefore 3:17, retaining all 14 EEG channels.
@@ -471,7 +477,7 @@ def standardize_distinguishing(replace: bool = True) -> None:
             mne.Annotations(onset=onsets, duration=durations, description=labels)
         )
         # Kaggle's ordered records follow the documented 7+7+7+7+6 session layout.
-        subject, session = min((index - 1) // 7 + 1, 5), (index - 1) % 7 + 1
+        subject, session = current_subject, (index - 1) % 7 + 1
         # No run entity: a session holds exactly one recording, so it would
         # distinguish nothing. The Kaggle index is not recoverable from BIDS
         # entities either -- it follows 7 * (subject - 1) + session, which no
