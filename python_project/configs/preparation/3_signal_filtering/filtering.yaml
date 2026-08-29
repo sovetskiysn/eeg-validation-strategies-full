@@ -1,6 +1,0 @@
-# Continuous-signal filtering, referencing and sampling rate.
-l_freq: 1.0
-h_freq: 40.0
-notch_frequencies: [50.0]
-reference: average
-resample_sfreq: 128.0

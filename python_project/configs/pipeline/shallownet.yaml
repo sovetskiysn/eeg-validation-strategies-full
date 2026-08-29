@@ -1,0 +1,66 @@
+# One complete fitted estimator recipe for the shallow EEG convolutional decoder.
+name: shallownet
+estimator:
+  _target_: imblearn.pipeline.make_pipeline
+  _args_:
+    # MNE supplies EEG in volts. Deep models receive the same raw windows in
+    # microvolts; this fixed unit conversion learns nothing from a fold.
+    - _target_: sklearn.preprocessing.FunctionTransformer
+      func:
+        _target_: functools.partial
+        _args_:
+          - _target_: hydra.utils.get_method
+            path: numpy.multiply
+          - 1000000.0
+      validate: false
+    # Classical Shallow ConvNet: filter-bank common spatial patterns rewritten as a
+    # network (Schirrmeister et al., 2017). Its temporal-then-spatial convolution
+    # with log-variance pooling is the closest DL analogue of the band-power
+    # features the classical models here get, so it separates "deep learning" from
+    # "a different feature set" in the comparison with EEGNet.
+    - _target_: braindecode.EEGClassifier
+      # Without this, the instantiated `callbacks` stays a ListConfig; skorch's
+      # internal `get_default_callbacks() + callbacks` then tries to append a
+      # plain callback instance into it and OmegaConf rejects it as non-primitive.
+      _convert_: all
+      module:
+        _target_: hydra.utils.get_class
+        path: braindecode.models.ShallowFBCSPNet
+      # The published ShallowFBCSPNet defaults are used without overrides.
+      optimizer:
+        _target_: hydra.utils.get_class
+        path: torch.optim.AdamW
+      max_epochs: 100
+      # Braindecode's reference recipes pair this optimisation setup with
+      # batch_size=64. It is a fixed benchmark setting, not a per-fold adaptation.
+      batch_size: 64
+      # Braindecode's reference shallow-network recipe: AdamW, lr=0.0625*0.01,
+      # and no weight decay.
+      lr: 0.000625
+      optimizer__weight_decay: 0.0
+      # Keep incomplete batches so no training data is discarded on small folds.
+      iterator_train__drop_last: false
+      callbacks:
+        - _target_: skorch.callbacks.LRScheduler
+          policy: CosineAnnealingLR
+          T_max: 99
+        - _target_: skorch.callbacks.EarlyStopping
+          monitor: valid_loss
+          patience: 10
+          load_best: true
+        # `class_weight="balanced"` for this estimator, read off each train fold
+        # (src/pipeline.py). It replaces the oversampling step that used to run
+        # before the classifier, whose duplicate windows landed on both sides of the
+        # ValidSplit below. Note that it weights `valid_loss` too, so EarlyStopping
+        # now stops on a weighted loss -- deliberate, because the inner validation
+        # partition is imbalanced exactly like the fold it is cut from.
+        - _target_: pipeline.BalancedClassWeight
+      device: cuda
+      # This is an internal stratified validation split of the outer train fold;
+      # the outer cross-validation test fold remains unavailable to callbacks.
+      train_split:
+        _target_: skorch.dataset.ValidSplit
+        cv: 0.2
+        stratified: true
+        random_state: ${seed}
+      verbose: 0

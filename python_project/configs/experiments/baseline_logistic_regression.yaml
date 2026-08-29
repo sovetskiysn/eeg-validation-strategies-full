@@ -1,0 +1,11 @@
+# @package _global_
+
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +experiments/scenario: baseline_distinguishing,baseline_sam40_all
+      +experiments/decoder: logistic_regression
+  sweep:
+    dir: results/baseline_logistic_regression (${now:%Y-%m-%d %% %H-%M-%S})
+    subdir: ${hydra:runtime.choices.experiments/decoder}/${hydra:runtime.choices.experiments/scenario}

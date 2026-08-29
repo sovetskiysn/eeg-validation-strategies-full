@@ -1,6 +1,3 @@
-defaults:
-  - override /dataset@_global_.dataset: transfer
-
 name: cross_dataset
 # Both artifacts are read independently; their NumPy samples share one index
 # space for the transfer split.

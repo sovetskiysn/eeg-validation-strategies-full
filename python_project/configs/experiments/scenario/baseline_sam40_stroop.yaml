@@ -1,0 +1,9 @@
+# @package _global_
+
+defaults:
+  - override /validation_strategy: baseline
+  - override /preparation: sam40
+
+preparation:
+  mne_bids_pipeline:
+    task: [relax, stroop]

@@ -4,15 +4,14 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 python_project/.env
-python_project/uv.lock
 
 # Dataset contents kept out of the repo, folders kept as empty placeholders
 python_project/datasets/archive/*
 !python_project/datasets/archive/.gitkeep
 python_project/datasets/bids/*
 !python_project/datasets/bids/.gitkeep
+python_project/datasets/bids/*/derivatives/
 python_project/datasets/prepared_cache/*
-!python_project/datasets/prepared_cache/.gitkeep
 
 # latex_documents: build artifacts
 # LaTeX Workshop is configured (.vscode/settings.json) to drop aux files here

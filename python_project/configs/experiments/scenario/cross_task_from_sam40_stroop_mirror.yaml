@@ -1,0 +1,17 @@
+# @package _global_
+
+defaults:
+  - /preparation@preparation.source: sam40
+  - /preparation@preparation.targets.sam40_arithmetic: sam40
+  - _self_
+  - override /validation_strategy: cross_task
+  - override /preparation: transfer
+
+preparation:
+  source:
+    mne_bids_pipeline:
+      task: [relax, stroop, mirror]
+  targets:
+    sam40_arithmetic:
+      mne_bids_pipeline:
+        task: [relax, arithmetic]

@@ -1,7 +1,0 @@
-# @package _global_
-
-defaults:
-  - override /features: classical_ml
-  - override /pipeline/1_input_scaling@pipeline_components.input_scaling: none
-  - override /pipeline/2_train_resampling@pipeline_components.train_resampling: classical_oversampling
-  - override /pipeline/3_estimator@pipeline_components.model: xgboost

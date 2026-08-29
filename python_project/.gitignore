@@ -11,7 +11,11 @@ datasets/archive/*
 !datasets/archive/.gitkeep
 datasets/bids/*
 !datasets/bids/.gitkeep
+# BIDS derivatives are generated locally by MNE-BIDS-Pipeline and the project
+# windowing producer; raw BIDS files remain under the rule above.
+datasets/bids/*/derivatives/
+# Legacy cache files may remain locally for the numerical comparison; they are
+# no longer read or written by the code and must not become tracked data.
 datasets/prepared_cache/*
-!datasets/prepared_cache/.gitkeep
 
 # Experiment outputs are versioned to preserve completed analyses.

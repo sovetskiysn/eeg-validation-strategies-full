@@ -404,11 +404,10 @@ participant identity.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We thank the Reviewer for this clarification. We added a separate cross-trial
-strategy for SAM-40. We initially treated its
-separately provided task recordings as session-like, but the source publication
+We thank the Reviewer for this clarification. We do not treat the separately
+provided SAM-40 task recordings as session-like: the source publication
 describes the three repetitions as trials and does not establish separate
-physical sessions; cross-session validation therefore now applies only to
+physical sessions. Cross-session validation therefore applies only to
 Dataset~A.
 
 \emph{Dataset compositions and class counts.} We added
@@ -515,7 +514,7 @@ We agree that the original presentation did not show the full evaluation
 design clearly enough. We have therefore added all validation strategies to
 Figure~3 in the Results section, together with uncertainty intervals for the
 displayed metric. This figure presents the within-dataset baseline,
-cross-subject, cross-session, cross-trial, cross-task and cross-dataset
+cross-subject, cross-session, cross-task and cross-dataset
 evaluations in one place.
 
 \textbf{[TODO --- transfer-matrix presentation.]}
@@ -622,10 +621,10 @@ before window segmentation.
 \vspace{0.2cm}
 
 We reconstructed all validation protocols around recording-level metadata
-(participant, documented session, or trial) before assigning windows to folds.
-Every window from a recording unit remains on one side of a split. The revised
-Methods distinguish cross-session and cross-trial validation rather than using
-the terms interchangeably.
+(participant or documented session) before assigning windows to folds. Every
+window from a recording unit remains on one side of a split. The revised
+Methods reserve cross-session validation for data with documented independent
+recording sessions.
 
 \vspace{0.3cm}
 

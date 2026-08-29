@@ -1,6 +1,0 @@
-# Ablation counterpart to ica.yaml: SAM-40 has no true EOG channel, so
-# find_bads_eog is scored against frontal EEG channels (F3/F4/F7/F8) acting
-# as an EOG proxy. That rule removed 55-76% of total variance on checked
-# SAM-40 units versus ~0% on Dataset A units, so a no-ICA recipe is needed to
-# isolate the step's contribution to metrics.
-ica_enabled: false

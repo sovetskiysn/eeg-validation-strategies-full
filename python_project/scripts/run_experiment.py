@@ -16,6 +16,7 @@ from sklearn.model_selection import cross_validate
 
 log = logging.getLogger(__name__)
 
+
 @hydra.main(version_base=None, config_path="../configs", config_name="config")
 def main(cfg: DictConfig) -> None:
     """Run the composed scientific condition and persist what cannot be recomputed."""
@@ -37,12 +38,11 @@ def main(cfg: DictConfig) -> None:
     torch.set_float32_matmul_precision("high")
 
     # =============================================================================
-    # Stage 1: artifacts and validation protocol
+    # Stage 1: MNE-BIDS-Pipeline artifacts and validation protocol
     # =============================================================================
     epochs, groups, cv = instantiate(
         cfg.validation_strategy.protocol,
-        dataset=cfg.dataset,
-        preparation=cfg.preparation,
+        preparation_config=cfg.preparation,
         seed=int(cfg.seed),
     )
 
@@ -55,10 +55,12 @@ def main(cfg: DictConfig) -> None:
     class_names = dict(sorted((int(code), name) for name, code in epochs.event_id.items()))
     # The fitted extractor is held in a name of its own because it is what knows
     # the feature names the coefficients below are indexed by.
+    if "sfreq" in cfg.features.transform:
+        cfg.features.transform.sfreq = float(epochs.info["sfreq"])
     transform = instantiate(cfg.features.transform)
     X = transform.fit_transform(X)
 
-    estimator = instantiate(cfg.pipeline)
+    estimator = instantiate(cfg.pipeline.estimator)
     # `scoring=None` takes the estimator's own `.score()`, which is accuracy for
     # every model here. It is a liveness check on the run and nothing more: every
     # reported metric is recomputed by `run_analysis.py` from the tables below,
@@ -191,6 +193,9 @@ def main(cfg: DictConfig) -> None:
     # contents therefore repeat between neighbouring directions -- they are the
     # same fact about the same fold, and they are small next to the EEG windows.
     output_dir = Path(HydraConfig.get().runtime.output_dir).resolve()
+    # Replace Hydra's early snapshot after a successful fit so the input-derived
+    # feature sampling frequency is persisted too.
+    OmegaConf.save(cfg, output_dir / ".hydra" / "config.yaml", resolve=True)
     result_dirs = []
     if "target_index" not in windows.columns:
         windows.to_parquet(output_dir / "windows.parquet", index=False)
@@ -199,7 +204,7 @@ def main(cfg: DictConfig) -> None:
         result_dirs.append(output_dir)
     else:
         source_rows = windows["target_index"].isna()
-        for index, target in enumerate(cfg.dataset.targets):
+        for index, target in enumerate(cfg.preparation.targets.values()):
             kept = windows.index[source_rows | (windows["target_index"] == index)]
             # `window_index` is renumbered inside each direction so the analysis
             # keeps joining and checking uniqueness exactly as it does for a
@@ -212,12 +217,13 @@ def main(cfg: DictConfig) -> None:
             target_folds = folds[folds["window_index"].isin(local.index)].copy()
             target_folds["window_index"] = target_folds["window_index"].map(local)
 
-            # The directory name is derived from the resolved target recipe, so it
+            # The directory name is derived from the composed target side, so it
             # is not a hand-written run label: it says which composition was
             # tested without opening anything.
-            excluded = sorted(target.exclude_conditions)
+            task = target.mne_bids_pipeline.task
+            tasks = [task] if isinstance(task, str) else sorted(task)
             target_dir = output_dir / "targets" / (
-                f"{target.name}__" + ("-".join(("ex", *excluded)) if excluded else "full")
+                f"{target.name}__task-{'-'.join(tasks)}"
             )
             target_dir.mkdir(parents=True)
             # A projection of this one direction, under the same field paths the
@@ -228,13 +234,11 @@ def main(cfg: DictConfig) -> None:
                 OmegaConf.create(
                     {
                         "validation_strategy": {"name": str(cfg.validation_strategy.name)},
-                        "dataset": {
-                            "source": OmegaConf.to_container(cfg.dataset.source, resolve=True),
+                        "preparation": {
+                            "source": OmegaConf.to_container(cfg.preparation.source, resolve=True),
                             "target": OmegaConf.to_container(target, resolve=True),
                         },
-                        "pipeline_components": {
-                            "model": {"name": str(cfg.pipeline_components.model.name)}
-                        },
+                        "pipeline": {"name": str(cfg.pipeline.name)},
                     }
                 ),
                 target_dir / "scenario.yaml",

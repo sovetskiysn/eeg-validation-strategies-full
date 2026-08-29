@@ -1,0 +1,40 @@
+# One complete fitted estimator recipe for the classical linear decoder.
+name: logistic_regression
+estimator:
+  _target_: imblearn.pipeline.make_pipeline
+  _args_:
+    # Logistic Regression estimates weights with a scale-sensitive optimiser and
+    # penalty, so its feature vectors are standardised from each train fold only.
+    - _target_: sklearn.preprocessing.StandardScaler
+    - _target_: sklearn.linear_model.LogisticRegression
+      random_state: ${seed}
+      # Default max_iter=100 was too low: lbfgs was hitting the iteration cap
+      # before reaching its own convergence tolerance (ConvergenceWarning),
+      # so fitted weights depended on the cap rather than on the data.
+      max_iter: 2000
+      # L2 at the sklearn default strength. This is regularisation against
+      # overfitting, not a hyperparameter search: LogisticRegressionCV would tune C
+      # on an inner group-aware CV, and C is left unset rather than tuned.
+      # The original reason was structural -- the inner split needed `groups`
+      # routed past a RandomOverSampler, which resamples X/y but not the metadata
+      # travelling alongside them. That blocker is gone: no pipeline step resamples
+      # anything now, so routing `groups` to an inner split would only need
+      # `enable_metadata_routing`. What remains is a plain choice not to search C,
+      # and an inner split would also have to be group-aware to mean anything here.
+      C: 1.0
+      # Replaces the RandomOverSampler that used to precede this estimator: the same
+      # n / (k * n_c) reweighting, but without duplicating windows. Computed from
+      # each train fold, which is what a written-out number could not be -- the
+      # imbalance is ~1:1 on distinguishing and ~1:1, ~2:1 or ~3:1 on SAM40
+      # depending on how many high-demand tasks accompany relax.
+      class_weight: balanced
+      # newton-cholesky is an exact second-order solver (full Hessian) rather than
+      # lbfgs' quasi-Newton approximation; sklearn recommends it specifically for
+      # n_samples >> n_features * n_classes, which holds by roughly 30x here
+      # (~6200 windows vs 108 features * 2 classes). Only l1_ratio=0 (pure L2) is
+      # supported on this solver -- elastic-net needs saga instead, and is a
+      # separate, unneeded lever now that the feature set itself was pruned for
+      # multicollinearity (configs/features/classical_ml.yaml) rather than relying
+      # on L1 to zero out redundant correlated coefficients.
+      solver: newton-cholesky
+      l1_ratio: 0.0

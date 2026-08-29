@@ -226,7 +226,7 @@ EEG signals were recorded using an Emotiv Epoc Flex headset with 32 wet electrod
 
 \section*{Methodology}
 
-The methodological design of this study was developed to evaluate the generalizability and transferability of EEG-based attention decoding across different recording conditions, participants, and task paradigms. To this end, we adopted two publicly available datasets that differ in experimental protocols but share compatible technical specifications, which allows for a controlled comparative analysis. \rev{The datasets were harmonized through a binary operational labeling scheme that distinguishes conditions of high protocol-defined task demand from conditions of rest or task disengagement, enabling consistent evaluation across scenarios.} This section outlines the rationale for dataset alignment, the strategies employed for cross-validation, and the experimental settings designed to assess within-dataset performance as well as cross-subject, cross-session, \rev{cross-trial,} cross-task, and cross-dataset generalization.
+The methodological design of this study was developed to evaluate the generalizability and transferability of EEG-based attention decoding across different recording conditions, participants, and task paradigms. To this end, we adopted two publicly available datasets that differ in experimental protocols but share compatible technical specifications, which allows for a controlled comparative analysis. \rev{The datasets were harmonized through a binary operational labeling scheme that distinguishes conditions of high protocol-defined task demand from conditions of rest or task disengagement, enabling consistent evaluation across scenarios.} This section outlines the rationale for dataset alignment, the strategies employed for cross-validation, and the experimental settings designed to assess within-dataset performance as well as cross-subject, cross-session, cross-task, and cross-dataset generalization.
 
 All experiments were executed through a version-controlled computational workflow. For every run, the workflow stores the resolved configuration of data preparation, validation and model settings together with the run outputs needed to reconstruct the reported evaluation metrics. These records provide run-level provenance for the results and permit the correspondence between a reported metric and the experiment that produced it to be inspected. The complete implementation, experiment configurations and run-level artifacts are available at \url{https://github.com/sovetskiysn/eeg-validation-strategies}.
 
@@ -261,19 +261,16 @@ Low Attention  & Unfocused, Rest \\
 
 \subsection*{\revs{Validation strategies}}
 
-\rev{We evaluated the decoders under six validation protocols, each addressing a distinct generalization question. To preserve the independence of the training and test data, all windows originating from the same recording unit were assigned to the same partition. This prevents overlapping windows from being divided between training and test sets, reducing the risk of overly optimistic performance estimates due to temporal autocorrelation between neighboring EEG windows~\cite{chen2025hybrid}. The within-domain baseline estimates performance when training and test data share the same dataset and condition composition but originate from different recording units. The remaining protocols examine whether discriminative performance is retained when training and testing are separated by participant, recording session, repeated trial, task composition, or dataset. These protocols were applied only where the structure of each release supported their interpretation: repeated recording days in the mental attention-state dataset enabled cross-session validation, whereas repeated trials and multiple tasks in SAM-40 enabled cross-trial and cross-task validation. Model fitting was confined to the training data, and the resulting decoder was evaluated on held-out data without target-specific adaptation. Any class imbalance was handled by oversampling the minority class within the training data only, while the test data retained their observed class distribution.}
+\rev{We evaluated the decoders under five validation protocols, each addressing a distinct generalization question. To preserve the independence of the training and test data, all windows originating from the same recording unit were assigned to the same partition. This prevents overlapping windows from being divided between training and test sets, reducing the risk of overly optimistic performance estimates due to temporal autocorrelation between neighboring EEG windows~\cite{chen2025hybrid}. The within-domain baseline estimates performance when training and test data share the same dataset and condition composition but originate from different recording units. The remaining protocols examine whether discriminative performance is retained when training and testing are separated by participant, recording session, task composition, or dataset. These protocols were applied only where the structure of each release supported their interpretation: repeated recording days in the mental attention-state dataset enabled cross-session validation, whereas multiple tasks in SAM-40 enabled cross-task validation. Model fitting was confined to the training data, and the resulting decoder was evaluated on held-out data without target-specific adaptation. Any class imbalance was handled by oversampling the minority class within the training data only, while the test data retained their observed class distribution.}
 
 \textbf{Baseline (within-dataset, within-subject evaluation).}
-\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the complete SAM-40 composition, and each single-task composition of SAM-40. The grouping variable was the physical recording unit: one selected session in the mental attention-state dataset and one trial-level recording unit in SAM-40, comprising all task recordings included in the analysis for that trial. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. These estimates serve as within-domain comparators for the transfer protocols. No separate baseline was defined for the two-task composite compositions.}
+\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the complete SAM-40 composition, and each single-task composition of SAM-40. The grouping variable was the physical recording unit: one selected session in the mental attention-state dataset and one run-level recording unit in SAM-40, comprising all task recordings included in the analysis for that run. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. These estimates serve as within-domain comparators for the transfer protocols. No separate baseline was defined for the two-task composite compositions.}
 
 \textbf{Cross-subject validation.}
 \rev{In each leave-one-subject-out fold, the decoder was trained on all selected data from the remaining participants and tested on all selected data from the held-out participant. The resulting performance quantifies zero-shot generalization to an unseen participant.}
 
 \textbf{Cross-session validation.}
 \rev{For each participant in the mental attention-state dataset, the decoder was trained on the selected sessions other than one and tested on the held-out session. Participant identity, task protocol, and acquisition system were therefore held constant while the recording day changed. Although individual recordings in SAM-40 are distributed as separate files, the source article describes the three repetitions as trials and does not identify them as distinct recording sessions. SAM-40 was therefore not included in this analysis.}
-
-\textbf{\rev{Cross-trial validation.}}
-\rev{To evaluate variability between repetitions of the SAM-40 protocol under a less stringent separation than cross-session validation, one trial at a time was held out within each participant. The decoder was trained on the remaining trials from that participant and tested on the held-out trial, with all selected task recordings and their windows kept together. This protocol measures generalization across repeated acquisitions within the same visit, not across independently recorded sessions.}
 
 \textbf{Cross-task validation.}
 \rev{In SAM-40, each task composition represented the same binary contrast of relaxation versus one or two high-demand tasks, rather than classification of task identity. Cross-task transfer therefore asked whether a decoder fitted to this contrast under one task composition retained discriminative performance under another. We evaluated both directions between the three single-task compositions and between single-task and complementary two-task compositions. Single-task targets were interpreted relative to their corresponding within-domain baselines.}
@@ -483,17 +480,13 @@ was neither high nor constant across task compositions.
 \subsection*{Within-dataset generalization depended on both the held-out factor and decoder}
 
 To determine how much discrimination remained when recordings differed within
-a dataset, we next held out participants, sessions or repeated trials. The
+a dataset, we next held out participants or sessions. The
 cross-subject estimates ranged from 0.55 to 0.64 across decoders and datasets
 (Fig.~\ref{fig:cross_subject_model_comparison}) and were below their matched
 within-domain baseline in nine of ten decoder--dataset comparisons. In
 contrast, the cross-session estimates for Dataset~A occupied a narrow range
-(0.57--0.61). Cross-trial estimates for Dataset~B varied substantially by
-decoder: logistic regression and XGBoost yielded 0.63 and 0.60, whereas EEGNet,
-ShallowFBCSPNet and EEGConformer yielded 0.51, 0.51 and 0.50, respectively
-(Fig.~\ref{fig:scenario_by_decoder_slope}). The distinct patterns across these
-protocols show that participant, session and trial holdouts were not
-interchangeable sources of distribution shift.
+(0.57--0.61). These distinct patterns show that participant and session
+holdouts were not interchangeable sources of distribution shift.
 
 \subsection*{Cross-task transfer retained only part of target-specific discrimination}
 
@@ -540,7 +533,7 @@ the benchmark.
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{figures/all_scenarios_absolute_accuracy_logistic_regression.png}
-\caption{\textbf{Subject-level balanced accuracy across validation protocols for spectral logistic regression.} Points are means of target-participant balanced accuracies, with each participant weighted equally; horizontal bars are 95\% percentile bootstrap intervals over participants (10,000 resamples). The dashed vertical line marks chance-level balanced accuracy (0.50). Results are grouped by baseline, cross-subject, cross-session, cross-trial, cross-task and cross-dataset protocols.}
+\caption{\textbf{Subject-level balanced accuracy across validation protocols for spectral logistic regression.} Points are means of target-participant balanced accuracies, with each participant weighted equally; horizontal bars are 95\% percentile bootstrap intervals over participants (10,000 resamples). The dashed vertical line marks chance-level balanced accuracy (0.50). Results are grouped by baseline, cross-subject, cross-session, cross-task and cross-dataset protocols.}
 \label{fig:all_scenarios_logistic}
 \end{figure}
 
@@ -574,12 +567,7 @@ The within-dataset protocols also demonstrate why ``generalization'' should not
 be treated as a single property. Cross-subject performance was below the
 matched baseline in nine of ten decoder--dataset comparisons, consistent with
 the well-established inter-participant variability of EEG. Cross-session
-performance in Dataset~A remained close to its baseline, whereas cross-trial
-performance in Dataset~B ranged from baseline-like for the two classical
-models to chance-like for the three neural networks. Session and trial were
-evaluated in different datasets and cannot be compared as isolated causal
-effects; nevertheless, the contrast establishes that the empirical difficulty
-of one held-out factor does not predict that of another. It also cautions
+performance in Dataset~A remained close to its baseline. These results caution
 against assigning a model a general ``robustness'' label from a single
 validation protocol.
 
@@ -618,11 +606,10 @@ Decoder comparisons reinforce this interpretation without establishing a
 universal model ranking. ShallowFBCSPNet produced the largest point estimate in
 more scenarios than the other decoders, yet it deteriorated under
 cross-dataset transfer to the same narrow range as logistic regression,
-XGBoost, EEGNet and EEGConformer. Conversely, the classical decoders retained
-cross-trial discrimination where the neural models did not. Because all models
-used fixed settings rather than scenario-specific optimization, these patterns
-show model--protocol interaction, not the inherent superiority of an
-architecture. The recurrence of the cross-dataset loss across five materially
+XGBoost, EEGNet and EEGConformer. Because all models used fixed settings rather
+than scenario-specific optimization, these patterns show model--protocol
+interaction, not the inherent superiority of an architecture. The recurrence
+of the cross-dataset loss across five materially
 different decoders makes it less likely that the main pattern is peculiar to
 one classifier, while leaving open whether adaptation, pretraining or other
 architectures could reduce it.
@@ -668,7 +655,7 @@ shared cognitive state from a shared protocol label.
 
 \section*{Conclusion}
 
-Across five decoders and six validation protocols, zero-shot EEG
+Across five decoders and five validation protocols, zero-shot EEG
 discriminability depended on how source and target recordings were obtained.
 Cross-task transfer retained part of the target-specific discrimination, but
 cross-dataset transfer yielded the largest loss: all 55 matched comparisons
@@ -776,8 +763,7 @@ extraction (spectral configuration): log band power in five bands
 Models: the five configurations named in the Models subsection, with the feature
 scaler fitted inside the pipeline on the training fold only. Global random seed: 42. Validation protocols: stratified
 group $K$-fold baseline grouped by physical recording, cross-subject,
-cross-session (session-documented dataset only) and cross-trial
-(repeated-task dataset) group-aware splits, cross-dataset and leave-one-
+cross-session (session-documented dataset only), cross-dataset and leave-one-
 subject-out cross-task transfer. No data-driven hyperparameter tuning was
 performed. Hyperparameters were fixed a priori for the benchmark comparison.
 

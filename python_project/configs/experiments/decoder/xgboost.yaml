@@ -1,0 +1,5 @@
+# @package _global_
+
+defaults:
+  - override /features: classical_ml
+  - override /pipeline: xgboost

@@ -77,8 +77,8 @@ braindecode. Слоя трекинга экспериментов нет нам�
 
 ### Конфиги передаются объектами, а не россыпью аргументов
 
-Функция стадии получает **свой узел `cfg`** (`cfg.dataset`, `cfg.preparation`,
-`cfg.model`) целиком как `DictConfig` и читает из него всё, что ей нужно.
+Функция стадии получает **свой узел `cfg`** (`cfg.preparation`, `cfg.model`)
+целиком как `DictConfig` и читает из него всё, что ей нужно.
 Разворачивать рецепт в двадцать keyword-аргументов нельзя: это дубль, который
 однажды разъедется с YAML. Промежуточных dict'ов в коде нет;
 `OmegaConf.to_container(..., resolve=True)` вызывается только там, где обычный
@@ -93,10 +93,12 @@ Hydra-entrypoint заводить нельзя: он унаследует output
 стека допустим только OmegaConf. Скрипт анализа Hydra не использует и не
 должен: он ничего не композит, а читает уже произведённый выход.
 
-Hydra всегда работает в режиме `MULTIRUN`, поэтому даже одиночный эксперимент —
-это один job внутри sweep-каталога. Ветки «single или sweep», флага режима или
-второго entrypoint в скрипте быть не должно: цикл по комбинациям делает сама
-Hydra.
+Режим запуска объявляет сам конфиг, а не команда: корневой пресет
+`configs/experiments/*.yaml` ставит `hydra.mode: MULTIRUN` рядом со своими
+`sweeper.params`, поэтому выбор пресета и есть переключение в sweep, а забыть
+флаг `-m` невозможно. Ad-hoc выбор без пресета остаётся обычным одиночным
+прогоном. Ветки «single или sweep», рукописного флага режима или второго
+entrypoint в скрипте быть не должно: цикл по комбинациям делает сама Hydra.
 
 ## Раскладка
 
@@ -104,9 +106,9 @@ Hydra.
 src/                # плоские модули: загрузка, стандартизация, Stage 1,
                     # validation protocols, общие пути проекта
 scripts/            # тонкие run_*.py; Hydra только в experiment runner'е
-configs/            # контракт runner'а: узлы итогового cfg и их реализации
-experiments/        # scientific ingredients and approved Hydra experiment plans
-datasets/           # archive -> bids -> prepared_cache (datasets.md)
+configs/            # контракт runner'а: узлы итогового cfg, их реализации
+                    # и experiment-рецепты (configs/experiments/)
+datasets/           # archive -> raw BIDS -> MNE-BIDS-Pipeline derivatives
 results/            # выход прогонов и посчитанный по нему анализ
 notebooks/          # .ipynb: QC стадий и разведка (notebooks.md)
 ```
@@ -114,8 +116,7 @@ notebooks/          # .ipynb: QC стадий и разведка (notebooks.md)
 Список модулей `src/` полный по факту: внутри него отдельных Python-пакетов
 `ingestion/`, `preparation/`, `features/`, `pipelines/`, `evaluations/` быть не
 должно. Научная логика, которая переиспользуется, живёт в `src/`; логика,
-которая исполняется один раз в фиксированном порядке, — в скрипте. Корневой
-`experiments/` содержит YAML-рецепты и Python-пакетом не является.
+которая исполняется один раз в фиксированном порядке, — в скрипте.
 
 `src/` — плоские модули, а не пакет: сборка объявляет `src` источником, поэтому
 после `uv sync` модули лежат в `.venv` на верхнем уровне и импортируются по
@@ -123,28 +124,53 @@ notebooks/          # .ipynb: QC стадий и разведка (notebooks.md)
 скриптах и ноутбуках нет и быть не должно; новый модуль в `src/` становится
 импортируемым сам по себе.
 
-`configs/` — конфигурационный контракт Python-кода: только группы, которые
-формируют итоговые `cfg.dataset`, `cfg.preparation`, `cfg.features`,
-`cfg.pipeline` и `cfg.validation_strategy`. Рецепт подготовки разложен на
-пронумерованные вложенные группы, но после композиции это ровно **один плоский
-узел** `cfg.preparation`, который и хешируется: поэтому имя каждого ключа
-обязано быть самоописательным без опоры на имя группы.
+`configs/` — конфигурационный контракт Python-кода: группы формируют
+`cfg.preparation`, `cfg.features`, `cfg.pipeline` и
+`cfg.validation_strategy`; отдельного узла `cfg.dataset` нет.
+`configs/preparation/{sam40,distinguishing}.yaml` описывают одну сторону:
+постоянные `name` и `dataset_dir` плюс единственный внешний узел
+`mne_bids_pipeline`. `configs/preparation/transfer.yaml` задаёт форму
+`source + targets`, где `targets` — именованный mapping, а не список.
 
-`experiments/` — отдельный Hydra search root с тремя видами YAML. `decoder/`
-связывает представление с допустимым pipeline, `scenario/` именует один
-научный состав данных и протокол. Корневой `scenario_decoder.yaml` запускает
-их декартово произведение, а `scenario_only.yaml` — все scenario с базовым
-decoder из `configs/config.yaml`. Это рецепты композиции, а не runtime-узлы
-`cfg`. Options в `decoder/` и `scenario/` используют
-`# @package _global_` и только композируют группы из `configs/`: после
-композиции узлов `cfg.decoder` и `cfg.scenario` нет. Реализации и числовые
-параметры в `experiments/` не дублируются. План использует `glob(*)` для обеих
-групп: имя группы задано слева от `=`, а `glob` выбирает все её options.
+Scenario композит полную preparation-option прямо в source и каждый target,
+затем меняет только нужные Pipeline-поля, прежде всего полное значение `task`.
+Полей `recipe`/`overrides`, отдельного registry датасетов, загрузки YAML и
+последующей замены runtime-конфига нет.
 
-Hydra владеет корнем результата: он строит его из имени выбранного YAML и
-timestamp. Цели `sweep-scenario-decoder` и `sweep-scenario-only` только
-запускают соответствующие sweep; они не передают путь результата через
-окружение.
+Validation-builder получает только готовый `preparation_config` (и технический
+seed для CV) и передаёт каждую сторону целиком в `preparation.get_epochs()`.
+Функция проверяет вложенный внешний конфиг по аннотациям Pipeline, создаёт
+временный `config.py`, обеспечивает derivatives, режет project windows и
+возвращает готовый размеченный `mne.Epochs`. Отдельного предварительного
+`prepare_datasets()` в runner нет.
+
+`configs/experiments/` — обычная Hydra config group внутри `configs/`, а не
+отдельный search root: файлы прямо в ней (`scenario_decoder.yaml`,
+`baseline_logistic_regression.yaml`, `ica_ablation.yaml`) выбираются
+`+experiments=<preset>` и задают `hydra.sweeper.params` и `hydra.mode`. Внутри
+неё лежат ещё две вложенные группы, а не runtime-узлы `cfg`:
+`experiments/decoder/` связывает представление с допустимым pipeline,
+`experiments/scenario/` именует один научный состав данных (протокол — отдельная
+ось, `cfg.validation_strategy`, а не часть scenario). Их options используют
+`# @package _global_` и только композируют группы верхнего уровня из
+`configs/`: после композиции узлов `cfg.decoder` и `cfg.scenario` нет.
+Реализации и числовые параметры внутри `configs/experiments/` не дублируются.
+
+`experiments/decoder/` и `experiments/scenario/` — обе плоские группы без
+вложенных подпапок, поэтому пресеты используют `glob(*)` для полного перебора
+options каждой из них. Держать их плоскими — сознательный выбор: Hydra
+`glob(*)` не рекурсирует по подпапкам группы, а группировка scenario-файлов по
+темам в подпапки когда-то уже приводила к тому, что full-sweep пресет был
+вынужден перечислять каждый путь вручную — и молча не подхватывал бы новый
+файл, забытый в списке. Различать датасет и направление помогают только имена
+файлов (`sam40_arithmetic.yaml`, `sam40_to_distinguishing.yaml`, ...), не
+раскладка по каталогам.
+
+Hydra владеет корнем результата: базовый конфиг пишет
+`results/<имя пресета> (${timestamp})`, подставляя туда сам выбор группы через
+`hydra.runtime.choices.experiments` (`scripts.md`, `results_layout.md`). Единственная
+цель `experiment` только запускает `+experiments=<preset>`; путь результата
+через окружение не передаётся.
 
 **Номер несёт каталог группы, а не имя опции.** Числовой префикс задаёт порядок
 шагов рецепта и только его. Файл опции называется по тому, что она есть, и
@@ -162,7 +188,7 @@ content-hash артефакта и поле `version` внутри рецепт�
 ```bash
 uv sync             # создать или обновить .venv
 make ingestion      # источники -> datasets/archive/ -> datasets/bids/
-make sweep-<...>      # bids -> prepared_cache -> эксперименты -> results/
+make experiment       # BIDS -> Pipeline derivatives -> эксперименты -> results/
 make analysis       # results/ -> метрики, сравнения, фигуры и таблицы
 ```
 
@@ -180,12 +206,11 @@ archive -> BIDS -> prepared Epochs -> features -> group-aware CV -> parquet -> a
                    |__ Stage 1 (дорого) __|______ Stage 2 ______|__ анализ __|
 ```
 
-**Stage 1** — фильтрация, референс, resample, ICA, выбор каналов и нарезка
-окон. Выход — неизменяемый content-addressed артефакт: Epochs FIF плюс
-resolved конфиги рядом. Правила адресации и кэша — в `datasets.md`. Внутри это
-одна линейная функция с разделителями шагов, без датасет-специфичных веток и
-без приватных хелперов на каждый шаг. QC-картинок Stage 1 не рисует: артефакт
-смотрят ноутбуком.
+**Stage 1** — MNE-BIDS-Pipeline делает фильтрацию, референс, resample, ICA и
+выбор каналов в BIDS derivatives. Когда validation-builder загружает сторону,
+он передаёт её готовый `mne_bids_pipeline` в `preparation.py`; тот проверяет
+его по аннотациям Pipeline, создаёт временный `config.py`, запускает
+preprocessing, затем читает derivatives и режет project windows.
 
 **Stage 2** — validation protocol читает готовый артефакт и возвращает тройку
 `(epochs, groups, cv)`; при transfer он же объединяет стороны. Runner остаётся

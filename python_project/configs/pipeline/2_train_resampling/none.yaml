@@ -1,4 +1,0 @@
-# @package pipeline_components.train_resampling
-# This treatment truly adds no pipeline step.  In particular, raw EEG needs no
-# flatten/restore pair unless a 2D-only sampler is selected.
-step: passthrough

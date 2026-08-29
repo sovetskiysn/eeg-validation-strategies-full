@@ -1,7 +1,0 @@
-# @package pipeline_components.model
-# One optimiser iteration is sufficient to exercise the classical path.
-name: logistic_regression_test
-params:
-  _target_: sklearn.linear_model.LogisticRegression
-  random_state: ${seed}
-  max_iter: 1

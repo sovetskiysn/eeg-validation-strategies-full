@@ -1,0 +1,16 @@
+# Точка входа. Всё, что здесь, — настройки запуска, а не pipeline.
+# Настройки самого pipeline живут целиком в conf/dataset/<имя>.yaml.
+
+defaults:
+  - dataset: nback
+  - _self_
+
+steps: init,preprocessing
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}

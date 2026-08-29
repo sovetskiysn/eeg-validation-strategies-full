@@ -1,0 +1,3 @@
+- +experiments/scenario=sam40_to_distinguishing
+- preparation.mne_bids_pipeline.sam40.subjects=[01]
+- preparation.mne_bids_pipeline.distinguishing.subjects=[01]

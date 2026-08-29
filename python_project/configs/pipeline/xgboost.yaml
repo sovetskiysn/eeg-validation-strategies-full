@@ -1,0 +1,49 @@
+# One complete fitted estimator recipe for the tree-based classical decoder.
+name: xgboost
+estimator:
+  _target_: imblearn.pipeline.make_pipeline
+  _args_:
+    # Tree splits are invariant to a positive linear rescaling of one feature, so
+    # XGBoost needs no fitted input scaling.
+    - passthrough
+    # pipeline.BalancedXGBClassifier, not xgboost.XGBClassifier: a thin
+    # subclass that adds the `class_weight` below, which XGBoost itself does not
+    # have. Everything else on this estimator is the stock sklearn API.
+    - _target_: pipeline.BalancedXGBClassifier
+      random_state: ${seed}
+      # Replaces the RandomOverSampler that used to precede this estimator, and
+      # matches `class_weight: balanced` on the logistic regression and the
+      # BalancedClassWeight callback on the three deep decoders -- one rebalancing
+      # rule across all five. Computed from each train fold, which is what a
+      # written-out number could not be: the imbalance is ~1:1 on distinguishing
+      # and ~1:1, ~2:1 or ~3:1 on SAM40 depending on how many task conditions
+      # selected SAM-40 tasks leave standing. XGBoost's own `scale_pos_weight`
+      # is a single binary-only scalar and cannot follow that.
+      class_weight: balanced
+      tree_method: hist
+      # CPU, not GPU: fold train sets here are ~2k rows x ~170 classical features
+      # (baseline_sam40: 1920 train rows/fold). At that size XGBoost's per-round
+      # host<->device transfer and kernel-launch overhead on `device: cuda`
+      # dominates over the actual histogram compute, unlike the deep decoders
+      # (eegnet/shallownet/eegconformer), which train on the raw window tensor and
+      # are the ones the sweep machine's GPU (H200, see torch_num_threads comment
+      # in configs/config.yaml) is actually sized for. `device`'s own default is
+      # already `cpu` (xgboost.readthedocs.io/en/latest/parameter.html), so this
+      # line is written out to say the choice is deliberate, not an oversight.
+      device: cpu
+      # No n_estimators/max_depth/learning_rate/subsample/reg_* set here, so the
+      # sklearn API defaults apply: n_estimators=100, max_depth=6, learning_rate=
+      # 0.3, subsample=colsample_bytree=1.0 (every row and column available at
+      # every split), reg_lambda=1 (mild L2 on leaf weights), reg_alpha=0 (no L1).
+      # Unlike logistic_regression.yaml's C, this isn't a considered regularisation
+      # choice -- it is unset. early_stopping_rounds/eval_set are not passed
+      # either, and imblearn.Pipeline.fit has no path to route an eval_set through
+      # a fit_resample step to the final estimator, so boosting always runs the
+      # full 100 rounds with no held-out convergence check. results/ stores only
+      # test-fold predictions (folds.parquet has y_pred/score == NA on train rows)
+      # and no eval history, so a train/test gap or a convergence curve cannot be
+      # read back from a completed run -- only from a fit done with eval_set
+      # outside this pipeline. The engineered feature set was independently pruned
+      # for multicollinearity (configs/features/classical_ml.yaml, worst
+      # per-channel VIF 8), which bounds one source of instability but not
+      # tree-depth/estimator-count overfitting.

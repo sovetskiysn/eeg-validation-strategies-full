@@ -9,9 +9,8 @@
 Главная проблема — не «сломанный baseline», а сочетание четырёх факторов:
 
 1. Текущий `baseline` — это не обычный случайный within-dataset split, а честный **leave-recording-unit-out** split. Он уже проверяет перенос на новую запись и потому существенно строже большинства опубликованных «within-dataset» результатов.
-2. `cross-session` и `cross-trial` обучаются только на данных того же субъекта и имеют очень мало независимых тренировочных единиц. Эти сценарии не образуют монотонную лестницу строгости вместе с baseline: одновременно меняются доменный сдвиг, состав популяции и объём train.
+2. `cross-session` обучается только на данных того же субъекта и имеет ограниченное число независимых тренировочных единиц. Этот сценарий не образует монотонную лестницу строгости вместе с baseline: одновременно меняются доменный сдвиг, состав популяции и объём train.
 3. Для SAM автоматический ICA систематически удаляет очень большую долю дисперсии, потому что фронтальные EEG-каналы F3/F4/F7/F8 используются как суррогаты EOG. Это наиболее сильный кандидат на потерю полезного сигнала.
-4. В сохранённом v8-sweep есть отдельная доказанная ошибка обучения нейросетей в `cross_trial`: при 60 объектах после oversampling, `batch_size=64` и стандартном `drop_last=True` эпоха содержит ноль train-batch. Поэтому старые DL-результаты около 0.50 в этом сценарии нельзя интерпретировать как предел данных или модели.
 
 Дополнительно, в текущей v11-конфигурации нейросетей внутренняя validation-разбивка выполняется случайно по окнам после oversampling. Внешний test остаётся чистым, но ранняя остановка видит окна тех же записей и может видеть дубликаты oversampling одновременно в inner train и validation. Это не причина низкой внешней метрики, однако делает подбор момента остановки методологически некорректным.
 
@@ -19,7 +18,7 @@
 
 Проверены:
 
-- реализации `baseline`, `cross_session`, `cross_trial`, `cross_subject`;
+- реализации `baseline`, `cross_session`, `cross_subject`;
 - подготовка `X`, `y`, `groups` и metadata;
 - сохранённые fold-assignment и window-level predictions;
 - размеры train/test и число независимых записей в каждом сценарии;
@@ -52,10 +51,7 @@
 | A cross-session | 24 | медиана 4 / 1 | 1 / 1 | новая сессия того же субъекта, очень малый train |
 | A cross-subject | 5 | медиана 19 / 5 | 4 / 1 | новый субъект |
 | SAM baseline | 5 | медиана 96 / 24 | 40 / около 24 | новый trial/run, субъекты обычно знакомы |
-| SAM cross-trial | 120 | 2 / 1 | 1 / 1 | всего 40 train-окон до oversampling |
 | SAM cross-subject | 40 | 117 / 3 | 39 / 1 | новый субъект |
-
-Особенно важно: `cross_trial` выглядит доменно «ближе» baseline, но статистически это самый маленький train. Поэтому ожидаемая строгая последовательность `baseline > cross-session/trial > cross-subject` здесь не гарантирована.
 
 ## 2. Контрольные classical-ML результаты на текущем v11
 
@@ -78,7 +74,7 @@
 
 - На Dataset A видна ожидаемая, но умеренная просадка от random-window к новой записи и новому субъекту.
 - На SAM random-window, time-blocked и leave-recording дают практически одинаковые 0.62–0.63. Значит, для SAM строгий split **не является основной причиной** низкого результата. Ограничение возникает раньше: preprocessing, представление сигнала, короткие 25-секундные записи и/или неоднородная бинарная цель.
-- Высокий train и низкий test в A cross-session и SAM cross-trial — типичная картина малого числа независимых тренировочных записей и переобучения, а не доказательство перепутанных выборок.
+- Высокий train и низкий test в A cross-session — типичная картина малого числа независимых тренировочных записей и переобучения, а не доказательство перепутанных выборок.
 
 Случайный window split около 0.887, приведённый в существующем отчёте, воспроизвести не удалось: в проверенных вариантах получилось около 0.71–0.76 для A и 0.62–0.64 для SAM. До сохранения точной процедуры, seed, feature set и preprocessing этот результат не следует использовать как ожидаемый ceiling.
 
@@ -101,27 +97,7 @@
 
 Оригинальный SAM40 содержит 32 канала, 128 Hz и 25-секундные задания; описанный авторами preprocessing использовал 0.5–45 Hz, Savitzky–Golay и wavelet denoising, а не автоматическое EOG-исключение по фронтальным EEG-proxy: [SAM40 dataset paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC8749216/).
 
-## 4. Доказанная проблема старых v8 neural runs
-
-В сохранённых v8-конфигурациях:
-
-- `train_split: null`;
-- `batch_size: 64`;
-- `iterator_train__drop_last` явно не задан, поэтому применяется стандартное `True`;
-- в SAM `cross_trial` outer-train содержит 40 окон: 10 low и 30 high;
-- RandomOverSampler увеличивает train до 60 окон.
-
-Итог: 60 < 64, а `drop_last=True`, то есть DataLoader отдаёт **ноль полных training batches**. Логи согласуются с этим: все EEGNet/Conformer/Shallow fold быстро инициализируются, а итоговые balanced accuracy остаются около chance.
-
-Это означает:
-
-- старые DL-результаты SAM cross-trial около 0.50 недействительны как оценка способности модели;
-- их нельзя сравнивать с classical-моделями и использовать в научном выводе;
-- повторный запуск должен выполняться только на GPU-сервере после явного `drop_last=False` и проверки числа optimizer steps.
-
-Текущая v11-конфигурация уже задаёт `drop_last=False`, поэтому именно эта ошибка устранена в коде, но сохранённая основная таблица от этого автоматически не исправляется.
-
-## 5. Проблема текущей inner validation нейросетей
+## 4. Проблема текущей inner validation нейросетей
 
 В текущем pipeline RandomOverSampler стоит перед EEGClassifier, а `ValidSplit(0.2, stratified=True)` выполняется внутри classifier. Следовательно:
 
@@ -135,7 +111,6 @@ Outer-test при этом остаётся чистым, поэтому это 
 Корректные варианты:
 
 - group-aware inner split по `recording_unit`, затем oversampling только inner-train;
-- для очень маленького `cross_trial` — фиксированное заранее выбранное число эпох без inner validation;
 - в любом варианте сохранять число batches/optimizer steps и learning curves, чтобы нулевое обучение было сразу видно.
 
 ## 6. Почему опубликованные 90–99% не являются правильной целью для текущего baseline
@@ -152,7 +127,6 @@ Outer-test при этом остаётся чистым, поэтому это 
 
 - текущий `baseline` → **within-dataset, cross-recording**;
 - `cross_session` → **subject-specific cross-session, limited-data**;
-- `cross_trial` → **subject-specific cross-trial, limited-data**;
 - `cross_subject` → **within-dataset, cross-subject**.
 
 Не описывать их как одну монотонную лестницу строгости. В таблице рядом с метрикой показывать хотя бы median train windows, train recording units и train subjects.
@@ -170,7 +144,7 @@ Outer-test при этом остаётся чистым, поэтому это 
 Чтобы не повторять весь sweep из 35 сценариев, сначала достаточно небольшого набора контролей, по одному изменению за раз:
 
 1. **P0 — воспроизводимость.** Для каждой таблицы зафиксировать git commit, Stage-1 recipe/hash, feature list, config snapshot и dataset cache version. Не смешивать v8-результаты с v11-кодом.
-2. **P0 — neural validity.** На GPU-сервере проверить `drop_last=False`, ненулевое число optimizer steps и learning curve сначала только для одного SAM cross-trial и одного baseline fold.
+2. **P0 — neural validity.** На GPU-сервере проверить `drop_last=False`, ненулевое число optimizer steps и learning curve сначала на одном baseline fold.
 3. **P1 — ICA ablation.** Logistic regression на текущем split: current ICA против no-ICA. Сначала SAM baseline/cross-recording и cross-subject; Dataset A оставить контрольным.
 4. **P1 — channel ablation.** Для SAM сравнить фиксированные 12 и исходные 32 канала при неизменных split/features/model.
 5. **P1 — inner validation.** Перенести resampling после group-aware inner split либо использовать фиксированные epochs для tiny-train сценариев.
@@ -186,7 +160,6 @@ Outer-test при этом остаётся чистым, поэтому это 
 - Не использовать per-recording z-normalization как незаметный preprocessing: для новой записи это unsupervised target adaptation и должно быть явно названо.
 - Не сравнивать v8 main table с v11 diagnostic runs как будто изменился только classifier.
 - Не трактовать pooled ROC-AUC через разные fold-models как главный результат: score calibration между fold может различаться. Основными оставить fold/subject-level balanced accuracy, macro-F1 и интервалы неопределённости.
-- Не делать вывод о «слабости нейросетей» по старому SAM cross-trial, где фактически не было optimizer steps.
 
 ## Итоговая оценка причин
 
@@ -194,9 +167,8 @@ Outer-test при этом остаётся чистым, поэтому это 
 |---|---|---|
 | Outer train/test leakage или перепутанные выборки | не обнаружено | не объясняет низкие BA |
 | Baseline фактически cross-recording | подтверждено | большой, главным образом объясняет разрыв с литературой |
-| Очень маленький train в cross-session/trial | подтверждено | большой, объясняет overfit и высокую variance |
+| Ограниченный train в cross-session | подтверждено | большой, объясняет overfit и высокую variance |
 | Агрессивный ICA на SAM | подтверждено по удалённой дисперсии | вероятно большой |
-| Нулевые train-batches в старом v8 DL cross-trial | подтверждено | критический для этих DL-ячеек |
 | Leakage в текущей inner validation DL | подтверждено по pipeline | методологически важный; направление влияния на test не однозначно |
 | Сокращённый текущий feature set | проверено | не причина старого collapse; на v11 местами лучше |
 | Строгий split как единственная причина слабого SAM | опровергнуто контролем | random-window SAM тоже около 0.62 |

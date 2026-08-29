@@ -24,44 +24,49 @@ from sklearn.metrics import (
 from utils import LATEX_ARTIFACT_TEMPLATES_DIR
 
 
-# Article-level order of the scenario rows. A dataset side is identified by its
-# saved dataset name and its sorted tuple of excluded protocol conditions.
+# Article-level order of scenario rows. A dataset side is identified by its
+# saved dataset name and selected BIDS tasks.
+DISTINGUISHING = ("distinguishing", ("attention",))
+SAM40_FULL = ("sam40", ("arithmetic", "mirror", "relax", "stroop"))
+SAM40_STROOP = ("sam40", ("relax", "stroop"))
+SAM40_ARITHMETIC = ("sam40", ("arithmetic", "relax"))
+SAM40_MIRROR = ("sam40", ("mirror", "relax"))
+SAM40_STROOP_ARITHMETIC = ("sam40", ("arithmetic", "relax", "stroop"))
+SAM40_STROOP_MIRROR = ("sam40", ("mirror", "relax", "stroop"))
+SAM40_ARITHMETIC_MIRROR = ("sam40", ("arithmetic", "mirror", "relax"))
+
 SCENARIO_ORDER = (
-    ("baseline", ("distinguishing", ("drowsy",)), ("distinguishing", ("drowsy",))),
-    ("baseline", ("sam40", ()), ("sam40", ())),
-    ("baseline", ("sam40", ("arithmetic", "mirror")), ("sam40", ("arithmetic", "mirror"))),
-    ("baseline", ("sam40", ("mirror", "stroop")), ("sam40", ("mirror", "stroop"))),
-    ("baseline", ("sam40", ("arithmetic", "stroop")), ("sam40", ("arithmetic", "stroop"))),
-    ("cross_subject", ("distinguishing", ("drowsy",)), ("distinguishing", ("drowsy",))),
-    ("cross_subject", ("sam40", ()), ("sam40", ())),
-    ("cross_session", ("distinguishing", ("drowsy",)), ("distinguishing", ("drowsy",))),
-    ("cross_trial", ("sam40", ()), ("sam40", ())),
-    ("cross_task", ("sam40", ("arithmetic", "mirror")), ("sam40", ("mirror", "stroop"))),
-    ("cross_task", ("sam40", ("arithmetic", "mirror")), ("sam40", ("arithmetic", "stroop"))),
-    ("cross_task", ("sam40", ("mirror", "stroop")), ("sam40", ("arithmetic", "mirror"))),
-    ("cross_task", ("sam40", ("mirror", "stroop")), ("sam40", ("arithmetic", "stroop"))),
-    ("cross_task", ("sam40", ("arithmetic", "stroop")), ("sam40", ("arithmetic", "mirror"))),
-    ("cross_task", ("sam40", ("arithmetic", "stroop")), ("sam40", ("mirror", "stroop"))),
-    ("cross_task", ("sam40", ("stroop",)), ("sam40", ("arithmetic", "mirror"))),
-    ("cross_task", ("sam40", ("arithmetic",)), ("sam40", ("mirror", "stroop"))),
-    ("cross_task", ("sam40", ("mirror",)), ("sam40", ("arithmetic", "stroop"))),
-    ("cross_task", ("sam40", ("arithmetic", "mirror")), ("sam40", ("stroop",))),
-    ("cross_task", ("sam40", ("mirror", "stroop")), ("sam40", ("arithmetic",))),
-    ("cross_task", ("sam40", ("arithmetic", "stroop")), ("sam40", ("mirror",))),
-    ("cross_dataset", ("distinguishing", ("drowsy",)), ("sam40", ())),
-    ("cross_dataset", ("sam40", ()), ("distinguishing", ("drowsy",))),
-    ("cross_dataset", ("distinguishing", ("drowsy",)), ("sam40", ("arithmetic", "mirror"))),
-    ("cross_dataset", ("sam40", ("arithmetic", "mirror")), ("distinguishing", ("drowsy",))),
-    ("cross_dataset", ("distinguishing", ("drowsy",)), ("sam40", ("mirror", "stroop"))),
-    ("cross_dataset", ("sam40", ("mirror", "stroop")), ("distinguishing", ("drowsy",))),
-    ("cross_dataset", ("distinguishing", ("drowsy",)), ("sam40", ("arithmetic", "stroop"))),
-    ("cross_dataset", ("sam40", ("arithmetic", "stroop")), ("distinguishing", ("drowsy",))),
-    ("cross_dataset", ("distinguishing", ("drowsy",)), ("sam40", ("mirror",))),
-    ("cross_dataset", ("sam40", ("mirror",)), ("distinguishing", ("drowsy",))),
-    ("cross_dataset", ("distinguishing", ("drowsy",)), ("sam40", ("arithmetic",))),
-    ("cross_dataset", ("sam40", ("arithmetic",)), ("distinguishing", ("drowsy",))),
-    ("cross_dataset", ("distinguishing", ("drowsy",)), ("sam40", ("stroop",))),
-    ("cross_dataset", ("sam40", ("stroop",)), ("distinguishing", ("drowsy",))),
+    ("baseline", DISTINGUISHING, DISTINGUISHING),
+    ("baseline", SAM40_FULL, SAM40_FULL),
+    ("baseline", SAM40_STROOP, SAM40_STROOP),
+    ("baseline", SAM40_ARITHMETIC, SAM40_ARITHMETIC),
+    ("baseline", SAM40_MIRROR, SAM40_MIRROR),
+    ("cross_task", SAM40_ARITHMETIC_MIRROR, SAM40_STROOP),
+    ("cross_task", SAM40_ARITHMETIC, SAM40_MIRROR),
+    ("cross_task", SAM40_ARITHMETIC, SAM40_STROOP),
+    ("cross_task", SAM40_ARITHMETIC, SAM40_STROOP_MIRROR),
+    ("cross_task", SAM40_MIRROR, SAM40_ARITHMETIC),
+    ("cross_task", SAM40_MIRROR, SAM40_STROOP),
+    ("cross_task", SAM40_MIRROR, SAM40_STROOP_ARITHMETIC),
+    ("cross_task", SAM40_STROOP_ARITHMETIC, SAM40_MIRROR),
+    ("cross_task", SAM40_STROOP_MIRROR, SAM40_ARITHMETIC),
+    ("cross_task", SAM40_STROOP, SAM40_ARITHMETIC),
+    ("cross_task", SAM40_STROOP, SAM40_ARITHMETIC_MIRROR),
+    ("cross_task", SAM40_STROOP, SAM40_MIRROR),
+    ("cross_dataset", DISTINGUISHING, SAM40_FULL),
+    ("cross_dataset", SAM40_FULL, DISTINGUISHING),
+    ("cross_dataset", DISTINGUISHING, SAM40_STROOP),
+    ("cross_dataset", SAM40_STROOP, DISTINGUISHING),
+    ("cross_dataset", DISTINGUISHING, SAM40_ARITHMETIC),
+    ("cross_dataset", SAM40_ARITHMETIC, DISTINGUISHING),
+    ("cross_dataset", DISTINGUISHING, SAM40_MIRROR),
+    ("cross_dataset", SAM40_MIRROR, DISTINGUISHING),
+    ("cross_dataset", DISTINGUISHING, SAM40_STROOP_ARITHMETIC),
+    ("cross_dataset", SAM40_STROOP_ARITHMETIC, DISTINGUISHING),
+    ("cross_dataset", DISTINGUISHING, SAM40_STROOP_MIRROR),
+    ("cross_dataset", SAM40_STROOP_MIRROR, DISTINGUISHING),
+    ("cross_dataset", DISTINGUISHING, SAM40_ARITHMETIC_MIRROR),
+    ("cross_dataset", SAM40_ARITHMETIC_MIRROR, DISTINGUISHING),
 )
 
 
@@ -108,15 +113,35 @@ def scenario_key(cfg) -> tuple[object, ...]:
     Non-transfer protocols name one dataset and are their own target, which is
     what keeps every result addressable by the same three-part key.
     """
-    sides = (
-        (cfg.dataset.source, cfg.dataset.target)
-        if "source" in cfg.dataset
-        else (cfg.dataset, cfg.dataset)
-    )
+    if "preparation" in cfg:
+        source = cfg.preparation.source if "source" in cfg.preparation else cfg.preparation
+        target = cfg.preparation.target if "target" in cfg.preparation else source
+        sides = source, target
+    elif "recipe" in cfg:
+        # Transfer leaves written by the preceding config generation.
+        sides = cfg.recipe.source, cfg.recipe.target
+    else:
+        raise ValueError("Scenario config has neither preparation nor legacy recipe fields.")
+    return (str(cfg.validation_strategy.name), *(_side_key(side) for side in sides))
+
+
+def _side_key(side) -> tuple[str, tuple[str, ...]]:
+    """Return the scientific identity of one composed preparation side."""
+    dataset_name = side.name
+    pipeline = side.mne_bids_pipeline if "mne_bids_pipeline" in side else side
+    task = pipeline.task
+    tasks = (task,) if isinstance(task, str) else tuple(task)
     return (
-        str(cfg.validation_strategy.name),
-        *((str(side.name), tuple(sorted(side.exclude_conditions))) for side in sides),
+        str(dataset_name),
+        tuple(sorted(tasks)),
     )
+
+
+def decoder_name(cfg) -> str:
+    """Read a decoder name from either generation of saved run configuration."""
+    if "pipeline" in cfg and "name" in cfg.pipeline:
+        return str(cfg.pipeline.name)
+    return str(cfg.pipeline_components.model.name)
 
 
 def craft_main_table(scenario_glob: str) -> str:
@@ -139,7 +164,7 @@ def craft_main_table(scenario_glob: str) -> str:
     decoder_names = set()
     for job_dir in job_dirs:
         cfg, windows, folds = read_scenario_result(job_dir)
-        decoder = str(cfg.pipeline_components.model.name).removesuffix("_test")
+        decoder = decoder_name(cfg)
         if decoder not in model_display_names:
             raise ValueError(f"{job_dir}: unsupported decoder for article table: {decoder}.")
         decoder_names.add(decoder)
@@ -209,7 +234,6 @@ def craft_all_scenarios_absolute_accuracy_figure(scenario_glob: str) -> Figure:
         ("Baseline", 5),
         ("Cross-subject", 2),
         ("Cross-session", 1),
-        ("Cross-trial", 1),
         ("Cross-task (Dataset B)", 12),
         ("Cross-dataset", 14),
     )
@@ -222,7 +246,6 @@ def craft_all_scenarios_absolute_accuracy_figure(scenario_glob: str) -> Figure:
         "Leave-one-subject-out(Full A)",
         "Leave-one-subject-out(Full B)",
         "Leave-one-session-out(Full A)",
-        "Leave-one-trial-out(Full B)",
         "Stroop → Arithmetic",
         "Stroop → Mirror",
         "Arithmetic → Stroop",
@@ -263,7 +286,7 @@ def craft_all_scenarios_absolute_accuracy_figure(scenario_glob: str) -> Figure:
     decoder_names = set()
     for job_dir in job_dirs:
         cfg, windows, folds = read_scenario_result(job_dir)
-        decoder = str(cfg.pipeline_components.model.name).removesuffix("_test")
+        decoder = decoder_name(cfg)
         if decoder not in {
             "logistic_regression",
             "xgboost",
@@ -538,9 +561,9 @@ def craft_cross_subject_model_comparison_figure(analysis_input_dir: Path) -> Fig
         ("eegconformer", "EEGConformer", "#59A14F"),
     )
     expected_scenarios = {
-        (decoder, dataset): excluded_conditions
+        (decoder, dataset): recipe
         for decoder, _, _ in decoder_specs
-        for dataset, excluded_conditions in (("distinguishing", ("drowsy",)), ("sam40", ()))
+        for dataset, recipe in (("distinguishing", DISTINGUISHING), ("sam40", SAM40_FULL))
     }
     subject_scores_by_scenario: dict[tuple[str, str], np.ndarray] = {}
 
@@ -554,14 +577,20 @@ def craft_cross_subject_model_comparison_figure(analysis_input_dir: Path) -> Fig
         if str(cfg.validation_strategy.name) != "cross_subject":
             continue
 
-        decoder = str(cfg.pipeline_components.model.name).removesuffix("_test")
+        decoder = decoder_name(cfg)
         if decoder not in {name for name, _, _ in decoder_specs}:
             continue
-        dataset = str(cfg.dataset.name)
+        if "preparation" in cfg and "source" in cfg.preparation:
+            dataset_recipe = cfg.preparation.source
+        elif "preparation" in cfg and "name" in cfg.preparation:
+            dataset_recipe = cfg.preparation
+        else:
+            raise ValueError(f"{job_dir}: config has no preparation identity.")
+        dataset = str(dataset_recipe.name)
         scenario = (decoder, dataset)
         if scenario not in expected_scenarios:
             raise ValueError(f"Unexpected cross-subject scenario in {job_dir}: {scenario}.")
-        if tuple(sorted(cfg.dataset.exclude_conditions)) != expected_scenarios[scenario]:
+        if _side_key(dataset_recipe) != expected_scenarios[scenario]:
             raise ValueError(f"{job_dir}: unexpected dataset composition for {scenario}.")
         if scenario in subject_scores_by_scenario:
             raise ValueError(f"Duplicate cross-subject scenario: {scenario}.")
@@ -680,7 +709,6 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
         "Leave-one-subject-out(Full A)",
         "Leave-one-subject-out(Full B)",
         "Leave-one-session-out(Full A)",
-        "Leave-one-trial-out(Full B)",
         "Stroop → Arithmetic",
         "Stroop → Mirror",
         "Arithmetic → Stroop",
@@ -722,8 +750,8 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
             (("rust", 0.34), ("olive", 0.72), ("teal", 0.22), ("cyan", 0.72), ("violet", 0.34)),
         ),
         (
-            "Cross-subject, Cross-session, Cross-trial",
-            (("rust", 0.26), ("rust", 0.66), ("cyan", 0.66), ("olive", 0.62)),
+            "Cross-subject, Cross-session",
+            (("rust", 0.26), ("rust", 0.66), ("cyan", 0.66)),
         ),
         (
             "Cross-task (Dataset B; single/double-task transfers)",
@@ -757,7 +785,7 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
     scores: dict[tuple[str, tuple[object, ...]], float] = {}
     for job_dir in job_dirs:
         cfg, windows, folds = read_scenario_result(job_dir)
-        decoder = str(cfg.pipeline_components.model.name).removesuffix("_test")
+        decoder = decoder_name(cfg)
         if decoder not in known_decoders:
             raise ValueError(f"{job_dir}: unsupported decoder for article figure: {decoder}.")
         scenario = scenario_key(cfg)

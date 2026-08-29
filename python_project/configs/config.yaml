@@ -1,22 +1,21 @@
 defaults:
-  - dataset: sam40
-  - preparation: default
+  - preparation: sam40
   - features: classical_ml
-  - pipeline: default
+  - pipeline: logistic_regression
   - validation_strategy: baseline
   - _self_
 
 seed: 42
-# GPU decoders still use CPU threads for dispatch and tensor preparation; keep
-# this budget separate from the classical feature-extraction workers.
 torch_num_threads: 6
 
 hydra:
-  mode: MULTIRUN
   job:
+    name: adhoc
     chdir: false
+  run:
+    dir: results/default_run (${now:%Y-%m-%d %% %H-%M-%S})
   sweep:
-    dir: results/${hydra.job.config_name} (${now:%Y-%m-%d %% %H-%M-%S})
+    dir: results/default_sweep (${now:%Y-%m-%d %% %H-%M-%S})
     subdir: ${hydra.job.override_dirname}
   callbacks:
     hardware_trace:

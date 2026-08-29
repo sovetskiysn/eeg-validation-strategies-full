@@ -1,5 +1,0 @@
-# @package _global_
-
-defaults:
-  - override /validation_strategy: cross_subject
-  - override /dataset: sam40

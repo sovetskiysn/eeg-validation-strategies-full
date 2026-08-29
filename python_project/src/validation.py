@@ -8,174 +8,172 @@ import pandas as pd
 from omegaconf import DictConfig
 from sklearn.model_selection import LeaveOneGroupOut, StratifiedGroupKFold
 
-from preparation import DATASET_MAPPING, get_dataset_dir
+from preparation import DATASET_MAPPING, prepare_epochs
 
 
 def build_baseline(
-    dataset: DictConfig, preparation: DictConfig, seed: int
+    preparation_config: DictConfig, seed: int
 ) -> tuple[mne.Epochs, np.ndarray, StratifiedGroupKFold]:
     """Return one dataset with physical-session-disjoint stratified folds."""
-    dataset_dir = get_dataset_dir(dataset, preparation)
-    epochs = mne.read_epochs(dataset_dir / "epochs-epo.fif", preload=True, verbose=False)
-    # The same `sub-01` is a different person in each dataset, and transfer puts
-    # both in one table, so identity is prefixed by the dataset it came from.
-    # `recording_unit` arrives already qualified that way from Stage 1.
-    m = epochs.metadata
-    m["subject_id"] = m["dataset"] + "_" + m["subject"]
+    # =============================================================================
+    # Step 1: prepare the dataset
+    # =============================================================================
+    if "source" in preparation_config or "targets" in preparation_config:
+        raise ValueError("baseline validation accepts one preparation config, not transfer sides.")
+    epochs = prepare_epochs(preparation_config)
+
+    # =============================================================================
+    # Step 2: define recording-disjoint folds
+    # =============================================================================
+    metadata = epochs.metadata
+    metadata["subject_id"] = metadata["dataset"] + "_" + metadata["subject"]
     # ICA is fitted once per recording unit, so this split must keep every
-    # recording of that unit on one side. Grouping by task recording here would
-    # share a fitted ICA solution between train and test for SAM40.
-    groups = m["recording_unit"].to_numpy()
+    # unit entirely on one side of a fold.
+    groups = metadata["recording_unit"].to_numpy()
     return epochs, groups, StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=seed)
 
 
 def build_cross_subject(
-    dataset: DictConfig, preparation: DictConfig, seed: int
+    preparation_config: DictConfig, seed: int
 ) -> tuple[mne.Epochs, np.ndarray, LeaveOneGroupOut]:
     """Return one dataset with leave-one-subject-out folds."""
-    dataset_dir = get_dataset_dir(dataset, preparation)
-    epochs = mne.read_epochs(dataset_dir / "epochs-epo.fif", preload=True, verbose=False)
-    m = epochs.metadata
-    m["subject_id"] = m["dataset"] + "_" + m["subject"]
-    return epochs, m["subject_id"].to_numpy(), LeaveOneGroupOut()
+    # =============================================================================
+    # Step 1: prepare the dataset
+    # =============================================================================
+    if "source" in preparation_config or "targets" in preparation_config:
+        raise ValueError("cross-subject validation accepts one preparation config, not transfer sides.")
+    epochs = prepare_epochs(preparation_config)
+
+    # =============================================================================
+    # Step 2: define leave-one-subject-out folds
+    # =============================================================================
+    metadata = epochs.metadata
+    metadata["subject_id"] = metadata["dataset"] + "_" + metadata["subject"]
+    return epochs, metadata["subject_id"].to_numpy(), LeaveOneGroupOut()
 
 
 def build_cross_session(
-    dataset: DictConfig, preparation: DictConfig, seed: int
+    preparation_config: DictConfig, seed: int
 ) -> tuple[mne.Epochs, None, list[tuple[np.ndarray, np.ndarray]]]:
     """Return leave-one-source-session-out folds within each subject."""
-    dataset_dir = get_dataset_dir(dataset, preparation)
-    epochs = mne.read_epochs(dataset_dir / "epochs-epo.fif", preload=True, verbose=False)
-    m = epochs.metadata
-    # This protocol claims transferability across independent physical sessions,
-    # so it runs only on a dataset whose source actually has them. SAM40 repeats
-    # its protocol within one setup; that is build_cross_trial, and calling it
-    # cross-session would be a claim the data does not support.
-    if m["session"].isna().any():
+    # =============================================================================
+    # Step 1: prepare and validate the dataset
+    # =============================================================================
+    if "source" in preparation_config or "targets" in preparation_config:
+        raise ValueError("cross-session validation accepts one preparation config, not transfer sides.")
+    epochs = prepare_epochs(preparation_config)
+    metadata = epochs.metadata
+    if metadata["session"].isna().any():
         raise ValueError(
             f"cross-session validation needs source sessions, and "
-            f"{sorted(m['dataset'].unique())} has none. Use cross_trial."
+            f"{sorted(metadata['dataset'].unique())} has none."
         )
-    m["subject_id"] = m["dataset"] + "_" + m["subject"]
-    subjects = m["subject_id"].to_numpy()
-    # Named after what this protocol actually splits on. The generic
-    # `recording_unit` would give the same strings, but naming it here is what
-    # keeps this apart from cross-trial, which is a different claim.
-    units = (m["subject_id"] + "_ses-" + m["session"]).to_numpy()
+    metadata["subject_id"] = metadata["dataset"] + "_" + metadata["subject"]
+
+    # =============================================================================
+    # Step 2: hold out each session within each subject
+    # =============================================================================
+    subjects = metadata["subject_id"].to_numpy()
+    sessions = (metadata["subject_id"] + "_ses-" + metadata["session"]).to_numpy()
     cv = []
     for subject in np.unique(subjects):
         rows = np.flatnonzero(subjects == subject)
-        subject_units = units[rows]
-        for held_out in np.unique(subject_units):
-            cv.append((rows[subject_units != held_out], rows[subject_units == held_out]))
-    return epochs, None, cv
-
-
-def build_cross_trial(
-    dataset: DictConfig, preparation: DictConfig, seed: int
-) -> tuple[mne.Epochs, None, list[tuple[np.ndarray, np.ndarray]]]:
-    """Return leave-one-source-trial-out folds within each subject.
-
-    Every window and every selected task recording of one trial stays on one side
-    of the split, which is what keeps overlapping windows and repeated
-    acquisitions out of both train and test. It is not a test of transfer between
-    independent physical sessions and must not be reported as one.
-    """
-    dataset_dir = get_dataset_dir(dataset, preparation)
-    epochs = mne.read_epochs(dataset_dir / "epochs-epo.fif", preload=True, verbose=False)
-    m = epochs.metadata
-    if m["run"].isna().any():
-        raise ValueError(
-            f"cross-trial validation needs source trials represented as runs, and "
-            f"{sorted(m['dataset'].unique())} has none. Use cross_session."
-        )
-    m["subject_id"] = m["dataset"] + "_" + m["subject"]
-    subjects = m["subject_id"].to_numpy()
-    units = (m["subject_id"] + "_run-" + m["run"]).to_numpy()
-    cv = []
-    for subject in np.unique(subjects):
-        rows = np.flatnonzero(subjects == subject)
-        subject_units = units[rows]
-        for held_out in np.unique(subject_units):
-            cv.append((rows[subject_units != held_out], rows[subject_units == held_out]))
+        subject_sessions = sessions[rows]
+        for held_out in np.unique(subject_sessions):
+            cv.append((rows[subject_sessions != held_out], rows[subject_sessions == held_out]))
     return epochs, None, cv
 
 
 def build_cross_dataset(
-    dataset: DictConfig, preparation: DictConfig, seed: int
+    preparation_config: DictConfig, seed: int
 ) -> tuple[mne.Epochs, None, list[tuple[np.ndarray, np.ndarray]]]:
     """Train on every source window and test on the windows of every target."""
-    source_dir = get_dataset_dir(dataset.source, preparation)
-    source_epochs = mne.read_epochs(source_dir / "epochs-epo.fif", preload=True, verbose=False)
-    # A run holds one source and several targets so the decoder is fitted once
-    # per source fold instead of once per direction. Every target is still a
-    # complete direction of its own, so each one faces the full check below; a
-    # loop that checked only the first target would silently license the rest.
-    source_classes = list(DATASET_MAPPING[dataset.source.name])
-    target_epochs = []
-    for index, target in enumerate(dataset.targets):
-        if dataset.source.name == target.name:
+    # =============================================================================
+    # Step 1: validate the transfer direction
+    # =============================================================================
+    if not preparation_config.targets:
+        raise ValueError("cross-dataset validation needs at least one target preparation.")
+    source_name = str(preparation_config.source.name)
+    if source_name not in DATASET_MAPPING:
+        raise ValueError(f"No condition mapping for {source_name!r}: {sorted(DATASET_MAPPING)}.")
+    source_classes = list(DATASET_MAPPING[source_name])
+    for index, target in enumerate(preparation_config.targets.values()):
+        target_name = str(target.name)
+        if source_name == target_name:
             raise ValueError(
                 f"cross-dataset validation requires different source and target datasets; "
-                f"target {index} is {target.name}, the source dataset."
+                f"target {index} is {target_name}, the source dataset."
             )
-        # Training on one release and testing on another only means anything if
-        # class 1 is the same thing on both sides. The class label is the
-        # position of its name in DATASET_MAPPING, so comparing the names in
-        # order is what checks it -- and it has to be checked, because a swapped
-        # order does not fail. It returns roughly `1 - accuracy`, which reads as
-        # a plausible transfer result.
-        target_classes = list(DATASET_MAPPING[target.name])
+        if target_name not in DATASET_MAPPING:
+            raise ValueError(f"No condition mapping for {target_name!r}: {sorted(DATASET_MAPPING)}.")
+        # Class order defines the numeric labels and must match across datasets.
+        target_classes = list(DATASET_MAPPING[target_name])
         if source_classes != target_classes:
             raise ValueError(
                 "cross-dataset validation needs the same classes in the same order on both "
-                f"sides; {dataset.source.name} has {source_classes}, target {index} "
-                f"{target.name} has {target_classes}."
+                f"sides; {source_name} has {source_classes}, target {index} "
+                f"{target_name} has {target_classes}."
             )
-        epochs = mne.read_epochs(
-            get_dataset_dir(target, preparation) / "epochs-epo.fif", preload=True, verbose=False
-        )
-        # Which target a window belongs to survives the concatenation only in the
-        # metadata, because the protocol contract returns one Epochs object. The
-        # runner reads it to split the run back into one result per direction and
-        # drops it there; it is a carrier, not a recorded fact.
+
+    # =============================================================================
+    # Step 2: prepare and combine source and targets
+    # =============================================================================
+    source_epochs = prepare_epochs(preparation_config.source)
+    target_epochs = []
+    for index, target in enumerate(preparation_config.targets.values()):
+        epochs = prepare_epochs(target)
         epochs.metadata["target_index"] = index
         target_epochs.append(epochs)
     source_epochs.metadata["target_index"] = pd.NA
 
     epochs = mne.concatenate_epochs([source_epochs, *target_epochs], verbose=False)
-    m = epochs.metadata
-    m["target_index"] = m["target_index"].astype("Int64")
-    m["subject_id"] = m["dataset"] + "_" + m["subject"]
-    source_size = len(source_epochs)
-    # One fold, and its test set is every target at once: that is what makes this
-    # a single fit on the source rather than one fit per direction.
-    return epochs, None, [(np.arange(source_size), np.arange(source_size, len(epochs)))]
+    metadata = epochs.metadata
+    metadata["target_index"] = metadata["target_index"].astype("Int64")
+    metadata["subject_id"] = metadata["dataset"] + "_" + metadata["subject"]
+
+    # =============================================================================
+    # Step 3: train once on the source and test on every target
+    # =============================================================================
+    return epochs, None, [
+        (np.arange(len(source_epochs)), np.arange(len(source_epochs), len(epochs)))
+    ]
 
 
 def build_cross_task(
-    dataset: DictConfig, preparation: DictConfig, seed: int
+    preparation_config: DictConfig, seed: int
 ) -> tuple[mne.Epochs, None, list[tuple[np.ndarray, np.ndarray]]]:
     """Transfer between tasks while holding out each participant from source training."""
-    source_dir = get_dataset_dir(dataset.source, preparation)
-    source_epochs = mne.read_epochs(source_dir / "epochs-epo.fif", preload=True, verbose=False)
-    # This participant check spans two artifacts, so it compares the bare BIDS
-    # subject: dataset-prefixed ids could never match across a source and a target.
+    # =============================================================================
+    # Step 1: validate the task compositions
+    # =============================================================================
+    if not preparation_config.targets:
+        raise ValueError("cross-task validation needs at least one target task composition.")
+    source_name = str(preparation_config.source.name)
+    source_task = preparation_config.source.mne_bids_pipeline.task
+    source_tasks = {source_task} if isinstance(source_task, str) else set(source_task)
+    for index, target in enumerate(preparation_config.targets.values()):
+        target_name = str(target.name)
+        if source_name != target_name:
+            raise ValueError(
+                "cross-task validation requires the same dataset on the source and every "
+                f"target; target {index} is {target_name}, the source is {source_name}."
+            )
+        target_task = target.mne_bids_pipeline.task
+        target_tasks = {target_task} if isinstance(target_task, str) else set(target_task)
+        if source_tasks == target_tasks:
+            raise ValueError(
+                "cross-task validation requires different tasks on the source and every "
+                f"target; target {index} repeats the source composition."
+            )
+
+    # =============================================================================
+    # Step 2: prepare source and targets
+    # =============================================================================
+    source_epochs = prepare_epochs(preparation_config.source)
     source_subjects = source_epochs.metadata["subject"].to_numpy()
     target_epochs = []
-    for index, target in enumerate(dataset.targets):
-        # Both sides name the same BIDS dataset and differ only in the conditions
-        # the recipe excluded, so that is what must differ here. Comparing names
-        # would reject every legitimate SAM40 task pair. Sets, because the order
-        # two exclusions are written in is not a difference between them.
-        if set(dataset.source.exclude_conditions) == set(target.exclude_conditions):
-            raise ValueError(
-                "cross-task validation requires different exclude_conditions on the source "
-                f"and every target; target {index} repeats the source composition."
-            )
-        epochs = mne.read_epochs(
-            get_dataset_dir(target, preparation) / "epochs-epo.fif", preload=True, verbose=False
-        )
+    for index, target in enumerate(preparation_config.targets.values()):
+        epochs = prepare_epochs(target)
         if set(epochs.metadata["subject"].to_numpy()) != set(source_subjects):
             raise ValueError(
                 "cross-task validation requires source and target datasets with the same "
@@ -186,19 +184,16 @@ def build_cross_task(
     source_epochs.metadata["target_index"] = pd.NA
 
     epochs = mne.concatenate_epochs([source_epochs, *target_epochs], verbose=False)
-    m = epochs.metadata
-    m["target_index"] = m["target_index"].astype("Int64")
-    m["subject_id"] = m["dataset"] + "_" + m["subject"]
-    # Each target starts where the previous one ended, and the offsets are read
-    # off the actual lengths: two compositions of the same dataset hold different
-    # numbers of windows, so a stride assumed to be constant would silently test
-    # the wrong participant.
+    metadata = epochs.metadata
+    metadata["target_index"] = metadata["target_index"].astype("Int64")
+    metadata["subject_id"] = metadata["dataset"] + "_" + metadata["subject"]
+
+    # =============================================================================
+    # Step 3: hold out each source participant from every target task
+    # =============================================================================
     offsets = np.cumsum([len(source_epochs), *(len(one) for one in target_epochs)])
     cv = []
     for subject in np.unique(source_subjects):
-        # One fold per held-out source participant, and its test set is that same
-        # unseen participant in every target at once. Neither task nor subject
-        # identity can leak: the participant is absent from the source training.
         test_idx = np.concatenate(
             [
                 offset + np.flatnonzero(one.metadata["subject"].to_numpy() == subject)
