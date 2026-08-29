@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import fcntl
 import subprocess
 import tempfile
 import types
@@ -122,16 +123,27 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
             "Check the preparation YAML for a typo or a renamed option."
         )
     params = {key: _coerce(value, annotations[key]) for key, value in params.items()}
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", encoding="utf-8") as stream:
-        stream.write("# Generated from the composed Hydra preparation.\n")
-        for key, value in sorted(params.items()):
-            stream.write(f"{key} = {pformat(value, sort_dicts=True)}\n")
-        stream.flush()
-        subprocess.run(
-            ["mne_bids_pipeline", "--config", stream.name, "--steps=preprocessing"],
-            check=True,
-            cwd=PROJECT_ROOT,
-        )
+    derivative_root = Path(params["deriv_root"])
+    if not derivative_root.is_absolute():
+        derivative_root = PROJECT_ROOT / derivative_root
+    derivative_root.mkdir(parents=True, exist_ok=True)
+
+    # Pipeline reports are mutable subject/session files shared by all tasks and
+    # runs in one derivatives root. All project invocations use the same lock so
+    # the runner can later snapshot the reports without another job modifying
+    # them in the middle of a copy.
+    with (derivative_root / ".preparation.lock").open("w") as lock_stream:
+        fcntl.flock(lock_stream, fcntl.LOCK_EX)
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", encoding="utf-8") as stream:
+            stream.write("# Generated from the composed Hydra preparation.\n")
+            for key, value in sorted(params.items()):
+                stream.write(f"{key} = {pformat(value, sort_dicts=True)}\n")
+            stream.flush()
+            subprocess.run(
+                ["mne_bids_pipeline", "--config", stream.name, "--steps=preprocessing"],
+                check=True,
+                cwd=PROJECT_ROOT,
+            )
 
     # =============================================================================
     # Step 3: find the prepared recordings
@@ -142,9 +154,6 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
     if not 0 <= overlap < window_size:
         raise ValueError("rest_epochs_overlap must lie in [0, rest_epochs_duration).")
 
-    derivative_root = Path(pipeline.deriv_root)
-    if not derivative_root.is_absolute():
-        derivative_root = PROJECT_ROOT / derivative_root
     processing = "clean" if pipeline.spatial_filter == "ica" else "filt"
     raw_paths = sorted(
         mne_bids.find_matching_paths(

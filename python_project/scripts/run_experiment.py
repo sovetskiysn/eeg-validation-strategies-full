@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import fcntl
 import logging
+import shutil
 from pathlib import Path
 
 import hydra
@@ -13,6 +15,8 @@ from hydra.core.hydra_config import HydraConfig
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
 from sklearn.model_selection import cross_validate
+
+from utils import PROJECT_ROOT
 
 log = logging.getLogger(__name__)
 
@@ -40,11 +44,47 @@ def main(cfg: DictConfig) -> None:
     # =============================================================================
     # Stage 1: MNE-BIDS-Pipeline artifacts and validation protocol
     # =============================================================================
+    output_dir = Path(HydraConfig.get().runtime.output_dir).resolve()
     epochs, groups, cv = instantiate(
         cfg.validation_strategy.protocol,
         preparation_config=cfg.preparation,
         seed=int(cfg.seed),
     )
+
+    # MNE-BIDS-Pipeline owns the reports in the fixed derivatives roots from the
+    # preparation configs. Snapshot each distinct root into this Hydra job only
+    # after every source and target preparation has finished.
+    preparation_sides = (
+        [cfg.preparation.source, *cfg.preparation.targets.values()]
+        if "source" in cfg.preparation
+        else [cfg.preparation]
+    )
+    seen_derivative_roots = set()
+    for side in preparation_sides:
+        derivative_root = Path(side.mne_bids_pipeline.deriv_root)
+        if not derivative_root.is_absolute():
+            derivative_root = PROJECT_ROOT / derivative_root
+        derivative_root = derivative_root.resolve()
+        if derivative_root in seen_derivative_roots:
+            continue
+        seen_derivative_roots.add(derivative_root)
+
+        with (derivative_root / ".preparation.lock").open("w") as lock_stream:
+            fcntl.flock(lock_stream, fcntl.LOCK_EX)
+            report_paths = sorted(
+                report_path
+                for report_path in derivative_root.rglob("*_report.html")
+                if "sub-average" not in report_path.parts
+            )
+            if not report_paths:
+                raise FileNotFoundError(
+                    f"{derivative_root} contains no MNE-BIDS-Pipeline HTML reports."
+                )
+            dataset_report_dir = output_dir / "preparation_reports" / str(side.name)
+            for report_path in report_paths:
+                destination = dataset_report_dir / report_path.relative_to(derivative_root)
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(report_path, destination)
 
     # =============================================================================
     # Stage 2: NumPy samples, provenance and estimator
@@ -192,7 +232,6 @@ def main(cfg: DictConfig) -> None:
     # under the same three-table contract. Source train rows and the fitted model
     # contents therefore repeat between neighbouring directions -- they are the
     # same fact about the same fold, and they are small next to the EEG windows.
-    output_dir = Path(HydraConfig.get().runtime.output_dir).resolve()
     # Replace Hydra's early snapshot after a successful fit so the input-derived
     # feature sampling frequency is persisted too.
     OmegaConf.save(cfg, output_dir / ".hydra" / "config.yaml", resolve=True)
