@@ -16,6 +16,12 @@ mne_bids_pipeline:
   h_freq: 40.0
   notch_freq: [50.0]
   raw_resample_sfreq: 128.0
+  # Multiple task names require the task-keyed contrasts form, even when no
+  # evoked contrasts are requested. An empty mapping remains valid for every
+  # scenario-specific subset of tasks.
+  contrasts: {}
+  # Required by MNE-BIDS-Pipeline when task runs are treated as rest.
+  epochs_tmin: 0.0
   rest_epochs_duration: 5.0
   rest_epochs_overlap: 0.5
   task_is_rest: true

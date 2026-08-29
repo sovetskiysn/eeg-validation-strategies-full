@@ -18,6 +18,8 @@ mne_bids_pipeline:
   h_freq: 40.0
   notch_freq: [50.0]
   raw_resample_sfreq: 128.0
+  # Required by MNE-BIDS-Pipeline when task runs are treated as rest.
+  epochs_tmin: 0.0
   rest_epochs_duration: 5.0
   rest_epochs_overlap: 0.5
   task_is_rest: true
