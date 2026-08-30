@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import fcntl
+import shutil
 import subprocess
 import tempfile
 import types
@@ -15,6 +16,8 @@ import mne
 import mne_bids
 import numpy as np
 import pandas as pd
+from hydra.core.hydra_config import HydraConfig
+from hydra.types import RunMode
 from mne_bids_pipeline import _config as mbp_config
 from omegaconf import DictConfig, OmegaConf
 
@@ -129,9 +132,8 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
     derivative_root.mkdir(parents=True, exist_ok=True)
 
     # Pipeline reports are mutable subject/session files shared by all tasks and
-    # runs in one derivatives root. All project invocations use the same lock so
-    # the runner can later snapshot the reports without another job modifying
-    # them in the middle of a copy.
+    # runs in one derivatives root. The same lock protects preprocessing and the
+    # snapshot, so concurrent jobs can reuse one complete report copy safely.
     with (derivative_root / ".preparation.lock").open("w") as lock_stream:
         fcntl.flock(lock_stream, fcntl.LOCK_EX)
         with tempfile.NamedTemporaryFile(mode="w", suffix=".py", encoding="utf-8") as stream:
@@ -144,6 +146,58 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
                 check=True,
                 cwd=PROJECT_ROOT,
             )
+
+        report_paths = sorted(
+            report_path
+            for report_path in derivative_root.rglob("*_report.html")
+            if "sub-average" not in report_path.parts
+        )
+        if not report_paths:
+            raise FileNotFoundError(
+                f"{derivative_root} contains no MNE-BIDS-Pipeline HTML reports."
+            )
+        hydra_config = HydraConfig.get()
+        output_root = Path(
+            hydra_config.sweep.dir
+            if hydra_config.mode == RunMode.MULTIRUN
+            else hydra_config.run.dir
+        )
+        if not output_root.is_absolute():
+            output_root = PROJECT_ROOT / output_root
+        report_dir = Path(str(preparation_config.report_dir))
+        if report_dir.is_absolute() or ".." in report_dir.parts:
+            raise ValueError(
+                f"preparation.report_dir must be relative to the Hydra output, got {report_dir}."
+            )
+        destination_dir = output_root.resolve() / report_dir
+        completed_marker = destination_dir / ".snapshot_complete"
+        source_marker = destination_dir / ".source_derivative_root"
+        if completed_marker.exists():
+            saved_source = source_marker.read_text(encoding="utf-8").strip()
+            if saved_source != str(derivative_root):
+                raise RuntimeError(
+                    f"{destination_dir} already snapshots {saved_source}, not {derivative_root}."
+                )
+        else:
+            if destination_dir.exists():
+                raise RuntimeError(
+                    f"{destination_dir} exists without .snapshot_complete; "
+                    "remove the incomplete snapshot before rerunning."
+                )
+            destination_dir.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.TemporaryDirectory(
+                dir=destination_dir.parent, prefix=f".{report_dir.name}.snapshot-"
+            ) as temporary_dir:
+                staged_dir = Path(temporary_dir) / report_dir
+                for report_path in report_paths:
+                    destination = staged_dir / report_path.relative_to(derivative_root)
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(report_path, destination)
+                (staged_dir / ".source_derivative_root").write_text(
+                    f"{derivative_root}\n", encoding="utf-8"
+                )
+                (staged_dir / ".snapshot_complete").touch()
+                staged_dir.replace(destination_dir)
 
     # =============================================================================
     # Step 3: find the prepared recordings

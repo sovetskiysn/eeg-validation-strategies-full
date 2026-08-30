@@ -1,0 +1,2 @@
+[2026-08-30 09:51:39,687][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder (2026-08-30 % 09-34-15)/logistic_regression/baseline_distinguishing (mean accuracy 0.640)
+[2026-08-30 09:51:39,689][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

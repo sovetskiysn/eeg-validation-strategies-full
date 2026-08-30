@@ -2,6 +2,9 @@ defaults:
   - _sam40_common_default
   - _self_
 
+name: sam40_arithmetic
+report_dir: _preparation/sam40_arithmetic
+
 mne_bids_pipeline:
   task: [relax, arithmetic]
   deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-arithmetic

@@ -1,9 +1,7 @@
 name: classical_ml
 transform:
   _target_: mne_features.feature_extraction.FeatureExtractor
-  # Filled from the resolved source Epochs by the runner: this is a property of
-  # the actual input tensor, not a second sampling-frequency setting.
-  sfreq: null
+  sfreq: ${preparation.mne_bids_pipeline.raw_resample_sfreq}
   # One fixed conventional feature representation for Logistic Regression and
   # XGBoost.  The functions previously lived in spectral, entropy and
   # statistical alternatives; keeping them together makes feature engineering

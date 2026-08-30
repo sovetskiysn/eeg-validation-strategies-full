@@ -13,6 +13,10 @@ python_project/datasets/bids/*
 python_project/datasets/bids/*/derivatives/
 python_project/datasets/prepared_cache/*
 
+# MNE-BIDS-Pipeline HTML snapshots are reproducibility aids, not Git artifacts.
+python_project/results/**/_preparation/
+python_project/results/**/preparation_reports/
+
 # latex_documents: build artifacts
 # LaTeX Workshop is configured (.vscode/settings.json) to drop aux files here
 latex_documents/**/.build/

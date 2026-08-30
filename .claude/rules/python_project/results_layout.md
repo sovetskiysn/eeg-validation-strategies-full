@@ -34,10 +34,14 @@ job'ов от этого меньше числа научных направле
 ответственность раннера, а не анализа.
 
 - Non-transfer job пишет три parquet прямо в свой каталог, как и раньше.
-- После Stage 1 каждый execution job сохраняет автономные HTML-отчёты
-  MNE-BIDS-Pipeline в `preparation_reports/<dataset>/`, сохраняя относительные
-  subject/session-пути из derivatives. Transfer-targets используют один общий
-  snapshot job, а не дублируют его в каждой листовой папке.
+- После Stage 1 верхний Hydra output сохраняет один автономный HTML-snapshot
+  MNE-BIDS-Pipeline на preparation-рецепт в
+  `<preparation.report_dir>/`, сохраняя относительные subject/session-пути из
+  derivatives. `report_dir` — относительный путь от Hydra output и начинается
+  с `_preparation/`; все execution jobs sweep-а используют этот snapshot,
+  одиночный run хранит его в своём output root. Поле явно задано в каждой
+  runnable preparation-option: `name` называет датасет и может быть
+  одинаковым у разных рецептов.
 - Transfer job пишет по одному самодостаточному результату на направление в
   `targets/<target-composition>/`: те же три parquet плюс `scenario.yaml`.
 - Имя листовой папки выведено из скомпонованной target-стороны: dataset и
