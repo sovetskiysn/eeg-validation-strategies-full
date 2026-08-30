@@ -130,8 +130,8 @@ notebooks/          # .ipynb: QC стадий и разведка (notebooks.md)
 `configs/preparation/distinguishing.yaml` и каждая runnable-option
 `configs/preparation/sam40_*.yaml` описывают одну сторону: постоянные `name`
 и `dataset_dir` плюс единственный внешний узел `mne_bids_pipeline`.
-`configs/preparation/sam40.yaml` — только общий базовый рецепт для этих
-options. `configs/preparation/transfer.yaml` задаёт форму
+`configs/preparation/_sam40_common_default.yaml` — только общий базовый рецепт
+для этих options. `configs/preparation/transfer.yaml` задаёт форму
 `source + targets`, где `targets` — именованный mapping, а не список.
 
 Scenario композит полную preparation-option прямо в source и каждый target,

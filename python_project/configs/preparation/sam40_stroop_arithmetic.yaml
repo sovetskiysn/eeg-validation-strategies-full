@@ -1,5 +1,5 @@
 defaults:
-  - sam40
+  - _sam40_common_default
   - _self_
 
 mne_bids_pipeline:
