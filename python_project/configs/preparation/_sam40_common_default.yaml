@@ -23,6 +23,10 @@ mne_bids_pipeline:
   rest_epochs_duration: 5.0
   rest_epochs_overlap: 0.5
   task_is_rest: true
+  # Fixed-length rest epochs begin at t=0, so Pipeline's default (None, 0)
+  # would contain only that one sample. Analysis windows have no prestimulus
+  # baseline; the project creates their labelled windows from cleaned raw data.
+  baseline: null
   spatial_filter: ica
   ica_algorithm: extended_infomax
   ica_exclusion_thresholds:
