@@ -12,15 +12,8 @@ estimator:
       # before reaching its own convergence tolerance (ConvergenceWarning),
       # so fitted weights depended on the cap rather than on the data.
       max_iter: 2000
-      # L2 at the sklearn default strength. This is regularisation against
-      # overfitting, not a hyperparameter search: LogisticRegressionCV would tune C
-      # on an inner group-aware CV, and C is left unset rather than tuned.
-      # The original reason was structural -- the inner split needed `groups`
-      # routed past a RandomOverSampler, which resamples X/y but not the metadata
-      # travelling alongside them. That blocker is gone: no pipeline step resamples
-      # anything now, so routing `groups` to an inner split would only need
-      # `enable_metadata_routing`. What remains is a plain choice not to search C,
-      # and an inner split would also have to be group-aware to mean anything here.
+      # Fixed L2 strength; outer cross-validation evaluates this predeclared
+      # decoder recipe and never chooses C from any test or inner fold.
       C: 1.0
       # Replaces the RandomOverSampler that used to precede this estimator: the same
       # n / (k * n_c) reweighting, but without duplicating windows. Computed from

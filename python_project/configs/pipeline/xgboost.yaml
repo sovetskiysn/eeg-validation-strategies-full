@@ -34,9 +34,8 @@ estimator:
       # Training folds have roughly 2k windows and ~170 features.  Shallower
       # trees, row/column subsampling and explicit L1/L2 penalties replace the
       # high-variance defaults (depth 6, rate 0.3, all rows and columns).  The
-      # fixed 300-round budget is intentionally conservative: the shared runner
-      # supplies no fit-time eval_set, so XGBoost cannot perform valid early
-      # stopping from this YAML alone.  Its outer test folds must remain unseen.
+      # Fixed-recipe benchmark: each outer-train fold fits this predeclared
+      # regularised ensemble for exactly 300 boosting rounds.
       n_estimators: 300
       learning_rate: 0.03
       max_depth: 3

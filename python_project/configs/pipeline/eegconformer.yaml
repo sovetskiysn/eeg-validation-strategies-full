@@ -3,15 +3,17 @@ name: eegconformer
 estimator:
   _target_: imblearn.pipeline.make_pipeline
   _args_:
-    # MNE supplies EEG in volts. Deep models receive the same raw windows in
-    # microvolts; this fixed unit conversion learns nothing from a fold.
+    # Estimate one mean and standard deviation per channel from the outer-train
+    # fold, across its windows and time samples; retain the (windows, channels,
+    # time) geometry the convolutional decoder needs. This makes V -> microV
+    # redundant: standardisation is invariant to that fixed unit conversion.
+    - _target_: mne.decoding.Scaler
+      scalings: mean
+    # MNE's scaler returns float64; the PyTorch module has float32 weights.
     - _target_: sklearn.preprocessing.FunctionTransformer
       func:
-        _target_: functools.partial
-        _args_:
-          - _target_: hydra.utils.get_method
-            path: numpy.multiply
-          - 1000000.0
+        _target_: hydra.utils.get_method
+        path: numpy.float32
       validate: false
     # Convolution plus self-attention EEG architecture (Song et al., 2022).
     # Its larger capacity is deliberately compared with compact EEGNet rather than
@@ -53,23 +55,11 @@ estimator:
         - _target_: skorch.callbacks.LRScheduler
           policy: CosineAnnealingLR
           T_max: 99
-        - _target_: skorch.callbacks.EarlyStopping
-          monitor: valid_loss
-          patience: 10
-          load_best: true
         # `class_weight="balanced"` for this estimator, read off each train fold
         # (src/pipeline.py). It replaces the oversampling step that used to run
-        # before the classifier, whose duplicate windows landed on both sides of the
-        # ValidSplit below. Note that it weights `valid_loss` too, so EarlyStopping
-        # now stops on a weighted loss -- deliberate, because the inner validation
-        # partition is imbalanced exactly like the fold it is cut from.
+        # before the classifier, which duplicated correlated windows.
         - _target_: pipeline.BalancedClassWeight
       device: cuda
-      # Validation comes only from the corresponding outer train fold, never from
-      # its held-out test fold.
-      train_split:
-        _target_: skorch.dataset.ValidSplit
-        cv: 0.2
-        stratified: true
-        random_state: ${seed}
+      # Fixed-recipe benchmark: train for all 100 epochs on the outer-train fold.
+      train_split: null
       verbose: 0

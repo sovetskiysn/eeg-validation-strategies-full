@@ -59,17 +59,15 @@ def main(cfg: DictConfig) -> None:
     X = transform.fit_transform(X)
 
     estimator = instantiate(cfg.pipeline.estimator)
-    # `scoring=None` takes the estimator's own `.score()`, which is accuracy for
-    # every model here. It is a liveness check on the run and nothing more: every
-    # reported metric is recomputed by `run_analysis.py` from the tables below,
-    # so a metric list in the run config would be a second source of truth.
+    # This is a liveness check on the run and nothing more: every publication
+    # metric is recomputed by `run_analysis.py` from the tables below.
     results = cross_validate(
         estimator=estimator,
         X=X,
         y=y,
         cv=cv,
         groups=groups,
-        scoring=None,
+        scoring="balanced_accuracy",
         return_train_score=False,
         return_indices=True,
         return_estimator=True,
@@ -240,13 +238,13 @@ def main(cfg: DictConfig) -> None:
             importances.to_parquet(target_dir / "importances.parquet", index=False)
             result_dirs.append(target_dir)
 
-    # `test_score` is accuracy over every target of a fold at once. It is the
+    # `test_score` is balanced accuracy over every target of a fold at once. It is the
     # liveness check and nothing else; every reported metric is recomputed by
     # `run_analysis.py` from the tables above. Logged rather than printed so it
     # lands in Hydra's own per-job log file, not only on the console.
     log.info(
         f"Completed {HydraConfig.get().job.name}: {len(result_dirs)} result(s) under "
-        f"{output_dir} (mean accuracy {results['test_score'].mean():.3f})"
+        f"{output_dir} (mean balanced accuracy {results['test_score'].mean():.3f})"
     )
 
 
