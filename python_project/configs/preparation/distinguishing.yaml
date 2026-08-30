@@ -1,6 +1,5 @@
 
 name: distinguishing
-report_dir: _preparation/distinguishing
 dataset_dir: datasets/bids/distinguishing
 
 # This node alone is passed to MNE-BIDS-Pipeline after annotation-based type

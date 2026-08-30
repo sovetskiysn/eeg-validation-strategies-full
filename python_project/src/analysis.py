@@ -128,16 +128,9 @@ def scenario_key(cfg) -> tuple[object, ...]:
     return (str(cfg.validation_strategy.name), *(_side_key(side) for side in sides))
 
 
-def _side_key(side) -> tuple[str, tuple[str, ...]]:
+def _side_key(side) -> str:
     """Return the scientific identity of one composed preparation side."""
-    dataset_name = side.name
-    pipeline = side.mne_bids_pipeline if "mne_bids_pipeline" in side else side
-    task = pipeline.task
-    tasks = (task,) if isinstance(task, str) else tuple(task)
-    return (
-        str(dataset_name),
-        tuple(sorted(tasks)),
-    )
+    return str(side.name)
 
 
 def decoder_name(cfg) -> str:

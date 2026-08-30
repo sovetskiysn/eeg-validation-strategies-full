@@ -100,7 +100,8 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
     # =============================================================================
     # Step 1: validate the selected dataset conditions
     # =============================================================================
-    dataset_name = str(preparation_config.name)
+    scenario_name = str(preparation_config.name)
+    dataset_name = Path(str(preparation_config.dataset_dir)).name
     pipeline_config = preparation_config.mne_bids_pipeline
     tasks = pipeline_config.task
     if OmegaConf.is_config(tasks):
@@ -164,12 +165,7 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
         )
         if not output_root.is_absolute():
             output_root = PROJECT_ROOT / output_root
-        report_dir = Path(str(preparation_config.report_dir))
-        if report_dir.is_absolute() or ".." in report_dir.parts:
-            raise ValueError(
-                f"preparation.report_dir must be relative to the Hydra output, got {report_dir}."
-            )
-        destination_dir = output_root.resolve() / report_dir
+        destination_dir = output_root.resolve() / "_preparation" / scenario_name
         completed_marker = destination_dir / ".snapshot_complete"
         source_marker = destination_dir / ".source_derivative_root"
         if completed_marker.exists():
@@ -186,9 +182,9 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
                 )
             destination_dir.parent.mkdir(parents=True, exist_ok=True)
             with tempfile.TemporaryDirectory(
-                dir=destination_dir.parent, prefix=f".{report_dir.name}.snapshot-"
+                dir=destination_dir.parent, prefix=f".{scenario_name}.snapshot-"
             ) as temporary_dir:
-                staged_dir = Path(temporary_dir) / report_dir
+                staged_dir = Path(temporary_dir) / scenario_name
                 for report_path in report_paths:
                     destination = staged_dir / report_path.relative_to(derivative_root)
                     destination.parent.mkdir(parents=True, exist_ok=True)

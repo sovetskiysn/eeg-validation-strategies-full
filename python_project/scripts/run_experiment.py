@@ -215,14 +215,8 @@ def main(cfg: DictConfig) -> None:
             target_folds = folds[folds["window_index"].isin(local.index)].copy()
             target_folds["window_index"] = target_folds["window_index"].map(local)
 
-            # The directory name is derived from the composed target side, so it
-            # is not a hand-written run label: it says which composition was
-            # tested without opening anything.
-            task = target.mne_bids_pipeline.task
-            tasks = [task] if isinstance(task, str) else sorted(task)
-            target_dir = output_dir / "targets" / (
-                f"{target.name}__task-{'-'.join(tasks)}"
-            )
+            # The preparation name identifies the composed target scenario.
+            target_dir = output_dir / "targets" / str(target.name)
             target_dir.mkdir(parents=True)
             # A projection of this one direction, under the same field paths the
             # analysis reads from a saved Hydra config. Reading it needs no

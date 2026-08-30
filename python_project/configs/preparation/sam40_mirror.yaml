@@ -3,7 +3,6 @@ defaults:
   - _self_
 
 name: sam40_mirror
-report_dir: _preparation/sam40_mirror
 
 mne_bids_pipeline:
   task: [relax, mirror]

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import mne
 import numpy as np
 import pandas as pd
@@ -93,26 +95,26 @@ def build_cross_dataset(
     # =============================================================================
     if not preparation_config.targets:
         raise ValueError("cross-dataset validation needs at least one target preparation.")
-    source_name = str(preparation_config.source.name)
-    if source_name not in DATASET_MAPPING:
-        raise ValueError(f"No condition mapping for {source_name!r}: {sorted(DATASET_MAPPING)}.")
-    source_classes = list(DATASET_MAPPING[source_name])
+    source_dataset = Path(str(preparation_config.source.dataset_dir)).name
+    if source_dataset not in DATASET_MAPPING:
+        raise ValueError(f"No condition mapping for {source_dataset!r}: {sorted(DATASET_MAPPING)}.")
+    source_classes = list(DATASET_MAPPING[source_dataset])
     for index, target in enumerate(preparation_config.targets.values()):
-        target_name = str(target.name)
-        if source_name == target_name:
+        target_dataset = Path(str(target.dataset_dir)).name
+        if source_dataset == target_dataset:
             raise ValueError(
                 f"cross-dataset validation requires different source and target datasets; "
-                f"target {index} is {target_name}, the source dataset."
+                f"target {index} is {target_dataset}, the source dataset."
             )
-        if target_name not in DATASET_MAPPING:
-            raise ValueError(f"No condition mapping for {target_name!r}: {sorted(DATASET_MAPPING)}.")
+        if target_dataset not in DATASET_MAPPING:
+            raise ValueError(f"No condition mapping for {target_dataset!r}: {sorted(DATASET_MAPPING)}.")
         # Class order defines the numeric labels and must match across datasets.
-        target_classes = list(DATASET_MAPPING[target_name])
+        target_classes = list(DATASET_MAPPING[target_dataset])
         if source_classes != target_classes:
             raise ValueError(
                 "cross-dataset validation needs the same classes in the same order on both "
-                f"sides; {source_name} has {source_classes}, target {index} "
-                f"{target_name} has {target_classes}."
+                f"sides; {source_dataset} has {source_classes}, target {index} "
+                f"{target_dataset} has {target_classes}."
             )
 
     # =============================================================================
@@ -148,15 +150,15 @@ def build_cross_task(
     # =============================================================================
     if not preparation_config.targets:
         raise ValueError("cross-task validation needs at least one target task composition.")
-    source_name = str(preparation_config.source.name)
+    source_dataset = Path(str(preparation_config.source.dataset_dir)).name
     source_task = preparation_config.source.mne_bids_pipeline.task
     source_tasks = {source_task} if isinstance(source_task, str) else set(source_task)
     for index, target in enumerate(preparation_config.targets.values()):
-        target_name = str(target.name)
-        if source_name != target_name:
+        target_dataset = Path(str(target.dataset_dir)).name
+        if source_dataset != target_dataset:
             raise ValueError(
                 "cross-task validation requires the same dataset on the source and every "
-                f"target; target {index} is {target_name}, the source is {source_name}."
+                f"target; target {index} is {target_dataset}, the source is {source_dataset}."
             )
         target_task = target.mne_bids_pipeline.task
         target_tasks = {target_task} if isinstance(target_task, str) else set(target_task)

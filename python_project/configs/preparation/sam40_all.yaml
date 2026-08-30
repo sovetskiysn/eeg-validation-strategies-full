@@ -3,7 +3,6 @@ defaults:
   - _self_
 
 name: sam40_all
-report_dir: _preparation/sam40_all
 
 mne_bids_pipeline:
   task: [relax, stroop, arithmetic, mirror]
