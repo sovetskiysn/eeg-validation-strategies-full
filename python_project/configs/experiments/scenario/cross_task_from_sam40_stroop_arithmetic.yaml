@@ -11,7 +11,9 @@ preparation:
   source:
     mne_bids_pipeline:
       task: [relax, stroop, arithmetic]
+      deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop-arithmetic
   targets:
     sam40_mirror:
       mne_bids_pipeline:
         task: [relax, mirror]
+        deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-mirror

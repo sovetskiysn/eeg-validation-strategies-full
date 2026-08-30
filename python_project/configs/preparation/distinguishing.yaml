@@ -6,7 +6,7 @@ dataset_dir: datasets/bids/distinguishing
 # coercion in preparation.py. Omitted settings use Pipeline 1.10.1 defaults.
 mne_bids_pipeline:
   bids_root: ${..dataset_dir}
-  deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline
+  deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/attention
   allow_missing_sessions: true
   sessions: ['03', '04', '05', '06', '07']
   task: attention
@@ -32,7 +32,8 @@ mne_bids_pipeline:
   ica_icalabel_include: [brain, other, heart beat, line noise, channel noise]
   ica_l_freq: 1.0
   ica_n_components: 0.99
-  ica_reject: autoreject_local
+  # Keep the ICA recipe identical across datasets. Short recordings may leave
+  # AutoReject with no epochs for fitting; ICA-label remains enabled below.
+  ica_reject: null
   ica_use_icalabel: true
-  autoreject_n_interpolate: [1]
   run_source_estimation: false

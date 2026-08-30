@@ -11,3 +11,4 @@ preparation:
   source:
     mne_bids_pipeline:
       task: [relax, stroop]
+      deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop

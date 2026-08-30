@@ -6,7 +6,7 @@ dataset_dir: datasets/bids/sam40
 # SAM-40 composition and must include relax.
 mne_bids_pipeline:
   bids_root: ${..dataset_dir}
-  deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline
+  deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop-arithmetic-mirror
   task: [relax, stroop, arithmetic, mirror]
   ch_types: [eeg]
   analyze_channels: [F3, F4, F7, F8, FC5, FC6, O1, O2, P7, P8, T7, T8]
@@ -34,7 +34,10 @@ mne_bids_pipeline:
   ica_icalabel_include: [brain, other, heart beat, line noise, channel noise]
   ica_l_freq: 1.0
   ica_n_components: 0.99
-  ica_reject: autoreject_local
+  # Each task contains only three short runs. On sub-21/mirror AutoReject
+  # rejected all 18 fitting epochs, which makes ICA impossible to fit and
+  # aborts the whole sweep. Fit ICA on the filtered continuous recording;
+  # ICA-label still excludes non-neural components afterwards.
+  ica_reject: null
   ica_use_icalabel: true
-  autoreject_n_interpolate: [1]
   run_source_estimation: false

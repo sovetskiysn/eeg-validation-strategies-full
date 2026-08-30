@@ -1,4 +1,4 @@
-[2026-08-30 04:44:58,326][hydra.experimental.callbacks.LogJobReturnCallback][ERROR] - 
+[2026-08-30 04:45:08,884][hydra.experimental.callbacks.LogJobReturnCallback][ERROR] - 
 Traceback (most recent call last):
   File "/home/svc-jax-dlh/.work/python_project/.venv/lib/python3.11/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 182, in _call_target
     return _target_(*args, **kwargs)
@@ -10,7 +10,7 @@ Traceback (most recent call last):
     subprocess.run(
   File "/home/svc-jax-dlh/.local/share/uv/python/cpython-3.11.15-linux-x86_64-gnu/lib/python3.11/subprocess.py", line 571, in run
     raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['mne_bids_pipeline', '--config', '/tmp/tmp6nkuvuvj.py', '--steps=preprocessing']' returned non-zero exit status 1.
+subprocess.CalledProcessError: Command '['mne_bids_pipeline', '--config', '/tmp/tmp6kpfomtc.py', '--steps=preprocessing']' returned non-zero exit status 1.
 
 The above exception was the direct cause of the following exception:
 
@@ -30,5 +30,5 @@ Traceback (most recent call last):
   File "/home/svc-jax-dlh/.work/python_project/.venv/lib/python3.11/site-packages/hydra/_internal/instantiate/_instantiate2.py", line 187, in _call_target
     raise InstantiationException(msg) from e
 hydra.errors.InstantiationException: Error in call to target 'validation.build_baseline':
-CalledProcessError(1, ['mne_bids_pipeline', '--config', '/tmp/tmp6nkuvuvj.py', '--steps=preprocessing'])
+CalledProcessError(1, ['mne_bids_pipeline', '--config', '/tmp/tmp6kpfomtc.py', '--steps=preprocessing'])
 full_key: validation_strategy.protocol

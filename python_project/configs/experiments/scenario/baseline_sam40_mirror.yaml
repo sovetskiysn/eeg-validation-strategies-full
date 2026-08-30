@@ -7,3 +7,4 @@ defaults:
 preparation:
   mne_bids_pipeline:
     task: [relax, mirror]
+    deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-mirror

@@ -18,21 +18,28 @@ preparation:
     sam40_full:
       mne_bids_pipeline:
         task: [relax, stroop, arithmetic, mirror]
+        deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop-arithmetic-mirror
     sam40_stroop:
       mne_bids_pipeline:
         task: [relax, stroop]
+        deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop
     sam40_arithmetic:
       mne_bids_pipeline:
         task: [relax, arithmetic]
+        deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-arithmetic
     sam40_mirror:
       mne_bids_pipeline:
         task: [relax, mirror]
+        deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-mirror
     sam40_arithmetic_mirror:
       mne_bids_pipeline:
         task: [relax, arithmetic, mirror]
+        deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-arithmetic-mirror
     sam40_stroop_mirror:
       mne_bids_pipeline:
         task: [relax, stroop, mirror]
+        deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop-mirror
     sam40_stroop_arithmetic:
       mne_bids_pipeline:
         task: [relax, stroop, arithmetic]
+        deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop-arithmetic
