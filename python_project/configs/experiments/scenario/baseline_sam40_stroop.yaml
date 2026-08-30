@@ -2,9 +2,4 @@
 
 defaults:
   - override /validation_strategy: baseline
-  - override /preparation: sam40
-
-preparation:
-  mne_bids_pipeline:
-    task: [relax, stroop]
-    deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop
+  - override /preparation: sam40_stroop

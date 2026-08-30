@@ -38,10 +38,11 @@ datasets/bids/*/derivatives/mne-bids-pipeline/  # выход Stage 1
 места.
 
 **Подвыборка условий — не датасет.** Дублировать raw BIDS ради выбора задач
-незачем: одна option в `configs/preparation/` описывает постоянный BIDS-релиз,
-а scenario задаёт полное значение `mne_bids_pipeline.task` в source или target
-той же preparation. Выбор входит в Pipeline-конфигурацию и её derivatives, но
-не создаёт новый raw BIDS-корень.
+незачем: каждая runnable-option в `configs/preparation/` описывает полный
+рецепт одной composition, включая `mne_bids_pipeline.task` и соответствующий
+`deriv_root`; scenario только выбирает эту option для source или target.
+Выбор входит в Pipeline-конфигурацию и её derivatives, но не создаёт новый raw
+BIDS-корень.
 
 На сыром BIDS не выполняются фильтрация, ICA, re-reference или отбор каналов:
 это всё Stage 1.
@@ -229,10 +230,11 @@ provenance исходных данных, оно выражается BIDS-ан�
 ## MNE-BIDS-Pipeline derivatives — Stage 1
 
 Stage 1 больше не пишет собственный `prepared_cache`.
-`configs/preparation/{sam40,distinguishing}.yaml` содержат идентичность BIDS-
-релиза и отдельный узел полного внешнего Pipeline-конфига. Scenario композит
-эти options в `cfg.preparation` и выбирает `mne_bids_pipeline.task` для source
-и каждого элемента mapping `targets`. Validation передаёт в
+`configs/preparation/distinguishing.yaml` и runnable `sam40_*.yaml` содержат
+идентичность BIDS-релиза и отдельный узел полного внешнего Pipeline-конфига;
+у каждой SAM-40 option неразрывно заданы composition task и её `deriv_root`.
+Scenario композит эти готовые options в `cfg.preparation` для source и каждого
+элемента mapping `targets`. Validation передаёт в
 `preparation.get_epochs()` полную конфигурацию стороны; Pipeline владеет своими
 derivatives и `_cache`, а preparation читает derivatives выбранных задач и
 возвращает размеченный `mne.Epochs`.

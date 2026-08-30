@@ -1,0 +1,1591 @@
+GPU свободна (0 MiB занято). Проверка пройдена.
+debconf: delaying package configuration, since apt-utils is not installed
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5316 files and directories currently installed.)
+Preparing to unpack .../perl-base_5.34.0-3ubuntu1.8_amd64.deb ...
+Unpacking perl-base (5.34.0-3ubuntu1.8) over (5.34.0-3ubuntu1.3) ...
+Setting up perl-base (5.34.0-3ubuntu1.8) ...
+Selecting previously unselected package libpython3.10-minimal:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5316 files and directories currently installed.)
+Preparing to unpack .../libpython3.10-minimal_3.10.12-1~22.04.17_amd64.deb ...
+Unpacking libpython3.10-minimal:amd64 (3.10.12-1~22.04.17) ...
+Selecting previously unselected package libexpat1:amd64.
+Preparing to unpack .../libexpat1_2.4.7-1ubuntu0.7_amd64.deb ...
+Unpacking libexpat1:amd64 (2.4.7-1ubuntu0.7) ...
+Selecting previously unselected package python3.10-minimal.
+Preparing to unpack .../python3.10-minimal_3.10.12-1~22.04.17_amd64.deb ...
+Unpacking python3.10-minimal (3.10.12-1~22.04.17) ...
+Setting up libpython3.10-minimal:amd64 (3.10.12-1~22.04.17) ...
+Setting up libexpat1:amd64 (2.4.7-1ubuntu0.7) ...
+Setting up python3.10-minimal (3.10.12-1~22.04.17) ...
+Selecting previously unselected package python3-minimal.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5620 files and directories currently installed.)
+Preparing to unpack .../0-python3-minimal_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking python3-minimal (3.10.6-1~22.04.1) ...
+Selecting previously unselected package media-types.
+Preparing to unpack .../1-media-types_7.0.0_all.deb ...
+Unpacking media-types (7.0.0) ...
+Selecting previously unselected package libmpdec3:amd64.
+Preparing to unpack .../2-libmpdec3_2.5.1-2build2_amd64.deb ...
+Unpacking libmpdec3:amd64 (2.5.1-2build2) ...
+Selecting previously unselected package libpython3.10-stdlib:amd64.
+Preparing to unpack .../3-libpython3.10-stdlib_3.10.12-1~22.04.17_amd64.deb ...
+Unpacking libpython3.10-stdlib:amd64 (3.10.12-1~22.04.17) ...
+Selecting previously unselected package python3.10.
+Preparing to unpack .../4-python3.10_3.10.12-1~22.04.17_amd64.deb ...
+Unpacking python3.10 (3.10.12-1~22.04.17) ...
+Selecting previously unselected package libpython3-stdlib:amd64.
+Preparing to unpack .../5-libpython3-stdlib_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking libpython3-stdlib:amd64 (3.10.6-1~22.04.1) ...
+Setting up python3-minimal (3.10.6-1~22.04.1) ...
+Selecting previously unselected package python3.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6022 files and directories currently installed.)
+Preparing to unpack .../00-python3_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking python3 (3.10.6-1~22.04.1) ...
+Selecting previously unselected package perl-modules-5.34.
+Preparing to unpack .../01-perl-modules-5.34_5.34.0-3ubuntu1.8_all.deb ...
+Unpacking perl-modules-5.34 (5.34.0-3ubuntu1.8) ...
+Selecting previously unselected package libgdbm6:amd64.
+Preparing to unpack .../02-libgdbm6_1.23-1_amd64.deb ...
+Unpacking libgdbm6:amd64 (1.23-1) ...
+Selecting previously unselected package libgdbm-compat4:amd64.
+Preparing to unpack .../03-libgdbm-compat4_1.23-1_amd64.deb ...
+Unpacking libgdbm-compat4:amd64 (1.23-1) ...
+Selecting previously unselected package libperl5.34:amd64.
+Preparing to unpack .../04-libperl5.34_5.34.0-3ubuntu1.8_amd64.deb ...
+Unpacking libperl5.34:amd64 (5.34.0-3ubuntu1.8) ...
+Selecting previously unselected package perl.
+Preparing to unpack .../05-perl_5.34.0-3ubuntu1.8_amd64.deb ...
+Unpacking perl (5.34.0-3ubuntu1.8) ...
+Preparing to unpack .../06-ca-certificates_20260601~22.04.1_all.deb ...
+Unpacking ca-certificates (20260601~22.04.1) over (20230311ubuntu0.22.04.1) ...
+Selecting previously unselected package less.
+Preparing to unpack .../07-less_590-1ubuntu0.22.04.3_amd64.deb ...
+Unpacking less (590-1ubuntu0.22.04.3) ...
+Selecting previously unselected package libmd0:amd64.
+Preparing to unpack .../08-libmd0_1.0.4-1build1_amd64.deb ...
+Unpacking libmd0:amd64 (1.0.4-1build1) ...
+Selecting previously unselected package libbsd0:amd64.
+Preparing to unpack .../09-libbsd0_0.11.5-1_amd64.deb ...
+Unpacking libbsd0:amd64 (0.11.5-1) ...
+Selecting previously unselected package libicu70:amd64.
+Preparing to unpack .../10-libicu70_70.1-2_amd64.deb ...
+Unpacking libicu70:amd64 (70.1-2) ...
+Selecting previously unselected package libxml2:amd64.
+Preparing to unpack .../11-libxml2_2.9.13+dfsg-1ubuntu0.12_amd64.deb ...
+Unpacking libxml2:amd64 (2.9.13+dfsg-1ubuntu0.12) ...
+Selecting previously unselected package netbase.
+Preparing to unpack .../12-netbase_6.3_all.deb ...
+Unpacking netbase (6.3) ...
+Selecting previously unselected package libcbor0.8:amd64.
+Preparing to unpack .../13-libcbor0.8_0.8.0-2ubuntu1_amd64.deb ...
+Unpacking libcbor0.8:amd64 (0.8.0-2ubuntu1) ...
+Selecting previously unselected package libedit2:amd64.
+Preparing to unpack .../14-libedit2_3.1-20210910-1build1_amd64.deb ...
+Unpacking libedit2:amd64 (3.1-20210910-1build1) ...
+Selecting previously unselected package libfido2-1:amd64.
+Preparing to unpack .../15-libfido2-1_1.10.0-1_amd64.deb ...
+Unpacking libfido2-1:amd64 (1.10.0-1) ...
+Selecting previously unselected package libnghttp2-14:amd64.
+Preparing to unpack .../16-libnghttp2-14_1.43.0-1ubuntu0.4_amd64.deb ...
+Unpacking libnghttp2-14:amd64 (1.43.0-1ubuntu0.4) ...
+Selecting previously unselected package libpsl5:amd64.
+Preparing to unpack .../17-libpsl5_0.21.0-1.2build2_amd64.deb ...
+Unpacking libpsl5:amd64 (0.21.0-1.2build2) ...
+Selecting previously unselected package libxau6:amd64.
+Preparing to unpack .../18-libxau6_1%3a1.0.9-1build5_amd64.deb ...
+Unpacking libxau6:amd64 (1:1.0.9-1build5) ...
+Selecting previously unselected package libxdmcp6:amd64.
+Preparing to unpack .../19-libxdmcp6_1%3a1.1.3-0ubuntu5_amd64.deb ...
+Unpacking libxdmcp6:amd64 (1:1.1.3-0ubuntu5) ...
+Selecting previously unselected package libxcb1:amd64.
+Preparing to unpack .../20-libxcb1_1.14-3ubuntu3_amd64.deb ...
+Unpacking libxcb1:amd64 (1.14-3ubuntu3) ...
+Selecting previously unselected package libx11-data.
+Preparing to unpack .../21-libx11-data_2%3a1.7.5-1ubuntu0.3_all.deb ...
+Unpacking libx11-data (2:1.7.5-1ubuntu0.3) ...
+Selecting previously unselected package libx11-6:amd64.
+Preparing to unpack .../22-libx11-6_2%3a1.7.5-1ubuntu0.3_amd64.deb ...
+Unpacking libx11-6:amd64 (2:1.7.5-1ubuntu0.3) ...
+Selecting previously unselected package libxext6:amd64.
+Preparing to unpack .../23-libxext6_2%3a1.3.4-1build1_amd64.deb ...
+Unpacking libxext6:amd64 (2:1.3.4-1build1) ...
+Selecting previously unselected package libxmuu1:amd64.
+Preparing to unpack .../24-libxmuu1_2%3a1.1.3-3_amd64.deb ...
+Unpacking libxmuu1:amd64 (2:1.1.3-3) ...
+Selecting previously unselected package openssh-client.
+Preparing to unpack .../25-openssh-client_1%3a8.9p1-3ubuntu0.16_amd64.deb ...
+Unpacking openssh-client (1:8.9p1-3ubuntu0.16) ...
+Selecting previously unselected package publicsuffix.
+Preparing to unpack .../26-publicsuffix_20211207.1025-1_all.deb ...
+Unpacking publicsuffix (20211207.1025-1) ...
+Selecting previously unselected package xauth.
+Preparing to unpack .../27-xauth_1%3a1.1-1build2_amd64.deb ...
+Unpacking xauth (1:1.1-1build2) ...
+Selecting previously unselected package libbrotli1:amd64.
+Preparing to unpack .../28-libbrotli1_1.0.9-2build6_amd64.deb ...
+Unpacking libbrotli1:amd64 (1.0.9-2build6) ...
+Selecting previously unselected package librtmp1:amd64.
+Preparing to unpack .../29-librtmp1_2.4+20151223.gitfa8646d.1-2build4_amd64.deb ...
+Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build4) ...
+Selecting previously unselected package libssh-4:amd64.
+Preparing to unpack .../30-libssh-4_0.9.6-2ubuntu0.22.04.7_amd64.deb ...
+Unpacking libssh-4:amd64 (0.9.6-2ubuntu0.22.04.7) ...
+Selecting previously unselected package libcurl4:amd64.
+Preparing to unpack .../31-libcurl4_7.81.0-1ubuntu1.27_amd64.deb ...
+Unpacking libcurl4:amd64 (7.81.0-1ubuntu1.27) ...
+Selecting previously unselected package curl.
+Preparing to unpack .../32-curl_7.81.0-1ubuntu1.27_amd64.deb ...
+Unpacking curl (7.81.0-1ubuntu1.27) ...
+Selecting previously unselected package libcurl3-gnutls:amd64.
+Preparing to unpack .../33-libcurl3-gnutls_7.81.0-1ubuntu1.27_amd64.deb ...
+Unpacking libcurl3-gnutls:amd64 (7.81.0-1ubuntu1.27) ...
+Selecting previously unselected package liberror-perl.
+Preparing to unpack .../34-liberror-perl_0.17029-1_all.deb ...
+Unpacking liberror-perl (0.17029-1) ...
+Selecting previously unselected package git-man.
+Preparing to unpack .../35-git-man_1%3a2.34.1-1ubuntu1.17_all.deb ...
+Unpacking git-man (1:2.34.1-1ubuntu1.17) ...
+Selecting previously unselected package git.
+Preparing to unpack .../36-git_1%3a2.34.1-1ubuntu1.17_amd64.deb ...
+Unpacking git (1:2.34.1-1ubuntu1.17) ...
+Selecting previously unselected package libarchive13:amd64.
+Preparing to unpack .../37-libarchive13_3.6.0-1ubuntu1.8_amd64.deb ...
+Unpacking libarchive13:amd64 (3.6.0-1ubuntu1.8) ...
+Selecting previously unselected package libarchive-dev:amd64.
+Preparing to unpack .../38-libarchive-dev_3.6.0-1ubuntu1.8_amd64.deb ...
+Unpacking libarchive-dev:amd64 (3.6.0-1ubuntu1.8) ...
+Selecting previously unselected package make.
+Preparing to unpack .../39-make_4.3-4.1build1_amd64.deb ...
+Unpacking make (4.3-4.1build1) ...
+Selecting previously unselected package patch.
+Preparing to unpack .../40-patch_2.7.6-7build2_amd64.deb ...
+Unpacking patch (2.7.6-7build2) ...
+Setting up media-types (7.0.0) ...
+Setting up libxau6:amd64 (1:1.0.9-1build5) ...
+Setting up libpsl5:amd64 (0.21.0-1.2build2) ...
+Setting up libcbor0.8:amd64 (0.8.0-2ubuntu1) ...
+Setting up libbrotli1:amd64 (1.0.9-2build6) ...
+Setting up libnghttp2-14:amd64 (1.43.0-1ubuntu0.4) ...
+Setting up less (590-1ubuntu0.22.04.3) ...
+Setting up perl-modules-5.34 (5.34.0-3ubuntu1.8) ...
+Setting up ca-certificates (20260601~22.04.1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Updating certificates in /etc/ssl/certs...
+rehash: warning: skipping ca-certificates.crt,it does not contain exactly one certificate or CRL
+24 added, 40 removed; done.
+Setting up libx11-data (2:1.7.5-1ubuntu0.3) ...
+Setting up make (4.3-4.1build1) ...
+Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build4) ...
+Setting up patch (2.7.6-7build2) ...
+Setting up libssh-4:amd64 (0.9.6-2ubuntu0.22.04.7) ...
+Setting up libmd0:amd64 (1.0.4-1build1) ...
+Setting up libmpdec3:amd64 (2.5.1-2build2) ...
+Setting up libcurl4:amd64 (7.81.0-1ubuntu1.27) ...
+Setting up git-man (1:2.34.1-1ubuntu1.17) ...
+Setting up netbase (6.3) ...
+Setting up curl (7.81.0-1ubuntu1.27) ...
+Setting up libfido2-1:amd64 (1.10.0-1) ...
+Setting up libbsd0:amd64 (0.11.5-1) ...
+Setting up publicsuffix (20211207.1025-1) ...
+Setting up libgdbm6:amd64 (1.23-1) ...
+Setting up libicu70:amd64 (70.1-2) ...
+Setting up libxdmcp6:amd64 (1:1.1.3-0ubuntu5) ...
+Setting up libxcb1:amd64 (1.14-3ubuntu3) ...
+Setting up libedit2:amd64 (3.1-20210910-1build1) ...
+Setting up libcurl3-gnutls:amd64 (7.81.0-1ubuntu1.27) ...
+Setting up libpython3.10-stdlib:amd64 (3.10.12-1~22.04.17) ...
+Setting up libgdbm-compat4:amd64 (1.23-1) ...
+Setting up libx11-6:amd64 (2:1.7.5-1ubuntu0.3) ...
+Setting up libxml2:amd64 (2.9.13+dfsg-1ubuntu0.12) ...
+Setting up libxmuu1:amd64 (2:1.1.3-3) ...
+Setting up libpython3-stdlib:amd64 (3.10.6-1~22.04.1) ...
+Setting up libperl5.34:amd64 (5.34.0-3ubuntu1.8) ...
+Setting up python3.10 (3.10.12-1~22.04.17) ...
+Setting up libarchive13:amd64 (3.6.0-1ubuntu1.8) ...
+Setting up openssh-client (1:8.9p1-3ubuntu0.16) ...
+update-alternatives: using /usr/bin/ssh to provide /usr/bin/rsh (rsh) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/rsh.1.gz because associated file /usr/share/man/man1/ssh.1.gz (of link group rsh) doesn't exist
+update-alternatives: using /usr/bin/slogin to provide /usr/bin/rlogin (rlogin) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/rlogin.1.gz because associated file /usr/share/man/man1/slogin.1.gz (of link group rlogin) doesn't exist
+update-alternatives: using /usr/bin/scp to provide /usr/bin/rcp (rcp) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/rcp.1.gz because associated file /usr/share/man/man1/scp.1.gz (of link group rcp) doesn't exist
+Setting up libxext6:amd64 (2:1.3.4-1build1) ...
+Setting up python3 (3.10.6-1~22.04.1) ...
+running python rtupdate hooks for python3.10...
+running python post-rtupdate hooks for python3.10...
+Setting up perl (5.34.0-3ubuntu1.8) ...
+Setting up xauth (1:1.1-1build2) ...
+Setting up libarchive-dev:amd64 (3.6.0-1ubuntu1.8) ...
+Setting up liberror-perl (0.17029-1) ...
+Setting up git (1:2.34.1-1ubuntu1.17) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.6) ...
+Processing triggers for ca-certificates (20260601~22.04.1) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+Cloning into '/work'...
+Updating files:  40% (2/5)Updating files:  60% (3/5)Updating files:  80% (4/5)Updating files: 100% (5/5)Updating files: 100% (5/5), done.
+downloading uv 0.12.7 x86_64-unknown-linux-gnu
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading cpython-3.11.16-linux-x86_64-gnu (download) (29.5MiB)
+ Downloaded cpython-3.11.16-linux-x86_64-gnu (download)
+Using CPython 3.11.16
+Creating virtual environment at: .venv
+Resolved 250 packages in 3ms
+   Building eeg-validation-strategies @ file:///work/python_project
+Downloading numpy (16.1MiB)
+Downloading networkx (2.0MiB)
+Downloading pip (1.7MiB)
+Downloading aiohttp (1.7MiB)
+Downloading babel (9.7MiB)
+Downloading kiwisolver (1.4MiB)
+Downloading scipy (33.7MiB)
+Downloading scikit-learn (8.9MiB)
+Downloading pydantic-core (2.0MiB)
+Downloading nvidia-cufft (204.2MiB)
+Downloading jedi (4.7MiB)
+Downloading pandas (10.8MiB)
+Downloading nvidia-cuda-runtime (2.1MiB)
+Downloading nibabel (3.1MiB)
+Downloading nvidia-nvshmem-cu13 (57.6MiB)
+Downloading fonttools (4.8MiB)
+Downloading torchaudio (1.7MiB)
+Downloading numba (3.6MiB)
+Downloading sympy (6.0MiB)
+Downloading matplotlib (9.6MiB)
+Downloading triton (188.5MiB)
+Downloading nvidia-cusolver (191.6MiB)
+Downloading statsmodels (11.5MiB)
+Downloading pillow (6.6MiB)
+Downloading nvidia-curand (56.8MiB)
+Downloading dask (1.4MiB)
+Downloading nvidia-nvjitlink (38.9MiB)
+Downloading h5py (4.8MiB)
+Downloading nvidia-cuda-cupti (10.2MiB)
+Downloading nvidia-nccl-cu12 (326.3MiB)
+Downloading llvmlite (57.1MiB)
+Downloading nvidia-cuda-nvrtc (86.0MiB)
+Downloading pyarrow (47.7MiB)
+Downloading soundfile (1.3MiB)
+Downloading mne-icalabel (46.6MiB)
+Downloading jupyterlab (16.4MiB)
+Downloading bokeh (6.1MiB)
+Downloading pywavelets (4.3MiB)
+Downloading nvidia-cusparse (139.2MiB)
+Downloading nvidia-nccl-cu13 (196.4MiB)
+Downloading mne (7.2MiB)
+Downloading vtk (139.2MiB)
+Downloading xgboost (125.6MiB)
+Downloading pyvista (2.5MiB)
+Downloading nvidia-cusparselt-cu13 (162.3MiB)
+Downloading torch (502.2MiB)
+Downloading nvidia-cublas (403.5MiB)
+Downloading cuda-bindings (6.4MiB)
+Downloading nvidia-cudnn-cu13 (349.2MiB)
+Downloading debugpy (2.9MiB)
+ Downloaded soundfile
+ Downloaded kiwisolver
+Downloading pygments (1.2MiB)
+Downloading nvidia-cufile (1.2MiB)
+ Downloaded dask
+Downloading hedtools (1.0MiB)
+ Downloaded torchaudio
+ Downloaded aiohttp
+ Downloaded pip
+ Downloaded networkx
+ Downloaded pydantic-core
+ Downloaded nvidia-cuda-runtime
+ Downloaded hedtools
+ Downloaded pyvista
+ Downloaded pygments
+ Downloaded nvidia-cufile
+ Downloaded debugpy
+ Downloaded nibabel
+ Downloaded numba
+ Downloaded pywavelets
+ Downloaded jedi
+ Downloaded h5py
+ Downloaded fonttools
+   Building antlr4-python3-runtime==4.9.3
+ Downloaded sympy
+ Downloaded bokeh
+      Built antlr4-python3-runtime==4.9.3
+ Downloaded cuda-bindings
+      Built eeg-validation-strategies @ file:///work/python_project
+ Downloaded pillow
+ Downloaded mne
+ Downloaded scikit-learn
+ Downloaded babel
+ Downloaded matplotlib
+ Downloaded nvidia-cuda-cupti
+ Downloaded pandas
+ Downloaded statsmodels
+ Downloaded numpy
+ Downloaded jupyterlab
+ Downloaded scipy
+ Downloaded nvidia-nvjitlink
+ Downloaded mne-icalabel
+ Downloaded pyarrow
+ Downloaded nvidia-curand
+ Downloaded llvmlite
+ Downloaded nvidia-nvshmem-cu13
+ Downloaded nvidia-cuda-nvrtc
+ Downloaded xgboost
+ Downloaded nvidia-cusparse
+ Downloaded vtk
+ Downloaded nvidia-cusparselt-cu13
+ Downloaded triton
+ Downloaded nvidia-cusolver
+ Downloaded nvidia-nccl-cu13
+ Downloaded nvidia-cufft
+ Downloaded nvidia-nccl-cu12
+ Downloaded nvidia-cudnn-cu13
+ Downloaded nvidia-cublas
+ Downloaded torch
+Prepared 247 packages in 6m 14s
+Installed 247 packages in 341ms
+ + aiohappyeyeballs==2.7.1
+ + aiohttp==3.14.3
+ + aiosignal==1.4.0
+ + annotated-types==0.8.0
+ + antlr4-python3-runtime==4.9.3
+ + anyio==4.14.2
+ + argon2-cffi==25.1.0
+ + argon2-cffi-bindings==26.1.0
+ + array-api-compat==1.15.0
+ + array-api-extra==0.11.2
+ + arrow==1.4.0
+ + asttokens==3.0.2
+ + async-lru==2.3.0
+ + attrs==26.1.0
+ + autoreject==0.4.4
+ + axial-positional-embedding==0.3.12
+ + babel==2.18.0
+ + beautifulsoup4==4.15.0
+ + bleach==6.4.0
+ + bokeh==3.9.2
+ + braindecode==1.5.2
+ + certifi==2026.7.22
+ + cffi==2.1.1
+ + charset-normalizer==3.5.1
+ + click==8.5.0
+ + click-option-group==0.5.9
+ + cloudpickle==3.1.2
+ + colt5-attention==0.11.2
+ + comm==0.2.3
+ + contourpy==1.3.3
+ + cuda-bindings==13.3.1
+ + cuda-pathfinder==1.7.0
+ + cuda-toolkit==13.0.3.0
+ + curryreader==0.1.2
+ + cycler==0.12.1
+ + cyclopts==4.23.3
+ + dask==2026.8.0
+ + debugpy==1.8.21
+ + decorator==5.3.1
+ + defusedxml==0.7.1
+ + distributed==2026.8.0
+ + docstring-inheritance==3.0.0
+ + docstring-parser==0.18.0
+ + edfio==0.4.16
+ + eeg-validation-strategies==0.1.0 (from file:///work/python_project)
+ + eeglabio==0.1.3
+ + einops==0.8.2
+ + et-xmlfile==2.0.0
+ + executing==2.2.1
+ + fastjsonschema==2.22.2
+ + filelock==3.32.4
+ + fonttools==4.63.0
+ + formulaic==1.2.2
+ + fqdn==1.5.1
+ + frozenlist==1.8.0
+ + fsspec==2026.7.0
+ + h11==0.16.0
+ + h5io==0.2.5
+ + h5py==3.16.0
+ + hedtools==1.2.0
+ + httpcore==1.0.9
+ + httpx==0.28.1
+ + hydra-core==1.3.5
+ + hyper-connections==0.4.11
+ + idna==3.19
+ + imbalanced-learn==0.14.2
+ + importlib-metadata==9.0.1
+ + importlib-resources==7.1.0
+ + inflect==7.5.0
+ + interface-meta==2.0.1
+ + ipykernel==7.3.0
+ + ipython==9.16.1
+ + ipython-pygments-lexers==1.1.1
+ + isoduration==20.11.0
+ + jedi==0.20.0
+ + jinja2==3.1.6
+ + joblib==1.5.3
+ + json-tricks==3.17.3
+ + json5==0.15.0
+ + jsonpointer==3.1.1
+ + jsonschema==4.26.0
+ + jsonschema-specifications==2025.9.1
+ + jupyter-builder==1.2.2
+ + jupyter-client==8.9.1
+ + jupyter-core==5.9.1
+ + jupyter-events==0.12.1
+ + jupyter-lsp==2.3.1
+ + jupyter-server==2.20.0
+ + jupyter-server-proxy==4.5.0
+ + jupyter-server-terminals==0.5.4
+ + jupyterlab==4.6.3
+ + jupyterlab-pygments==0.3.0
+ + jupyterlab-server==2.28.0
+ + kagglehub==1.0.2
+ + kagglesdk==0.1.37
+ + kiwisolver==1.5.0
+ + lark==1.3.1
+ + lazy-loader==0.5
+ + libarchive-c==5.3
+ + linear-attention-transformer==0.19.1
+ + linformer==0.2.3
+ + llvmlite==0.49.0
+ + local-attention==1.11.2
+ + locket==1.0.0
+ + markdown-it-py==4.2.0
+ + markupsafe==3.0.3
+ + matplotlib==3.11.1
+ + matplotlib-inline==0.2.2
+ + mdurl==0.1.2
+ + meegkit==0.2.0
+ + mistune==3.3.4
+ + mne==1.12.1
+ + mne-bids==0.19.0
+ + mne-bids-pipeline==1.10.1
+ + mne-features==0.3.2
+ + mne-icalabel==0.9.0
+ + more-itertools==11.1.0
+ + mpmath==1.3.0
+ + msgpack==1.2.2
+ + multidict==6.7.1
+ + narwhals==2.25.0
+ + nbclient==0.11.0
+ + nbconvert==7.17.1
+ + nbformat==5.11.1
+ + nest-asyncio2==1.7.2
+ + networkx==3.6.1
+ + nibabel==5.4.2
+ + notebook-shim==0.2.4
+ + numba==0.67.0
+ + numpy==2.4.6
+ + nvidia-cublas==13.1.1.3
+ + nvidia-cuda-cupti==13.0.85
+ + nvidia-cuda-nvrtc==13.0.88
+ + nvidia-cuda-runtime==13.0.96
+ + nvidia-cudnn-cu13==9.20.0.48
+ + nvidia-cufft==12.0.0.61
+ + nvidia-cufile==1.15.1.6
+ + nvidia-curand==10.4.0.35
+ + nvidia-cusolver==12.0.4.66
+ + nvidia-cusparse==12.6.3.3
+ + nvidia-cusparselt-cu13==0.8.1
+ + nvidia-nccl-cu12==2.31.2
+ + nvidia-nccl-cu13==2.29.7
+ + nvidia-nvjitlink==13.3.33
+ + nvidia-nvshmem-cu13==3.4.5
+ + nvidia-nvtx==13.0.85
+ + omegaconf==2.3.1
+ + openpyxl==3.1.5
+ + overrides==7.7.0
+ + packaging==26.3
+ + pandas==3.0.5
+ + pandocfilters==1.5.1
+ + parso==0.8.7
+ + partd==1.4.2
+ + patsy==1.0.2
+ + pexpect==4.9.0
+ + pillow==12.3.0
+ + pip==26.2.1
+ + platformdirs==4.11.4
+ + pooch==1.9.0
+ + portalocker==4.3.0
+ + product-key-memory==0.3.0
+ + prometheus-client==0.26.0
+ + prompt-toolkit==3.0.53
+ + propcache==0.5.2
+ + protobuf==7.36.0
+ + psutil==7.2.2
+ + ptyprocess==0.7.0
+ + pure-eval==0.2.3
+ + pyarrow==25.0.1
+ + pybv==0.8.1
+ + pycparser==3.0
+ + pydantic==2.13.4
+ + pydantic-core==2.46.4
+ + pygments==2.21.0
+ + pymatreader==1.2.3
+ + pyparsing==3.3.2
+ + pyriemann==0.12
+ + python-dateutil==2.9.0.post0
+ + python-json-logger==4.2.0
+ + python-picard==0.8.2
+ + pyvista==0.48.4
+ + pyvistaqt==0.12.0
+ + pywavelets==1.9.0
+ + pyyaml==6.0.3
+ + pyzmq==27.2.0
+ + qtpy==2.4.3
+ + referencing==0.37.0
+ + requests==2.34.2
+ + rfc3339-validator==0.1.4
+ + rfc3986-validator==0.1.1
+ + rfc3987-syntax==1.1.0
+ + rich==15.0.0
+ + rich-rst==2.1.0
+ + rotary-embedding-torch==0.9.1
+ + rpds-py==2026.6.3
+ + scikit-learn==1.9.0
+ + scipy==1.17.1
+ + scooby==0.11.2
+ + seaborn==0.13.2
+ + semantic-version==2.10.0
+ + send2trash==2.1.0
+ + setuptools==84.0.0
+ + simpervisor==1.0.0
+ + six==1.17.0
+ + sklearn-compat==0.1.6
+ + skorch==1.4.0
+ + sortedcontainers==2.4.0
+ + soundfile==0.14.0
+ + soupsieve==2.9.2
+ + stack-data==0.6.3
+ + statsmodels==0.15.0
+ + sympy==1.14.0
+ + tabulate==0.10.0
+ + tblib==3.2.2
+ + terminado==0.18.1
+ + threadpoolctl==3.6.0
+ + tinycss2==1.5.1
+ + toolz==1.1.0
+ + torch==2.13.0
+ + torch-einops-utils==0.1.21
+ + torchaudio==2.11.0
+ + torchinfo==1.8.0
+ + tornado==6.5.8
+ + tqdm==4.70.0
+ + traitlets==5.16.1
+ + triton==3.7.1
+ + typeguard==4.6.0
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.4
+ + tzdata==2026.3
+ + uri-template==1.3.0
+ + urllib3==2.7.0
+ + vtk==9.6.2
+ + wcwidth==0.8.2
+ + webcolors==25.10.0
+ + webencodings==0.6.1
+ + websocket-client==1.9.0
+ + wfdb==4.3.1
+ + wrapt==2.3.0
+ + xgboost==3.2.0
+ + xlrd==2.0.2
+ + xmltodict==1.0.4
+ + xyzservices==2026.3.0
+ + yarl==1.24.5
+ + zict==3.0.0
+ + zipp==4.1.0
+uv run python scripts/run_download.py
+SAM 40: downloading archive from Figshare
+SAM 40: extracting archive
+SAM 40: archive ready at /work/python_project/datasets/archive/SAM 40 dataset
+Distinguishing: downloading archive from Kaggle
+Downloading to /root/.cache/kagglehub/datasets/inancigdem/eeg-data-for-mental-attention-state-detection/1.archive...
+  0%|          | 0.00/557M [00:00<?, ?B/s]  0%|          | 1.00M/557M [00:00<06:04, 1.60MB/s]  0%|          | 2.00M/557M [00:00<03:10, 3.06MB/s]  1%|          | 4.00M/557M [00:00<01:35, 6.05MB/s]  1%|          | 6.00M/557M [00:01<01:09, 8.36MB/s]  1%|▏         | 8.00M/557M [00:01<00:58, 9.91MB/s]  2%|▏         | 10.0M/557M [00:01<00:51, 11.2MB/s]  2%|▏         | 12.0M/557M [00:01<00:47, 12.1MB/s]  3%|▎         | 14.0M/557M [00:01<00:45, 12.6MB/s]  3%|▎         | 16.0M/557M [00:01<00:43, 13.1MB/s]  3%|▎         | 18.0M/557M [00:01<00:42, 13.5MB/s]  4%|▎         | 20.0M/557M [00:02<00:41, 13.7MB/s]  4%|▍         | 22.0M/557M [00:02<00:40, 13.8MB/s]  4%|▍         | 24.0M/557M [00:02<00:40, 14.0MB/s]  5%|▍         | 26.0M/557M [00:02<00:39, 14.0MB/s]  5%|▌         | 28.0M/557M [00:02<00:39, 14.1MB/s]  5%|▌         | 30.0M/557M [00:02<00:39, 14.1MB/s]  6%|▌         | 32.0M/557M [00:02<00:38, 14.1MB/s]  6%|▌         | 34.0M/557M [00:03<00:49, 11.2MB/s]  6%|▋         | 36.0M/557M [00:03<00:47, 11.6MB/s]  7%|▋         | 38.0M/557M [00:03<00:46, 11.6MB/s]  7%|▋         | 40.0M/557M [00:03<00:46, 11.6MB/s]  8%|▊         | 42.0M/557M [00:03<00:46, 11.6MB/s]  8%|▊         | 44.0M/557M [00:04<00:46, 11.6MB/s]  8%|▊         | 46.0M/557M [00:04<00:46, 11.7MB/s]  9%|▊         | 48.0M/557M [00:04<00:42, 12.4MB/s]  9%|▉         | 50.0M/557M [00:04<00:41, 12.9MB/s]  9%|▉         | 52.0M/557M [00:04<00:47, 11.1MB/s] 10%|▉         | 54.0M/557M [00:05<00:46, 11.3MB/s] 10%|█         | 56.0M/557M [00:05<00:46, 11.4MB/s] 10%|█         | 58.0M/557M [00:05<00:46, 11.4MB/s] 11%|█         | 60.0M/557M [00:05<00:45, 11.4MB/s] 11%|█         | 62.0M/557M [00:05<00:45, 11.4MB/s] 11%|█▏        | 64.0M/557M [00:05<00:45, 11.4MB/s] 12%|█▏        | 66.0M/557M [00:06<00:45, 11.4MB/s] 12%|█▏        | 68.0M/557M [00:06<00:44, 11.4MB/s] 13%|█▎        | 70.0M/557M [00:06<00:44, 11.5MB/s] 13%|█▎        | 72.0M/557M [00:06<00:44, 11.5MB/s] 13%|█▎        | 74.0M/557M [00:06<00:44, 11.5MB/s] 14%|█▎        | 76.0M/557M [00:07<00:44, 11.5MB/s] 14%|█▍        | 78.0M/557M [00:07<00:43, 11.5MB/s] 14%|█▍        | 80.0M/557M [00:07<00:43, 11.5MB/s] 15%|█▍        | 82.0M/557M [00:07<00:43, 11.5MB/s] 15%|█▌        | 84.0M/557M [00:07<00:40, 12.1MB/s] 15%|█▌        | 86.0M/557M [00:07<00:39, 12.6MB/s] 16%|█▌        | 88.0M/557M [00:08<00:37, 13.0MB/s] 16%|█▌        | 90.0M/557M [00:08<00:36, 13.4MB/s] 17%|█▋        | 92.0M/557M [00:08<00:46, 10.4MB/s] 17%|█▋        | 94.0M/557M [00:08<00:44, 11.0MB/s] 17%|█▋        | 96.0M/557M [00:08<00:42, 11.3MB/s] 18%|█▊        | 98.0M/557M [00:09<00:41, 11.7MB/s] 18%|█▊        | 100M/557M [00:09<00:40, 11.8MB/s]  18%|█▊        | 102M/557M [00:09<00:39, 12.1MB/s] 19%|█▊        | 104M/557M [00:09<00:39, 12.1MB/s] 19%|█▉        | 106M/557M [00:09<00:38, 12.3MB/s] 19%|█▉        | 108M/557M [00:09<00:38, 12.2MB/s] 20%|█▉        | 110M/557M [00:10<00:38, 12.3MB/s] 20%|██        | 112M/557M [00:10<00:38, 12.3MB/s] 20%|██        | 114M/557M [00:10<00:37, 12.4MB/s] 21%|██        | 116M/557M [00:10<00:37, 12.3MB/s] 21%|██        | 118M/557M [00:10<00:37, 12.4MB/s] 22%|██▏       | 120M/557M [00:10<00:43, 10.6MB/s] 22%|██▏       | 122M/557M [00:11<00:41, 10.9MB/s] 22%|██▏       | 124M/557M [00:11<00:39, 11.4MB/s] 23%|██▎       | 126M/557M [00:11<00:37, 12.1MB/s] 23%|██▎       | 128M/557M [00:11<00:35, 12.7MB/s] 23%|██▎       | 130M/557M [00:11<00:48, 9.30MB/s] 24%|██▎       | 132M/557M [00:12<00:45, 9.75MB/s] 24%|██▍       | 134M/557M [00:12<00:43, 10.2MB/s] 24%|██▍       | 136M/557M [00:12<00:41, 10.6MB/s] 25%|██▍       | 138M/557M [00:12<00:40, 10.8MB/s] 25%|██▌       | 140M/557M [00:12<00:39, 11.0MB/s] 25%|██▌       | 142M/557M [00:13<00:39, 11.1MB/s] 26%|██▌       | 144M/557M [00:13<00:38, 11.2MB/s] 26%|██▌       | 146M/557M [00:13<00:38, 11.3MB/s] 27%|██▋       | 148M/557M [00:13<00:37, 11.4MB/s] 27%|██▋       | 150M/557M [00:13<00:37, 11.4MB/s] 27%|██▋       | 152M/557M [00:14<00:37, 11.4MB/s] 28%|██▊       | 154M/557M [00:14<00:34, 12.1MB/s] 28%|██▊       | 156M/557M [00:14<00:33, 12.5MB/s] 28%|██▊       | 158M/557M [00:14<00:32, 13.0MB/s] 29%|██▊       | 160M/557M [00:14<00:31, 13.4MB/s] 29%|██▉       | 162M/557M [00:14<00:30, 13.8MB/s] 29%|██▉       | 164M/557M [00:15<00:40, 10.1MB/s] 30%|██▉       | 166M/557M [00:15<00:37, 11.1MB/s] 30%|███       | 168M/557M [00:15<00:34, 11.9MB/s] 30%|███       | 170M/557M [00:15<00:33, 12.2MB/s] 31%|███       | 172M/557M [00:15<00:32, 12.4MB/s] 31%|███       | 174M/557M [00:15<00:32, 12.3MB/s] 32%|███▏      | 176M/557M [00:16<00:34, 11.5MB/s] 32%|███▏      | 178M/557M [00:16<00:37, 10.5MB/s] 32%|███▏      | 180M/557M [00:16<00:36, 11.0MB/s] 33%|███▎      | 182M/557M [00:16<00:34, 11.4MB/s] 33%|███▎      | 184M/557M [00:16<00:33, 11.7MB/s] 33%|███▎      | 186M/557M [00:16<00:32, 12.0MB/s] 34%|███▎      | 188M/557M [00:17<00:31, 12.1MB/s] 34%|███▍      | 190M/557M [00:17<00:31, 12.3MB/s] 34%|███▍      | 192M/557M [00:17<00:31, 12.3MB/s] 35%|███▍      | 194M/557M [00:17<00:30, 12.4MB/s] 35%|███▌      | 196M/557M [00:17<00:30, 12.4MB/s] 36%|███▌      | 198M/557M [00:17<00:30, 12.5MB/s] 36%|███▌      | 200M/557M [00:18<00:30, 12.5MB/s] 36%|███▌      | 202M/557M [00:18<00:29, 12.5MB/s] 37%|███▋      | 204M/557M [00:18<00:29, 12.5MB/s] 37%|███▋      | 206M/557M [00:18<00:29, 12.6MB/s] 37%|███▋      | 208M/557M [00:18<00:29, 12.5MB/s] 38%|███▊      | 210M/557M [00:18<00:28, 12.6MB/s] 38%|███▊      | 212M/557M [00:19<00:28, 12.5MB/s] 38%|███▊      | 214M/557M [00:19<00:34, 10.5MB/s] 39%|███▉      | 216M/557M [00:19<00:33, 10.6MB/s] 39%|███▉      | 218M/557M [00:19<00:33, 10.7MB/s] 39%|███▉      | 220M/557M [00:20<00:32, 10.8MB/s] 40%|███▉      | 222M/557M [00:20<00:32, 10.9MB/s] 40%|████      | 224M/557M [00:20<00:32, 10.9MB/s] 41%|████      | 226M/557M [00:20<00:31, 10.9MB/s] 41%|████      | 228M/557M [00:20<00:31, 10.9MB/s] 41%|████▏     | 230M/557M [00:20<00:31, 10.9MB/s] 42%|████▏     | 232M/557M [00:21<00:31, 11.0MB/s] 42%|████▏     | 234M/557M [00:21<00:30, 11.0MB/s] 42%|████▏     | 236M/557M [00:21<00:30, 11.0MB/s] 43%|████▎     | 238M/557M [00:21<00:30, 11.0MB/s] 43%|████▎     | 240M/557M [00:21<00:29, 11.4MB/s] 43%|████▎     | 242M/557M [00:22<00:28, 11.8MB/s] 44%|████▍     | 244M/557M [00:22<00:26, 12.2MB/s] 44%|████▍     | 246M/557M [00:22<00:26, 12.4MB/s] 44%|████▍     | 248M/557M [00:22<00:25, 12.6MB/s] 45%|████▍     | 250M/557M [00:22<00:24, 12.9MB/s] 45%|████▌     | 252M/557M [00:22<00:24, 13.3MB/s] 46%|████▌     | 254M/557M [00:22<00:23, 13.5MB/s] 46%|████▌     | 256M/557M [00:23<00:22, 13.8MB/s] 46%|████▋     | 258M/557M [00:23<00:23, 13.6MB/s] 47%|████▋     | 260M/557M [00:23<00:28, 10.9MB/s] 47%|████▋     | 262M/557M [00:23<00:27, 11.2MB/s] 47%|████▋     | 264M/557M [00:23<00:27, 11.3MB/s] 48%|████▊     | 266M/557M [00:24<00:26, 11.4MB/s] 48%|████▊     | 268M/557M [00:24<00:26, 11.5MB/s] 48%|████▊     | 270M/557M [00:24<00:30, 9.87MB/s] 49%|████▊     | 271M/557M [00:24<00:31, 9.49MB/s] 49%|████▉     | 273M/557M [00:24<00:28, 10.5MB/s] 49%|████▉     | 275M/557M [00:25<00:26, 11.3MB/s] 50%|████▉     | 277M/557M [00:25<00:24, 11.9MB/s] 50%|█████     | 279M/557M [00:25<00:23, 12.3MB/s] 50%|█████     | 281M/557M [00:25<00:23, 12.6MB/s] 51%|█████     | 283M/557M [00:25<00:22, 12.8MB/s] 51%|█████     | 285M/557M [00:25<00:22, 13.0MB/s] 51%|█████▏    | 287M/557M [00:25<00:21, 13.1MB/s] 52%|█████▏    | 289M/557M [00:26<00:21, 13.2MB/s] 52%|█████▏    | 291M/557M [00:26<00:21, 13.2MB/s] 53%|█████▎    | 293M/557M [00:26<00:25, 11.0MB/s] 53%|█████▎    | 295M/557M [00:26<00:24, 11.3MB/s] 53%|█████▎    | 297M/557M [00:26<00:23, 11.4MB/s] 54%|█████▎    | 299M/557M [00:27<00:22, 12.2MB/s] 54%|█████▍    | 301M/557M [00:27<00:21, 12.7MB/s] 54%|█████▍    | 303M/557M [00:27<00:22, 11.7MB/s] 55%|█████▍    | 305M/557M [00:27<00:23, 11.5MB/s] 55%|█████▌    | 307M/557M [00:27<00:23, 11.2MB/s] 55%|█████▌    | 309M/557M [00:27<00:22, 11.4MB/s] 56%|█████▌    | 311M/557M [00:28<00:22, 11.4MB/s] 56%|█████▌    | 313M/557M [00:28<00:22, 11.5MB/s] 57%|█████▋    | 315M/557M [00:28<00:22, 11.5MB/s] 57%|█████▋    | 317M/557M [00:28<00:21, 11.6MB/s] 57%|█████▋    | 319M/557M [00:28<00:21, 11.6MB/s] 58%|█████▊    | 321M/557M [00:29<00:21, 11.6MB/s] 58%|█████▊    | 323M/557M [00:29<00:21, 11.7MB/s] 58%|█████▊    | 325M/557M [00:29<00:20, 11.7MB/s] 59%|█████▊    | 327M/557M [00:29<00:20, 11.7MB/s] 59%|█████▉    | 329M/557M [00:29<00:20, 11.8MB/s] 59%|█████▉    | 331M/557M [00:29<00:19, 12.4MB/s] 60%|█████▉    | 333M/557M [00:30<00:18, 12.9MB/s] 60%|██████    | 335M/557M [00:30<00:21, 11.0MB/s] 60%|██████    | 337M/557M [00:30<00:20, 11.4MB/s] 61%|██████    | 339M/557M [00:30<00:19, 11.5MB/s] 61%|██████    | 341M/557M [00:30<00:19, 11.8MB/s] 62%|██████▏   | 343M/557M [00:30<00:18, 11.9MB/s] 62%|██████▏   | 345M/557M [00:31<00:18, 12.0MB/s] 62%|██████▏   | 347M/557M [00:31<00:18, 12.1MB/s] 63%|██████▎   | 349M/557M [00:31<00:17, 12.2MB/s] 63%|██████▎   | 351M/557M [00:31<00:19, 11.2MB/s] 63%|██████▎   | 353M/557M [00:31<00:20, 10.3MB/s] 64%|██████▎   | 355M/557M [00:32<00:19, 10.7MB/s] 64%|██████▍   | 357M/557M [00:32<00:18, 11.2MB/s] 64%|██████▍   | 359M/557M [00:32<00:18, 11.4MB/s] 65%|██████▍   | 361M/557M [00:32<00:17, 11.7MB/s] 65%|██████▌   | 363M/557M [00:32<00:17, 11.8MB/s] 65%|██████▌   | 365M/557M [00:32<00:16, 12.1MB/s] 66%|██████▌   | 367M/557M [00:33<00:16, 12.1MB/s] 66%|██████▌   | 369M/557M [00:33<00:16, 12.2MB/s] 67%|██████▋   | 371M/557M [00:33<00:16, 12.2MB/s] 67%|██████▋   | 373M/557M [00:33<00:15, 12.2MB/s] 67%|██████▋   | 375M/557M [00:33<00:15, 12.3MB/s] 68%|██████▊   | 377M/557M [00:34<00:15, 12.3MB/s] 68%|██████▊   | 379M/557M [00:34<00:15, 12.3MB/s] 68%|██████▊   | 381M/557M [00:34<00:15, 12.3MB/s] 69%|██████▊   | 383M/557M [00:34<00:17, 10.6MB/s] 69%|██████▉   | 385M/557M [00:34<00:16, 10.8MB/s] 69%|██████▉   | 387M/557M [00:35<00:16, 10.9MB/s] 70%|██████▉   | 389M/557M [00:35<00:16, 11.0MB/s] 70%|███████   | 391M/557M [00:35<00:15, 11.1MB/s] 71%|███████   | 393M/557M [00:35<00:15, 11.1MB/s] 71%|███████   | 395M/557M [00:35<00:15, 11.2MB/s] 71%|███████   | 397M/557M [00:35<00:15, 11.2MB/s] 72%|███████▏  | 399M/557M [00:36<00:14, 11.2MB/s] 72%|███████▏  | 401M/557M [00:36<00:14, 11.2MB/s] 72%|███████▏  | 403M/557M [00:36<00:14, 11.2MB/s] 73%|███████▎  | 405M/557M [00:36<00:14, 11.3MB/s] 73%|███████▎  | 407M/557M [00:36<00:14, 11.3MB/s] 73%|███████▎  | 409M/557M [00:37<00:13, 11.3MB/s] 74%|███████▎  | 411M/557M [00:37<00:13, 11.7MB/s] 74%|███████▍  | 413M/557M [00:37<00:12, 12.0MB/s] 74%|███████▍  | 415M/557M [00:37<00:11, 12.4MB/s] 75%|███████▍  | 417M/557M [00:37<00:11, 12.8MB/s] 75%|███████▌  | 419M/557M [00:37<00:11, 13.0MB/s] 76%|███████▌  | 421M/557M [00:37<00:10, 13.4MB/s] 76%|███████▌  | 423M/557M [00:38<00:10, 13.6MB/s] 76%|███████▌  | 425M/557M [00:38<00:12, 11.0MB/s] 77%|███████▋  | 427M/557M [00:38<00:11, 11.4MB/s] 77%|███████▋  | 429M/557M [00:38<00:11, 11.6MB/s] 77%|███████▋  | 431M/557M [00:38<00:11, 11.9MB/s] 78%|███████▊  | 433M/557M [00:39<00:10, 12.0MB/s] 78%|███████▊  | 435M/557M [00:39<00:10, 12.1MB/s] 78%|███████▊  | 437M/557M [00:39<00:10, 12.1MB/s] 79%|███████▉  | 439M/557M [00:39<00:10, 12.2MB/s] 79%|███████▉  | 441M/557M [00:39<00:11, 10.5MB/s] 79%|███████▉  | 443M/557M [00:40<00:11, 10.4MB/s] 80%|███████▉  | 445M/557M [00:40<00:10, 10.9MB/s] 80%|████████  | 447M/557M [00:40<00:10, 11.3MB/s] 81%|████████  | 449M/557M [00:40<00:09, 11.6MB/s] 81%|████████  | 451M/557M [00:40<00:09, 11.7MB/s] 81%|████████▏ | 453M/557M [00:40<00:09, 12.0MB/s] 82%|████████▏ | 455M/557M [00:41<00:08, 12.0MB/s] 82%|████████▏ | 457M/557M [00:41<00:08, 12.2MB/s] 82%|████████▏ | 459M/557M [00:41<00:08, 12.1MB/s] 83%|████████▎ | 461M/557M [00:41<00:08, 12.3MB/s] 83%|████████▎ | 463M/557M [00:41<00:08, 12.2MB/s] 83%|████████▎ | 465M/557M [00:41<00:07, 12.3MB/s] 84%|████████▍ | 467M/557M [00:42<00:07, 12.3MB/s] 84%|████████▍ | 469M/557M [00:42<00:07, 12.4MB/s] 85%|████████▍ | 471M/557M [00:42<00:07, 12.3MB/s] 85%|████████▍ | 473M/557M [00:42<00:07, 12.4MB/s] 85%|████████▌ | 475M/557M [00:42<00:08, 10.3MB/s] 86%|████████▌ | 477M/557M [00:43<00:08, 10.4MB/s] 86%|████████▌ | 479M/557M [00:43<00:07, 10.4MB/s] 86%|████████▋ | 481M/557M [00:43<00:07, 10.5MB/s] 87%|████████▋ | 483M/557M [00:43<00:07, 10.5MB/s] 87%|████████▋ | 485M/557M [00:43<00:07, 10.6MB/s] 87%|████████▋ | 487M/557M [00:44<00:06, 10.6MB/s] 88%|████████▊ | 489M/557M [00:44<00:06, 10.6MB/s] 88%|████████▊ | 491M/557M [00:44<00:06, 10.6MB/s] 88%|████████▊ | 493M/557M [00:44<00:06, 10.6MB/s] 89%|████████▉ | 495M/557M [00:44<00:06, 10.6MB/s] 89%|████████▉ | 497M/557M [00:45<00:05, 10.6MB/s] 90%|████████▉ | 499M/557M [00:45<00:05, 10.6MB/s] 90%|████████▉ | 501M/557M [00:45<00:05, 10.7MB/s] 90%|█████████ | 503M/557M [00:45<00:05, 10.9MB/s] 91%|█████████ | 505M/557M [00:45<00:04, 11.3MB/s] 91%|█████████ | 507M/557M [00:45<00:04, 11.6MB/s] 91%|█████████▏| 509M/557M [00:46<00:04, 11.9MB/s] 92%|█████████▏| 511M/557M [00:46<00:04, 12.1MB/s] 92%|█████████▏| 513M/557M [00:46<00:03, 12.5MB/s] 92%|█████████▏| 515M/557M [00:46<00:03, 12.9MB/s] 93%|█████████▎| 517M/557M [00:46<00:03, 13.3MB/s] 93%|█████████▎| 519M/557M [00:46<00:02, 13.6MB/s] 93%|█████████▎| 521M/557M [00:47<00:02, 13.7MB/s] 94%|█████████▍| 523M/557M [00:47<00:02, 13.8MB/s] 94%|█████████▍| 525M/557M [00:47<00:02, 13.8MB/s] 95%|█████████▍| 527M/557M [00:47<00:02, 13.9MB/s] 95%|█████████▍| 529M/557M [00:47<00:02, 13.9MB/s] 95%|█████████▌| 531M/557M [00:47<00:02, 11.4MB/s] 96%|█████████▌| 533M/557M [00:48<00:02, 10.9MB/s] 96%|█████████▌| 535M/557M [00:48<00:02, 11.7MB/s] 96%|█████████▋| 537M/557M [00:48<00:01, 12.3MB/s] 97%|█████████▋| 539M/557M [00:48<00:01, 12.7MB/s] 97%|█████████▋| 541M/557M [00:48<00:01, 13.1MB/s] 97%|█████████▋| 543M/557M [00:48<00:01, 11.1MB/s] 98%|█████████▊| 545M/557M [00:49<00:01, 11.1MB/s] 98%|█████████▊| 547M/557M [00:49<00:00, 11.2MB/s] 98%|█████████▊| 549M/557M [00:49<00:00, 11.2MB/s] 99%|█████████▉| 551M/557M [00:49<00:00, 11.3MB/s] 99%|█████████▉| 553M/557M [00:49<00:00, 11.3MB/s]100%|█████████▉| 555M/557M [00:50<00:00, 11.3MB/s]100%|█████████▉| 557M/557M [00:50<00:00, 11.4MB/s]100%|██████████| 557M/557M [00:50<00:00, 11.6MB/s]
+Extracting files...
+Distinguishing: archive ready at /work/python_project/datasets/archive/Distinguishing
+uv run python scripts/run_standardization.py
+sam40: writing relax recordings (0 written so far)
+sam40: writing stroop recordings (120 written so far)
+sam40: writing arithmetic recordings (240 written so far)
+sam40: writing mirror recordings (360 written so far)
+sam40: wrote 480 recordings
+distinguishing: writing sub-01 (0 written so far)
+distinguishing: writing sub-02 (7 written so far)
+distinguishing: writing sub-03 (14 written so far)
+distinguishing: writing sub-04 (21 written so far)
+distinguishing: writing sub-05 (28 written so far)
+distinguishing: wrote 34 recordings
+uv run python scripts/run_experiment.py +experiments=scenario_decoder
+[2026-08-30 08:08:17,701][HYDRA] Launching 110 jobs locally
+[2026-08-30 08:08:17,702][HYDRA] 	#0 : +experiments/scenario=baseline_distinguishing +experiments/decoder=eegconformer +experiments=scenario_decoder
+┌────────┬ Welcome aboard MNE-BIDS-Pipeline! 👋 ────────────────────────────────
+│08:08:22│ 📝 Using configuration: /tmp/tmpe7xtw4oe.py
+│08:08:22│ ❌ Overriding config.logger_level = 20
+└────────┴ 
+┌────────┬ init/_01_init_derivatives_dir ───────────────────────────────────────
+│08:08:22│ ⏳️ Initializing output directories.
+│08:08:22│ ⏳️ sub-01 ses-03 Initializing report HDF5 file
+│08:08:22│ ⏳️ sub-01 ses-03 Adding config and sys info to report
+│08:08:28│ ⏳️ sub-01 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-03/eeg/sub-01_ses-03_report.html
+│08:08:28│ ⏳️ sub-01 ses-04 Initializing report HDF5 file
+│08:08:28│ ⏳️ sub-01 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-04/eeg/sub-01_ses-04_report.html
+│08:08:28│ ⏳️ sub-01 ses-05 Initializing report HDF5 file
+│08:08:28│ ⏳️ sub-01 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-05/eeg/sub-01_ses-05_report.html
+│08:08:28│ ⏳️ sub-01 ses-06 Initializing report HDF5 file
+│08:08:28│ ⏳️ sub-01 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-06/eeg/sub-01_ses-06_report.html
+│08:08:28│ ⏳️ sub-01 ses-07 Initializing report HDF5 file
+│08:08:28│ ⏳️ sub-01 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-07/eeg/sub-01_ses-07_report.html
+│08:08:28│ ⏳️ sub-02 ses-03 Initializing report HDF5 file
+│08:08:28│ ⏳️ sub-02 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-03/eeg/sub-02_ses-03_report.html
+│08:08:28│ ⏳️ sub-02 ses-04 Initializing report HDF5 file
+│08:08:28│ ⏳️ sub-02 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-04/eeg/sub-02_ses-04_report.html
+│08:08:28│ ⏳️ sub-02 ses-05 Initializing report HDF5 file
+│08:08:28│ ⏳️ sub-02 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-05/eeg/sub-02_ses-05_report.html
+│08:08:28│ ⏳️ sub-02 ses-06 Initializing report HDF5 file
+│08:08:28│ ⏳️ sub-02 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-06/eeg/sub-02_ses-06_report.html
+│08:08:28│ ⏳️ sub-02 ses-07 Initializing report HDF5 file
+│08:08:28│ ⏳️ sub-02 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-07/eeg/sub-02_ses-07_report.html
+│08:08:28│ ⏳️ sub-03 ses-03 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-03 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-03/eeg/sub-03_ses-03_report.html
+│08:08:29│ ⏳️ sub-03 ses-04 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-03 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-04/eeg/sub-03_ses-04_report.html
+│08:08:29│ ⏳️ sub-03 ses-05 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-03 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-05/eeg/sub-03_ses-05_report.html
+│08:08:29│ ⏳️ sub-03 ses-06 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-03 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-06/eeg/sub-03_ses-06_report.html
+│08:08:29│ ⏳️ sub-03 ses-07 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-03 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-07/eeg/sub-03_ses-07_report.html
+│08:08:29│ ⏳️ sub-04 ses-03 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-04 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-03/eeg/sub-04_ses-03_report.html
+│08:08:29│ ⏳️ sub-04 ses-04 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-04 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-04/eeg/sub-04_ses-04_report.html
+│08:08:29│ ⏳️ sub-04 ses-05 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-04 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-05/eeg/sub-04_ses-05_report.html
+│08:08:29│ ⏳️ sub-04 ses-06 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-04 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-06/eeg/sub-04_ses-06_report.html
+│08:08:29│ ⏳️ sub-04 ses-07 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-04 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-07/eeg/sub-04_ses-07_report.html
+│08:08:29│ ⏳️ sub-05 ses-03 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-05 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-03/eeg/sub-05_ses-03_report.html
+│08:08:29│ ⏳️ sub-05 ses-04 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-05 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-04/eeg/sub-05_ses-04_report.html
+│08:08:29│ ⏳️ sub-05 ses-05 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-05 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-05/eeg/sub-05_ses-05_report.html
+│08:08:29│ ⏳️ sub-05 ses-06 Initializing report HDF5 file
+│08:08:29│ ⏳️ sub-05 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-06/eeg/sub-05_ses-06_report.html
+└────────┴ done (8s)
+┌────────┬ init/_02_find_empty_room ────────────────────────────────────────────
+│08:08:29│ ⏩ sub-* Skipping, empty-room data only relevant for MEG …
+└────────┴ done (1s)
+┌────────┬ preprocessing/_01_data_quality ──────────────────────────────────────
+│08:08:29│ ⏳️ sub-01 ses-03 Reading experimental recording: sub-01_ses-03_task-attention
+│08:08:29│ ⏳️ sub-01 ses-03 Dropping channels: AF3, AF4
+│08:08:29│ ⏳️ sub-01 ses-03 Adding original raw data to report
+│08:08:30│ ⏳️ sub-01 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-03/eeg/sub-01_ses-03_report.html
+│08:08:30│ ⏳️ sub-01 ses-04 Reading experimental recording: sub-01_ses-04_task-attention
+│08:08:30│ ⏳️ sub-01 ses-04 Dropping channels: AF3, AF4
+│08:08:30│ ⏳️ sub-01 ses-04 Adding original raw data to report
+│08:08:31│ ⏳️ sub-01 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-04/eeg/sub-01_ses-04_report.html
+│08:08:31│ ⏳️ sub-01 ses-05 Reading experimental recording: sub-01_ses-05_task-attention
+│08:08:31│ ⏳️ sub-01 ses-05 Dropping channels: AF3, AF4
+│08:08:31│ ⏳️ sub-01 ses-05 Adding original raw data to report
+│08:08:32│ ⏳️ sub-01 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-05/eeg/sub-01_ses-05_report.html
+│08:08:32│ ⏳️ sub-01 ses-06 Reading experimental recording: sub-01_ses-06_task-attention
+│08:08:32│ ⏳️ sub-01 ses-06 Dropping channels: AF3, AF4
+│08:08:32│ ⏳️ sub-01 ses-06 Adding original raw data to report
+│08:08:32│ ⏳️ sub-01 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-06/eeg/sub-01_ses-06_report.html
+│08:08:32│ ⏳️ sub-01 ses-07 Reading experimental recording: sub-01_ses-07_task-attention
+│08:08:32│ ⏳️ sub-01 ses-07 Dropping channels: AF3, AF4
+│08:08:32│ ⏳️ sub-01 ses-07 Adding original raw data to report
+│08:08:33│ ⏳️ sub-01 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-07/eeg/sub-01_ses-07_report.html
+│08:08:33│ ⏳️ sub-02 ses-03 Reading experimental recording: sub-02_ses-03_task-attention
+│08:08:33│ ⏳️ sub-02 ses-03 Dropping channels: AF3, AF4
+│08:08:33│ ⏳️ sub-02 ses-03 Adding original raw data to report
+│08:08:33│ ⏳️ sub-02 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-03/eeg/sub-02_ses-03_report.html
+│08:08:33│ ⏳️ sub-02 ses-04 Reading experimental recording: sub-02_ses-04_task-attention
+│08:08:33│ ⏳️ sub-02 ses-04 Dropping channels: AF3, AF4
+│08:08:33│ ⏳️ sub-02 ses-04 Adding original raw data to report
+│08:08:34│ ⏳️ sub-02 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-04/eeg/sub-02_ses-04_report.html
+│08:08:34│ ⏳️ sub-02 ses-05 Reading experimental recording: sub-02_ses-05_task-attention
+│08:08:34│ ⏳️ sub-02 ses-05 Dropping channels: AF3, AF4
+│08:08:34│ ⏳️ sub-02 ses-05 Adding original raw data to report
+│08:08:35│ ⏳️ sub-02 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-05/eeg/sub-02_ses-05_report.html
+│08:08:35│ ⏳️ sub-02 ses-06 Reading experimental recording: sub-02_ses-06_task-attention
+│08:08:35│ ⏳️ sub-02 ses-06 Dropping channels: AF3, AF4
+│08:08:35│ ⏳️ sub-02 ses-06 Adding original raw data to report
+│08:08:35│ ⏳️ sub-02 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-06/eeg/sub-02_ses-06_report.html
+│08:08:35│ ⏳️ sub-02 ses-07 Reading experimental recording: sub-02_ses-07_task-attention
+│08:08:35│ ⏳️ sub-02 ses-07 Dropping channels: AF3, AF4
+│08:08:35│ ⏳️ sub-02 ses-07 Adding original raw data to report
+│08:08:36│ ⏳️ sub-02 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-07/eeg/sub-02_ses-07_report.html
+│08:08:36│ ⏳️ sub-03 ses-03 Reading experimental recording: sub-03_ses-03_task-attention
+│08:08:36│ ⏳️ sub-03 ses-03 Dropping channels: AF3, AF4
+│08:08:36│ ⏳️ sub-03 ses-03 Adding original raw data to report
+│08:08:37│ ⏳️ sub-03 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-03/eeg/sub-03_ses-03_report.html
+│08:08:37│ ⏳️ sub-03 ses-04 Reading experimental recording: sub-03_ses-04_task-attention
+│08:08:37│ ⏳️ sub-03 ses-04 Dropping channels: AF3, AF4
+│08:08:37│ ⏳️ sub-03 ses-04 Adding original raw data to report
+│08:08:37│ ⏳️ sub-03 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-04/eeg/sub-03_ses-04_report.html
+│08:08:37│ ⏳️ sub-03 ses-05 Reading experimental recording: sub-03_ses-05_task-attention
+│08:08:37│ ⏳️ sub-03 ses-05 Dropping channels: AF3, AF4
+│08:08:37│ ⏳️ sub-03 ses-05 Adding original raw data to report
+│08:08:38│ ⏳️ sub-03 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-05/eeg/sub-03_ses-05_report.html
+│08:08:38│ ⏳️ sub-03 ses-06 Reading experimental recording: sub-03_ses-06_task-attention
+│08:08:38│ ⏳️ sub-03 ses-06 Dropping channels: AF3, AF4
+│08:08:38│ ⏳️ sub-03 ses-06 Adding original raw data to report
+│08:08:39│ ⏳️ sub-03 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-06/eeg/sub-03_ses-06_report.html
+│08:08:39│ ⏳️ sub-03 ses-07 Reading experimental recording: sub-03_ses-07_task-attention
+│08:08:39│ ⏳️ sub-03 ses-07 Dropping channels: AF3, AF4
+│08:08:39│ ⏳️ sub-03 ses-07 Adding original raw data to report
+│08:08:39│ ⏳️ sub-03 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-07/eeg/sub-03_ses-07_report.html
+│08:08:39│ ⏳️ sub-04 ses-03 Reading experimental recording: sub-04_ses-03_task-attention
+│08:08:39│ ⏳️ sub-04 ses-03 Dropping channels: AF3, AF4
+│08:08:39│ ⏳️ sub-04 ses-03 Adding original raw data to report
+│08:08:40│ ⏳️ sub-04 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-03/eeg/sub-04_ses-03_report.html
+│08:08:40│ ⏳️ sub-04 ses-04 Reading experimental recording: sub-04_ses-04_task-attention
+│08:08:40│ ⏳️ sub-04 ses-04 Dropping channels: AF3, AF4
+│08:08:40│ ⏳️ sub-04 ses-04 Adding original raw data to report
+│08:08:40│ ⏳️ sub-04 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-04/eeg/sub-04_ses-04_report.html
+│08:08:40│ ⏳️ sub-04 ses-05 Reading experimental recording: sub-04_ses-05_task-attention
+│08:08:40│ ⏳️ sub-04 ses-05 Dropping channels: AF3, AF4
+│08:08:40│ ⏳️ sub-04 ses-05 Adding original raw data to report
+│08:08:41│ ⏳️ sub-04 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-05/eeg/sub-04_ses-05_report.html
+│08:08:41│ ⏳️ sub-04 ses-06 Reading experimental recording: sub-04_ses-06_task-attention
+│08:08:41│ ⏳️ sub-04 ses-06 Dropping channels: AF3, AF4
+│08:08:41│ ⏳️ sub-04 ses-06 Adding original raw data to report
+│08:08:42│ ⏳️ sub-04 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-06/eeg/sub-04_ses-06_report.html
+│08:08:42│ ⏳️ sub-04 ses-07 Reading experimental recording: sub-04_ses-07_task-attention
+│08:08:42│ ⏳️ sub-04 ses-07 Dropping channels: AF3, AF4
+│08:08:42│ ⏳️ sub-04 ses-07 Adding original raw data to report
+│08:08:42│ ⏳️ sub-04 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-07/eeg/sub-04_ses-07_report.html
+│08:08:42│ ⏳️ sub-05 ses-03 Reading experimental recording: sub-05_ses-03_task-attention
+│08:08:42│ ⏳️ sub-05 ses-03 Dropping channels: AF3, AF4
+│08:08:42│ ⏳️ sub-05 ses-03 Adding original raw data to report
+│08:08:43│ ⏳️ sub-05 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-03/eeg/sub-05_ses-03_report.html
+│08:08:43│ ⏳️ sub-05 ses-04 Reading experimental recording: sub-05_ses-04_task-attention
+│08:08:43│ ⏳️ sub-05 ses-04 Dropping channels: AF3, AF4
+│08:08:43│ ⏳️ sub-05 ses-04 Adding original raw data to report
+│08:08:44│ ⏳️ sub-05 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-04/eeg/sub-05_ses-04_report.html
+│08:08:44│ ⏳️ sub-05 ses-05 Reading experimental recording: sub-05_ses-05_task-attention
+│08:08:44│ ⏳️ sub-05 ses-05 Dropping channels: AF3, AF4
+│08:08:44│ ⏳️ sub-05 ses-05 Adding original raw data to report
+│08:08:44│ ⏳️ sub-05 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-05/eeg/sub-05_ses-05_report.html
+│08:08:44│ ⏳️ sub-05 ses-06 Reading experimental recording: sub-05_ses-06_task-attention
+│08:08:45│ ⏳️ sub-05 ses-06 Dropping channels: AF3, AF4
+│08:08:45│ ⏳️ sub-05 ses-06 Adding original raw data to report
+│08:08:45│ ⏳️ sub-05 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-06/eeg/sub-05_ses-06_report.html
+└────────┴ done (17s)
+┌────────┬ preprocessing/_02_head_pos ──────────────────────────────────────────
+│08:08:45│ ⏩ sub-* Skipping, not requested …
+└────────┴ done (1s)
+┌────────┬ preprocessing/_03_maxfilter ─────────────────────────────────────────
+│08:08:45│ ⏩ sub-* Skipping, not requested …
+└────────┴ done (1s)
+┌────────┬ preprocessing/_04_frequency_filter ──────────────────────────────────
+│08:08:45│ ⏳️ sub-01 ses-03 Reading experimental recording: sub-01_ses-03_task-attention
+│08:08:45│ ⏳️ sub-01 ses-03 Dropping channels: AF3, AF4
+│08:08:45│ ⏳️ sub-01 ses-03 Marking 0 channels as bad.
+│08:08:45│ ⏳️ sub-01 ses-03 Notch filtering experimental data at [50.0] Hz.
+│08:08:45│ ⏳️ sub-01 ses-03 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:45│ ⏳️ sub-01 ses-03 Resampling experimental data to 128.0 Hz
+│08:08:46│ ⏳️ sub-01 ses-03 Adding filtered raw data to report
+│08:08:46│ ⏳️ sub-01 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-03/eeg/sub-01_ses-03_report.html
+│08:08:46│ ⏳️ sub-01 ses-04 Reading experimental recording: sub-01_ses-04_task-attention
+│08:08:46│ ⏳️ sub-01 ses-04 Dropping channels: AF3, AF4
+│08:08:46│ ⏳️ sub-01 ses-04 Marking 0 channels as bad.
+│08:08:46│ ⏳️ sub-01 ses-04 Notch filtering experimental data at [50.0] Hz.
+│08:08:46│ ⏳️ sub-01 ses-04 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:46│ ⏳️ sub-01 ses-04 Resampling experimental data to 128.0 Hz
+│08:08:46│ ⏳️ sub-01 ses-04 Adding filtered raw data to report
+│08:08:47│ ⏳️ sub-01 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-04/eeg/sub-01_ses-04_report.html
+│08:08:47│ ⏳️ sub-01 ses-05 Reading experimental recording: sub-01_ses-05_task-attention
+│08:08:47│ ⏳️ sub-01 ses-05 Dropping channels: AF3, AF4
+│08:08:47│ ⏳️ sub-01 ses-05 Marking 0 channels as bad.
+│08:08:47│ ⏳️ sub-01 ses-05 Notch filtering experimental data at [50.0] Hz.
+│08:08:47│ ⏳️ sub-01 ses-05 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:47│ ⏳️ sub-01 ses-05 Resampling experimental data to 128.0 Hz
+│08:08:47│ ⏳️ sub-01 ses-05 Adding filtered raw data to report
+│08:08:48│ ⏳️ sub-01 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-05/eeg/sub-01_ses-05_report.html
+│08:08:48│ ⏳️ sub-01 ses-06 Reading experimental recording: sub-01_ses-06_task-attention
+│08:08:48│ ⏳️ sub-01 ses-06 Dropping channels: AF3, AF4
+│08:08:48│ ⏳️ sub-01 ses-06 Marking 0 channels as bad.
+│08:08:48│ ⏳️ sub-01 ses-06 Notch filtering experimental data at [50.0] Hz.
+│08:08:48│ ⏳️ sub-01 ses-06 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:48│ ⏳️ sub-01 ses-06 Resampling experimental data to 128.0 Hz
+│08:08:48│ ⏳️ sub-01 ses-06 Adding filtered raw data to report
+│08:08:48│ ⏳️ sub-01 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-06/eeg/sub-01_ses-06_report.html
+│08:08:48│ ⏳️ sub-01 ses-07 Reading experimental recording: sub-01_ses-07_task-attention
+│08:08:48│ ⏳️ sub-01 ses-07 Dropping channels: AF3, AF4
+│08:08:48│ ⏳️ sub-01 ses-07 Marking 0 channels as bad.
+│08:08:48│ ⏳️ sub-01 ses-07 Notch filtering experimental data at [50.0] Hz.
+│08:08:49│ ⏳️ sub-01 ses-07 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:49│ ⏳️ sub-01 ses-07 Resampling experimental data to 128.0 Hz
+│08:08:49│ ⏳️ sub-01 ses-07 Adding filtered raw data to report
+│08:08:49│ ⏳️ sub-01 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-07/eeg/sub-01_ses-07_report.html
+│08:08:49│ ⏳️ sub-02 ses-03 Reading experimental recording: sub-02_ses-03_task-attention
+│08:08:49│ ⏳️ sub-02 ses-03 Dropping channels: AF3, AF4
+│08:08:49│ ⏳️ sub-02 ses-03 Marking 0 channels as bad.
+│08:08:49│ ⏳️ sub-02 ses-03 Notch filtering experimental data at [50.0] Hz.
+│08:08:49│ ⏳️ sub-02 ses-03 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:49│ ⏳️ sub-02 ses-03 Resampling experimental data to 128.0 Hz
+│08:08:50│ ⏳️ sub-02 ses-03 Adding filtered raw data to report
+│08:08:50│ ⏳️ sub-02 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-03/eeg/sub-02_ses-03_report.html
+│08:08:50│ ⏳️ sub-02 ses-04 Reading experimental recording: sub-02_ses-04_task-attention
+│08:08:50│ ⏳️ sub-02 ses-04 Dropping channels: AF3, AF4
+│08:08:50│ ⏳️ sub-02 ses-04 Marking 0 channels as bad.
+│08:08:50│ ⏳️ sub-02 ses-04 Notch filtering experimental data at [50.0] Hz.
+│08:08:50│ ⏳️ sub-02 ses-04 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:50│ ⏳️ sub-02 ses-04 Resampling experimental data to 128.0 Hz
+│08:08:50│ ⏳️ sub-02 ses-04 Adding filtered raw data to report
+│08:08:51│ ⏳️ sub-02 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-04/eeg/sub-02_ses-04_report.html
+│08:08:51│ ⏳️ sub-02 ses-05 Reading experimental recording: sub-02_ses-05_task-attention
+│08:08:51│ ⏳️ sub-02 ses-05 Dropping channels: AF3, AF4
+│08:08:51│ ⏳️ sub-02 ses-05 Marking 0 channels as bad.
+│08:08:51│ ⏳️ sub-02 ses-05 Notch filtering experimental data at [50.0] Hz.
+│08:08:51│ ⏳️ sub-02 ses-05 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:51│ ⏳️ sub-02 ses-05 Resampling experimental data to 128.0 Hz
+│08:08:51│ ⏳️ sub-02 ses-05 Adding filtered raw data to report
+│08:08:52│ ⏳️ sub-02 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-05/eeg/sub-02_ses-05_report.html
+│08:08:52│ ⏳️ sub-02 ses-06 Reading experimental recording: sub-02_ses-06_task-attention
+│08:08:52│ ⏳️ sub-02 ses-06 Dropping channels: AF3, AF4
+│08:08:52│ ⏳️ sub-02 ses-06 Marking 0 channels as bad.
+│08:08:52│ ⏳️ sub-02 ses-06 Notch filtering experimental data at [50.0] Hz.
+│08:08:52│ ⏳️ sub-02 ses-06 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:52│ ⏳️ sub-02 ses-06 Resampling experimental data to 128.0 Hz
+│08:08:52│ ⏳️ sub-02 ses-06 Adding filtered raw data to report
+│08:08:53│ ⏳️ sub-02 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-06/eeg/sub-02_ses-06_report.html
+│08:08:53│ ⏳️ sub-02 ses-07 Reading experimental recording: sub-02_ses-07_task-attention
+│08:08:53│ ⏳️ sub-02 ses-07 Dropping channels: AF3, AF4
+│08:08:53│ ⏳️ sub-02 ses-07 Marking 0 channels as bad.
+│08:08:53│ ⏳️ sub-02 ses-07 Notch filtering experimental data at [50.0] Hz.
+│08:08:53│ ⏳️ sub-02 ses-07 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:53│ ⏳️ sub-02 ses-07 Resampling experimental data to 128.0 Hz
+│08:08:53│ ⏳️ sub-02 ses-07 Adding filtered raw data to report
+│08:08:54│ ⏳️ sub-02 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-07/eeg/sub-02_ses-07_report.html
+│08:08:54│ ⏳️ sub-03 ses-03 Reading experimental recording: sub-03_ses-03_task-attention
+│08:08:54│ ⏳️ sub-03 ses-03 Dropping channels: AF3, AF4
+│08:08:54│ ⏳️ sub-03 ses-03 Marking 0 channels as bad.
+│08:08:54│ ⏳️ sub-03 ses-03 Notch filtering experimental data at [50.0] Hz.
+│08:08:54│ ⏳️ sub-03 ses-03 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:54│ ⏳️ sub-03 ses-03 Resampling experimental data to 128.0 Hz
+│08:08:54│ ⏳️ sub-03 ses-03 Adding filtered raw data to report
+│08:08:54│ ⏳️ sub-03 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-03/eeg/sub-03_ses-03_report.html
+│08:08:55│ ⏳️ sub-03 ses-04 Reading experimental recording: sub-03_ses-04_task-attention
+│08:08:55│ ⏳️ sub-03 ses-04 Dropping channels: AF3, AF4
+│08:08:55│ ⏳️ sub-03 ses-04 Marking 0 channels as bad.
+│08:08:55│ ⏳️ sub-03 ses-04 Notch filtering experimental data at [50.0] Hz.
+│08:08:55│ ⏳️ sub-03 ses-04 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:55│ ⏳️ sub-03 ses-04 Resampling experimental data to 128.0 Hz
+│08:08:55│ ⏳️ sub-03 ses-04 Adding filtered raw data to report
+│08:08:55│ ⏳️ sub-03 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-04/eeg/sub-03_ses-04_report.html
+│08:08:55│ ⏳️ sub-03 ses-05 Reading experimental recording: sub-03_ses-05_task-attention
+│08:08:55│ ⏳️ sub-03 ses-05 Dropping channels: AF3, AF4
+│08:08:55│ ⏳️ sub-03 ses-05 Marking 0 channels as bad.
+│08:08:55│ ⏳️ sub-03 ses-05 Notch filtering experimental data at [50.0] Hz.
+│08:08:55│ ⏳️ sub-03 ses-05 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:56│ ⏳️ sub-03 ses-05 Resampling experimental data to 128.0 Hz
+│08:08:56│ ⏳️ sub-03 ses-05 Adding filtered raw data to report
+│08:08:56│ ⏳️ sub-03 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-05/eeg/sub-03_ses-05_report.html
+│08:08:56│ ⏳️ sub-03 ses-06 Reading experimental recording: sub-03_ses-06_task-attention
+│08:08:56│ ⏳️ sub-03 ses-06 Dropping channels: AF3, AF4
+│08:08:56│ ⏳️ sub-03 ses-06 Marking 0 channels as bad.
+│08:08:56│ ⏳️ sub-03 ses-06 Notch filtering experimental data at [50.0] Hz.
+│08:08:56│ ⏳️ sub-03 ses-06 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:56│ ⏳️ sub-03 ses-06 Resampling experimental data to 128.0 Hz
+│08:08:56│ ⏳️ sub-03 ses-06 Adding filtered raw data to report
+│08:08:57│ ⏳️ sub-03 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-06/eeg/sub-03_ses-06_report.html
+│08:08:57│ ⏳️ sub-03 ses-07 Reading experimental recording: sub-03_ses-07_task-attention
+│08:08:57│ ⏳️ sub-03 ses-07 Dropping channels: AF3, AF4
+│08:08:57│ ⏳️ sub-03 ses-07 Marking 0 channels as bad.
+│08:08:57│ ⏳️ sub-03 ses-07 Notch filtering experimental data at [50.0] Hz.
+│08:08:57│ ⏳️ sub-03 ses-07 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:57│ ⏳️ sub-03 ses-07 Resampling experimental data to 128.0 Hz
+│08:08:57│ ⏳️ sub-03 ses-07 Adding filtered raw data to report
+│08:08:58│ ⏳️ sub-03 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-07/eeg/sub-03_ses-07_report.html
+│08:08:58│ ⏳️ sub-04 ses-03 Reading experimental recording: sub-04_ses-03_task-attention
+│08:08:58│ ⏳️ sub-04 ses-03 Dropping channels: AF3, AF4
+│08:08:58│ ⏳️ sub-04 ses-03 Marking 0 channels as bad.
+│08:08:58│ ⏳️ sub-04 ses-03 Notch filtering experimental data at [50.0] Hz.
+│08:08:58│ ⏳️ sub-04 ses-03 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:58│ ⏳️ sub-04 ses-03 Resampling experimental data to 128.0 Hz
+│08:08:58│ ⏳️ sub-04 ses-03 Adding filtered raw data to report
+│08:08:59│ ⏳️ sub-04 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-03/eeg/sub-04_ses-03_report.html
+│08:08:59│ ⏳️ sub-04 ses-04 Reading experimental recording: sub-04_ses-04_task-attention
+│08:08:59│ ⏳️ sub-04 ses-04 Dropping channels: AF3, AF4
+│08:08:59│ ⏳️ sub-04 ses-04 Marking 0 channels as bad.
+│08:08:59│ ⏳️ sub-04 ses-04 Notch filtering experimental data at [50.0] Hz.
+│08:08:59│ ⏳️ sub-04 ses-04 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:08:59│ ⏳️ sub-04 ses-04 Resampling experimental data to 128.0 Hz
+│08:08:59│ ⏳️ sub-04 ses-04 Adding filtered raw data to report
+│08:08:59│ ⏳️ sub-04 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-04/eeg/sub-04_ses-04_report.html
+│08:08:59│ ⏳️ sub-04 ses-05 Reading experimental recording: sub-04_ses-05_task-attention
+│08:09:00│ ⏳️ sub-04 ses-05 Dropping channels: AF3, AF4
+│08:09:00│ ⏳️ sub-04 ses-05 Marking 0 channels as bad.
+│08:09:00│ ⏳️ sub-04 ses-05 Notch filtering experimental data at [50.0] Hz.
+│08:09:00│ ⏳️ sub-04 ses-05 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:09:00│ ⏳️ sub-04 ses-05 Resampling experimental data to 128.0 Hz
+│08:09:00│ ⏳️ sub-04 ses-05 Adding filtered raw data to report
+│08:09:01│ ⏳️ sub-04 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-05/eeg/sub-04_ses-05_report.html
+│08:09:01│ ⏳️ sub-04 ses-06 Reading experimental recording: sub-04_ses-06_task-attention
+│08:09:01│ ⏳️ sub-04 ses-06 Dropping channels: AF3, AF4
+│08:09:01│ ⏳️ sub-04 ses-06 Marking 0 channels as bad.
+│08:09:01│ ⏳️ sub-04 ses-06 Notch filtering experimental data at [50.0] Hz.
+│08:09:01│ ⏳️ sub-04 ses-06 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:09:01│ ⏳️ sub-04 ses-06 Resampling experimental data to 128.0 Hz
+│08:09:01│ ⏳️ sub-04 ses-06 Adding filtered raw data to report
+│08:09:01│ ⏳️ sub-04 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-06/eeg/sub-04_ses-06_report.html
+│08:09:01│ ⏳️ sub-04 ses-07 Reading experimental recording: sub-04_ses-07_task-attention
+│08:09:01│ ⏳️ sub-04 ses-07 Dropping channels: AF3, AF4
+│08:09:01│ ⏳️ sub-04 ses-07 Marking 0 channels as bad.
+│08:09:01│ ⏳️ sub-04 ses-07 Notch filtering experimental data at [50.0] Hz.
+│08:09:02│ ⏳️ sub-04 ses-07 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:09:02│ ⏳️ sub-04 ses-07 Resampling experimental data to 128.0 Hz
+│08:09:02│ ⏳️ sub-04 ses-07 Adding filtered raw data to report
+│08:09:02│ ⏳️ sub-04 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-07/eeg/sub-04_ses-07_report.html
+│08:09:02│ ⏳️ sub-05 ses-03 Reading experimental recording: sub-05_ses-03_task-attention
+│08:09:02│ ⏳️ sub-05 ses-03 Dropping channels: AF3, AF4
+│08:09:02│ ⏳️ sub-05 ses-03 Marking 0 channels as bad.
+│08:09:02│ ⏳️ sub-05 ses-03 Notch filtering experimental data at [50.0] Hz.
+│08:09:02│ ⏳️ sub-05 ses-03 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:09:02│ ⏳️ sub-05 ses-03 Resampling experimental data to 128.0 Hz
+│08:09:02│ ⏳️ sub-05 ses-03 Adding filtered raw data to report
+│08:09:03│ ⏳️ sub-05 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-03/eeg/sub-05_ses-03_report.html
+│08:09:03│ ⏳️ sub-05 ses-04 Reading experimental recording: sub-05_ses-04_task-attention
+│08:09:03│ ⏳️ sub-05 ses-04 Dropping channels: AF3, AF4
+│08:09:03│ ⏳️ sub-05 ses-04 Marking 0 channels as bad.
+│08:09:03│ ⏳️ sub-05 ses-04 Notch filtering experimental data at [50.0] Hz.
+│08:09:03│ ⏳️ sub-05 ses-04 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:09:03│ ⏳️ sub-05 ses-04 Resampling experimental data to 128.0 Hz
+│08:09:03│ ⏳️ sub-05 ses-04 Adding filtered raw data to report
+│08:09:04│ ⏳️ sub-05 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-04/eeg/sub-05_ses-04_report.html
+│08:09:04│ ⏳️ sub-05 ses-05 Reading experimental recording: sub-05_ses-05_task-attention
+│08:09:04│ ⏳️ sub-05 ses-05 Dropping channels: AF3, AF4
+│08:09:04│ ⏳️ sub-05 ses-05 Marking 0 channels as bad.
+│08:09:04│ ⏳️ sub-05 ses-05 Notch filtering experimental data at [50.0] Hz.
+│08:09:04│ ⏳️ sub-05 ses-05 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:09:04│ ⏳️ sub-05 ses-05 Resampling experimental data to 128.0 Hz
+│08:09:04│ ⏳️ sub-05 ses-05 Adding filtered raw data to report
+│08:09:05│ ⏳️ sub-05 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-05/eeg/sub-05_ses-05_report.html
+│08:09:05│ ⏳️ sub-05 ses-06 Reading experimental recording: sub-05_ses-06_task-attention
+│08:09:05│ ⏳️ sub-05 ses-06 Dropping channels: AF3, AF4
+│08:09:05│ ⏳️ sub-05 ses-06 Marking 0 channels as bad.
+│08:09:05│ ⏳️ sub-05 ses-06 Notch filtering experimental data at [50.0] Hz.
+│08:09:05│ ⏳️ sub-05 ses-06 Band-pass filtering experimental data; range: 1.0 – 40.0 Hz
+│08:09:05│ ⏳️ sub-05 ses-06 Resampling experimental data to 128.0 Hz
+│08:09:05│ ⏳️ sub-05 ses-06 Adding filtered raw data to report
+│08:09:06│ ⏳️ sub-05 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-06/eeg/sub-05_ses-06_report.html
+└────────┴ done (21s)
+┌────────┬ preprocessing/_05_regress_artifact ──────────────────────────────────
+│08:09:06│ ⏩ sub-* Skipping, not requested …
+└────────┴ done (1s)
+┌────────┬ preprocessing/_06a1_fit_ica ─────────────────────────────────────────
+│08:09:06│ ⏳️ sub-01 ses-03 Processing raw data from sub-01_ses-03_task-attention_proc-filt_raw.fif
+│08:09:06│ ⏳️ sub-01 ses-03 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:06│ ⏳️ sub-01 ses-03 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:06│ ⏳️ sub-01 ses-03 Creating task-related epochs …
+│08:09:06│ ⏳️ sub-01 ses-03 Removed 0 of 618 epochs via PTP rejection thresholds: {}
+│08:09:06│ ⏳️ sub-01 ses-03 Saving 618 ICA epochs to disk.
+│08:09:06│ ⏳️ sub-01 ses-03 Calculating ICA solution using method: extended_infomax.
+│08:09:08│ ⏳️ sub-01 ses-03 Fit 7 components (explaining 99.3% of the variance) in 500 iterations.
+│08:09:08│ ⏳️ sub-01 ses-03 Saving ICA solution to disk.
+│08:09:09│ ⏳️ sub-01 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-03/eeg/sub-01_ses-03_report.html
+│08:09:09│ ⏳️ sub-01 ses-04 Processing raw data from sub-01_ses-04_task-attention_proc-filt_raw.fif
+│08:09:09│ ⏳️ sub-01 ses-04 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:09│ ⏳️ sub-01 ses-04 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:09│ ⏳️ sub-01 ses-04 Creating task-related epochs …
+│08:09:09│ ⏳️ sub-01 ses-04 Removed 0 of 659 epochs via PTP rejection thresholds: {}
+│08:09:09│ ⏳️ sub-01 ses-04 Saving 659 ICA epochs to disk.
+│08:09:09│ ⏳️ sub-01 ses-04 Calculating ICA solution using method: extended_infomax.
+│08:09:14│ ⏳️ sub-01 ses-04 Fit 7 components (explaining 99.2% of the variance) in 500 iterations.
+│08:09:14│ ⏳️ sub-01 ses-04 Saving ICA solution to disk.
+│08:09:15│ ⏳️ sub-01 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-04/eeg/sub-01_ses-04_report.html
+│08:09:15│ ⏳️ sub-01 ses-05 Processing raw data from sub-01_ses-05_task-attention_proc-filt_raw.fif
+│08:09:15│ ⏳️ sub-01 ses-05 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:15│ ⏳️ sub-01 ses-05 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:15│ ⏳️ sub-01 ses-05 Creating task-related epochs …
+│08:09:15│ ⏳️ sub-01 ses-05 Removed 0 of 608 epochs via PTP rejection thresholds: {}
+│08:09:15│ ⏳️ sub-01 ses-05 Saving 608 ICA epochs to disk.
+│08:09:15│ ⏳️ sub-01 ses-05 Calculating ICA solution using method: extended_infomax.
+│08:09:18│ ⏳️ sub-01 ses-05 Fit 8 components (explaining 99.3% of the variance) in 500 iterations.
+│08:09:18│ ⏳️ sub-01 ses-05 Saving ICA solution to disk.
+│08:09:19│ ⏳️ sub-01 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-05/eeg/sub-01_ses-05_report.html
+│08:09:19│ ⏳️ sub-01 ses-06 Processing raw data from sub-01_ses-06_task-attention_proc-filt_raw.fif
+│08:09:19│ ⏳️ sub-01 ses-06 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:19│ ⏳️ sub-01 ses-06 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:19│ ⏳️ sub-01 ses-06 Creating task-related epochs …
+│08:09:19│ ⏳️ sub-01 ses-06 Removed 0 of 500 epochs via PTP rejection thresholds: {}
+│08:09:19│ ⏳️ sub-01 ses-06 Saving 500 ICA epochs to disk.
+│08:09:19│ ⏳️ sub-01 ses-06 Calculating ICA solution using method: extended_infomax.
+│08:09:22│ ⏳️ sub-01 ses-06 Fit 8 components (explaining 99.4% of the variance) in 500 iterations.
+│08:09:22│ ⏳️ sub-01 ses-06 Saving ICA solution to disk.
+│08:09:23│ ⏳️ sub-01 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-06/eeg/sub-01_ses-06_report.html
+│08:09:24│ ⏳️ sub-01 ses-07 Processing raw data from sub-01_ses-07_task-attention_proc-filt_raw.fif
+│08:09:24│ ⏳️ sub-01 ses-07 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:24│ ⏳️ sub-01 ses-07 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:24│ ⏳️ sub-01 ses-07 Creating task-related epochs …
+│08:09:24│ ⏳️ sub-01 ses-07 Removed 0 of 691 epochs via PTP rejection thresholds: {}
+│08:09:24│ ⏳️ sub-01 ses-07 Saving 691 ICA epochs to disk.
+│08:09:24│ ⏳️ sub-01 ses-07 Calculating ICA solution using method: extended_infomax.
+│08:09:27│ ⏳️ sub-01 ses-07 Fit 8 components (explaining 99.0% of the variance) in 133 iterations.
+│08:09:27│ ⏳️ sub-01 ses-07 Saving ICA solution to disk.
+│08:09:29│ ⏳️ sub-01 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-07/eeg/sub-01_ses-07_report.html
+│08:09:29│ ⏳️ sub-02 ses-03 Processing raw data from sub-02_ses-03_task-attention_proc-filt_raw.fif
+│08:09:29│ ⏳️ sub-02 ses-03 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:29│ ⏳️ sub-02 ses-03 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:29│ ⏳️ sub-02 ses-03 Creating task-related epochs …
+│08:09:29│ ⏳️ sub-02 ses-03 Removed 0 of 660 epochs via PTP rejection thresholds: {}
+│08:09:29│ ⏳️ sub-02 ses-03 Saving 660 ICA epochs to disk.
+│08:09:29│ ⏳️ sub-02 ses-03 Calculating ICA solution using method: extended_infomax.
+│08:09:30│ ⏳️ sub-02 ses-03 Fit 7 components (explaining 99.0% of the variance) in 500 iterations.
+│08:09:30│ ⏳️ sub-02 ses-03 Saving ICA solution to disk.
+│08:09:32│ ⏳️ sub-02 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-03/eeg/sub-02_ses-03_report.html
+│08:09:32│ ⏳️ sub-02 ses-04 Processing raw data from sub-02_ses-04_task-attention_proc-filt_raw.fif
+│08:09:32│ ⏳️ sub-02 ses-04 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:32│ ⏳️ sub-02 ses-04 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:32│ ⏳️ sub-02 ses-04 Creating task-related epochs …
+│08:09:32│ ⏳️ sub-02 ses-04 Removed 0 of 678 epochs via PTP rejection thresholds: {}
+│08:09:32│ ⏳️ sub-02 ses-04 Saving 678 ICA epochs to disk.
+│08:09:32│ ⏳️ sub-02 ses-04 Calculating ICA solution using method: extended_infomax.
+│08:09:37│ ⏳️ sub-02 ses-04 Fit 6 components (explaining 99.3% of the variance) in 132 iterations.
+│08:09:37│ ⏳️ sub-02 ses-04 Saving ICA solution to disk.
+│08:09:38│ ⏳️ sub-02 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-04/eeg/sub-02_ses-04_report.html
+│08:09:38│ ⏳️ sub-02 ses-05 Processing raw data from sub-02_ses-05_task-attention_proc-filt_raw.fif
+│08:09:38│ ⏳️ sub-02 ses-05 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:38│ ⏳️ sub-02 ses-05 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:39│ ⏳️ sub-02 ses-05 Creating task-related epochs …
+│08:09:39│ ⏳️ sub-02 ses-05 Removed 0 of 618 epochs via PTP rejection thresholds: {}
+│08:09:39│ ⏳️ sub-02 ses-05 Saving 618 ICA epochs to disk.
+│08:09:39│ ⏳️ sub-02 ses-05 Calculating ICA solution using method: extended_infomax.
+│08:09:41│ ⏳️ sub-02 ses-05 Fit 9 components (explaining 99.0% of the variance) in 500 iterations.
+│08:09:41│ ⏳️ sub-02 ses-05 Saving ICA solution to disk.
+│08:09:42│ ⏳️ sub-02 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-05/eeg/sub-02_ses-05_report.html
+│08:09:42│ ⏳️ sub-02 ses-06 Processing raw data from sub-02_ses-06_task-attention_proc-filt_raw.fif
+│08:09:42│ ⏳️ sub-02 ses-06 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:42│ ⏳️ sub-02 ses-06 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:42│ ⏳️ sub-02 ses-06 Creating task-related epochs …
+│08:09:42│ ⏳️ sub-02 ses-06 Removed 0 of 646 epochs via PTP rejection thresholds: {}
+│08:09:42│ ⏳️ sub-02 ses-06 Saving 646 ICA epochs to disk.
+│08:09:42│ ⏳️ sub-02 ses-06 Calculating ICA solution using method: extended_infomax.
+│08:09:45│ ⏳️ sub-02 ses-06 Fit 10 components (explaining 99.6% of the variance) in 500 iterations.
+│08:09:45│ ⏳️ sub-02 ses-06 Saving ICA solution to disk.
+│08:09:46│ ⏳️ sub-02 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-06/eeg/sub-02_ses-06_report.html
+│08:09:46│ ⏳️ sub-02 ses-07 Processing raw data from sub-02_ses-07_task-attention_proc-filt_raw.fif
+│08:09:47│ ⏳️ sub-02 ses-07 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:47│ ⏳️ sub-02 ses-07 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:47│ ⏳️ sub-02 ses-07 Creating task-related epochs …
+│08:09:47│ ⏳️ sub-02 ses-07 Removed 0 of 598 epochs via PTP rejection thresholds: {}
+│08:09:47│ ⏳️ sub-02 ses-07 Saving 598 ICA epochs to disk.
+│08:09:47│ ⏳️ sub-02 ses-07 Calculating ICA solution using method: extended_infomax.
+│08:09:50│ ⏳️ sub-02 ses-07 Fit 9 components (explaining 99.2% of the variance) in 500 iterations.
+│08:09:50│ ⏳️ sub-02 ses-07 Saving ICA solution to disk.
+│08:09:51│ ⏳️ sub-02 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-07/eeg/sub-02_ses-07_report.html
+│08:09:51│ ⏳️ sub-03 ses-03 Processing raw data from sub-03_ses-03_task-attention_proc-filt_raw.fif
+│08:09:51│ ⏳️ sub-03 ses-03 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:51│ ⏳️ sub-03 ses-03 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:52│ ⏳️ sub-03 ses-03 Creating task-related epochs …
+│08:09:52│ ⏳️ sub-03 ses-03 Removed 0 of 769 epochs via PTP rejection thresholds: {}
+│08:09:52│ ⏳️ sub-03 ses-03 Saving 769 ICA epochs to disk.
+│08:09:52│ ⏳️ sub-03 ses-03 Calculating ICA solution using method: extended_infomax.
+│08:09:54│ ⏳️ sub-03 ses-03 Fit 8 components (explaining 99.4% of the variance) in 500 iterations.
+│08:09:54│ ⏳️ sub-03 ses-03 Saving ICA solution to disk.
+│08:09:55│ ⏳️ sub-03 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-03/eeg/sub-03_ses-03_report.html
+│08:09:56│ ⏳️ sub-03 ses-04 Processing raw data from sub-03_ses-04_task-attention_proc-filt_raw.fif
+│08:09:56│ ⏳️ sub-03 ses-04 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:09:56│ ⏳️ sub-03 ses-04 Applying high-pass filter with 1.0 Hz cutoff
+│08:09:56│ ⏳️ sub-03 ses-04 Creating task-related epochs …
+│08:09:56│ ⏳️ sub-03 ses-04 Removed 0 of 626 epochs via PTP rejection thresholds: {}
+│08:09:56│ ⏳️ sub-03 ses-04 Saving 626 ICA epochs to disk.
+│08:09:56│ ⏳️ sub-03 ses-04 Calculating ICA solution using method: extended_infomax.
+│08:09:59│ ⏳️ sub-03 ses-04 Fit 7 components (explaining 99.4% of the variance) in 500 iterations.
+│08:09:59│ ⏳️ sub-03 ses-04 Saving ICA solution to disk.
+│08:10:00│ ⏳️ sub-03 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-04/eeg/sub-03_ses-04_report.html
+│08:10:00│ ⏳️ sub-03 ses-05 Processing raw data from sub-03_ses-05_task-attention_proc-filt_raw.fif
+│08:10:00│ ⏳️ sub-03 ses-05 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:00│ ⏳️ sub-03 ses-05 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:00│ ⏳️ sub-03 ses-05 Creating task-related epochs …
+│08:10:00│ ⏳️ sub-03 ses-05 Removed 0 of 577 epochs via PTP rejection thresholds: {}
+│08:10:00│ ⏳️ sub-03 ses-05 Saving 577 ICA epochs to disk.
+│08:10:00│ ⏳️ sub-03 ses-05 Calculating ICA solution using method: extended_infomax.
+│08:10:04│ ⏳️ sub-03 ses-05 Fit 8 components (explaining 99.1% of the variance) in 500 iterations.
+│08:10:04│ ⏳️ sub-03 ses-05 Saving ICA solution to disk.
+│08:10:05│ ⏳️ sub-03 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-05/eeg/sub-03_ses-05_report.html
+│08:10:05│ ⏳️ sub-03 ses-06 Processing raw data from sub-03_ses-06_task-attention_proc-filt_raw.fif
+│08:10:05│ ⏳️ sub-03 ses-06 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:05│ ⏳️ sub-03 ses-06 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:06│ ⏳️ sub-03 ses-06 Creating task-related epochs …
+│08:10:06│ ⏳️ sub-03 ses-06 Removed 0 of 687 epochs via PTP rejection thresholds: {}
+│08:10:06│ ⏳️ sub-03 ses-06 Saving 687 ICA epochs to disk.
+│08:10:06│ ⏳️ sub-03 ses-06 Calculating ICA solution using method: extended_infomax.
+│08:10:10│ ⏳️ sub-03 ses-06 Fit 9 components (explaining 99.3% of the variance) in 136 iterations.
+│08:10:10│ ⏳️ sub-03 ses-06 Saving ICA solution to disk.
+│08:10:11│ ⏳️ sub-03 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-06/eeg/sub-03_ses-06_report.html
+│08:10:11│ ⏳️ sub-03 ses-07 Processing raw data from sub-03_ses-07_task-attention_proc-filt_raw.fif
+│08:10:11│ ⏳️ sub-03 ses-07 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:11│ ⏳️ sub-03 ses-07 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:11│ ⏳️ sub-03 ses-07 Creating task-related epochs …
+│08:10:11│ ⏳️ sub-03 ses-07 Removed 0 of 582 epochs via PTP rejection thresholds: {}
+│08:10:11│ ⏳️ sub-03 ses-07 Saving 582 ICA epochs to disk.
+│08:10:11│ ⏳️ sub-03 ses-07 Calculating ICA solution using method: extended_infomax.
+│08:10:14│ ⏳️ sub-03 ses-07 Fit 9 components (explaining 99.0% of the variance) in 500 iterations.
+│08:10:14│ ⏳️ sub-03 ses-07 Saving ICA solution to disk.
+│08:10:15│ ⏳️ sub-03 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-07/eeg/sub-03_ses-07_report.html
+│08:10:16│ ⏳️ sub-04 ses-03 Processing raw data from sub-04_ses-03_task-attention_proc-filt_raw.fif
+│08:10:16│ ⏳️ sub-04 ses-03 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:16│ ⏳️ sub-04 ses-03 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:16│ ⏳️ sub-04 ses-03 Creating task-related epochs …
+│08:10:16│ ⏳️ sub-04 ses-03 Removed 0 of 625 epochs via PTP rejection thresholds: {}
+│08:10:16│ ⏳️ sub-04 ses-03 Saving 625 ICA epochs to disk.
+│08:10:16│ ⏳️ sub-04 ses-03 Calculating ICA solution using method: extended_infomax.
+│08:10:19│ ⏳️ sub-04 ses-03 Fit 9 components (explaining 99.3% of the variance) in 117 iterations.
+│08:10:19│ ⏳️ sub-04 ses-03 Saving ICA solution to disk.
+│08:10:20│ ⏳️ sub-04 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-03/eeg/sub-04_ses-03_report.html
+│08:10:20│ ⏳️ sub-04 ses-04 Processing raw data from sub-04_ses-04_task-attention_proc-filt_raw.fif
+│08:10:20│ ⏳️ sub-04 ses-04 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:20│ ⏳️ sub-04 ses-04 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:20│ ⏳️ sub-04 ses-04 Creating task-related epochs …
+│08:10:20│ ⏳️ sub-04 ses-04 Removed 0 of 719 epochs via PTP rejection thresholds: {}
+│08:10:20│ ⏳️ sub-04 ses-04 Saving 719 ICA epochs to disk.
+│08:10:20│ ⏳️ sub-04 ses-04 Calculating ICA solution using method: extended_infomax.
+│08:10:24│ ⏳️ sub-04 ses-04 Fit 8 components (explaining 99.4% of the variance) in 500 iterations.
+│08:10:24│ ⏳️ sub-04 ses-04 Saving ICA solution to disk.
+│08:10:26│ ⏳️ sub-04 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-04/eeg/sub-04_ses-04_report.html
+│08:10:26│ ⏳️ sub-04 ses-05 Processing raw data from sub-04_ses-05_task-attention_proc-filt_raw.fif
+│08:10:26│ ⏳️ sub-04 ses-05 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:26│ ⏳️ sub-04 ses-05 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:26│ ⏳️ sub-04 ses-05 Creating task-related epochs …
+│08:10:26│ ⏳️ sub-04 ses-05 Removed 0 of 629 epochs via PTP rejection thresholds: {}
+│08:10:26│ ⏳️ sub-04 ses-05 Saving 629 ICA epochs to disk.
+│08:10:26│ ⏳️ sub-04 ses-05 Calculating ICA solution using method: extended_infomax.
+│08:10:29│ ⏳️ sub-04 ses-05 Fit 6 components (explaining 99.2% of the variance) in 500 iterations.
+│08:10:29│ ⏳️ sub-04 ses-05 Saving ICA solution to disk.
+│08:10:31│ ⏳️ sub-04 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-05/eeg/sub-04_ses-05_report.html
+│08:10:31│ ⏳️ sub-04 ses-06 Processing raw data from sub-04_ses-06_task-attention_proc-filt_raw.fif
+│08:10:31│ ⏳️ sub-04 ses-06 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:31│ ⏳️ sub-04 ses-06 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:31│ ⏳️ sub-04 ses-06 Creating task-related epochs …
+│08:10:31│ ⏳️ sub-04 ses-06 Removed 0 of 602 epochs via PTP rejection thresholds: {}
+│08:10:31│ ⏳️ sub-04 ses-06 Saving 602 ICA epochs to disk.
+│08:10:31│ ⏳️ sub-04 ses-06 Calculating ICA solution using method: extended_infomax.
+│08:10:34│ ⏳️ sub-04 ses-06 Fit 6 components (explaining 99.2% of the variance) in 151 iterations.
+│08:10:34│ ⏳️ sub-04 ses-06 Saving ICA solution to disk.
+│08:10:35│ ⏳️ sub-04 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-06/eeg/sub-04_ses-06_report.html
+│08:10:35│ ⏳️ sub-04 ses-07 Processing raw data from sub-04_ses-07_task-attention_proc-filt_raw.fif
+│08:10:35│ ⏳️ sub-04 ses-07 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:35│ ⏳️ sub-04 ses-07 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:35│ ⏳️ sub-04 ses-07 Creating task-related epochs …
+│08:10:35│ ⏳️ sub-04 ses-07 Removed 0 of 371 epochs via PTP rejection thresholds: {}
+│08:10:35│ ⏳️ sub-04 ses-07 Saving 371 ICA epochs to disk.
+│08:10:35│ ⏳️ sub-04 ses-07 Calculating ICA solution using method: extended_infomax.
+│08:10:38│ ⏳️ sub-04 ses-07 Fit 5 components (explaining 99.5% of the variance) in 500 iterations.
+│08:10:38│ ⏳️ sub-04 ses-07 Saving ICA solution to disk.
+│08:10:39│ ⏳️ sub-04 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-07/eeg/sub-04_ses-07_report.html
+│08:10:39│ ⏳️ sub-05 ses-03 Processing raw data from sub-05_ses-03_task-attention_proc-filt_raw.fif
+│08:10:39│ ⏳️ sub-05 ses-03 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:39│ ⏳️ sub-05 ses-03 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:39│ ⏳️ sub-05 ses-03 Creating task-related epochs …
+│08:10:39│ ⏳️ sub-05 ses-03 Removed 0 of 743 epochs via PTP rejection thresholds: {}
+│08:10:39│ ⏳️ sub-05 ses-03 Saving 743 ICA epochs to disk.
+│08:10:39│ ⏳️ sub-05 ses-03 Calculating ICA solution using method: extended_infomax.
+│08:10:42│ ⏳️ sub-05 ses-03 Fit 6 components (explaining 99.5% of the variance) in 135 iterations.
+│08:10:42│ ⏳️ sub-05 ses-03 Saving ICA solution to disk.
+│08:10:44│ ⏳️ sub-05 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-03/eeg/sub-05_ses-03_report.html
+│08:10:44│ ⏳️ sub-05 ses-04 Processing raw data from sub-05_ses-04_task-attention_proc-filt_raw.fif
+│08:10:44│ ⏳️ sub-05 ses-04 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:44│ ⏳️ sub-05 ses-04 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:44│ ⏳️ sub-05 ses-04 Creating task-related epochs …
+│08:10:44│ ⏳️ sub-05 ses-04 Removed 0 of 838 epochs via PTP rejection thresholds: {}
+│08:10:44│ ⏳️ sub-05 ses-04 Saving 838 ICA epochs to disk.
+│08:10:44│ ⏳️ sub-05 ses-04 Calculating ICA solution using method: extended_infomax.
+│08:10:46│ ⏳️ sub-05 ses-04 Fit 9 components (explaining 99.2% of the variance) in 500 iterations.
+│08:10:46│ ⏳️ sub-05 ses-04 Saving ICA solution to disk.
+│08:10:48│ ⏳️ sub-05 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-04/eeg/sub-05_ses-04_report.html
+│08:10:48│ ⏳️ sub-05 ses-05 Processing raw data from sub-05_ses-05_task-attention_proc-filt_raw.fif
+│08:10:48│ ⏳️ sub-05 ses-05 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:48│ ⏳️ sub-05 ses-05 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:48│ ⏳️ sub-05 ses-05 Creating task-related epochs …
+│08:10:48│ ⏳️ sub-05 ses-05 Removed 0 of 837 epochs via PTP rejection thresholds: {}
+│08:10:48│ ⏳️ sub-05 ses-05 Saving 837 ICA epochs to disk.
+│08:10:48│ ⏳️ sub-05 ses-05 Calculating ICA solution using method: extended_infomax.
+│08:10:51│ ⏳️ sub-05 ses-05 Fit 8 components (explaining 99.1% of the variance) in 127 iterations.
+│08:10:51│ ⏳️ sub-05 ses-05 Saving ICA solution to disk.
+│08:10:53│ ⏳️ sub-05 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-05/eeg/sub-05_ses-05_report.html
+│08:10:53│ ⏳️ sub-05 ses-06 Processing raw data from sub-05_ses-06_task-attention_proc-filt_raw.fif
+│08:10:53│ ⏳️ sub-05 ses-06 Low-pass filter cutoff 100.0 Hz is higher than Nyquist 64.0 Hz, setting to None for compatibility with MNE-ICALabel.
+│08:10:53│ ⏳️ sub-05 ses-06 Applying high-pass filter with 1.0 Hz cutoff
+│08:10:53│ ⏳️ sub-05 ses-06 Creating task-related epochs …
+│08:10:53│ ⏳️ sub-05 ses-06 Removed 0 of 708 epochs via PTP rejection thresholds: {}
+│08:10:53│ ⏳️ sub-05 ses-06 Saving 708 ICA epochs to disk.
+│08:10:53│ ⏳️ sub-05 ses-06 Calculating ICA solution using method: extended_infomax.
+│08:10:57│ ⏳️ sub-05 ses-06 Fit 7 components (explaining 99.3% of the variance) in 185 iterations.
+│08:10:57│ ⏳️ sub-05 ses-06 Saving ICA solution to disk.
+│08:10:58│ ⏳️ sub-05 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-06/eeg/sub-05_ses-06_report.html
+└────────┴ done (1m 53s)
+┌────────┬ preprocessing/_06a2_find_ica_artifacts ──────────────────────────────
+│08:10:58│ ⏳️ sub-01 ses-03 Loading ICA solution
+│08:10:58│ ⏳️ sub-01 ses-03 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:10:58│ ⏳️ sub-01 ses-03 No EOG channel is present, cannot automate IC detection for EOG.
+│08:10:58│ ⏳️ sub-01 ses-03 Performing automated artifact detection (MNE-ICALabel) …
+│08:10:59│ ⏳️ sub-01 ses-03 Detected 0 artifact-related independent components in 618 epochs.
+│08:10:59│ ⏳️ sub-01 ses-03 Saving ICA solution and detected artifacts to disk.
+│08:10:59│ ⏳️ sub-01 ses-03 Adding "ICA: components" to report.
+│08:11:06│ ⏳️ sub-01 ses-03 Adding "ICA: ICALabel" to report.
+│08:11:08│ ⏳️ sub-01 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-03/eeg/sub-01_ses-03_report.html
+│08:11:08│ 🛑 sub-01 ses-03 Carefully review the extracted ICs and mark components "bad" in:
+│08:11:08│ 🛑 sub-01 ses-03 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-03/eeg/sub-01_ses-03_proc-ica_components.tsv
+│08:11:08│ ⏳️ sub-01 ses-04 Loading ICA solution
+│08:11:08│ ⏳️ sub-01 ses-04 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:11:08│ ⏳️ sub-01 ses-04 No EOG channel is present, cannot automate IC detection for EOG.
+│08:11:08│ ⏳️ sub-01 ses-04 Performing automated artifact detection (MNE-ICALabel) …
+│08:11:08│ ⏳️ sub-01 ses-04 Detected 0 artifact-related independent components in 659 epochs.
+│08:11:08│ ⏳️ sub-01 ses-04 Saving ICA solution and detected artifacts to disk.
+│08:11:08│ ⏳️ sub-01 ses-04 Adding "ICA: components" to report.
+│08:11:15│ ⏳️ sub-01 ses-04 Adding "ICA: ICALabel" to report.
+│08:11:17│ ⏳️ sub-01 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-04/eeg/sub-01_ses-04_report.html
+│08:11:17│ 🛑 sub-01 ses-04 Carefully review the extracted ICs and mark components "bad" in:
+│08:11:17│ 🛑 sub-01 ses-04 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-04/eeg/sub-01_ses-04_proc-ica_components.tsv
+│08:11:17│ ⏳️ sub-01 ses-05 Loading ICA solution
+│08:11:17│ ⏳️ sub-01 ses-05 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:11:17│ ⏳️ sub-01 ses-05 No EOG channel is present, cannot automate IC detection for EOG.
+│08:11:17│ ⏳️ sub-01 ses-05 Performing automated artifact detection (MNE-ICALabel) …
+│08:11:18│ ⏳️ sub-01 ses-05 Detected 0 artifact-related independent components in 608 epochs.
+│08:11:18│ ⏳️ sub-01 ses-05 Saving ICA solution and detected artifacts to disk.
+│08:11:18│ ⏳️ sub-01 ses-05 Adding "ICA: components" to report.
+│08:11:26│ ⏳️ sub-01 ses-05 Adding "ICA: ICALabel" to report.
+│08:11:27│ ⏳️ sub-01 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-05/eeg/sub-01_ses-05_report.html
+│08:11:27│ 🛑 sub-01 ses-05 Carefully review the extracted ICs and mark components "bad" in:
+│08:11:27│ 🛑 sub-01 ses-05 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-05/eeg/sub-01_ses-05_proc-ica_components.tsv
+│08:11:27│ ⏳️ sub-01 ses-06 Loading ICA solution
+│08:11:27│ ⏳️ sub-01 ses-06 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:11:27│ ⏳️ sub-01 ses-06 No EOG channel is present, cannot automate IC detection for EOG.
+│08:11:27│ ⏳️ sub-01 ses-06 Performing automated artifact detection (MNE-ICALabel) …
+│08:11:27│ ⏳️ sub-01 ses-06 Detected 0 artifact-related independent components in 500 epochs.
+│08:11:27│ ⏳️ sub-01 ses-06 Saving ICA solution and detected artifacts to disk.
+│08:11:27│ ⏳️ sub-01 ses-06 Adding "ICA: components" to report.
+│08:11:35│ ⏳️ sub-01 ses-06 Adding "ICA: ICALabel" to report.
+│08:11:37│ ⏳️ sub-01 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-06/eeg/sub-01_ses-06_report.html
+│08:11:37│ 🛑 sub-01 ses-06 Carefully review the extracted ICs and mark components "bad" in:
+│08:11:37│ 🛑 sub-01 ses-06 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-06/eeg/sub-01_ses-06_proc-ica_components.tsv
+│08:11:37│ ⏳️ sub-01 ses-07 Loading ICA solution
+│08:11:37│ ⏳️ sub-01 ses-07 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:11:37│ ⏳️ sub-01 ses-07 No EOG channel is present, cannot automate IC detection for EOG.
+│08:11:37│ ⏳️ sub-01 ses-07 Performing automated artifact detection (MNE-ICALabel) …
+│08:11:38│ ⏳️ sub-01 ses-07 Detected 0 artifact-related independent components in 691 epochs.
+│08:11:38│ ⏳️ sub-01 ses-07 Saving ICA solution and detected artifacts to disk.
+│08:11:38│ ⏳️ sub-01 ses-07 Adding "ICA: components" to report.
+│08:11:46│ ⏳️ sub-01 ses-07 Adding "ICA: ICALabel" to report.
+│08:11:47│ ⏳️ sub-01 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-07/eeg/sub-01_ses-07_report.html
+│08:11:47│ 🛑 sub-01 ses-07 Carefully review the extracted ICs and mark components "bad" in:
+│08:11:47│ 🛑 sub-01 ses-07 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-07/eeg/sub-01_ses-07_proc-ica_components.tsv
+│08:11:47│ ⏳️ sub-02 ses-03 Loading ICA solution
+│08:11:48│ ⏳️ sub-02 ses-03 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:11:48│ ⏳️ sub-02 ses-03 No EOG channel is present, cannot automate IC detection for EOG.
+│08:11:48│ ⏳️ sub-02 ses-03 Performing automated artifact detection (MNE-ICALabel) …
+│08:11:48│ ⏳️ sub-02 ses-03 Detected 0 artifact-related independent components in 660 epochs.
+│08:11:48│ ⏳️ sub-02 ses-03 Saving ICA solution and detected artifacts to disk.
+│08:11:48│ ⏳️ sub-02 ses-03 Adding "ICA: components" to report.
+│08:11:55│ ⏳️ sub-02 ses-03 Adding "ICA: ICALabel" to report.
+│08:11:57│ ⏳️ sub-02 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-03/eeg/sub-02_ses-03_report.html
+│08:11:57│ 🛑 sub-02 ses-03 Carefully review the extracted ICs and mark components "bad" in:
+│08:11:57│ 🛑 sub-02 ses-03 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-03/eeg/sub-02_ses-03_proc-ica_components.tsv
+│08:11:57│ ⏳️ sub-02 ses-04 Loading ICA solution
+│08:11:57│ ⏳️ sub-02 ses-04 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:11:57│ ⏳️ sub-02 ses-04 No EOG channel is present, cannot automate IC detection for EOG.
+│08:11:57│ ⏳️ sub-02 ses-04 Performing automated artifact detection (MNE-ICALabel) …
+│08:11:57│ ⏳️ sub-02 ses-04 Detected 0 artifact-related independent components in 678 epochs.
+│08:11:57│ ⏳️ sub-02 ses-04 Saving ICA solution and detected artifacts to disk.
+│08:11:57│ ⏳️ sub-02 ses-04 Adding "ICA: components" to report.
+│08:12:03│ ⏳️ sub-02 ses-04 Adding "ICA: ICALabel" to report.
+│08:12:05│ ⏳️ sub-02 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-04/eeg/sub-02_ses-04_report.html
+│08:12:05│ 🛑 sub-02 ses-04 Carefully review the extracted ICs and mark components "bad" in:
+│08:12:05│ 🛑 sub-02 ses-04 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-04/eeg/sub-02_ses-04_proc-ica_components.tsv
+│08:12:05│ ⏳️ sub-02 ses-05 Loading ICA solution
+│08:12:05│ ⏳️ sub-02 ses-05 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:12:05│ ⏳️ sub-02 ses-05 No EOG channel is present, cannot automate IC detection for EOG.
+│08:12:05│ ⏳️ sub-02 ses-05 Performing automated artifact detection (MNE-ICALabel) …
+│08:12:06│ ⏳️ sub-02 ses-05 Detected 0 artifact-related independent components in 618 epochs.
+│08:12:06│ ⏳️ sub-02 ses-05 Saving ICA solution and detected artifacts to disk.
+│08:12:06│ ⏳️ sub-02 ses-05 Adding "ICA: components" to report.
+│08:12:15│ ⏳️ sub-02 ses-05 Adding "ICA: ICALabel" to report.
+│08:12:17│ ⏳️ sub-02 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-05/eeg/sub-02_ses-05_report.html
+│08:12:17│ 🛑 sub-02 ses-05 Carefully review the extracted ICs and mark components "bad" in:
+│08:12:17│ 🛑 sub-02 ses-05 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-05/eeg/sub-02_ses-05_proc-ica_components.tsv
+│08:12:17│ ⏳️ sub-02 ses-06 Loading ICA solution
+│08:12:17│ ⏳️ sub-02 ses-06 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:12:18│ ⏳️ sub-02 ses-06 No EOG channel is present, cannot automate IC detection for EOG.
+│08:12:18│ ⏳️ sub-02 ses-06 Performing automated artifact detection (MNE-ICALabel) …
+│08:12:18│ ⏳️ sub-02 ses-06 Detected 0 artifact-related independent components in 646 epochs.
+│08:12:18│ ⏳️ sub-02 ses-06 Saving ICA solution and detected artifacts to disk.
+│08:12:18│ ⏳️ sub-02 ses-06 Adding "ICA: components" to report.
+│08:12:28│ ⏳️ sub-02 ses-06 Adding "ICA: ICALabel" to report.
+│08:12:30│ ⏳️ sub-02 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-06/eeg/sub-02_ses-06_report.html
+│08:12:31│ 🛑 sub-02 ses-06 Carefully review the extracted ICs and mark components "bad" in:
+│08:12:31│ 🛑 sub-02 ses-06 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-06/eeg/sub-02_ses-06_proc-ica_components.tsv
+│08:12:31│ ⏳️ sub-02 ses-07 Loading ICA solution
+│08:12:31│ ⏳️ sub-02 ses-07 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:12:31│ ⏳️ sub-02 ses-07 No EOG channel is present, cannot automate IC detection for EOG.
+│08:12:31│ ⏳️ sub-02 ses-07 Performing automated artifact detection (MNE-ICALabel) …
+│08:12:31│ ⏳️ sub-02 ses-07 Detected 0 artifact-related independent components in 598 epochs.
+│08:12:31│ ⏳️ sub-02 ses-07 Saving ICA solution and detected artifacts to disk.
+│08:12:31│ ⏳️ sub-02 ses-07 Adding "ICA: components" to report.
+│08:12:40│ ⏳️ sub-02 ses-07 Adding "ICA: ICALabel" to report.
+│08:12:43│ ⏳️ sub-02 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-07/eeg/sub-02_ses-07_report.html
+│08:12:43│ 🛑 sub-02 ses-07 Carefully review the extracted ICs and mark components "bad" in:
+│08:12:43│ 🛑 sub-02 ses-07 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-07/eeg/sub-02_ses-07_proc-ica_components.tsv
+│08:12:43│ ⏳️ sub-03 ses-03 Loading ICA solution
+│08:12:43│ ⏳️ sub-03 ses-03 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:12:43│ ⏳️ sub-03 ses-03 No EOG channel is present, cannot automate IC detection for EOG.
+│08:12:43│ ⏳️ sub-03 ses-03 Performing automated artifact detection (MNE-ICALabel) …
+│08:12:43│ ⏳️ sub-03 ses-03 Detected 0 artifact-related independent components in 769 epochs.
+│08:12:43│ ⏳️ sub-03 ses-03 Saving ICA solution and detected artifacts to disk.
+│08:12:43│ ⏳️ sub-03 ses-03 Adding "ICA: components" to report.
+│08:12:51│ ⏳️ sub-03 ses-03 Adding "ICA: ICALabel" to report.
+│08:12:54│ ⏳️ sub-03 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-03/eeg/sub-03_ses-03_report.html
+│08:12:54│ 🛑 sub-03 ses-03 Carefully review the extracted ICs and mark components "bad" in:
+│08:12:54│ 🛑 sub-03 ses-03 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-03/eeg/sub-03_ses-03_proc-ica_components.tsv
+│08:12:54│ ⏳️ sub-03 ses-04 Loading ICA solution
+│08:12:54│ ⏳️ sub-03 ses-04 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:12:54│ ⏳️ sub-03 ses-04 No EOG channel is present, cannot automate IC detection for EOG.
+│08:12:54│ ⏳️ sub-03 ses-04 Performing automated artifact detection (MNE-ICALabel) …
+│08:12:54│ ⏳️ sub-03 ses-04 Detected 0 artifact-related independent components in 626 epochs.
+│08:12:54│ ⏳️ sub-03 ses-04 Saving ICA solution and detected artifacts to disk.
+│08:12:54│ ⏳️ sub-03 ses-04 Adding "ICA: components" to report.
+│08:13:01│ ⏳️ sub-03 ses-04 Adding "ICA: ICALabel" to report.
+│08:13:03│ ⏳️ sub-03 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-04/eeg/sub-03_ses-04_report.html
+│08:13:03│ 🛑 sub-03 ses-04 Carefully review the extracted ICs and mark components "bad" in:
+│08:13:03│ 🛑 sub-03 ses-04 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-04/eeg/sub-03_ses-04_proc-ica_components.tsv
+│08:13:03│ ⏳️ sub-03 ses-05 Loading ICA solution
+│08:13:03│ ⏳️ sub-03 ses-05 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:13:03│ ⏳️ sub-03 ses-05 No EOG channel is present, cannot automate IC detection for EOG.
+│08:13:03│ ⏳️ sub-03 ses-05 Performing automated artifact detection (MNE-ICALabel) …
+│08:13:04│ ⏳️ sub-03 ses-05 Detected 0 artifact-related independent components in 577 epochs.
+│08:13:04│ ⏳️ sub-03 ses-05 Saving ICA solution and detected artifacts to disk.
+│08:13:04│ ⏳️ sub-03 ses-05 Adding "ICA: components" to report.
+│08:13:12│ ⏳️ sub-03 ses-05 Adding "ICA: ICALabel" to report.
+│08:13:14│ ⏳️ sub-03 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-05/eeg/sub-03_ses-05_report.html
+│08:13:14│ 🛑 sub-03 ses-05 Carefully review the extracted ICs and mark components "bad" in:
+│08:13:14│ 🛑 sub-03 ses-05 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-05/eeg/sub-03_ses-05_proc-ica_components.tsv
+│08:13:14│ ⏳️ sub-03 ses-06 Loading ICA solution
+│08:13:14│ ⏳️ sub-03 ses-06 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:13:14│ ⏳️ sub-03 ses-06 No EOG channel is present, cannot automate IC detection for EOG.
+│08:13:14│ ⏳️ sub-03 ses-06 Performing automated artifact detection (MNE-ICALabel) …
+│08:13:14│ ⏳️ sub-03 ses-06 Detected 0 artifact-related independent components in 687 epochs.
+│08:13:14│ ⏳️ sub-03 ses-06 Saving ICA solution and detected artifacts to disk.
+│08:13:14│ ⏳️ sub-03 ses-06 Adding "ICA: components" to report.
+│08:13:23│ ⏳️ sub-03 ses-06 Adding "ICA: ICALabel" to report.
+│08:13:25│ ⏳️ sub-03 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-06/eeg/sub-03_ses-06_report.html
+│08:13:25│ 🛑 sub-03 ses-06 Carefully review the extracted ICs and mark components "bad" in:
+│08:13:25│ 🛑 sub-03 ses-06 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-06/eeg/sub-03_ses-06_proc-ica_components.tsv
+│08:13:25│ ⏳️ sub-03 ses-07 Loading ICA solution
+│08:13:25│ ⏳️ sub-03 ses-07 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:13:25│ ⏳️ sub-03 ses-07 No EOG channel is present, cannot automate IC detection for EOG.
+│08:13:25│ ⏳️ sub-03 ses-07 Performing automated artifact detection (MNE-ICALabel) …
+│08:13:26│ ⏳️ sub-03 ses-07 Detected 0 artifact-related independent components in 582 epochs.
+│08:13:26│ ⏳️ sub-03 ses-07 Saving ICA solution and detected artifacts to disk.
+│08:13:26│ ⏳️ sub-03 ses-07 Adding "ICA: components" to report.
+│08:13:35│ ⏳️ sub-03 ses-07 Adding "ICA: ICALabel" to report.
+│08:13:37│ ⏳️ sub-03 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-07/eeg/sub-03_ses-07_report.html
+│08:13:37│ 🛑 sub-03 ses-07 Carefully review the extracted ICs and mark components "bad" in:
+│08:13:37│ 🛑 sub-03 ses-07 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-07/eeg/sub-03_ses-07_proc-ica_components.tsv
+│08:13:37│ ⏳️ sub-04 ses-03 Loading ICA solution
+│08:13:37│ ⏳️ sub-04 ses-03 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:13:38│ ⏳️ sub-04 ses-03 No EOG channel is present, cannot automate IC detection for EOG.
+│08:13:38│ ⏳️ sub-04 ses-03 Performing automated artifact detection (MNE-ICALabel) …
+│08:13:38│ ⏳️ sub-04 ses-03 Detected 0 artifact-related independent components in 625 epochs.
+│08:13:38│ ⏳️ sub-04 ses-03 Saving ICA solution and detected artifacts to disk.
+│08:13:38│ ⏳️ sub-04 ses-03 Adding "ICA: components" to report.
+│08:13:47│ ⏳️ sub-04 ses-03 Adding "ICA: ICALabel" to report.
+│08:13:49│ ⏳️ sub-04 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-03/eeg/sub-04_ses-03_report.html
+│08:13:49│ 🛑 sub-04 ses-03 Carefully review the extracted ICs and mark components "bad" in:
+│08:13:49│ 🛑 sub-04 ses-03 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-03/eeg/sub-04_ses-03_proc-ica_components.tsv
+│08:13:49│ ⏳️ sub-04 ses-04 Loading ICA solution
+│08:13:49│ ⏳️ sub-04 ses-04 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:13:49│ ⏳️ sub-04 ses-04 No EOG channel is present, cannot automate IC detection for EOG.
+│08:13:49│ ⏳️ sub-04 ses-04 Performing automated artifact detection (MNE-ICALabel) …
+│08:13:49│ ⏳️ sub-04 ses-04 Detected 0 artifact-related independent components in 719 epochs.
+│08:13:49│ ⏳️ sub-04 ses-04 Saving ICA solution and detected artifacts to disk.
+│08:13:49│ ⏳️ sub-04 ses-04 Adding "ICA: components" to report.
+│08:13:57│ ⏳️ sub-04 ses-04 Adding "ICA: ICALabel" to report.
+│08:13:59│ ⏳️ sub-04 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-04/eeg/sub-04_ses-04_report.html
+│08:13:59│ 🛑 sub-04 ses-04 Carefully review the extracted ICs and mark components "bad" in:
+│08:13:59│ 🛑 sub-04 ses-04 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-04/eeg/sub-04_ses-04_proc-ica_components.tsv
+│08:13:59│ ⏳️ sub-04 ses-05 Loading ICA solution
+│08:13:59│ ⏳️ sub-04 ses-05 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:13:59│ ⏳️ sub-04 ses-05 No EOG channel is present, cannot automate IC detection for EOG.
+│08:13:59│ ⏳️ sub-04 ses-05 Performing automated artifact detection (MNE-ICALabel) …
+│08:13:59│ ⏳️ sub-04 ses-05 Detected 0 artifact-related independent components in 629 epochs.
+│08:13:59│ ⏳️ sub-04 ses-05 Saving ICA solution and detected artifacts to disk.
+│08:13:59│ ⏳️ sub-04 ses-05 Adding "ICA: components" to report.
+│08:14:05│ ⏳️ sub-04 ses-05 Adding "ICA: ICALabel" to report.
+│08:14:07│ ⏳️ sub-04 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-05/eeg/sub-04_ses-05_report.html
+│08:14:07│ 🛑 sub-04 ses-05 Carefully review the extracted ICs and mark components "bad" in:
+│08:14:07│ 🛑 sub-04 ses-05 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-05/eeg/sub-04_ses-05_proc-ica_components.tsv
+│08:14:07│ ⏳️ sub-04 ses-06 Loading ICA solution
+│08:14:07│ ⏳️ sub-04 ses-06 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:14:07│ ⏳️ sub-04 ses-06 No EOG channel is present, cannot automate IC detection for EOG.
+│08:14:07│ ⏳️ sub-04 ses-06 Performing automated artifact detection (MNE-ICALabel) …
+│08:14:07│ ⏳️ sub-04 ses-06 Detected 0 artifact-related independent components in 602 epochs.
+│08:14:07│ ⏳️ sub-04 ses-06 Saving ICA solution and detected artifacts to disk.
+│08:14:07│ ⏳️ sub-04 ses-06 Adding "ICA: components" to report.
+│08:14:13│ ⏳️ sub-04 ses-06 Adding "ICA: ICALabel" to report.
+│08:14:15│ ⏳️ sub-04 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-06/eeg/sub-04_ses-06_report.html
+│08:14:15│ 🛑 sub-04 ses-06 Carefully review the extracted ICs and mark components "bad" in:
+│08:14:15│ 🛑 sub-04 ses-06 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-06/eeg/sub-04_ses-06_proc-ica_components.tsv
+│08:14:15│ ⏳️ sub-04 ses-07 Loading ICA solution
+│08:14:15│ ⏳️ sub-04 ses-07 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:14:15│ ⏳️ sub-04 ses-07 No EOG channel is present, cannot automate IC detection for EOG.
+│08:14:15│ ⏳️ sub-04 ses-07 Performing automated artifact detection (MNE-ICALabel) …
+│08:14:15│ ⏳️ sub-04 ses-07 Detected 0 artifact-related independent components in 371 epochs.
+│08:14:15│ ⏳️ sub-04 ses-07 Saving ICA solution and detected artifacts to disk.
+│08:14:15│ ⏳️ sub-04 ses-07 Adding "ICA: components" to report.
+│08:14:20│ ⏳️ sub-04 ses-07 Adding "ICA: ICALabel" to report.
+│08:14:21│ ⏳️ sub-04 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-07/eeg/sub-04_ses-07_report.html
+│08:14:21│ 🛑 sub-04 ses-07 Carefully review the extracted ICs and mark components "bad" in:
+│08:14:21│ 🛑 sub-04 ses-07 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-04/ses-07/eeg/sub-04_ses-07_proc-ica_components.tsv
+│08:14:21│ ⏳️ sub-05 ses-03 Loading ICA solution
+│08:14:21│ ⏳️ sub-05 ses-03 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:14:21│ ⏳️ sub-05 ses-03 No EOG channel is present, cannot automate IC detection for EOG.
+│08:14:21│ ⏳️ sub-05 ses-03 Performing automated artifact detection (MNE-ICALabel) …
+│08:14:22│ ⏳️ sub-05 ses-03 Detected 0 artifact-related independent components in 743 epochs.
+│08:14:22│ ⏳️ sub-05 ses-03 Saving ICA solution and detected artifacts to disk.
+│08:14:22│ ⏳️ sub-05 ses-03 Adding "ICA: components" to report.
+│08:14:28│ ⏳️ sub-05 ses-03 Adding "ICA: ICALabel" to report.
+│08:14:29│ ⏳️ sub-05 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-03/eeg/sub-05_ses-03_report.html
+│08:14:29│ 🛑 sub-05 ses-03 Carefully review the extracted ICs and mark components "bad" in:
+│08:14:29│ 🛑 sub-05 ses-03 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-03/eeg/sub-05_ses-03_proc-ica_components.tsv
+│08:14:29│ ⏳️ sub-05 ses-04 Loading ICA solution
+│08:14:30│ ⏳️ sub-05 ses-04 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:14:30│ ⏳️ sub-05 ses-04 No EOG channel is present, cannot automate IC detection for EOG.
+│08:14:30│ ⏳️ sub-05 ses-04 Performing automated artifact detection (MNE-ICALabel) …
+│08:14:30│ ⏳️ sub-05 ses-04 Detected 0 artifact-related independent components in 838 epochs.
+│08:14:30│ ⏳️ sub-05 ses-04 Saving ICA solution and detected artifacts to disk.
+│08:14:30│ ⏳️ sub-05 ses-04 Adding "ICA: components" to report.
+│08:14:40│ ⏳️ sub-05 ses-04 Adding "ICA: ICALabel" to report.
+│08:14:42│ ⏳️ sub-05 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-04/eeg/sub-05_ses-04_report.html
+│08:14:42│ 🛑 sub-05 ses-04 Carefully review the extracted ICs and mark components "bad" in:
+│08:14:42│ 🛑 sub-05 ses-04 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-04/eeg/sub-05_ses-04_proc-ica_components.tsv
+│08:14:42│ ⏳️ sub-05 ses-05 Loading ICA solution
+│08:14:42│ ⏳️ sub-05 ses-05 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:14:42│ ⏳️ sub-05 ses-05 No EOG channel is present, cannot automate IC detection for EOG.
+│08:14:42│ ⏳️ sub-05 ses-05 Performing automated artifact detection (MNE-ICALabel) …
+│08:14:43│ ⏳️ sub-05 ses-05 Detected 0 artifact-related independent components in 837 epochs.
+│08:14:43│ ⏳️ sub-05 ses-05 Saving ICA solution and detected artifacts to disk.
+│08:14:43│ ⏳️ sub-05 ses-05 Adding "ICA: components" to report.
+│08:14:51│ ⏳️ sub-05 ses-05 Adding "ICA: ICALabel" to report.
+│08:14:54│ ⏳️ sub-05 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-05/eeg/sub-05_ses-05_report.html
+│08:14:54│ 🛑 sub-05 ses-05 Carefully review the extracted ICs and mark components "bad" in:
+│08:14:54│ 🛑 sub-05 ses-05 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-05/eeg/sub-05_ses-05_proc-ica_components.tsv
+│08:14:54│ ⏳️ sub-05 ses-06 Loading ICA solution
+│08:14:54│ ⏳️ sub-05 ses-06 No ECG or magnetometer channels are present, cannot automate artifact detection for ECG.
+│08:14:54│ ⏳️ sub-05 ses-06 No EOG channel is present, cannot automate IC detection for EOG.
+│08:14:54│ ⏳️ sub-05 ses-06 Performing automated artifact detection (MNE-ICALabel) …
+│08:14:54│ ⏳️ sub-05 ses-06 Detected 0 artifact-related independent components in 708 epochs.
+│08:14:54│ ⏳️ sub-05 ses-06 Saving ICA solution and detected artifacts to disk.
+│08:14:54│ ⏳️ sub-05 ses-06 Adding "ICA: components" to report.
+│08:15:01│ ⏳️ sub-05 ses-06 Adding "ICA: ICALabel" to report.
+│08:15:03│ ⏳️ sub-05 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-06/eeg/sub-05_ses-06_report.html
+│08:15:03│ 🛑 sub-05 ses-06 Carefully review the extracted ICs and mark components "bad" in:
+│08:15:03│ 🛑 sub-05 ses-06 /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-05/ses-06/eeg/sub-05_ses-06_proc-ica_components.tsv
+└────────┴ done (4m 5s)
+┌────────┬ preprocessing/_06b_run_ssp ──────────────────────────────────────────
+│08:15:03│ ⏩ sub-* Skipping, not requested …
+└────────┴ done (1s)
+┌────────┬ preprocessing/_07_make_epochs ───────────────────────────────────────
+│08:15:03│ ⏳️ sub-01 ses-03 Loading filtered raw data from sub-01_ses-03_task-attention_proc-filt_raw.fif
+│08:15:03│ ⏳️ sub-01 ses-03 Creating task-related epochs …
+│08:15:03│ ⏳️ sub-01 ses-03 Created 618 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:03│ ⏳️ sub-01 ses-03 Selected 618 epochs via metadata query: None
+│08:15:03│ ⏳️ sub-01 ses-03 Writing 618 epochs to disk.
+│08:15:03│ ⏳️ sub-01 ses-03 Adding uncleaned epochs to report.
+│08:15:04│ ⏳️ sub-01 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-03/eeg/sub-01_ses-03_report.html
+│08:15:04│ ⏳️ sub-01 ses-04 Loading filtered raw data from sub-01_ses-04_task-attention_proc-filt_raw.fif
+│08:15:05│ ⏳️ sub-01 ses-04 Creating task-related epochs …
+│08:15:05│ ⏳️ sub-01 ses-04 Created 659 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:05│ ⏳️ sub-01 ses-04 Selected 659 epochs via metadata query: None
+│08:15:05│ ⏳️ sub-01 ses-04 Writing 659 epochs to disk.
+│08:15:05│ ⏳️ sub-01 ses-04 Adding uncleaned epochs to report.
+│08:15:06│ ⏳️ sub-01 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-04/eeg/sub-01_ses-04_report.html
+│08:15:06│ ⏳️ sub-01 ses-05 Loading filtered raw data from sub-01_ses-05_task-attention_proc-filt_raw.fif
+│08:15:06│ ⏳️ sub-01 ses-05 Creating task-related epochs …
+│08:15:06│ ⏳️ sub-01 ses-05 Created 608 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:06│ ⏳️ sub-01 ses-05 Selected 608 epochs via metadata query: None
+│08:15:06│ ⏳️ sub-01 ses-05 Writing 608 epochs to disk.
+│08:15:06│ ⏳️ sub-01 ses-05 Adding uncleaned epochs to report.
+│08:15:07│ ⏳️ sub-01 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-05/eeg/sub-01_ses-05_report.html
+│08:15:08│ ⏳️ sub-01 ses-06 Loading filtered raw data from sub-01_ses-06_task-attention_proc-filt_raw.fif
+│08:15:08│ ⏳️ sub-01 ses-06 Creating task-related epochs …
+│08:15:08│ ⏳️ sub-01 ses-06 Created 500 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:08│ ⏳️ sub-01 ses-06 Selected 500 epochs via metadata query: None
+│08:15:08│ ⏳️ sub-01 ses-06 Writing 500 epochs to disk.
+│08:15:08│ ⏳️ sub-01 ses-06 Adding uncleaned epochs to report.
+│08:15:09│ ⏳️ sub-01 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-06/eeg/sub-01_ses-06_report.html
+│08:15:09│ ⏳️ sub-01 ses-07 Loading filtered raw data from sub-01_ses-07_task-attention_proc-filt_raw.fif
+│08:15:09│ ⏳️ sub-01 ses-07 Creating task-related epochs …
+│08:15:09│ ⏳️ sub-01 ses-07 Created 691 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:09│ ⏳️ sub-01 ses-07 Selected 691 epochs via metadata query: None
+│08:15:09│ ⏳️ sub-01 ses-07 Writing 691 epochs to disk.
+│08:15:09│ ⏳️ sub-01 ses-07 Adding uncleaned epochs to report.
+│08:15:10│ ⏳️ sub-01 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-01/ses-07/eeg/sub-01_ses-07_report.html
+│08:15:10│ ⏳️ sub-02 ses-03 Loading filtered raw data from sub-02_ses-03_task-attention_proc-filt_raw.fif
+│08:15:10│ ⏳️ sub-02 ses-03 Creating task-related epochs …
+│08:15:10│ ⏳️ sub-02 ses-03 Created 660 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:10│ ⏳️ sub-02 ses-03 Selected 660 epochs via metadata query: None
+│08:15:10│ ⏳️ sub-02 ses-03 Writing 660 epochs to disk.
+│08:15:10│ ⏳️ sub-02 ses-03 Adding uncleaned epochs to report.
+│08:15:12│ ⏳️ sub-02 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-03/eeg/sub-02_ses-03_report.html
+│08:15:12│ ⏳️ sub-02 ses-04 Loading filtered raw data from sub-02_ses-04_task-attention_proc-filt_raw.fif
+│08:15:12│ ⏳️ sub-02 ses-04 Creating task-related epochs …
+│08:15:12│ ⏳️ sub-02 ses-04 Created 678 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:12│ ⏳️ sub-02 ses-04 Selected 678 epochs via metadata query: None
+│08:15:12│ ⏳️ sub-02 ses-04 Writing 678 epochs to disk.
+│08:15:12│ ⏳️ sub-02 ses-04 Adding uncleaned epochs to report.
+│08:15:13│ ⏳️ sub-02 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-04/eeg/sub-02_ses-04_report.html
+│08:15:13│ ⏳️ sub-02 ses-05 Loading filtered raw data from sub-02_ses-05_task-attention_proc-filt_raw.fif
+│08:15:13│ ⏳️ sub-02 ses-05 Creating task-related epochs …
+│08:15:13│ ⏳️ sub-02 ses-05 Created 618 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:13│ ⏳️ sub-02 ses-05 Selected 618 epochs via metadata query: None
+│08:15:13│ ⏳️ sub-02 ses-05 Writing 618 epochs to disk.
+│08:15:14│ ⏳️ sub-02 ses-05 Adding uncleaned epochs to report.
+│08:15:15│ ⏳️ sub-02 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-05/eeg/sub-02_ses-05_report.html
+│08:15:15│ ⏳️ sub-02 ses-06 Loading filtered raw data from sub-02_ses-06_task-attention_proc-filt_raw.fif
+│08:15:15│ ⏳️ sub-02 ses-06 Creating task-related epochs …
+│08:15:15│ ⏳️ sub-02 ses-06 Created 646 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:15│ ⏳️ sub-02 ses-06 Selected 646 epochs via metadata query: None
+│08:15:15│ ⏳️ sub-02 ses-06 Writing 646 epochs to disk.
+│08:15:15│ ⏳️ sub-02 ses-06 Adding uncleaned epochs to report.
+│08:15:16│ ⏳️ sub-02 ses-06 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-06/eeg/sub-02_ses-06_report.html
+│08:15:17│ ⏳️ sub-02 ses-07 Loading filtered raw data from sub-02_ses-07_task-attention_proc-filt_raw.fif
+│08:15:17│ ⏳️ sub-02 ses-07 Creating task-related epochs …
+│08:15:17│ ⏳️ sub-02 ses-07 Created 598 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:17│ ⏳️ sub-02 ses-07 Selected 598 epochs via metadata query: None
+│08:15:17│ ⏳️ sub-02 ses-07 Writing 598 epochs to disk.
+│08:15:17│ ⏳️ sub-02 ses-07 Adding uncleaned epochs to report.
+│08:15:18│ ⏳️ sub-02 ses-07 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-02/ses-07/eeg/sub-02_ses-07_report.html
+│08:15:18│ ⏳️ sub-03 ses-03 Loading filtered raw data from sub-03_ses-03_task-attention_proc-filt_raw.fif
+│08:15:18│ ⏳️ sub-03 ses-03 Creating task-related epochs …
+│08:15:18│ ⏳️ sub-03 ses-03 Created 769 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:18│ ⏳️ sub-03 ses-03 Selected 769 epochs via metadata query: None
+│08:15:18│ ⏳️ sub-03 ses-03 Writing 769 epochs to disk.
+│08:15:18│ ⏳️ sub-03 ses-03 Adding uncleaned epochs to report.
+│08:15:19│ ⏳️ sub-03 ses-03 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-03/eeg/sub-03_ses-03_report.html
+│08:15:19│ ⏳️ sub-03 ses-04 Loading filtered raw data from sub-03_ses-04_task-attention_proc-filt_raw.fif
+│08:15:19│ ⏳️ sub-03 ses-04 Creating task-related epochs …
+│08:15:19│ ⏳️ sub-03 ses-04 Created 626 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:19│ ⏳️ sub-03 ses-04 Selected 626 epochs via metadata query: None
+│08:15:19│ ⏳️ sub-03 ses-04 Writing 626 epochs to disk.
+│08:15:20│ ⏳️ sub-03 ses-04 Adding uncleaned epochs to report.
+│08:15:21│ ⏳️ sub-03 ses-04 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-04/eeg/sub-03_ses-04_report.html
+│08:15:21│ ⏳️ sub-03 ses-05 Loading filtered raw data from sub-03_ses-05_task-attention_proc-filt_raw.fif
+│08:15:21│ ⏳️ sub-03 ses-05 Creating task-related epochs …
+│08:15:21│ ⏳️ sub-03 ses-05 Created 577 epochs with time interval: 0.0 – 0.5 sec.
+│08:15:21│ ⏳️ sub-03 ses-05 Selected 577 epochs via metadata query: None
+│08:15:21│ ⏳️ sub-03 ses-05 Writing 577 epochs to disk.
+│08:15:21│ ⏳️ sub-03 ses-05 Adding uncleaned epochs to report.
+│08:15:22│ ⏳️ sub-03 ses-05 Saving report: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention/sub-03/ses-05/eeg/sub-03_ses-05_report.html

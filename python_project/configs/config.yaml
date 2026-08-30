@@ -1,5 +1,5 @@
 defaults:
-  - preparation: sam40
+  - preparation: sam40_all
   - features: classical_ml
   - pipeline: logistic_regression
   - validation_strategy: baseline

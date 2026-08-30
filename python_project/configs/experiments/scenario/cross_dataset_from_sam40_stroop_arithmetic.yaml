@@ -1,14 +1,8 @@
 # @package _global_
 
 defaults:
-  - /preparation@preparation.source: sam40
+  - /preparation@preparation.source: sam40_stroop_arithmetic
   - /preparation@preparation.targets.distinguishing: distinguishing
   - _self_
   - override /validation_strategy: cross_dataset
   - override /preparation: transfer
-
-preparation:
-  source:
-    mne_bids_pipeline:
-      task: [relax, stroop, arithmetic]
-      deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop-arithmetic

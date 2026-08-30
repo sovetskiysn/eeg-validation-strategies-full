@@ -1,19 +1,8 @@
 # @package _global_
 
 defaults:
-  - /preparation@preparation.source: sam40
-  - /preparation@preparation.targets.sam40_arithmetic: sam40
+  - /preparation@preparation.source: sam40_stroop_mirror
+  - /preparation@preparation.targets.sam40_arithmetic: sam40_arithmetic
   - _self_
   - override /validation_strategy: cross_task
   - override /preparation: transfer
-
-preparation:
-  source:
-    mne_bids_pipeline:
-      task: [relax, stroop, mirror]
-      deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop-mirror
-  targets:
-    sam40_arithmetic:
-      mne_bids_pipeline:
-        task: [relax, arithmetic]
-        deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-arithmetic

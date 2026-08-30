@@ -2,4 +2,4 @@
 
 defaults:
   - override /validation_strategy: baseline
-  - override /preparation: sam40
+  - override /preparation: sam40_all

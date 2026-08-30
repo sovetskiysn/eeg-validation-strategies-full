@@ -2,9 +2,4 @@
 
 defaults:
   - override /validation_strategy: baseline
-  - override /preparation: sam40
-
-preparation:
-  mne_bids_pipeline:
-    task: [relax, arithmetic]
-    deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-arithmetic
+  - override /preparation: sam40_arithmetic

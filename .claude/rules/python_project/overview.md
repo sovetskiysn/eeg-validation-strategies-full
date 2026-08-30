@@ -127,15 +127,17 @@ notebooks/          # .ipynb: QC стадий и разведка (notebooks.md)
 `configs/` — конфигурационный контракт Python-кода: группы формируют
 `cfg.preparation`, `cfg.features`, `cfg.pipeline` и
 `cfg.validation_strategy`; отдельного узла `cfg.dataset` нет.
-`configs/preparation/{sam40,distinguishing}.yaml` описывают одну сторону:
-постоянные `name` и `dataset_dir` плюс единственный внешний узел
-`mne_bids_pipeline`. `configs/preparation/transfer.yaml` задаёт форму
+`configs/preparation/distinguishing.yaml` и каждая runnable-option
+`configs/preparation/sam40_*.yaml` описывают одну сторону: постоянные `name`
+и `dataset_dir` плюс единственный внешний узел `mne_bids_pipeline`.
+`configs/preparation/sam40.yaml` — только общий базовый рецепт для этих
+options. `configs/preparation/transfer.yaml` задаёт форму
 `source + targets`, где `targets` — именованный mapping, а не список.
 
 Scenario композит полную preparation-option прямо в source и каждый target,
-затем меняет только нужные Pipeline-поля, прежде всего полное значение `task`.
-Полей `recipe`/`overrides`, отдельного registry датасетов, загрузки YAML и
-последующей замены runtime-конфига нет.
+никаких merge-правил или Pipeline-overrides между источником и получателем в
+коде нет. Полей `recipe`/`overrides`, отдельного registry датасетов, загрузки
+YAML и последующей замены runtime-конфига нет.
 
 Validation-builder получает только готовый `preparation_config` (и технический
 seed для CV) и передаёт каждую сторону целиком в `preparation.get_epochs()`.

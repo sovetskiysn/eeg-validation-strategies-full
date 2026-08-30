@@ -1,7 +1,7 @@
 # @package _global_
 
 defaults:
-  - /preparation@preparation.source: sam40
+  - /preparation@preparation.source: sam40_all
   - /preparation@preparation.targets.distinguishing: distinguishing
   - _self_
   - override /validation_strategy: cross_dataset

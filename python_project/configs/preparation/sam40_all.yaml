@@ -1,0 +1,7 @@
+defaults:
+  - sam40
+  - _self_
+
+mne_bids_pipeline:
+  task: [relax, stroop, arithmetic, mirror]
+  deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop-arithmetic-mirror
