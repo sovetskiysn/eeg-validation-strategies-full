@@ -31,19 +31,17 @@ estimator:
       # already `cpu` (xgboost.readthedocs.io/en/latest/parameter.html), so this
       # line is written out to say the choice is deliberate, not an oversight.
       device: cpu
-      # No n_estimators/max_depth/learning_rate/subsample/reg_* set here, so the
-      # sklearn API defaults apply: n_estimators=100, max_depth=6, learning_rate=
-      # 0.3, subsample=colsample_bytree=1.0 (every row and column available at
-      # every split), reg_lambda=1 (mild L2 on leaf weights), reg_alpha=0 (no L1).
-      # Unlike logistic_regression.yaml's C, this isn't a considered regularisation
-      # choice -- it is unset. early_stopping_rounds/eval_set are not passed
-      # either, and imblearn.Pipeline.fit has no path to route an eval_set through
-      # a fit_resample step to the final estimator, so boosting always runs the
-      # full 100 rounds with no held-out convergence check. results/ stores only
-      # test-fold predictions (folds.parquet has y_pred/score == NA on train rows)
-      # and no eval history, so a train/test gap or a convergence curve cannot be
-      # read back from a completed run -- only from a fit done with eval_set
-      # outside this pipeline. The engineered feature set was independently pruned
-      # for multicollinearity (configs/features/classical_ml.yaml, worst
-      # per-channel VIF 8), which bounds one source of instability but not
-      # tree-depth/estimator-count overfitting.
+      # Training folds have roughly 2k windows and ~170 features.  Shallower
+      # trees, row/column subsampling and explicit L1/L2 penalties replace the
+      # high-variance defaults (depth 6, rate 0.3, all rows and columns).  The
+      # fixed 300-round budget is intentionally conservative: the shared runner
+      # supplies no fit-time eval_set, so XGBoost cannot perform valid early
+      # stopping from this YAML alone.  Its outer test folds must remain unseen.
+      n_estimators: 300
+      learning_rate: 0.03
+      max_depth: 3
+      min_child_weight: 5
+      subsample: 0.8
+      colsample_bytree: 0.7
+      reg_alpha: 0.1
+      reg_lambda: 2.0

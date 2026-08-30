@@ -28,7 +28,12 @@ mne_bids_pipeline:
   # baseline; the project creates their labelled windows from cleaned raw data.
   baseline: null
   spatial_filter: ica
-  ica_algorithm: extended_infomax
+  # Picard's extended-Infomax mode yields the same decomposition while usually
+  # converging sooner than the original extended-Infomax solver.
+  ica_algorithm: picard-extended_infomax
+  # Use every second sample only while fitting ICA; cleaned raw data remain at
+  # 128 Hz. This is a QC-tracked speed/ICA-quality trade-off.
+  ica_decim: 2
   ica_exclusion_thresholds:
     eye blink: 0.8
     muscle artifact: 0.8
@@ -42,4 +47,6 @@ mne_bids_pipeline:
   # ICA-label still excludes non-neural components afterwards.
   ica_reject: null
   ica_use_icalabel: true
+  # Parallelize independent subject/session jobs inside MNE-BIDS-Pipeline.
+  n_jobs: 4
   run_source_estimation: false

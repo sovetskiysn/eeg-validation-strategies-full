@@ -24,6 +24,15 @@ estimator:
       module:
         _target_: hydra.utils.get_class
         path: braindecode.models.EEGConformer
+      # EEGConformer's embedding width is n_filters_time.  The Braindecode
+      # defaults (40 filters, 6 layers, 10 heads) give 527,746 parameters for
+      # the project's 12 x 640 windows, disproportionate to the smallest
+      # train folds.  This keeps the convolution-plus-attention architecture
+      # while reducing it to 170,466 parameters; four heads divide the
+      # 16-dimensional embedding exactly.
+      module__n_filters_time: 16
+      module__num_layers: 2
+      module__num_heads: 4
       optimizer:
         _target_: hydra.utils.get_class
         path: torch.optim.AdamW
@@ -34,7 +43,9 @@ estimator:
       # Use the same conservative EEGClassifier optimisation recipe as the
       # Braindecode convolutional baselines.
       lr: 0.000625
-      optimizer__weight_decay: 0.0
+      # A small AdamW penalty complements the architecture's dropout and is
+      # especially important for the smaller, correlated EEG window folds.
+      optimizer__weight_decay: 0.0001
       # Do not silently discard a partial tail batch merely because it does not
       # fill the configured batch size.
       iterator_train__drop_last: false
