@@ -18,8 +18,8 @@ transform:
   # names, effectively one measurement, with per-channel VIF up to 66.
   # samp_entropy alone was kept from that cluster (it was designed to
   # supersede app_entropy's bias, not complement it -- Richman & Moorman,
-  # 2000), together with variance. beta and gamma (13-30/30-40 Hz) were
-  # merged into one 13-40 Hz band: with pow_freq_bands' default
+  # 2000), together with variance. beta and gamma (13-30/30-45 Hz) were
+  # merged into one 13-45 Hz band: with pow_freq_bands' default
   # normalize=True the five bands are compositional (sum to ~const per
   # channel), and the two adjacent high-frequency bands alone still
   # correlated r=0.92 post-merge. This set's worst per-channel VIF is 8
@@ -36,5 +36,5 @@ transform:
       - [1.0, 4.0]
       - [4.0, 8.0]
       - [8.0, 13.0]
-      - [13.0, 40.0]
+      - [13.0, 45.0]
     pow_freq_bands__log: true

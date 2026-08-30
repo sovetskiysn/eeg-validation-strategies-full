@@ -11,7 +11,7 @@ mne_bids_pipeline:
   drop_channels: [CZ, FZ, Fp1, FC1, C3, FT9, CP5, CP1, P3, PO9, PZ, OZ, PO10, P4, CP2, CP6, FT10, C4, FC2, Fp2]
   eeg_reference: average
   l_freq: 1.0
-  h_freq: 40.0
+  h_freq: 45.0
   notch_freq: [50.0]
   raw_resample_sfreq: 128.0
   # Multiple task names require the task-keyed contrasts form, even when no

@@ -15,9 +15,14 @@ mne_bids_pipeline:
   drop_channels: [AF3, AF4]
   eeg_reference: average
   l_freq: 1.0
-  h_freq: 40.0
+  h_freq: 45.0
   notch_freq: [50.0]
   raw_resample_sfreq: 128.0
+  # The source protocol orders every recording as focused (0–600 s),
+  # unfocused (600–1200 s), then drowsy. Drowsiness includes eyes-closed and
+  # arousal changes outside the study contrast, so remove it before filtering
+  # and ICA rather than merely dropping its final analysis windows.
+  crop_runs: [0.0, 1200.0]
   # Required by MNE-BIDS-Pipeline when task runs are treated as rest.
   epochs_tmin: 0.0
   rest_epochs_duration: 5.0
