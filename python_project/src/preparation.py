@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import fcntl
+import logging
 import shutil
 import subprocess
 import tempfile
 import types
 import typing
+from collections import deque
 from collections.abc import Sequence as ABCSequence
 from pathlib import Path
 from pprint import pformat
@@ -22,6 +24,9 @@ from mne_bids_pipeline import _config as mbp_config
 from omegaconf import DictConfig, OmegaConf
 
 from utils import PROJECT_ROOT
+
+
+log = logging.getLogger(__name__)
 
 
 # The native BIDS vocabulary is written by dataset_standardization. This mapping
@@ -116,7 +121,7 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
     }
 
     # =============================================================================
-    # Step 2: run MNE-BIDS-Pipeline preprocessing
+    # Step 2: compose MNE-BIDS-Pipeline config and preparation paths
     # =============================================================================
     params = OmegaConf.to_container(pipeline_config, resolve=True)
     assert isinstance(params, dict)
@@ -131,7 +136,26 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
     if not derivative_root.is_absolute():
         derivative_root = PROJECT_ROOT / derivative_root
     derivative_root.mkdir(parents=True, exist_ok=True)
+    hydra_config = HydraConfig.get()
+    output_root = Path(
+        hydra_config.sweep.dir
+        if hydra_config.mode == RunMode.MULTIRUN
+        else hydra_config.run.dir
+    )
+    if not output_root.is_absolute():
+        output_root = PROJECT_ROOT / output_root
+    output_root = output_root.resolve()
+    destination_dir = output_root / "_preparation" / scenario_name
+    job_output_dir = Path(HydraConfig.get().runtime.output_dir)
+    if not job_output_dir.is_absolute():
+        job_output_dir = PROJECT_ROOT / job_output_dir
+    pipeline_log_path = (
+        job_output_dir.resolve() / "_preparation" / f"{scenario_name}.mne-bids-pipeline.log"
+    )
 
+    # =============================================================================
+    # Step 3: run MNE-BIDS-Pipeline preprocessing and snapshot its reports
+    # =============================================================================
     # Pipeline reports are mutable subject/session files shared by all tasks and
     # runs in one derivatives root. The same lock protects preprocessing and the
     # snapshot, so concurrent jobs can reuse one complete report copy safely.
@@ -142,11 +166,56 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
             for key, value in sorted(params.items()):
                 stream.write(f"{key} = {pformat(value, sort_dicts=True)}\n")
             stream.flush()
-            subprocess.run(
-                ["mne_bids_pipeline", "--config", stream.name, "--steps=preprocessing"],
-                check=True,
-                cwd=PROJECT_ROOT,
+            command = [
+                "mne_bids_pipeline",
+                "--config",
+                stream.name,
+                "--steps=preprocessing",
+                "--logger-level=info",
+            ]
+            log.info(
+                "Preparation %s: started for tasks %s (derivatives: %s).",
+                scenario_name,
+                ", ".join(map(str, tasks)),
+                derivative_root,
             )
+            cache_hits = existing_outputs = 0
+            output_tail: deque[str] = deque(maxlen=100)
+            pipeline_log_path.parent.mkdir(parents=True, exist_ok=True)
+            with pipeline_log_path.open("w", encoding="utf-8") as pipeline_log:
+                process = subprocess.Popen(
+                    command,
+                    cwd=PROJECT_ROOT,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                )
+                assert process.stdout is not None
+                for line in process.stdout:
+                    pipeline_log.write(line)
+                    output_tail.append(line)
+                    if "Computation unnecessary (cached " in line:
+                        cache_hits += 1
+                    elif "Computation unnecessary (output files exist)" in line:
+                        existing_outputs += 1
+                return_code = process.wait()
+
+        if return_code:
+            log.error(
+                "Preparation %s failed; full Pipeline log: %s\nLast Pipeline output:\n%s",
+                scenario_name,
+                pipeline_log_path,
+                "".join(output_tail),
+            )
+            raise subprocess.CalledProcessError(return_code, command)
+        if cache_hits:
+            cache_status = f"reused ({cache_hits} Pipeline cache hits)"
+        elif existing_outputs:
+            cache_status = f"not reused; {existing_outputs} existing outputs were kept"
+        else:
+            cache_status = "not reused"
 
         report_paths = sorted(
             report_path
@@ -157,15 +226,6 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
             raise FileNotFoundError(
                 f"{derivative_root} contains no MNE-BIDS-Pipeline HTML reports."
             )
-        hydra_config = HydraConfig.get()
-        output_root = Path(
-            hydra_config.sweep.dir
-            if hydra_config.mode == RunMode.MULTIRUN
-            else hydra_config.run.dir
-        )
-        if not output_root.is_absolute():
-            output_root = PROJECT_ROOT / output_root
-        destination_dir = output_root.resolve() / "_preparation" / scenario_name
         completed_marker = destination_dir / ".snapshot_complete"
         source_marker = destination_dir / ".source_derivative_root"
         if completed_marker.exists():
@@ -195,8 +255,17 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
                 (staged_dir / ".snapshot_complete").touch()
                 staged_dir.replace(destination_dir)
 
+        log.info(
+            "Preparation %s: complete; cache %s; derivatives: %s; reports: %s; full log: %s.",
+            scenario_name,
+            cache_status,
+            derivative_root,
+            destination_dir,
+            pipeline_log_path,
+        )
+
     # =============================================================================
-    # Step 3: find the prepared recordings
+    # Step 4: find the prepared recordings
     # =============================================================================
     pipeline = OmegaConf.create(params)
     window_size = float(pipeline.rest_epochs_duration)
@@ -228,7 +297,7 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
         )
 
     # =============================================================================
-    # Step 4: cut labelled analysis epochs from every recording
+    # Step 5: cut labelled analysis epochs from every recording
     # =============================================================================
     expected_channels = list(pipeline.analyze_channels)
     epochs_by_recording = []
