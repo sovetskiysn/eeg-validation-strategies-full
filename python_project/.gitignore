@@ -19,3 +19,5 @@ datasets/bids/*/derivatives/
 datasets/prepared_cache/*
 
 # Experiment outputs are versioned to preserve completed analyses.
+# Local preparation caches are reproducible intermediate artifacts.
+results/**/_preparation/

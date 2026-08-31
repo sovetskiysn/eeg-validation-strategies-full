@@ -1,0 +1,8 @@
+# @package _global_
+
+defaults:
+  - /preparation@preparation.source: sam40_stroop
+  - /preparation@preparation.targets.sam40_full: sam40_all
+  - _self_
+  - override /validation_strategy: cross_task
+  - override /preparation: transfer

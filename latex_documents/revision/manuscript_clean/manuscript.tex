@@ -245,21 +245,9 @@ The conceptual rationale for combining the datasets rests on the cognitive condi
 
 The simulator-based and task-based datasets correspond, respectively, to the \textit{naturalistic stimulus-based protocols} and \textit{continuous cognitive engagement} paradigms described in~\cite{chen2025hybrid}. In the unified labeling scheme, \textit{Rest} and \textit{Unfocused} are treated as low-attention states, whereas \textit{Focused}, \textit{Stroop}, \textit{Arithmetic}, and \textit{Mirror recognition} are treated as high-attention states. The \textit{Drowsy} phase is excluded from this mapping and from all subsequent preprocessing and analyses because permitted eye closure and drowsiness may confound the comparison with differences in arousal, visual input, and ocular activity. This mapping is summarized in Table~\ref{tab:label_mapping}.
 
-\begin{table}[!ht]
-\centering
-\caption{\textbf{Unified binary attention label mapping across datasets.}}
-\label{tab:label_mapping}
-\begin{tabular}{|c|c|}
-\hline
-\textbf{Attention State} & \textbf{Conditions} \\
-\hline
-High Attention & Focused, Stroop, Arithmetic, Mirror \\
-Low Attention  & Unfocused, Rest \\
-\hline
-\end{tabular}
-\end{table}
+\input{tables/label_mapping}
 
-\subsection*{\revs{Validation strategies}}
+\subsection*{\revs{Validation strategies [revise need]}}
 
 \rev{We evaluated the decoders under five validation protocols, each addressing a distinct generalization question. To preserve the independence of the training and test data, all windows originating from the same recording unit were assigned to the same partition. This prevents overlapping windows from being divided between training and test sets, reducing the risk of overly optimistic performance estimates due to temporal autocorrelation between neighboring EEG windows~\cite{chen2025hybrid}. The within-domain baseline estimates performance when training and test data share the same dataset and condition composition but originate from different recording units. The remaining protocols examine whether discriminative performance is retained when training and testing are separated by participant, recording session, task composition, or dataset. These protocols were applied only where the structure of each release supported their interpretation: repeated recording days in the mental attention-state dataset enabled cross-session validation, whereas multiple tasks in SAM-40 enabled cross-task validation. Model fitting was confined to the training data, and the resulting decoder was evaluated on held-out data without target-specific adaptation. Any class imbalance was handled by oversampling the minority class within the training data only, while the test data retained their observed class distribution.}
 
@@ -280,7 +268,7 @@ Low Attention  & Unfocused, Rest \\
 \textbf{Cross-dataset validation.}
 \rev{To evaluate transfer between datasets, models were trained on all available data from a source composition and tested on a composition from the other dataset, in both transfer directions and without target-specific adaptation. SAM-40 was considered as a complete composition and through its single-task and two-task compositions. Unlike the preceding protocols, cross-dataset validation changes several factors simultaneously, including the participant population, experimental paradigm, recording setup, and condition definitions. It therefore measures transfer under their compound distribution shift rather than attributing a performance change to any single factor~\cite{lan2019domain}. The common sampling rate, harmonized binary labels, and shared 12-channel montage establish a compatible input and prediction space, but do not remove the substantive differences between the two datasets.}
 
-\subsection*{Data preparation}
+\subsection*{Data preparation [revise need]}
 
 \rev{A common, deliberately parsimonious preparation pipeline, implemented in
 MNE-Python, was applied to both datasets and across all validation protocols.
@@ -342,35 +330,19 @@ dataset, participant, session, task, run, recording unit and temporal onset.
 The recording-unit identifier was used by the validation protocols to ensure
 that all overlapping windows from a unit remained on the same side of a split.}
 
-\begin{table}[!ht]
-\centering
-\small
-\caption{\textbf{Analytical dataset compositions.} All Dataset~B compositions
-contain the same 40 participants; they differ only in the task recordings
-retained with the resting-state recordings. Window counts refer to the prepared,
-pre-oversampling data.}
-\label{tab:dataset_compositions}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llcccc}
-\hline
-\textbf{Composition} & \textbf{Retained conditions} & \textbf{Participants} &
-\textbf{Recording units} & \textbf{Windows, n (low / high)} &
-\textbf{Class distribution, \% (low / high)} \\
-\hline
-Full Dataset~A & Focused, Unfocused & 5 & 24 & 3,192 / 3,192 & 50.0 / 50.0 \\
-Full Dataset~B & Rest, Stroop, Arithmetic, Mirror & 40 & 120 & 600 / 1,800 & 25.0 / 75.0 \\
-Dataset~B: Stroop & Rest, Stroop & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
-Dataset~B: Arithmetic & Rest, Arithmetic & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
-Dataset~B: Mirror & Rest, Mirror & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
-Dataset~B: Stroop + Arithmetic & Rest, Stroop, Arithmetic & 40 & 120 & 600 / 1,200 & 33.3 / 66.7 \\
-Dataset~B: Stroop + Mirror & Rest, Stroop, Mirror & 40 & 120 & 600 / 1,200 & 33.3 / 66.7 \\
-Dataset~B: Arithmetic + Mirror & Rest, Arithmetic, Mirror & 40 & 120 & 600 / 1,200 & 33.3 / 66.7 \\
-\hline
-\end{tabular}
-}
-\end{table}
+\rev{The fixed selection, cleaning, alignment and segmentation steps therefore
+yielded a deterministic analytical window set for each dataset composition.
+All model-specific input representations were derived from these same prepared
+windows, rather than from separately prepared data. Table~\ref{tab:dataset_compositions}
+summarizes the resulting compositions, including their retained recording units,
+window counts and observed class distributions before any training-fold
+oversampling. All Dataset~B configurations contain the same 40 participants and
+differ only in the task recordings retained alongside the resting-state
+recordings.}
 
-\subsection*{\revs{Models}}
+\input{tables/dataset_info}
+
+\subsection*{\revs{Models [revise need]}}
 
 \rev{We evaluated five classifiers rather than relying on a single decoder to
 test whether the conclusions are robust to a change in modelling assumptions.
@@ -448,227 +420,42 @@ weights were used.}
 
 \section*{Results}
 
-Balanced accuracy was the primary measure because it weights the two protocol-defined
-classes equally despite the unequal class frequencies in several compositions.
-For each scenario, subject-level balanced accuracies were averaged with equal
-weight per target participant; the intervals in
-Figs.~\ref{fig:all_scenarios_logistic} and
-\ref{fig:cross_subject_model_comparison} are 95\% percentile bootstrap
-intervals over participants. Table~\ref{tab:scenario_logistic_regression} and
-Fig.~\ref{fig:scenario_by_decoder_slope} report the corresponding estimates
-pooled over test windows, with macro F1, MCC, ROC--AUC and per-class recall also
-given in the table. The complete results for all five decoders are provided in
-\nameref{S1_Table_Logistic}--\nameref{S5_Table_EEGConformer}; subject-level
-plots for the three neural networks are provided in
-\nameref{S1_Fig}--\nameref{S3_Fig}. Unless specified otherwise, the ranges
-below refer to the equally weighted subject-level estimates.
+\textbf{[TODO --- Results section is currently in progress.]}
 
-\input{tables/scenario_table_logistic_regression}
-
-\subsection*{Within-domain discrimination was modest and depended on task composition}
-
-To establish the target-specific reference against which transfer could be
-evaluated, each decoder was first trained and tested within the same dataset and
-condition composition. Across the five decoders and five baseline
-compositions, balanced accuracy ranged from 0.54 to 0.71
-(Fig.~\ref{fig:scenario_by_decoder_slope}). Dataset~B baselines differed by
-task: the ranges across decoders were 0.58--0.71 for Stroop, 0.54--0.66 for
-Arithmetic and 0.60--0.68 for Mirror. Thus, even before introducing a transfer
-shift, the separability of the high-demand versus low-demand protocol contrast
-was neither high nor constant across task compositions.
-
-\subsection*{Within-dataset generalization depended on both the held-out factor and decoder}
-
-To determine how much discrimination remained when recordings differed within
-a dataset, we next held out participants or sessions. The
-cross-subject estimates ranged from 0.55 to 0.64 across decoders and datasets
-(Fig.~\ref{fig:cross_subject_model_comparison}) and were below their matched
-within-domain baseline in nine of ten decoder--dataset comparisons. In
-contrast, the cross-session estimates for Dataset~A occupied a narrow range
-(0.57--0.61). These distinct patterns show that participant and session
-holdouts were not interchangeable sources of distribution shift.
-
-\subsection*{Cross-task transfer retained only part of target-specific discrimination}
-
-To test transfer across task compositions without allowing participant identity
-to bridge source and target, cross-task evaluation combined a task change with
-a held-out participant. Balanced accuracy ranged from 0.54 to 0.65 across the
-60 decoder--direction combinations. For the 45 combinations whose single-task
-target had a matched baseline, 42 were lower than that baseline; the mean
-change was $-0.04$ points and individual changes ranged from $-0.12$ to
-$+0.04$. The highest mean cross-task performance was obtained with
-ShallowFBCSPNet (0.61 across directions), but no direction or decoder retained
-the target-specific baseline consistently. These results indicate partial,
-direction-dependent transfer of the operational binary contrast across tasks.
-
-\subsection*{Cross-dataset transfer produced the largest and most consistent loss}
-
-Finally, transfer between datasets was evaluated after aligning sampling rate,
-labels and the 12 shared channels. Cross-dataset balanced accuracy ranged from
-0.47 to 0.58, with an average of 0.52 across all decoders and directions. Every
-one of the 55 directed comparisons for which a matched target-specific baseline
-was available was lower than that baseline. The loss ranged from 0.01 to 0.22
-balanced-accuracy points and averaged 0.09. Transfer was also asymmetric in the
-matched full-composition pair: every decoder scored higher from full
-Dataset~B to full Dataset~A (0.51--0.56) than in the reverse direction
-(0.49--0.51). Near-chance balanced accuracy often coincided with strongly
-unequal class recall. For example, EEGNet trained
-on full Dataset~A and tested on full Dataset~B recalled 0.93 of low-demand but
-only 0.08 of high-demand windows (\nameref{S3_Table_EEGNet}). Hence, the
-cross-dataset loss reflected both reduced overall discrimination and, for some
-models, a pronounced shift toward one class.
-
-\subsection*{No decoder removed the protocol effect}
-
-Across all 35 scenarios, the best point estimate changed with the scenario and
-the difference between the highest and lowest decoder estimate ranged from
-0.01 to 0.13 (Fig.~\ref{fig:scenario_by_decoder_slope}). ShallowFBCSPNet
-provided the highest estimate in 16 scenarios, but its mean cross-dataset
-balanced accuracy remained 0.52. Logistic regression, XGBoost, EEGNet and
-EEGConformer likewise averaged 0.51--0.53 under cross-dataset transfer. The
-common deterioration across linear, tree-based, convolutional and
-attention-based decoders therefore formed the principal take-home pattern of
-the benchmark.
+\input{tables/result_table_shallownet}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{figures/all_scenarios_absolute_accuracy_logistic_regression.png}
-\caption{\textbf{Subject-level balanced accuracy across validation protocols for spectral logistic regression.} Points are means of target-participant balanced accuracies, with each participant weighted equally; horizontal bars are 95\% percentile bootstrap intervals over participants (10,000 resamples). The dashed vertical line marks chance-level balanced accuracy (0.50). Results are grouped by baseline, cross-subject, cross-session, cross-task and cross-dataset protocols.}
-\label{fig:all_scenarios_logistic}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth,height=0.72\textheight,keepaspectratio]{figures/cross_subject_model_comparison.png}
-\caption{\textbf{Cross-subject balanced accuracy by decoder and dataset.} Points are means of held-out-participant balanced accuracies and error bars are 95\% percentile bootstrap intervals over participants (10,000 resamples). The dashed line marks chance-level balanced accuracy (0.50).}
-\label{fig:cross_subject_model_comparison}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth,height=0.90\textheight,keepaspectratio]{figures/scenario_by_decoder_slope.png}
-\caption{\textbf{Pooled balanced accuracy across five decoders for every validation scenario.} Each line follows one scenario across logistic regression, XGBoost, EEGNet, ShallowFBCSPNet and EEGConformer; estimates pool all test windows in the corresponding scenario. Panels group baseline, within-dataset held-out, cross-task and cross-dataset scenarios. The dashed horizontal line marks chance-level balanced accuracy (0.50).}
-\label{fig:scenario_by_decoder_slope}
+\includegraphics[width=\textwidth]{figures/all_scenarios_model_comparison.png}
+\caption{\textbf{Balanced accuracy across experimental scenarios for the five decoders.} Colored points show the individual decoders; black points and 95\% bootstrap intervals show their mean.}
+\label{fig:all_scenarios_model_comparison}
 \end{figure}
 
 \section*{Discussion}
 
-This study shows that zero-shot transferability of the protocol-defined
-high-demand versus low-demand EEG contrast was governed more consistently by
-the source--target shift than by decoder family. Discrimination was modest
-within a target composition, was partly retained across participants and tasks,
-and approached chance under many cross-dataset directions. Most importantly,
-all 55 cross-dataset comparisons with a target-specific reference performed
-worse than that reference. The benchmark therefore supplies the missing
-pre-adaptation denominator needed to determine whether a future transfer method
-produces a genuine gain or negative transfer~\cite{zhang2023negative}.
+\textbf{[TODO --- Discussion paragraph 1: Summary of the paper's main conclusion.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-The within-dataset protocols also demonstrate why ``generalization'' should not
-be treated as a single property. Cross-subject performance was below the
-matched baseline in nine of ten decoder--dataset comparisons, consistent with
-the well-established inter-participant variability of EEG. Cross-session
-performance in Dataset~A remained close to its baseline. These results caution
-against assigning a model a general ``robustness'' label from a single
-validation protocol.
+\medskip
 
-Cross-task transfer preserved more discrimination than cross-dataset transfer,
-but it usually did not recover the corresponding target baseline. This partial
-retention is compatible with prior evidence that a cross-participant,
-cross-task vigilance-decrement model can perform above
-chance~\cite{kamrud2021vigilance}. At the same time, the reduction relative to
-within-task baselines agrees with evidence that ongoing spectral EEG features
-are sensitive to task type and can be less cross-task-consistent than
-task-irrelevant event-related potentials~\cite{ke2021crosstask}. Direct
-numerical comparison across these studies is inappropriate because the
-constructs, labels, tasks and validation units differ. The present results add
-a complementary observation: when participant identity is excluded from both
-sides of the transfer and no target adaptation is performed, task-to-task
-retention remains direction- and decoder-dependent. Reported gains from
-cross-task domain adaptation~\cite{zhou2022crosstask} should therefore be read
-against an equally strict no-adaptation reference.
+\textbf{[TODO --- Discussion paragraph 2: Comparison with previous results or theories.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-The cross-dataset results place a sharper boundary on zero-shot use. Matching
-sampling rate and channels created a common input space, but it did not align
-participant populations, acquisition details, paradigms, sensory conditions,
-task demands or the meaning of the protocol-assigned classes. The uniformly
-higher performance from full Dataset~B to full Dataset~A than in the reverse
-direction further shows that compatibility was asymmetric, so source
-suitability cannot be inferred from nominal label overlap alone. Prior
-cross-dataset EEG studies have likewise
-treated technical and distributional mismatch as an adaptation problem:
-domain adaptation improved cross-dataset emotion recognition over an
-unadapted baseline~\cite{lan2019domain}, and signal alignment improved
-cross-dataset P300 transfer~\cite{song2024signal}. Our results do not test those
-methods, but provide the unadapted reference required to quantify comparable
-improvements for the present operational contrast.
+\medskip
 
-Decoder comparisons reinforce this interpretation without establishing a
-universal model ranking. ShallowFBCSPNet produced the largest point estimate in
-more scenarios than the other decoders, yet it deteriorated under
-cross-dataset transfer to the same narrow range as logistic regression,
-XGBoost, EEGNet and EEGConformer. Because all models used fixed settings rather
-than scenario-specific optimization, these patterns show model--protocol
-interaction, not the inherent superiority of an architecture. The recurrence
-of the cross-dataset loss across five materially
-different decoders makes it less likely that the main pattern is peculiar to
-one classifier, while leaving open whether adaptation, pretraining or other
-architectures could reduce it.
+\textbf{[TODO --- Discussion paragraph 3: Scientific or engineering implications of this work.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-The interpretation of these findings is necessarily limited by the labels.
-In both datasets, the class is assigned by the experimental protocol: it
-contrasts a condition with higher protocol-defined task demand against rest or
-an unfocused condition. It is not an independent measurement of an
-individual's level of attention. Accordingly, the results show limited
-transferability of this operational contrast between the available datasets
-and paradigms. They neither demonstrate the absence of invariant neural
-markers of attention nor establish an upper bound on what a different decoder
-could achieve. Excluding the drowsy condition avoids one important difference
-in arousal, eye closure and ocular activity, but it does not eliminate other
-differences in sensory input, task demands, stress, working-memory demands or
-time-on-task between the retained conditions.
+\medskip
 
-Several further limitations delimit the benchmark. Only two heterogeneous open
-datasets were available for the cross-dataset comparison, and Dataset~A
-contained only five participants; the participant bootstrap intervals for that
-dataset therefore describe limited empirical support and should not be read as
-precise population intervals. Harmonization required restriction to 12 shared
-channels, improving input compatibility while reducing spatial information and
-limiting the stability of ICA-based artifact removal. Each decoder used one
-prespecified hyperparameter configuration and random seed, so small differences
-among decoders may reflect optimization or training variability and do not
-support formal superiority claims. The analysis was descriptive and did not
-apply multiplicity-adjusted hypothesis tests across the many directed pairs.
-Finally, the study did not test domain adaptation, target-specific calibration
-or personalization and did not identify which signal features drove individual
-decisions. It therefore cannot attribute transfer failure to a particular
-neural, ocular, muscular or other physiological source.
+\textbf{[TODO --- Discussion paragraph 4: Paper's limitations in scope.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Future work should evaluate adaptation gains against the direction-specific
-baselines reported here, repeat stochastic models across seeds, and diagnose
-whether errors arise from acquisition shift, condition composition or
-class-conditional mismatch. More decisive cross-paradigm tests will require
-multi-site datasets that preserve leakage-resistant, subject-disjoint
-evaluation while measuring the target state independently of the task used to
-elicit it. Concurrent behavioural performance, validated self-report and
-external physiological measurements would make it possible to distinguish a
-shared cognitive state from a shared protocol label.
+\medskip
+
+\textbf{[TODO --- Discussion paragraph 5: Forward-looking statement.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 \section*{Conclusion}
 
-Across five decoders and five validation protocols, zero-shot EEG
-discriminability depended on how source and target recordings were obtained.
-Cross-task transfer retained part of the target-specific discrimination, but
-cross-dataset transfer yielded the largest loss: all 55 matched comparisons
-fell below their target baseline by 0.01--0.22 balanced-accuracy points. No
-decoder family removed this loss, and transfer direction mattered. These
-results establish a reproducible pre-adaptation benchmark for selecting source
-data and for distinguishing useful adaptation from negative transfer. They
-apply to the available protocol-defined high-demand versus low-demand labels,
-not to attention as a unitary measured state; stronger claims will require
-cross-paradigm datasets with independent behavioural, self-report or
-physiological validation of the target construct.
+\textbf{[TODO --- Conclusion section is currently in progress.]}
 
-% PLOS ONE ending sections, in the required order:
+% PLOS ONE ending sections
 %   Acknowledgments -> References -> Supporting information captions
 % (https://journals.plos.org/plosone/s/submission-guidelines)
 %
@@ -687,98 +474,11 @@ physiological validation of the target construct.
 
 \section*{Supporting information}
 
-\paragraph*{S1 Fig.}
-\label{S1_Fig}
-{\bf EEGNet balanced accuracy across validation protocols.} The per-protocol
-EEGNet plot uses the same point, interval and chance-line conventions as
-Fig.~\ref{fig:all_scenarios_logistic}.
+\textbf{[TODO --- Supporting information is currently in progress.]}
 
-\paragraph*{S2 Fig.}
-\label{S2_Fig}
-{\bf ShallowFBCSPNet balanced accuracy across validation protocols.} The
-per-protocol ShallowFBCSPNet plot uses the same point, interval and chance-line
-conventions as Fig.~\ref{fig:all_scenarios_logistic}.
-
-\paragraph*{S3 Fig.}
-\label{S3_Fig}
-{\bf EEGConformer balanced accuracy across validation protocols.} The
-per-protocol EEGConformer plot uses the same point, interval and chance-line
-conventions as Fig.~\ref{fig:all_scenarios_logistic}.
-
-\clearpage
-\subsection*{Supporting-information figure previews}
-
-\noindent\textbf{S1 Fig. EEGNet balanced accuracy across validation protocols.}
-\begin{center}
-\includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{figures/all_scenarios_absolute_accuracy_eegnet.png}
-\end{center}
-
-\clearpage
-\noindent\textbf{S2 Fig. ShallowFBCSPNet balanced accuracy across validation protocols.}
-\begin{center}
-\includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{figures/all_scenarios_absolute_accuracy_shallownet.png}
-\end{center}
-
-\clearpage
-\noindent\textbf{S3 Fig. EEGConformer balanced accuracy across validation protocols.}
-\begin{center}
-\includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{figures/all_scenarios_absolute_accuracy_eegconformer.png}
-\end{center}
-
-\paragraph*{S1 Table.}
-\label{S1_Table_Logistic}
-{\bf Logistic-regression performance metrics across all experimental scenarios.}
-
-\paragraph*{S2 Table.}
-\label{S2_Table_XGBoost}
-{\bf XGBoost performance metrics across all experimental scenarios.}
-
-\paragraph*{S3 Table.}
-\label{S3_Table_EEGNet}
-{\bf EEGNet performance metrics across all experimental scenarios.}
-
-\paragraph*{S4 Table.}
-\label{S4_Table_ShallowNet}
-{\bf ShallowFBCSPNet performance metrics across all experimental scenarios.}
-
-\paragraph*{S5 Table.}
-\label{S5_Table_EEGConformer}
-{\bf EEGConformer performance metrics across all experimental scenarios.}
-
-\paragraph*{S6 Table.}
-\label{S6_Table}
-{\bf Preprocessing, feature extraction and model configuration.}
-\textbf{[TODO --- Regenerate this table for the current model set.]}
-
-Full parameter values for every preprocessing, feature extraction and model
-step, as recorded in the versioned experiment configuration. Continuous-signal
-filtering: band-pass 0.5--45\,Hz, 50\,Hz notch, average reference. Artifact removal: FastICA, 0.99 explained-variance component
-count, fit on data band-passed 1--45\,Hz, EOG-proxy channels F3/F4/F7/F8 with
-threshold 2.4, random state 42. Epoching: 5\,s windows with 0.5\,s overlap
-over a common 12-channel montage (F3, F4, F7, F8, FC5, FC6, O1, O2, P7, P8,
-T7, T8). Record selection: sessions with \texttt{session\_role=habituation}
-or \texttt{session\_quality=incomplete} excluded prior to Stage 1. Feature
-extraction (spectral configuration): log band power in five bands
-(0.5--4, 4--8, 8--13, 13--30, 30--45\,Hz) plus spectral entropy per channel.
-Models: the five configurations named in the Models subsection, with the feature
-scaler fitted inside the pipeline on the training fold only. Global random seed: 42. Validation protocols: stratified
-group $K$-fold baseline grouped by physical recording, cross-subject,
-cross-session (session-documented dataset only), cross-dataset and leave-one-
-subject-out cross-task transfer. No data-driven hyperparameter tuning was
-performed. Hyperparameters were fixed a priori for the benchmark comparison.
-
-\clearpage
-\subsection*{Supporting-information table previews}
-
-\input{tables/scenario_table_xgboost}
-
-\clearpage
-\input{tables/scenario_table_eegnet}
-
-\clearpage
-\input{tables/scenario_table_shallownet}
-
-\clearpage
-\input{tables/scenario_table_eegconformer}
+\input{tables/result_table_logistic_regression}
+\input{tables/result_table_xgboost}
+\input{tables/result_table_eegnet}
+\input{tables/result_table_eegconformer}
 
 \end{document}

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import colorsys
 from collections import Counter
 from glob import glob
 from pathlib import Path
@@ -11,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.figure import Figure
+from matplotlib.colors import Normalize
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import MaxNLocator
 from omegaconf import OmegaConf
@@ -85,6 +85,11 @@ def discover_scenario_results(scenario_glob: str) -> list[Path]:
     results = []
     for path in sorted(glob(scenario_glob)):
         job_dir = Path(path)
+        # The sweep keeps preparation snapshots alongside execution jobs.  They
+        # are intentionally not results and carry neither predictions nor a
+        # scenario config, even when a broad two-level glob reaches inside them.
+        if any(part.startswith("_") for part in job_dir.parts):
+            continue
         targets_dir = job_dir / "targets"
         results.extend(sorted(targets_dir.iterdir()) if targets_dir.is_dir() else [job_dir])
     return results
@@ -237,8 +242,212 @@ def craft_main_table(scenario_glob: str) -> str:
     return "".join(lines)
 
 
-def craft_all_scenarios_absolute_accuracy_figure(scenario_glob: str) -> Figure:
-    """Build one all-scenarios, subject-level accuracy figure for one decoder."""
+def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
+    """Build the all-decoder transfer matrix with target-specific baselines."""
+    sides = (
+        ("Stroop", SAM40_STROOP),
+        ("Arithmetic", SAM40_ARITHMETIC),
+        ("Mirror", SAM40_MIRROR),
+        ("Full A", DISTINGUISHING),
+        ("Full B", SAM40_FULL),
+    )
+    decoder_specs = (
+        ("logistic_regression", "Logistic\nregression"),
+        ("xgboost", "XGBoost"),
+        ("eegnet", "EEGNet"),
+        ("shallownet", "ShallowNet"),
+        ("eegconformer", "EEGConformer"),
+    )
+    expected_scenarios = {
+        ("baseline", side, side) for _, side in sides
+    } | {
+        ("cross_task", source, target)
+        for _, source in sides[:3]
+        for _, target in sides[:3]
+        if source != target
+    } | {
+        ("cross_dataset", source, target)
+        for _, source in sides
+        for _, target in sides
+        if source[0] != target[0]
+    }
+
+    job_dirs = discover_scenario_results(scenario_glob)
+    expected_result_count = len(SCENARIO_ORDER) * len(decoder_specs)
+    if len(job_dirs) != expected_result_count:
+        raise ValueError(
+            f"A transfer-performance matrix needs {expected_result_count} scenario results, "
+            f"got {len(job_dirs)}."
+        )
+
+    known_decoders = {decoder for decoder, _ in decoder_specs}
+    scores: dict[tuple[str, tuple[object, ...]], float] = {}
+    for job_dir in job_dirs:
+        cfg, windows, folds = read_scenario_result(job_dir)
+        decoder = decoder_name(cfg)
+        if decoder not in known_decoders:
+            raise ValueError(f"{job_dir}: unsupported decoder for transfer-performance matrix: {decoder}.")
+        scenario = scenario_key(cfg)
+        if (decoder, scenario) in scores:
+            raise ValueError(f"Duplicate scenario in transfer-performance matrix: {decoder}, {scenario}.")
+        if scenario not in SCENARIO_ORDER:
+            raise ValueError(f"Unexpected scenario in {job_dir}: {scenario}.")
+        if windows["window_index"].duplicated().any():
+            raise ValueError(f"{job_dir}: windows.parquet has duplicate window indices.")
+        test = folds.loc[folds["part"] == "test"].merge(
+            windows[["window_index", "y_true"]],
+            on="window_index",
+            how="left",
+            validate="many_to_one",
+        )
+        if test.empty or test[["y_true", "y_pred"]].isna().any().any():
+            raise ValueError(f"{job_dir}: incomplete test predictions for transfer-performance matrix.")
+        if not test["window_index"].is_unique:
+            raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
+        if test["y_true"].nunique() != 2:
+            raise ValueError(f"{job_dir}: expected exactly two tested classes.")
+        scores[(decoder, scenario)] = balanced_accuracy_score(test["y_true"], test["y_pred"])
+
+    missing = [
+        (decoder, scenario)
+        for decoder, _ in decoder_specs
+        for scenario in expected_scenarios
+        if (decoder, scenario) not in scores
+    ]
+    if missing:
+        raise ValueError(f"Transfer-performance matrix is missing scenarios: {missing}.")
+
+    labels, compositions = zip(*sides, strict=True)
+    model_names = tuple(label for _, label in decoder_specs)
+    row_count = len(sides) * len(decoder_specs)
+    matrix = np.full((row_count, len(sides)), np.nan)
+    protocols = np.full(matrix.shape, "", dtype=object)
+    for side_index, (_, source) in enumerate(sides):
+        for decoder_index, (decoder, _) in enumerate(decoder_specs):
+            row = side_index * len(decoder_specs) + decoder_index
+            for column, target in enumerate(compositions):
+                if source == target:
+                    matrix[row, column] = scores[(decoder, ("baseline", target, target))]
+                    protocols[row, column] = "baseline"
+                else:
+                    scenario = next(
+                        (
+                            (protocol, source, target)
+                            for protocol in ("cross_task", "cross_dataset")
+                            if (decoder, (protocol, source, target)) in scores
+                        ),
+                        None,
+                    )
+                    if scenario:
+                        matrix[row, column] = scores[(decoder, scenario)]
+                        protocols[row, column] = scenario[0]
+
+    # Summary values live at the source level.  For every displayed direction,
+    # average the five decoders first, then compare it with the equally averaged
+    # target baseline; individual decoder variation belongs only in the matrix.
+    summary_values = np.full((len(sides), 2), np.nan)
+    for source_index, (_, source) in enumerate(sides):
+        for summary_column, protocol in enumerate(("cross_task", "cross_dataset")):
+            transfer_means, baseline_means = [], []
+            for target in compositions:
+                scenario = (protocol, source, target)
+                if scenario not in expected_scenarios:
+                    continue
+                transfer_means.append(
+                    np.mean([scores[(decoder, scenario)] for decoder, _ in decoder_specs])
+                )
+                baseline_means.append(
+                    np.mean(
+                        [scores[(decoder, ("baseline", target, target))] for decoder, _ in decoder_specs]
+                    )
+                )
+            if transfer_means:
+                summary_values[source_index, summary_column] = (
+                    np.mean(transfer_means) - np.mean(baseline_means)
+                ) * 100
+
+    figure_width, figure_height = 13.6, 8.8
+    matrix_left, matrix_bottom = 0.22, 0.12
+    matrix_width, matrix_height = 0.40, 0.78
+    fig = plt.figure(figsize=(figure_width, figure_height))
+    ax = fig.add_axes((matrix_left, matrix_bottom, matrix_width, matrix_height))
+    colorbar_ax = fig.add_axes((0.645, matrix_bottom, 0.016, matrix_height))
+    summary_ax = fig.add_axes((0.69, matrix_bottom, 0.14, matrix_height))
+    cmap = plt.colormaps["Reds"]
+    normalization = Normalize(vmin=0.0, vmax=1.0)
+
+    for row in range(row_count):
+        for column in range(len(sides)):
+            value = matrix[row, column]
+            if np.isnan(value):
+                facecolor, text, text_colour = "#F2F4F6", "—", "#667085"
+            elif row // len(decoder_specs) == column:
+                facecolor, text, text_colour = "#FFFFFF", f"{value * 100:.1f}", "#263341"
+            else:
+                facecolor = cmap(normalization(value))
+                text = f"{value * 100:.1f}"
+                text_colour = "white" if value >= 0.62 else "#263341"
+            ax.add_patch(Rectangle((column, row), 1, 1, facecolor=facecolor, edgecolor="white", linewidth=0.9))
+            ax.text(column + 0.5, row + 0.5, text, ha="center", va="center",
+                    fontsize=9.5, fontweight="bold" if not np.isnan(value) else "normal", color=text_colour)
+    ax.set_xlim(0, len(sides))
+    ax.set_ylim(row_count, 0)
+    ax.set_aspect("auto")
+    ax.set_xticks(np.arange(len(sides)) + 0.5, labels)
+    ax.set_yticks(np.arange(row_count) + 0.5, model_names * len(sides))
+    ax.xaxis.tick_top()
+    ax.tick_params(length=0, labelsize=8.5, pad=5)
+    ax.set_xlabel("Target (test)", fontweight="bold", labelpad=15, fontsize=11)
+    ax.xaxis.set_label_position("top")
+    for source_index, label in enumerate(labels):
+        centre = source_index * len(decoder_specs) + len(decoder_specs) / 2
+        ax.text(-1.75, centre, label, ha="right", va="center", fontsize=11, fontweight="bold", clip_on=False)
+        if source_index:
+            ax.axhline(source_index * len(decoder_specs), color="#8C98A8", linewidth=1.2, zorder=4)
+            divider = ax.hlines(
+                source_index * len(decoder_specs),
+                xmin=-2.5,
+                xmax=0,
+                color="#8C98A8",
+                linewidth=1.2,
+                zorder=4,
+            )
+            divider.set_clip_on(False)
+    for spine in ax.spines.values():
+        spine.set_visible(True)
+        spine.set_color("#344054")
+        spine.set_linewidth(1.1)
+
+    colorbar = fig.colorbar(plt.cm.ScalarMappable(norm=normalization, cmap=cmap), cax=colorbar_ax)
+    colorbar.set_label("Balanced accuracy (%)", fontsize=8, labelpad=8)
+    colorbar.set_ticks(np.linspace(0, 1, 5), labels=("0", "25", "50", "75", "100"))
+    colorbar.ax.tick_params(labelsize=8)
+
+    for row in range(len(sides)):
+        for column in range(2):
+            value = summary_values[row, column]
+            facecolor = "#F2F4F6" if np.isnan(value) else "#FFFFFF"
+            text = "—" if np.isnan(value) else f"{value:.1f}"
+            y_position = row * len(decoder_specs)
+            summary_ax.add_patch(Rectangle((column, y_position), 1, len(decoder_specs), facecolor=facecolor, edgecolor="#D0D5DD", linewidth=0.9))
+            summary_ax.text(column + 0.5, y_position + len(decoder_specs) / 2, text, ha="center", va="center", fontsize=12,
+                            fontweight="bold" if not np.isnan(value) else "normal", color="#263341")
+    summary_ax.set_xlim(0, 2)
+    summary_ax.set_ylim(row_count, 0)
+    summary_ax.set_xticks((0.5, 1.5), ("Mean Δ\ncross-task", "Mean Δ\ncross-dataset"))
+    summary_ax.xaxis.tick_top()
+    summary_ax.tick_params(axis="x", length=0, labelsize=10, pad=10)
+    summary_ax.tick_params(axis="y", left=False, labelleft=False)
+    for spine in summary_ax.spines.values():
+        spine.set_visible(True)
+        spine.set_color("#344054")
+        spine.set_linewidth(1.1)
+
+    return fig
+
+
+def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
+    """Build one all-scenarios accuracy figure with every decoder and their mean."""
     protocol_labels = (
         ("Baseline", 5),
         ("Cross-subject", 2),
@@ -282,512 +491,26 @@ def craft_all_scenarios_absolute_accuracy_figure(scenario_glob: str) -> Figure:
         "Full A → Arithmetic+Mirror",
         "Arithmetic+Mirror → Full A",
     )
+    decoder_specs = (
+        ("logistic_regression", "Logistic Regression", "#1F77B4"),
+        ("xgboost", "XGBoost", "#FF7F0E"),
+        ("eegnet", "EEGNet", "#D62728"),
+        ("shallownet", "ShallowNet", "#9467BD"),
+        ("eegconformer", "EEGConformer", "#2CA02C"),
+    )
     if len(validation_method_labels) != len(SCENARIO_ORDER):
         raise RuntimeError("Figure validation-method labels must match the scenario order.")
-    job_dirs = discover_scenario_results(scenario_glob)
-    if len(job_dirs) != len(SCENARIO_ORDER):
-        raise ValueError(
-            f"An all-scenarios figure needs {len(SCENARIO_ORDER)} scenario results, "
-            f"got {len(job_dirs)}."
-        )
-
-    scores_by_scenario: dict[tuple[object, ...], np.ndarray] = {}
-    decoder_names = set()
-    for job_dir in job_dirs:
-        cfg, windows, folds = read_scenario_result(job_dir)
-        decoder = decoder_name(cfg)
-        if decoder not in {
-            "logistic_regression",
-            "xgboost",
-            "eegnet",
-            "shallownet",
-            "eegconformer",
-        }:
-            raise ValueError(f"{job_dir}: unsupported decoder for article figure: {decoder}.")
-        decoder_names.add(decoder)
-        scenario = scenario_key(cfg)
-        if scenario not in SCENARIO_ORDER:
-            raise ValueError(f"Unexpected scenario in {job_dir}: {scenario}.")
-        if scenario in scores_by_scenario:
-            raise ValueError(f"Duplicate scenario for one decoder: {scenario}.")
-
-        if windows["window_index"].duplicated().any():
-            raise ValueError(f"{job_dir}: windows.parquet has duplicate window indices.")
-        test = folds.loc[folds["part"] == "test"].merge(
-            windows[["window_index", "subject_id", "y_true"]],
-            on="window_index",
-            how="left",
-            validate="many_to_one",
-        )
-        if test.empty:
-            raise ValueError(f"{job_dir}: the job has no test predictions.")
-        if test[["subject_id", "y_true", "y_pred"]].isna().any().any():
-            raise ValueError(f"{job_dir}: test predictions reference missing or incomplete windows.")
-        if not test["window_index"].is_unique:
-            raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
-
-        subject_scores = []
-        for subject_id, subject_test in test.groupby("subject_id", sort=True):
-            if subject_test["y_true"].nunique() != 2:
-                raise ValueError(f"{job_dir}: target subject {subject_id} does not contain two classes.")
-            subject_scores.append(
-                balanced_accuracy_score(subject_test["y_true"], subject_test["y_pred"])
-            )
-        scores_by_scenario[scenario] = np.asarray(subject_scores, dtype=float)
-
-    if len(decoder_names) != 1:
-        raise ValueError(f"An all-scenarios figure needs one decoder, got {sorted(decoder_names)}.")
-    expected, actual = set(SCENARIO_ORDER), set(scores_by_scenario)
-    if actual != expected:
-        missing = sorted(expected - actual)
-        unexpected = sorted(actual - expected)
-        raise ValueError(
-            f"Scenario set does not match the article figure; missing={missing}, unexpected={unexpected}."
-        )
-
-    decoder_names.pop()
-    means, lower_errors, upper_errors = [], [], []
-    rng = np.random.default_rng(42)
-    for protocol, source, target in SCENARIO_ORDER:
-        scores = scores_by_scenario[(protocol, source, target)]
-        mean = scores.mean()
-        bootstrap_means = rng.choice(scores, size=(10_000, len(scores)), replace=True).mean(axis=1)
-        low, high = np.quantile(bootstrap_means, (0.025, 0.975))
-        means.append(mean)
-        lower_errors.append(mean - low)
-        upper_errors.append(high - mean)
-    method_y_positions = []
-    protocol_y_positions = []
-    y_positions = []
-    y_labels = []
-    next_y_position = len(SCENARIO_ORDER) + len(protocol_labels) - 1
-    validation_label_start = 0
-    for protocol_label, row_count in protocol_labels:
-        protocol_y_positions.append(next_y_position)
-        y_positions.append(next_y_position)
-        y_labels.append(protocol_label)
-        next_y_position -= 1
-
-        method_positions = list(range(next_y_position, next_y_position - row_count, -1))
-        method_y_positions.extend(method_positions)
-        y_positions.extend(method_positions)
-        y_labels.extend(validation_method_labels[validation_label_start : validation_label_start + row_count])
-        next_y_position -= row_count
-        validation_label_start += row_count
-    fig, ax = plt.subplots(figsize=(12.2, 14.0))
-    ax.errorbar(
-        means,
-        method_y_positions,
-        xerr=np.array((lower_errors, upper_errors)),
-        fmt="o",
-        color="#1F65AE",
-        ecolor="#294E7A",
-        markersize=5.5,
-        elinewidth=1.0,
-        capsize=3,
-        zorder=3,
-    )
-    ax.axvline(0.5, color="#7C8AA0", linestyle=(0, (4, 3)), linewidth=1.0, zorder=1)
-    ax.text(0.5, 1.0, "chance level", color="#62718A", ha="center", va="bottom", fontsize=10,
-            transform=ax.get_xaxis_transform())
-    ax.set_yticks(y_positions, ("",) * len(y_positions))
-    ax.set_ylim(min(y_positions) - 0.8, max(y_positions) + 0.8)
-    plotted_scores = np.concatenate(
-        (
-            np.asarray(means) - np.asarray(lower_errors),
-            np.asarray(means) + np.asarray(upper_errors),
-            np.array((0.5,)),
-        )
-    )
-    score_span = np.ptp(plotted_scores)
-    score_padding = max(0.01, score_span * 0.12)
-    ax.set_xlim(
-        max(0.0, plotted_scores.min() - score_padding),
-        min(1.0, plotted_scores.max() + score_padding),
-    )
-    ax.xaxis.set_major_locator(MaxNLocator(nbins=6))
-    ax.grid(axis="x", color="#E0E6EF", linewidth=0.8)
-    ax.set_axisbelow(True)
-    ax.spines[["top", "right", "left"]].set_visible(False)
-    ax.tick_params(axis="y", length=0)
-    protocol_label_set = dict(protocol_labels)
-    for y_position, label in zip(y_positions, y_labels, strict=True):
-        is_protocol_label = label in protocol_label_set
-        ax.text(
-            -0.27,
-            y_position,
-            label,
-            transform=ax.get_yaxis_transform(),
-            ha="left",
-            va="center",
-            fontweight="bold" if is_protocol_label else "normal",
-            fontsize=11 if is_protocol_label else 10,
-        )
-    for protocol_y_position in protocol_y_positions:
-        ax.axhline(protocol_y_position, color="#7A7A7A", alpha=0.65, linewidth=1.3, zorder=1)
-
-    fig.subplots_adjust(left=0.23, right=0.96, top=0.97, bottom=0.04)
-    return fig
-
-
-def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
-    """Build source-on-row matrices for all directed transfer scenarios.
-
-    A confusion matrix would describe predicted labels within one evaluation;
-    it cannot show which data composition trained a decoder.  These matrices
-    instead use source compositions as rows and target compositions as columns.
-    The diagonal is the matching within-composition baseline where the sweep
-    contains one; every other populated cell is a directed zero-shot transfer
-    estimate. Gray cells are source--target compositions the sweep did not run.
-    """
-    dataset_a = ("distinguishing", ("drowsy",))
-    dataset_b = ("sam40", ())
-    stroop = ("sam40", ("arithmetic", "mirror"))
-    arithmetic = ("sam40", ("mirror", "stroop"))
-    mirror = ("sam40", ("arithmetic", "stroop"))
-    stroop_arithmetic = ("sam40", ("mirror",))
-    stroop_mirror = ("sam40", ("arithmetic",))
-    arithmetic_mirror = ("sam40", ("stroop",))
-    matrix_specs = (
-        (
-            "Cross-task transfer (Dataset B)",
-            (
-                ("Stroop", stroop),
-                ("Arithmetic", arithmetic),
-                ("Mirror", mirror),
-                ("Stroop+\nArithmetic", stroop_arithmetic),
-                ("Stroop+\nMirror", stroop_mirror),
-                ("Arithmetic+\nMirror", arithmetic_mirror),
-            ),
-            "cross_task",
-        ),
-        (
-            "Cross-dataset transfer",
-            (
-                ("Dataset A", dataset_a),
-                ("Full B", dataset_b),
-                ("Stroop", stroop),
-                ("Arithmetic", arithmetic),
-                ("Mirror", mirror),
-                ("Stroop+\nArithmetic", stroop_arithmetic),
-                ("Stroop+\nMirror", stroop_mirror),
-                ("Arithmetic+\nMirror", arithmetic_mirror),
-            ),
-            "cross_dataset",
-        ),
-    )
-
-    scores: dict[tuple[object, ...], float] = {}
-    for job_dir in discover_scenario_results(scenario_glob):
-        cfg, windows, folds = read_scenario_result(job_dir)
-        scenario = scenario_key(cfg)
-        if scenario in scores:
-            raise ValueError(f"Duplicate scenario in transfer matrix: {scenario}.")
-        if windows["window_index"].duplicated().any():
-            raise ValueError(f"{job_dir}: windows.parquet has duplicate window indices.")
-        test = folds.loc[folds["part"] == "test"].merge(
-            windows[["window_index", "y_true"]],
-            on="window_index",
-            how="left",
-            validate="many_to_one",
-        )
-        if test.empty or test[["y_true", "y_pred"]].isna().any().any():
-            raise ValueError(f"{job_dir}: incomplete test predictions for transfer matrix.")
-        if not test["window_index"].is_unique:
-            raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
-        if test["y_true"].nunique() != 2:
-            raise ValueError(f"{job_dir}: expected exactly two tested classes.")
-        scores[scenario] = balanced_accuracy_score(test["y_true"], test["y_pred"])
-
-    fig, axes = plt.subplots(1, 2, figsize=(13.2, 6.2), layout="constrained")
-    cmap = plt.colormaps["RdYlBu_r"].copy()
-    cmap.set_bad("#F1F3F5")
-    image = None
-    for ax, (title, sides, transfer_protocol) in zip(axes, matrix_specs, strict=True):
-        labels, compositions = zip(*sides, strict=True)
-        values = np.full((len(compositions), len(compositions)), np.nan)
-        for row, source in enumerate(compositions):
-            for column, target in enumerate(compositions):
-                protocol = "baseline" if row == column else transfer_protocol
-                scenario = (protocol, source, target)
-                if scenario in scores:
-                    values[row, column] = scores[scenario]
-
-        image = ax.imshow(values, cmap=cmap, vmin=0.4, vmax=0.7, aspect="equal")
-        for row in range(len(compositions)):
-            for column in range(len(compositions)):
-                baseline = row == column
-                label = (
-                    f"{values[row, column]:.2f}" + ("\nbaseline" if baseline else "")
-                    if not np.isnan(values[row, column])
-                    else "—"
-                )
-                ax.text(
-                    column,
-                    row,
-                    label,
-                    ha="center",
-                    va="center",
-                    fontsize=8 if len(compositions) > 6 else 9,
-                    fontweight="bold" if baseline and not np.isnan(values[row, column]) else "normal",
-                    color="#6B7280" if np.isnan(values[row, column]) else "#111827",
-                )
-                if baseline and not np.isnan(values[row, column]):
-                    ax.add_patch(
-                        Rectangle(
-                            (column - 0.5, row - 0.5), 1, 1,
-                            fill=False,
-                            edgecolor="#1E293B",
-                            linewidth=2.2,
-                        )
-                    )
-        ax.set_xticks(range(len(labels)), labels, fontsize=8)
-        ax.set_yticks(range(len(labels)), labels, fontsize=8)
-        ax.set_xlabel("Target (test)", fontweight="bold")
-        ax.set_ylabel("Source (train)", fontweight="bold")
-        ax.set_title(title, fontweight="bold", pad=10)
-        ax.tick_params(length=0)
-        for spine in ax.spines.values():
-            spine.set_visible(False)
-
-    colorbar = fig.colorbar(image, ax=axes, shrink=0.83, pad=0.03)
-    colorbar.set_label("Balanced accuracy", fontweight="bold")
-    fig.suptitle(
-        "Directed zero-shot transfer: diagonal cells are within-composition baselines when available",
-        fontweight="bold",
-    )
-    fig.text(0.5, 0.01, "Gray cells were not evaluated in the sweep.", ha="center", color="#6B7280", fontsize=9)
-    return fig
-
-
-def craft_cross_subject_model_comparison_figure(analysis_input_dir: Path) -> Figure:
-    """Build the separate Dataset A/B cross-subject decoder comparison figure."""
-    decoder_specs = (
-        ("logistic_regression", "Logistic Regression", "#4E79A7"),
-        ("xgboost", "XGBoost", "#F28E2B"),
-        ("eegnet", "EEGNet", "#E15759"),
-        ("shallownet", "ShallowNet", "#76B7B2"),
-        ("eegconformer", "EEGConformer", "#59A14F"),
-    )
-    expected_scenarios = {
-        (decoder, dataset): recipe
-        for decoder, _, _ in decoder_specs
-        for dataset, recipe in (("distinguishing", DISTINGUISHING), ("sam40", SAM40_FULL))
-    }
-    subject_scores_by_scenario: dict[tuple[str, str], np.ndarray] = {}
-
-    for config_path in sorted(analysis_input_dir.rglob(".hydra/config.yaml")):
-        job_dir = config_path.parent.parent
-        cfg = OmegaConf.load(config_path)
-        if str(cfg.validation_strategy.name) != "cross_subject":
-            continue
-
-        decoder = decoder_name(cfg)
-        if decoder not in {name for name, _, _ in decoder_specs}:
-            continue
-        if "preparation" in cfg and "source" in cfg.preparation:
-            dataset_recipe = cfg.preparation.source
-        elif "preparation" in cfg and "name" in cfg.preparation:
-            dataset_recipe = cfg.preparation
-        else:
-            raise ValueError(f"{job_dir}: config has no preparation identity.")
-        dataset = _side_key(dataset_recipe)[0]
-        scenario = (decoder, dataset)
-        if scenario not in expected_scenarios:
-            raise ValueError(f"Unexpected cross-subject scenario in {job_dir}: {scenario}.")
-        if _side_key(dataset_recipe) != expected_scenarios[scenario]:
-            raise ValueError(f"{job_dir}: unexpected dataset composition for {scenario}.")
-        if scenario in subject_scores_by_scenario:
-            raise ValueError(f"Duplicate cross-subject scenario: {scenario}.")
-
-        windows_path = job_dir / "windows.parquet"
-        folds_path = job_dir / "folds.parquet"
-        missing = [path.name for path in (windows_path, folds_path) if not path.exists()]
-        if missing:
-            raise FileNotFoundError(f"{job_dir} is incomplete: missing {missing}.")
-
-        windows = pd.read_parquet(windows_path)
-        folds = pd.read_parquet(folds_path)
-        if windows["window_index"].duplicated().any():
-            raise ValueError(f"{job_dir}: windows.parquet has duplicate window indices.")
-        test = folds.loc[folds["part"] == "test"].merge(
-            windows[["window_index", "subject_id", "y_true"]],
-            on="window_index",
-            how="left",
-            validate="many_to_one",
-        )
-        if test.empty:
-            raise ValueError(f"{job_dir}: the job has no test predictions.")
-        if test[["subject_id", "y_true", "y_pred"]].isna().any().any():
-            raise ValueError(f"{job_dir}: test predictions reference missing or incomplete windows.")
-        if not test["window_index"].is_unique:
-            raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
-        if (test.groupby("fold")["subject_id"].nunique() != 1).any():
-            raise ValueError(f"{job_dir}: a cross-subject fold tests more than one target subject.")
-        if (test.groupby("subject_id")["fold"].nunique() != 1).any():
-            raise ValueError(f"{job_dir}: a target subject occurs in more than one test fold.")
-
-        subject_scores = []
-        for subject_id, subject_test in test.groupby("subject_id", sort=True):
-            if subject_test["y_true"].nunique() != 2:
-                raise ValueError(f"{job_dir}: target subject {subject_id} does not contain two classes.")
-            subject_scores.append(
-                balanced_accuracy_score(subject_test["y_true"], subject_test["y_pred"])
-            )
-        subject_scores_by_scenario[scenario] = np.asarray(subject_scores, dtype=float)
-
-    expected = set(expected_scenarios)
-    actual = set(subject_scores_by_scenario)
-    if actual != expected:
-        missing = sorted(expected - actual)
-        unexpected = sorted(actual - expected)
-        raise ValueError(
-            "Cross-subject model comparison needs one complete job for each decoder and dataset; "
-            f"missing={missing}, unexpected={unexpected}."
-        )
-
-    fig, ax = plt.subplots(figsize=(5.2, 3.5), layout="constrained")
-    group_centres = np.array((0.0, 1.45))
-    bar_width = 0.18
-    offsets = (np.arange(len(decoder_specs)) - (len(decoder_specs) - 1) / 2) * (bar_width + 0.015)
-    rng = np.random.default_rng(42)
-
-    for decoder_index, (decoder, label, colour) in enumerate(decoder_specs):
-        means, lower_errors, upper_errors = [], [], []
-        for dataset in ("distinguishing", "sam40"):
-            scores = subject_scores_by_scenario[(decoder, dataset)]
-            mean = scores.mean()
-            bootstrap_means = rng.choice(scores, size=(10_000, len(scores)), replace=True).mean(axis=1)
-            low, high = np.quantile(bootstrap_means, (0.025, 0.975))
-            means.append(mean)
-            lower_errors.append(mean - low)
-            upper_errors.append(high - mean)
-        ax.bar(
-            group_centres + offsets[decoder_index],
-            means,
-            width=bar_width,
-            yerr=np.array((lower_errors, upper_errors)),
-            label=label,
-            color=colour,
-            edgecolor="#24354F",
-            linewidth=0.6,
-            capsize=2.5,
-            error_kw={"elinewidth": 0.8, "capthick": 0.8, "ecolor": "#24354F"},
-        )
-
-    ax.axhline(0.5, color="#7C8AA0", linestyle=(0, (3, 3)), linewidth=0.9, zorder=0)
-    ax.text(group_centres[-1] + 0.58, 0.515, "chance", color="#62718A", ha="right", va="bottom", fontsize=8)
-    ax.set_xticks(group_centres, ("Dataset A", "Dataset B"), fontweight="bold")
-    ax.set_ylabel("Balanced accuracy", fontweight="bold")
-    ax.set_ylim(0, 1)
-    ax.set_yticks(np.linspace(0, 1, 6))
-    ax.grid(axis="y", color="#D9E0EA", linewidth=0.7)
-    ax.set_axisbelow(True)
-    ax.spines[["top", "right"]].set_visible(False)
-    ax.legend(ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.22), frameon=False, fontsize=7.5)
-    return fig
-
-
-def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
-    """Build the four-panel figure that reads every scenario across the decoders.
-
-    The all-scenarios figure asks how far a scenario falls; this one asks whether
-    that fall belongs to the data or to the model reading it. The five decoders
-    become the horizontal steps and each scenario walks across them as one line,
-    so a line that stays flat is a scenario whose difficulty no decoder undoes.
-    Panels follow the protocol families, because comparing a baseline line with a
-    cross-dataset line inside one frame is what makes both unreadable.
-    """
-    decoder_specs = (
-        ("logistic_regression", "Logistic\nRegression"),
-        ("xgboost", "XGBoost"),
-        ("eegnet", "EEGNet"),
-        ("shallownet", "ShallowNet"),
-        ("eegconformer", "EEG\nConformer"),
-    )
-    scenario_labels = (
-        "Stratified K-fold(Full A)",
-        "Stratified K-fold(Full B)",
-        "Stratified K-fold(B: Stroop)",
-        "Stratified K-fold(B: Arithmetic)",
-        "Stratified K-fold(B: Mirror)",
-        "Leave-one-subject-out(Full A)",
-        "Leave-one-subject-out(Full B)",
-        "Leave-one-session-out(Full A)",
-        "Stroop → Arithmetic",
-        "Stroop → Mirror",
-        "Arithmetic → Stroop",
-        "Arithmetic → Mirror",
-        "Mirror → Stroop",
-        "Mirror → Arithmetic",
-        "Arithmetic+Mirror → Stroop",
-        "Stroop+Mirror → Arithmetic",
-        "Stroop+Arithmetic → Mirror",
-        "Stroop → Arithmetic+Mirror",
-        "Arithmetic → Stroop+Mirror",
-        "Mirror → Stroop+Arithmetic",
-        "Full A → Full B",
-        "Full B → Full A",
-        "Full A → Stroop",
-        "Stroop → Full A",
-        "Full A → Arithmetic",
-        "Arithmetic → Full A",
-        "Full A → Mirror",
-        "Mirror → Full A",
-        "Full A → Stroop+Arithmetic",
-        "Stroop+Arithmetic → Full A",
-        "Full A → Stroop+Mirror",
-        "Stroop+Mirror → Full A",
-        "Full A → Arithmetic+Mirror",
-        "Arithmetic+Mirror → Full A",
-    )
-    if len(scenario_labels) != len(SCENARIO_ORDER):
-        raise RuntimeError("Slope-figure scenario labels must match the scenario order.")
-
-    # Hue carries the grouping a panel is about, lightness separates the lines
-    # inside one group: the same two channels the mockup used, in HLS.
-    hue_angles = {"rust": 0.055, "olive": 0.270, "teal": 0.490, "cyan": 0.570, "violet": 0.790}
-    tone = lambda hue, level: colorsys.hls_to_rgb(hue_angles[hue], 0.40 + 0.34 * level, 0.55)
-    # (panel title, per-scenario (hue, lightness)) in scenario order
-    panel_specs = (
-        (
-            "Baseline",
-            (("rust", 0.34), ("olive", 0.72), ("teal", 0.22), ("cyan", 0.72), ("violet", 0.34)),
-        ),
-        (
-            "Cross-subject, Cross-session",
-            (("rust", 0.26), ("rust", 0.66), ("cyan", 0.66)),
-        ),
-        (
-            "Cross-task (Dataset B; single/double-task transfers)",
-            (
-                ("cyan", 0.18), ("olive", 0.18), ("rust", 0.18), ("olive", 0.50),
-                ("rust", 0.50), ("cyan", 0.50), ("rust", 0.80), ("cyan", 0.80),
-                ("olive", 0.80), ("violet", 0.18), ("violet", 0.50), ("violet", 0.80),
-            ),
-        ),
-        (
-            "Cross-dataset",
-            tuple(
-                ("rust" if index % 2 == 0 else "cyan", (index // 2) / 6)
-                for index in range(14)
-            ),
-        ),
-    )
-    panel_sizes = tuple(len(colours) for _, colours in panel_specs)
-    if sum(panel_sizes) != len(SCENARIO_ORDER):
-        raise RuntimeError("Slope-figure panels must cover every scenario exactly once.")
 
     job_dirs = discover_scenario_results(scenario_glob)
     expected_result_count = len(SCENARIO_ORDER) * len(decoder_specs)
     if len(job_dirs) != expected_result_count:
         raise ValueError(
-            f"A scenario-by-decoder figure needs {expected_result_count} scenario results "
+            f"An all-models figure needs {expected_result_count} scenario results "
             f"({len(SCENARIO_ORDER)} scenarios x {len(decoder_specs)} decoders), got {len(job_dirs)}."
         )
 
-    known_decoders = {decoder for decoder, _ in decoder_specs}
-    scores: dict[tuple[str, tuple[object, ...]], float] = {}
+    known_decoders = {decoder for decoder, _, _ in decoder_specs}
+    scores: dict[tuple[str, tuple[object, ...]], np.ndarray] = {}
     for job_dir in job_dirs:
         cfg, windows, folds = read_scenario_result(job_dir)
         decoder = decoder_name(cfg)
@@ -802,112 +525,131 @@ def craft_scenario_by_decoder_slope_figure(scenario_glob: str) -> Figure:
         if windows["window_index"].duplicated().any():
             raise ValueError(f"{job_dir}: windows.parquet has duplicate window indices.")
         test = folds.loc[folds["part"] == "test"].merge(
-            windows[["window_index", "y_true"]],
+            windows[["window_index", "subject_id", "y_true"]],
             on="window_index",
             how="left",
             validate="many_to_one",
         )
         if test.empty:
             raise ValueError(f"{job_dir}: the job has no test predictions.")
-        if test[["y_true", "y_pred"]].isna().any().any():
+        if test[["subject_id", "y_true", "y_pred"]].isna().any().any():
             raise ValueError(f"{job_dir}: test predictions reference missing or incomplete windows.")
         if not test["window_index"].is_unique:
             raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
-        if test["y_true"].nunique() != 2:
-            raise ValueError(f"{job_dir}: expected exactly two tested classes.")
-        scores[(decoder, scenario)] = balanced_accuracy_score(test["y_true"], test["y_pred"])
+
+        subject_scores = []
+        for subject_id, subject_test in test.groupby("subject_id", sort=True):
+            if subject_test["y_true"].nunique() != 2:
+                raise ValueError(f"{job_dir}: target subject {subject_id} does not contain two classes.")
+            subject_scores.append(balanced_accuracy_score(subject_test["y_true"], subject_test["y_pred"]))
+        scores[(decoder, scenario)] = np.asarray(subject_scores, dtype=float)
 
     missing = [
         (decoder, scenario)
-        for decoder, _ in decoder_specs
+        for decoder, _, _ in decoder_specs
         for scenario in SCENARIO_ORDER
         if (decoder, scenario) not in scores
     ]
     if missing:
         raise ValueError(f"Scenario set does not match the article figure; missing={missing}.")
 
-    curves = np.array(
-        [[scores[(decoder, scenario)] for decoder, _ in decoder_specs] for scenario in SCENARIO_ORDER]
+    model_means = np.array(
+        [
+            [scores[(decoder, scenario)].mean() for decoder, _, _ in decoder_specs]
+            for scenario in SCENARIO_ORDER
+        ]
     )
-    padding = max(0.01, np.ptp(curves) * 0.08)
-    y_low = max(0.0, curves.min() - padding)
-    y_high = min(1.0, curves.max() + padding)
-    if not y_low < 0.5 < y_high:
-        y_low, y_high = min(y_low, 0.48), max(y_high, 0.52)
+    average_means = model_means.mean(axis=1)
+    lower_errors, upper_errors = [], []
+    rng = np.random.default_rng(42)
+    for scenario_index, scenario in enumerate(SCENARIO_ORDER):
+        bootstrap_means = np.stack(
+            [
+                rng.choice(scores[(decoder, scenario)], size=(10_000, len(scores[(decoder, scenario)])), replace=True)
+                .mean(axis=1)
+                for decoder, _, _ in decoder_specs
+            ]
+        ).mean(axis=0)
+        low, high = np.quantile(bootstrap_means, (0.025, 0.975))
+        mean = average_means[scenario_index]
+        lower_errors.append(mean - low)
+        upper_errors.append(high - mean)
 
-    def stack(anchors: np.ndarray, gap: float) -> np.ndarray:
-        """Spread label positions apart while keeping them next to their lines."""
-        positions = anchors.astype(float).copy()
-        for _ in range(200):
-            moved = False
-            for index in range(1, len(positions)):
-                overlap = gap - (positions[index - 1] - positions[index])
-                if overlap > 0:
-                    positions[index - 1] += overlap / 2
-                    positions[index] -= overlap / 2
-                    moved = True
-            positions -= max(0.0, positions[0] - (y_high - gap / 2))
-            positions += max(0.0, (y_low + gap / 2) - positions[-1])
-            if not moved:
-                break
-        return positions
+    method_y_positions, protocol_y_positions, y_positions, y_labels = [], [], [], []
+    next_y_position = len(SCENARIO_ORDER) + len(protocol_labels) - 1
+    validation_label_start = 0
+    for protocol_label, row_count in protocol_labels:
+        protocol_y_positions.append(next_y_position)
+        y_positions.append(next_y_position)
+        y_labels.append(protocol_label)
+        next_y_position -= 1
+        method_positions = list(range(next_y_position, next_y_position - row_count, -1))
+        method_y_positions.extend(method_positions)
+        y_positions.extend(method_positions)
+        y_labels.extend(validation_method_labels[validation_label_start : validation_label_start + row_count])
+        next_y_position -= row_count
+        validation_label_start += row_count
 
-    decoder_positions = np.arange(len(decoder_specs), dtype=float)
-    label_x = len(decoder_specs) - 1 + 0.62
-    fig, axes = plt.subplots(2, 2, figsize=(17.0, 11.5), layout="constrained")
-    scenario_start = 0
-    for ax, (title, colours) in zip(axes.ravel(), panel_specs, strict=True):
-        panel_start = scenario_start
-        panel = range(panel_start, panel_start + len(colours))
-        scenario_start += len(colours)
-
-        ax.axhline(0.5, color="#7C8AA0", linestyle=(0, (4, 3)), linewidth=1.0, zorder=1)
-        ax.text(0.0, 0.5, "chance", color="#62718A", ha="left", va="bottom", fontsize=8)
-        for scenario_index, (hue, level) in zip(panel, colours, strict=True):
-            ax.plot(
-                decoder_positions,
-                curves[scenario_index],
-                color=tone(hue, level),
-                linewidth=1.7,
-                solid_capstyle="round",
-                zorder=3,
-            )
-
-        # The key stands where the lines end, so a line is read without a legend
-        # lookup; ties are pulled apart only as far as the panel allows.
-        order = sorted(panel, key=lambda index: -curves[index, -1])
-        anchors = np.array([curves[index, -1] for index in order])
-        label_positions = stack(anchors, gap=(y_high - y_low) / 26)
-        for scenario_index, anchor, position in zip(order, anchors, label_positions, strict=True):
-            colour = tone(*colours[scenario_index - panel_start])
-            ax.plot(
-                (len(decoder_specs) - 1, label_x - 0.36, label_x - 0.12),
-                (anchor, position, position),
-                color=colour,
-                linewidth=0.9,
-                alpha=0.55,
-                clip_on=False,
-                zorder=2,
-            )
-            ax.text(
-                label_x,
-                position,
-                scenario_labels[scenario_index],
-                color="#3D4450",
-                ha="left",
-                va="center",
-                fontsize=8,
-                clip_on=False,
-            )
-
-        ax.text(0.0, 1.075, f"{title}  ({len(colours)} scenarios)", transform=ax.transAxes,
-                fontweight="bold", fontsize=12, va="bottom")
-        ax.set_xlim(-0.3, label_x + 0.05)
-        ax.set_ylim(y_low, y_high)
-        ax.set_xticks(decoder_positions, [label for _, label in decoder_specs], fontsize=9)
-        ax.set_ylabel("Balanced accuracy", fontweight="bold", fontsize=9)
-        ax.grid(axis="y", color="#EDEFF4", linewidth=0.8)
-        ax.set_axisbelow(True)
-        ax.spines[["top", "right"]].set_visible(False)
-        ax.tick_params(axis="both", labelsize=8, length=0)
+    fig, ax = plt.subplots(figsize=(12.2, 14.6))
+    offsets = np.linspace(-0.22, 0.22, len(decoder_specs))
+    for decoder_index, (_, label, colour) in enumerate(decoder_specs):
+        ax.scatter(
+            model_means[:, decoder_index],
+            np.asarray(method_y_positions) + offsets[decoder_index],
+            s=38,
+            color=colour,
+            alpha=0.65,
+            edgecolor="#24354F",
+            linewidth=0.35,
+            label=label,
+            zorder=3,
+        )
+    ax.errorbar(
+        average_means,
+        method_y_positions,
+        xerr=np.array((lower_errors, upper_errors)),
+        fmt="o",
+        color="#1F2937",
+        ecolor="#1F2937",
+        markersize=9,
+        markeredgecolor="white",
+        markeredgewidth=0.9,
+        elinewidth=1.15,
+        capsize=3,
+        label="Average",
+        zorder=5,
+    )
+    ax.axvline(0.5, color="#7C8AA0", linestyle=(0, (4, 3)), linewidth=1.0, zorder=1)
+    ax.text(0.5, 1.0, "chance level", color="#62718A", ha="center", va="bottom", fontsize=10,
+            transform=ax.get_xaxis_transform())
+    ax.set_yticks(y_positions, ("",) * len(y_positions))
+    ax.set_ylim(min(y_positions) - 0.8, max(y_positions) + 0.8)
+    plotted_scores = np.concatenate((model_means.ravel(), np.asarray(average_means) - lower_errors,
+                                    np.asarray(average_means) + upper_errors, np.array((0.5,))))
+    score_padding = max(0.01, np.ptp(plotted_scores) * 0.12)
+    ax.set_xlim(max(0.0, plotted_scores.min() - score_padding), min(1.0, plotted_scores.max() + score_padding))
+    ax.xaxis.set_major_locator(MaxNLocator(nbins=6))
+    ax.grid(axis="x", color="#E0E6EF", linewidth=0.8)
+    ax.set_axisbelow(True)
+    ax.spines[["top", "right", "left"]].set_visible(False)
+    ax.tick_params(axis="y", length=0)
+    protocol_label_set = dict(protocol_labels)
+    for y_position, label in zip(y_positions, y_labels, strict=True):
+        ax.text(-0.27, y_position, label, transform=ax.get_yaxis_transform(), ha="left", va="center",
+                fontweight="bold" if label in protocol_label_set else "normal",
+                fontsize=11 if label in protocol_label_set else 10)
+    for protocol_y_position in protocol_y_positions:
+        ax.axhline(protocol_y_position, color="#7A7A7A", alpha=0.65, linewidth=1.3, zorder=1)
+    legend = ax.legend(
+        ncols=6,
+        loc="upper center",
+        bbox_to_anchor=(0.37, 1.054),
+        frameon=False,
+        fontsize=11,
+        markerscale=1.15,
+        handletextpad=0.35,
+        columnspacing=0.75,
+    )
+    plt.setp(legend.get_texts(), fontweight="bold")
+    fig.subplots_adjust(left=0.22, right=0.98, top=0.9385, bottom=0.02)
     return fig

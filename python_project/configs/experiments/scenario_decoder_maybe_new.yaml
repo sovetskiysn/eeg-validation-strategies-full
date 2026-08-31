@@ -1,0 +1,14 @@
+# @package _global_
+
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +experiments/scenario_maybe_new: glob(*)
+      +experiments/decoder: glob(*)
+  sweep:
+    dir: results/scenario_decoder_maybe_new (${now:%Y-%m-%d %% %H-%M-%S})
+    # Nested by the two swept axes, decoder/scenario, instead of the flat
+    # `+experiments/decoder=...,+experiments/scenario_maybe_new=...` that
+    # override_dirname produces.
+    subdir: ${hydra:runtime.choices.experiments/decoder}/${hydra:runtime.choices.experiments/scenario_maybe_new}
