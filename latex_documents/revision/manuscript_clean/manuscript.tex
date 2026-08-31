@@ -418,6 +418,60 @@ weights were used.}
 
 \textbf{[TODO --- Which decoder carries the Results narrative?]}
 
+\subsection*{Evaluation metrics and summary comparisons}
+
+\rev{The evaluation design comprised two explicit factors: the validation
+scenario and the decoder. The 34 scenario configurations covered the
+within-domain baseline, cross-subject, cross-session, cross-task and
+cross-dataset protocols described above; each configuration was evaluated with
+the same five decoders. We therefore interpret a pattern that recurs across
+decoders as evidence about the data and validation protocol rather than as a
+property of one particular classifier. The scenario-specific estimates remain
+important: cross-session evaluation was available only for Dataset~A, and
+cross-task evaluation only for Dataset~B, because the releases differ in the
+recording structure needed to define those tests.}
+
+\rev{For each logical scenario result, each held-out window appeared in only
+one fold. We calculated balanced accuracy, macro F1, the Matthews correlation
+coefficient (MCC), the area under the receiver operating characteristic curve
+(ROC-AUC), and recall for each class separately for every target participant,
+then used the unweighted mean across participants as the scenario estimate.
+This gives each participant the same influence regardless of the number of
+retained windows. Balanced accuracy was the primary measure for comparisons
+across scenarios because it weights the recall of the low- and high-demand
+classes equally despite their potentially unequal frequencies in a test set.
+Macro F1 and MCC provide complementary summaries that also give equal weight to
+the two classes, whereas ROC-AUC describes the ability of the decoder scores to
+rank the two classes. Per-class recall was reported to identify performance
+asymmetries that a single summary metric can conceal. The scenario tables and
+both figures use these same participant-level estimates.}
+
+\rev{In the all-scenarios comparison figure, coloured points show the
+participant-level balanced-accuracy mean of each decoder and black points show
+the mean of these five decoder estimates. To quantify uncertainty in the latter
+mean, we generated 10,000 bootstrap samples by resampling target participants
+with replacement. The same sampled participant identifiers were used for all
+five decoders in each resample, preserving the pairing of their results. The
+95\% interval is given by the 2.5th and 97.5th percentiles of the resulting
+mean estimates.}
+
+\rev{For summaries of zero-shot transfer, each directed source--target result
+was compared with the within-domain participant-level balanced-accuracy
+baseline for the same target composition. For decoder $m$, source composition
+$s$, and target composition $t$, transfer degradation was defined as
+$\Delta_{m,s\rightarrow t}=\overline{\mathrm{BA}}_{m,s\rightarrow t}-\overline{\mathrm{BA}}_{m,t\rightarrow t}$,
+where the overbar denotes the unweighted mean across target participants.
+Thus, a negative value indicates that applying a decoder trained on the source
+reduced discriminative performance relative to a decoder evaluated in the
+target composition. Mean $\Delta$ values in the transfer matrix average this
+quantity only over decoders and target compositions for which the corresponding
+target-specific baseline was defined; they are descriptive summaries, not
+additional independent experiments. In particular, a cross-task $\Delta$
+combines a change of task composition with generalization to a held-out
+participant, because the cross-task protocol is subject-disjoint whereas its
+within-domain target baseline is not. It must therefore not be interpreted as
+the effect of task composition alone.}
+
 \section*{Results}
 
 \textbf{[TODO --- Results section is currently in progress.]}
@@ -427,14 +481,14 @@ weights were used.}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/all_scenarios_model_comparison.png}
-\caption{\textbf{Balanced accuracy across experimental scenarios for the five decoders.} Colored points show the individual decoders; black points and 95\% bootstrap intervals show their mean.}
+\caption{\textbf{Participant-level balanced accuracy across experimental scenarios for the five decoders.} For each decoder and scenario, balanced accuracy was calculated separately for each target participant and averaged across participants (coloured points). Black points show the mean of the five decoder-specific estimates; horizontal bars show paired 95\% percentile bootstrap intervals from 10,000 target-participant resamples. The dashed vertical line marks chance-level balanced accuracy (0.50).}
 \label{fig:all_scenarios_model_comparison}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/transfer_degradation_matrix.png}
-\caption{\textbf{Zero-shot transfer performance across source and target compositions.} Each cell reports balanced accuracy (\%) for one decoder trained on the source composition (rows) and evaluated on the target composition (columns). Grey diagonal cells show the corresponding within-composition baselines; coloured cells show cross-task or cross-dataset transfer; dashes indicate unavailable source--target combinations. Summary columns report the mean difference in balanced accuracy relative to the target-specific baseline, averaged across decoders and compatible target compositions; negative values indicate lower transfer performance.}
+\caption{\textbf{Zero-shot transfer performance across source and target compositions.} Each cell reports participant-level balanced accuracy (\%) for one decoder trained on the source composition (rows) and evaluated on the target composition (columns). Grey diagonal cells show the corresponding within-composition baselines; coloured cells show cross-task or cross-dataset transfer; dashes indicate unavailable source--target combinations. For each compatible target composition, each summary first averages participant-level balanced accuracy across the five decoders and subtracts the equally averaged target-specific baseline; it then averages these differences across targets. Negative values indicate lower transfer performance. Cross-task differences combine task-composition and held-out-participant shifts relative to the within-domain baseline.}
 \label{fig:transfer_degradation_matrix}
 \end{figure}
 

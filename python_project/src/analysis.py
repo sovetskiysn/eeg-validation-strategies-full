@@ -167,6 +167,56 @@ def decoder_name(cfg) -> str:
     return str(cfg.pipeline_components.model.name)
 
 
+def held_out_predictions(
+    job_dir: Path, windows: pd.DataFrame, folds: pd.DataFrame
+) -> pd.DataFrame:
+    """Return one validated held-out prediction per window for a logical result."""
+    if windows["window_index"].duplicated().any():
+        raise ValueError(f"{job_dir}: windows.parquet has duplicate window indices.")
+    test = folds.loc[folds["part"] == "test"].merge(
+        windows[["window_index", "subject_id", "y_true"]],
+        on="window_index",
+        how="left",
+        validate="many_to_one",
+    )
+    required_columns = ["subject_id", "y_true", "y_pred", "score"]
+    if test.empty or test[required_columns].isna().any().any():
+        raise ValueError(f"{job_dir}: incomplete held-out predictions.")
+    if not test["window_index"].is_unique:
+        raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
+    if test["y_true"].nunique() != 2:
+        raise ValueError(f"{job_dir}: expected exactly two tested classes.")
+    return test.astype({"y_true": "int64", "y_pred": "int64"})
+
+
+def participant_metrics(test: pd.DataFrame, job_dir: Path) -> pd.DataFrame:
+    """Calculate every article metric per target participant before averaging."""
+    class_ids = sorted(test["y_true"].unique())
+    rows = []
+    for subject_id, subject_test in test.groupby("subject_id", sort=True):
+        if sorted(subject_test["y_true"].unique()) != class_ids:
+            raise ValueError(
+                f"{job_dir}: target participant {subject_id} does not contain both classes."
+            )
+        _, recall, _, _ = precision_recall_fscore_support(
+            subject_test["y_true"], subject_test["y_pred"], labels=class_ids, zero_division=0
+        )
+        rows.append(
+            {
+                "subject_id": subject_id,
+                "balanced_accuracy": balanced_accuracy_score(subject_test["y_true"], subject_test["y_pred"]),
+                "macro_f1": f1_score(
+                    subject_test["y_true"], subject_test["y_pred"], average="macro", zero_division=0
+                ),
+                "mcc": matthews_corrcoef(subject_test["y_true"], subject_test["y_pred"]),
+                "roc_auc": roc_auc_score(subject_test["y_true"], subject_test["score"]),
+                "low_recall": recall[0],
+                "high_recall": recall[1],
+            }
+        )
+    return pd.DataFrame(rows).set_index("subject_id")
+
+
 def craft_main_table(scenario_glob: str) -> str:
     """Fill the scenario-table template from one complete scenario-run glob."""
     model_display_names = {
@@ -195,29 +245,14 @@ def craft_main_table(scenario_glob: str) -> str:
         if scenario in metrics_by_scenario:
             raise ValueError(f"Duplicate scenario for one decoder: {scenario}.")
 
-        rows = folds.merge(windows, on="window_index", how="left", validate="many_to_one")
-        if rows["y_true"].isna().any():
-            raise ValueError(f"{job_dir}: folds.parquet references missing windows.")
-        test = rows[rows["part"] == "test"].astype({"y_pred": "int64"})
-        if not len(test):
-            raise ValueError(f"{job_dir}: the job has no test predictions.")
-        if not test["window_index"].is_unique:
-            raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
-
-        class_ids = sorted(test["y_true"].unique())
-        if len(class_ids) != 2:
-            raise ValueError(f"{job_dir}: expected exactly two tested classes, got {class_ids}.")
-        _, recall, _, _ = precision_recall_fscore_support(
-            test["y_true"], test["y_pred"], labels=class_ids, zero_division=0
-        )
-        roc_auc = roc_auc_score(test["y_true"], test["score"])
+        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
         format_metric = lambda value: "-" if pd.isna(value) else f"{value:.2f}"
         metrics_by_scenario[scenario] = (
-            format_metric(balanced_accuracy_score(test["y_true"], test["y_pred"])),
-            format_metric(f1_score(test["y_true"], test["y_pred"], average="macro", zero_division=0)),
-            format_metric(matthews_corrcoef(test["y_true"], test["y_pred"])),
-            format_metric(roc_auc),
-            f"{recall[0]:.2f}/{recall[1]:.2f}",
+            format_metric(metrics["balanced_accuracy"].mean()),
+            format_metric(metrics["macro_f1"].mean()),
+            format_metric(metrics["mcc"].mean()),
+            format_metric(metrics["roc_auc"].mean()),
+            f"{metrics['low_recall'].mean():.2f}/{metrics['high_recall'].mean():.2f}",
         )
 
     expected, actual = Counter(SCENARIO_ORDER), Counter(metrics_by_scenario.keys())
@@ -301,21 +336,8 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
             raise ValueError(f"Duplicate scenario in transfer-performance matrix: {decoder}, {scenario}.")
         if scenario not in SCENARIO_ORDER:
             raise ValueError(f"Unexpected scenario in {job_dir}: {scenario}.")
-        if windows["window_index"].duplicated().any():
-            raise ValueError(f"{job_dir}: windows.parquet has duplicate window indices.")
-        test = folds.loc[folds["part"] == "test"].merge(
-            windows[["window_index", "y_true"]],
-            on="window_index",
-            how="left",
-            validate="many_to_one",
-        )
-        if test.empty or test[["y_true", "y_pred"]].isna().any().any():
-            raise ValueError(f"{job_dir}: incomplete test predictions for transfer-performance matrix.")
-        if not test["window_index"].is_unique:
-            raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
-        if test["y_true"].nunique() != 2:
-            raise ValueError(f"{job_dir}: expected exactly two tested classes.")
-        scores[(decoder, scenario)] = balanced_accuracy_score(test["y_true"], test["y_pred"])
+        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
+        scores[(decoder, scenario)] = metrics["balanced_accuracy"].mean()
 
     missing = [
         (decoder, scenario)
@@ -351,9 +373,9 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
                         matrix[row, column] = scores[(decoder, scenario)]
                         protocols[row, column] = scenario[0]
 
-    # Summary values live at the source level.  For every displayed direction,
-    # average the five decoders first, then compare it with the equally averaged
-    # target baseline; individual decoder variation belongs only in the matrix.
+    # Summary values live at the source level. Each cell is participant-level
+    # balanced accuracy; for every displayed direction, average the five
+    # decoders first, then compare it with the equally averaged target baseline.
     summary_values = np.full((len(sides), 2), np.nan)
     for source_index, (_, source) in enumerate(sides):
         for summary_column, protocol in enumerate(("cross_task", "cross_dataset")):
@@ -600,7 +622,7 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
         )
 
     known_decoders = {decoder for decoder, _, _ in decoder_specs}
-    scores: dict[tuple[str, tuple[object, ...]], np.ndarray] = {}
+    scores: dict[tuple[str, tuple[object, ...]], pd.Series] = {}
     for job_dir in job_dirs:
         cfg, windows, folds = read_scenario_result(job_dir)
         decoder = decoder_name(cfg)
@@ -612,27 +634,8 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
         if (decoder, scenario) in scores:
             raise ValueError(f"Duplicate result for decoder {decoder} and scenario {scenario}.")
 
-        if windows["window_index"].duplicated().any():
-            raise ValueError(f"{job_dir}: windows.parquet has duplicate window indices.")
-        test = folds.loc[folds["part"] == "test"].merge(
-            windows[["window_index", "subject_id", "y_true"]],
-            on="window_index",
-            how="left",
-            validate="many_to_one",
-        )
-        if test.empty:
-            raise ValueError(f"{job_dir}: the job has no test predictions.")
-        if test[["subject_id", "y_true", "y_pred"]].isna().any().any():
-            raise ValueError(f"{job_dir}: test predictions reference missing or incomplete windows.")
-        if not test["window_index"].is_unique:
-            raise ValueError(f"{job_dir}: a test window occurs in more than one fold.")
-
-        subject_scores = []
-        for subject_id, subject_test in test.groupby("subject_id", sort=True):
-            if subject_test["y_true"].nunique() != 2:
-                raise ValueError(f"{job_dir}: target subject {subject_id} does not contain two classes.")
-            subject_scores.append(balanced_accuracy_score(subject_test["y_true"], subject_test["y_pred"]))
-        scores[(decoder, scenario)] = np.asarray(subject_scores, dtype=float)
+        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
+        scores[(decoder, scenario)] = metrics["balanced_accuracy"]
 
     missing = [
         (decoder, scenario)
@@ -642,6 +645,15 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
     ]
     if missing:
         raise ValueError(f"Scenario set does not match the article figure; missing={missing}.")
+
+    for scenario in SCENARIO_ORDER:
+        participant_ids = scores[(decoder_specs[0][0], scenario)].index
+        for decoder, _, _ in decoder_specs[1:]:
+            if not scores[(decoder, scenario)].index.equals(participant_ids):
+                raise ValueError(
+                    f"Scenario {scenario}: target participants differ between decoders; "
+                    "paired bootstrap is not defined."
+                )
 
     model_means = np.array(
         [
@@ -653,12 +665,10 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
     lower_errors, upper_errors = [], []
     rng = np.random.default_rng(42)
     for scenario_index, scenario in enumerate(SCENARIO_ORDER):
+        participant_ids = scores[(decoder_specs[0][0], scenario)].index
+        sampled_indices = rng.integers(0, len(participant_ids), size=(10_000, len(participant_ids)))
         bootstrap_means = np.stack(
-            [
-                rng.choice(scores[(decoder, scenario)], size=(10_000, len(scores[(decoder, scenario)])), replace=True)
-                .mean(axis=1)
-                for decoder, _, _ in decoder_specs
-            ]
+            [scores[(decoder, scenario)].to_numpy()[sampled_indices].mean(axis=1) for decoder, _, _ in decoder_specs]
         ).mean(axis=0)
         low, high = np.quantile(bootstrap_means, (0.025, 0.975))
         mean = average_means[scenario_index]
@@ -745,6 +755,12 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
     return fig
 
 
+def save_svg_without_trailing_whitespace(figure: Figure, path: Path, **savefig_kwargs) -> None:
+    """Write a stable source SVG that also passes the repository whitespace check."""
+    figure.savefig(path, format="svg", **savefig_kwargs)
+    path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()) + "\n")
+
+
 def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
     """Write all article tables and figures from one completed result sweep."""
     input_dir, output_dir = Path(input_dir), Path(output_dir)
@@ -765,11 +781,8 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
     figure_path = figures_dir / "transfer_degradation_matrix.png"
     source_svg_path = source_svg_dir / "transfer_degradation_matrix.svg"
     figure.savefig(figure_path, dpi=300, bbox_inches="tight", pad_inches=0.03)
-    figure.savefig(
-        source_svg_path,
-        format="svg",
-        bbox_inches="tight",
-        pad_inches=0.03,
+    save_svg_without_trailing_whitespace(
+        figure, source_svg_path, bbox_inches="tight", pad_inches=0.03
     )
     plt.close(figure)
     written.extend((figure_path, source_svg_path))
@@ -778,7 +791,7 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
     figure_path = figures_dir / "all_scenarios_model_comparison.png"
     source_svg_path = source_svg_dir / "all_scenarios_model_comparison.svg"
     figure.savefig(figure_path, dpi=300)
-    figure.savefig(source_svg_path, format="svg")
+    save_svg_without_trailing_whitespace(figure, source_svg_path)
     plt.close(figure)
     written.extend((figure_path, source_svg_path))
 
