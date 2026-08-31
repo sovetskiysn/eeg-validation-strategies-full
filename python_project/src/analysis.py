@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.figure import Figure
-from matplotlib.colors import Normalize
+from matplotlib.colors import LinearSegmentedColormap, Normalize
+from matplotlib.lines import Line2D
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import MaxNLocator
 from omegaconf import OmegaConf
@@ -70,6 +71,14 @@ SCENARIO_ORDER = (
     ("cross_dataset", SAM40_STROOP_MIRROR, DISTINGUISHING),
     ("cross_dataset", DISTINGUISHING, SAM40_ARITHMETIC_MIRROR),
     ("cross_dataset", SAM40_ARITHMETIC_MIRROR, DISTINGUISHING),
+)
+
+ARTICLE_DECODERS = (
+    "logistic_regression",
+    "xgboost",
+    "eegnet",
+    "shallownet",
+    "eegconformer",
 )
 
 
@@ -252,7 +261,7 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
         ("Full B", SAM40_FULL),
     )
     decoder_specs = (
-        ("logistic_regression", "Logistic\nregression"),
+        ("logistic_regression", "Logistic reg"),
         ("xgboost", "XGBoost"),
         ("eegnet", "EEGNet"),
         ("shallownet", "ShallowNet"),
@@ -367,14 +376,34 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
                 ) * 100
 
     figure_width, figure_height = 13.6, 8.8
-    matrix_left, matrix_bottom = 0.22, 0.12
-    matrix_width, matrix_height = 0.40, 0.78
+    matrix_left, matrix_bottom = 0.05, 0.095
+    matrix_width, matrix_height = 0.61, 0.84
+    header_height = 1.15
+    source_left, decoder_left = -2.05, -1.05
+    data_column_width = matrix_width / (len(sides) - source_left)
+    data_left = matrix_left - source_left * data_column_width
+    summary_left = 0.69
+    separator_x = (matrix_left + matrix_width + summary_left) / 2
     fig = plt.figure(figsize=(figure_width, figure_height))
     ax = fig.add_axes((matrix_left, matrix_bottom, matrix_width, matrix_height))
-    colorbar_ax = fig.add_axes((0.645, matrix_bottom, 0.016, matrix_height))
-    summary_ax = fig.add_axes((0.69, matrix_bottom, 0.14, matrix_height))
-    cmap = plt.colormaps["Reds"]
+    colorbar_ax = fig.add_axes((data_left, 0.05, len(sides) * data_column_width, 0.016))
+    summary_ax = fig.add_axes((summary_left, matrix_bottom, 2 * data_column_width, matrix_height))
+    fig.add_artist(
+        Line2D(
+            (separator_x, separator_x),
+            (0.0, 1.0),
+            transform=fig.transFigure,
+            color="#D0D5DD",
+            linewidth=0.6,
+        )
+    )
+    cmap = LinearSegmentedColormap.from_list(
+        "transfer_accuracy",
+        ("#FFF7E6", "#FFB17E", "#FF624D", "#C83279", "#5B1D8B", "#00002D"),
+    )
     normalization = Normalize(vmin=0.0, vmax=1.0)
+    border_colour = "#344054"
+    grid_colour = (1.0, 1.0, 1.0, 0.3)
 
     for row in range(row_count):
         for column in range(len(sides)):
@@ -382,44 +411,90 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
             if np.isnan(value):
                 facecolor, text, text_colour = "#F2F4F6", "—", "#667085"
             elif row // len(decoder_specs) == column:
-                facecolor, text, text_colour = "#FFFFFF", f"{value * 100:.1f}", "#263341"
+                facecolor, text, text_colour = "#F2F4F6", f"{value * 100:.1f}", "#263341"
             else:
                 facecolor = cmap(normalization(value))
                 text = f"{value * 100:.1f}"
-                text_colour = "white" if value >= 0.62 else "#263341"
-            ax.add_patch(Rectangle((column, row), 1, 1, facecolor=facecolor, edgecolor="white", linewidth=0.9))
+                text_colour = "white" if value >= 0.55 else "#263341"
+            ax.add_patch(
+                Rectangle(
+                    (column, row), 1, 1, facecolor=facecolor,
+                    edgecolor=grid_colour, linewidth=0.35,
+                )
+            )
             ax.text(column + 0.5, row + 0.5, text, ha="center", va="center",
                     fontsize=9.5, fontweight="bold" if not np.isnan(value) else "normal", color=text_colour)
-    ax.set_xlim(0, len(sides))
-    ax.set_ylim(row_count, 0)
-    ax.set_aspect("auto")
-    ax.set_xticks(np.arange(len(sides)) + 0.5, labels)
-    ax.set_yticks(np.arange(row_count) + 0.5, model_names * len(sides))
-    ax.xaxis.tick_top()
-    ax.tick_params(length=0, labelsize=8.5, pad=5)
-    ax.set_xlabel("Target (test)", fontweight="bold", labelpad=15, fontsize=11)
-    ax.xaxis.set_label_position("top")
-    for source_index, label in enumerate(labels):
-        centre = source_index * len(decoder_specs) + len(decoder_specs) / 2
-        ax.text(-1.75, centre, label, ha="right", va="center", fontsize=11, fontweight="bold", clip_on=False)
-        if source_index:
-            ax.axhline(source_index * len(decoder_specs), color="#8C98A8", linewidth=1.2, zorder=4)
-            divider = ax.hlines(
-                source_index * len(decoder_specs),
-                xmin=-2.5,
-                xmax=0,
-                color="#8C98A8",
-                linewidth=1.2,
-                zorder=4,
-            )
-            divider.set_clip_on(False)
-    for spine in ax.spines.values():
-        spine.set_visible(True)
-        spine.set_color("#344054")
-        spine.set_linewidth(1.1)
 
-    colorbar = fig.colorbar(plt.cm.ScalarMappable(norm=normalization, cmap=cmap), cax=colorbar_ax)
-    colorbar.set_label("Balanced accuracy (%)", fontsize=8, labelpad=8)
+    # The source and decoder labels are part of the table, so their group
+    # borders share the exact row geometry of the performance cells.
+    for source_index, label in enumerate(labels):
+        y_position = source_index * len(decoder_specs)
+        ax.add_patch(
+            Rectangle(
+                (source_left, y_position), decoder_left - source_left,
+                len(decoder_specs), facecolor="#FFFFFF", edgecolor=border_colour,
+                linewidth=0.9, clip_on=False,
+            )
+        )
+        ax.add_patch(
+            Rectangle(
+                (decoder_left, y_position), -decoder_left,
+                len(decoder_specs), facecolor="#FFFFFF", edgecolor=border_colour,
+                linewidth=0.9, clip_on=False,
+            )
+        )
+        ax.text(
+            (source_left + decoder_left) / 2,
+            y_position + len(decoder_specs) / 2,
+            label, ha="center", va="center", fontsize=11, fontweight="bold",
+            clip_on=False,
+        )
+        for decoder_index, model_name in enumerate(model_names):
+            ax.text(
+                -0.08, y_position + decoder_index + 0.5, model_name,
+                ha="right", va="center", fontsize=8.5, fontweight="bold",
+                clip_on=False,
+            )
+        ax.add_patch(
+            Rectangle(
+                (0, y_position), len(sides), len(decoder_specs), fill=False,
+                edgecolor=border_colour, linewidth=0.9, zorder=4,
+            )
+        )
+
+    for column, label in enumerate(labels):
+        ax.add_patch(
+            Rectangle(
+                (column, -header_height), 1, header_height, facecolor="#FFFFFF",
+                edgecolor=border_colour, linewidth=0.9, clip_on=False,
+            )
+        )
+        ax.text(
+            column + 0.5, -header_height / 2, label, ha="center", va="center",
+            fontsize=10, fontweight="bold", clip_on=False,
+        )
+    ax.text(
+        len(sides) / 2, -header_height - 0.42, "Target (test)", ha="center",
+        va="center", fontsize=11, fontweight="bold", clip_on=False,
+    )
+    ax.text(
+        source_left - 0.28, row_count / 2, "Source (train)", ha="center",
+        va="center", rotation=90, fontsize=11, fontweight="bold", clip_on=False,
+    )
+
+    ax.set_xlim(source_left, len(sides))
+    ax.set_ylim(row_count, -header_height)
+    ax.set_aspect("auto")
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+    colorbar = fig.colorbar(
+        plt.cm.ScalarMappable(norm=normalization, cmap=cmap),
+        cax=colorbar_ax,
+        orientation="horizontal",
+    )
     colorbar.set_ticks(np.linspace(0, 1, 5), labels=("0", "25", "50", "75", "100"))
     colorbar.ax.tick_params(labelsize=8)
 
@@ -429,19 +504,34 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
             facecolor = "#F2F4F6" if np.isnan(value) else "#FFFFFF"
             text = "—" if np.isnan(value) else f"{value:.1f}"
             y_position = row * len(decoder_specs)
-            summary_ax.add_patch(Rectangle((column, y_position), 1, len(decoder_specs), facecolor=facecolor, edgecolor="#D0D5DD", linewidth=0.9))
+            summary_ax.add_patch(
+                Rectangle(
+                    (column, y_position), 1, len(decoder_specs), facecolor=facecolor,
+                    edgecolor=border_colour, linewidth=0.9,
+                )
+            )
             summary_ax.text(column + 0.5, y_position + len(decoder_specs) / 2, text, ha="center", va="center", fontsize=12,
                             fontweight="bold" if not np.isnan(value) else "normal", color="#263341")
+    for column, label in enumerate((
+        "Cross-task\nmean Δ",
+        "Cross-dataset\nmean Δ",
+    )):
+        summary_ax.add_patch(
+            Rectangle(
+                (column, -header_height), 1, header_height, facecolor="#FFFFFF",
+                edgecolor=border_colour, linewidth=0.9, clip_on=False,
+            )
+        )
+        summary_ax.text(
+            column + 0.5, -header_height / 2, label, ha="center", va="center",
+            fontsize=10, fontweight="bold", clip_on=False,
+        )
     summary_ax.set_xlim(0, 2)
-    summary_ax.set_ylim(row_count, 0)
-    summary_ax.set_xticks((0.5, 1.5), ("Mean Δ\ncross-task", "Mean Δ\ncross-dataset"))
-    summary_ax.xaxis.tick_top()
-    summary_ax.tick_params(axis="x", length=0, labelsize=10, pad=10)
-    summary_ax.tick_params(axis="y", left=False, labelleft=False)
+    summary_ax.set_ylim(row_count, -header_height)
+    summary_ax.set_xticks([])
+    summary_ax.set_yticks([])
     for spine in summary_ax.spines.values():
-        spine.set_visible(True)
-        spine.set_color("#344054")
-        spine.set_linewidth(1.1)
+        spine.set_visible(False)
 
     return fig
 
@@ -653,3 +743,43 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
     plt.setp(legend.get_texts(), fontweight="bold")
     fig.subplots_adjust(left=0.22, right=0.98, top=0.9385, bottom=0.02)
     return fig
+
+
+def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
+    """Write all article tables and figures from one completed result sweep."""
+    input_dir, output_dir = Path(input_dir), Path(output_dir)
+    tables_dir = output_dir / "tables"
+    figures_dir = output_dir / "figures"
+    source_svg_dir = figures_dir / "source_svg"
+    for directory in (tables_dir, figures_dir, source_svg_dir):
+        directory.mkdir(parents=True, exist_ok=True)
+
+    written = []
+    for decoder in ARTICLE_DECODERS:
+        table_path = tables_dir / f"result_table_{decoder}.tex"
+        table_path.write_text(craft_main_table(str(input_dir / decoder / "*")))
+        written.append(table_path)
+
+    scenario_glob = str(input_dir / "*" / "*")
+    figure = craft_transfer_degradation_matrix_figure(scenario_glob)
+    figure_path = figures_dir / "transfer_degradation_matrix.png"
+    source_svg_path = source_svg_dir / "transfer_degradation_matrix.svg"
+    figure.savefig(figure_path, dpi=300, bbox_inches="tight", pad_inches=0.03)
+    figure.savefig(
+        source_svg_path,
+        format="svg",
+        bbox_inches="tight",
+        pad_inches=0.03,
+    )
+    plt.close(figure)
+    written.extend((figure_path, source_svg_path))
+
+    figure = craft_all_scenarios_model_comparison_figure(scenario_glob)
+    figure_path = figures_dir / "all_scenarios_model_comparison.png"
+    source_svg_path = source_svg_dir / "all_scenarios_model_comparison.svg"
+    figure.savefig(figure_path, dpi=300)
+    figure.savefig(source_svg_path, format="svg")
+    plt.close(figure)
+    written.extend((figure_path, source_svg_path))
+
+    return written

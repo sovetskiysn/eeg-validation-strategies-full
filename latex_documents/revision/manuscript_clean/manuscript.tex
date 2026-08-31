@@ -431,6 +431,13 @@ weights were used.}
 \label{fig:all_scenarios_model_comparison}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/transfer_degradation_matrix.png}
+\caption{\textbf{Zero-shot transfer performance across source and target compositions.} Each cell reports balanced accuracy (\%) for one decoder trained on the source composition (rows) and evaluated on the target composition (columns). Grey diagonal cells show the corresponding within-composition baselines; coloured cells show cross-task or cross-dataset transfer; dashes indicate unavailable source--target combinations. Summary columns report the mean difference in balanced accuracy relative to the target-specific baseline, averaged across decoders and compatible target compositions; negative values indicate lower transfer performance.}
+\label{fig:transfer_degradation_matrix}
+\end{figure}
+
 \section*{Discussion}
 
 \textbf{[TODO --- Discussion paragraph 1: Summary of the paper's main conclusion.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.

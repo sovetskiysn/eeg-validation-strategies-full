@@ -16,9 +16,8 @@ experiment:
 
 # The directory is an address of existing output, not an experiment override:
 #   make analysis
-#   make analysis ANALYZE_DIR="results/scenario_decoder (2026-08-17 % 06-25-13)"
-# Make exports command-line variables to the recipe. Without one, analysis uses
-# the newest top-level directory under results/.
+#   make analysis ANALYZE_DIR="results/scenario_decoder (...)" ANALYSIS_OUTPUT_DIR="../analysis"
+# Make exports the input and output paths to the analysis runner.
 analysis:
 	uv run python scripts/run_analysis.py
 
@@ -30,7 +29,7 @@ standardize:
 
 ingestion: download standardize
 
-full-pipeline: ingestion experiment
+full-pipeline: clean-results ingestion experiment
 
 hello-world:
 	uv run python scripts/hello_world.py
