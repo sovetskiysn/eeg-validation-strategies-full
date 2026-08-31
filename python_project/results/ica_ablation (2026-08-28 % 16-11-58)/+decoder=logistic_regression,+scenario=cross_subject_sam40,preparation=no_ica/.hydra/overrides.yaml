@@ -1,3 +1,0 @@
-- +scenario=cross_subject_sam40
-- +decoder=logistic_regression
-- preparation=no_ica

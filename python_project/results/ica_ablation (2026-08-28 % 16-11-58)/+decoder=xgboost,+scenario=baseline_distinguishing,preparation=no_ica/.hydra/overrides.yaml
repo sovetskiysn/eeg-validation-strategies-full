@@ -1,3 +1,0 @@
-- +scenario=baseline_distinguishing
-- +decoder=xgboost
-- preparation=no_ica

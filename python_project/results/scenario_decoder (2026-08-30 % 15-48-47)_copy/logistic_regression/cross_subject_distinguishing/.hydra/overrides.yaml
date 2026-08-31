@@ -1,0 +1,3 @@
+- +experiments/scenario=cross_subject_distinguishing
+- +experiments/decoder=logistic_regression
+- +experiments=scenario_decoder

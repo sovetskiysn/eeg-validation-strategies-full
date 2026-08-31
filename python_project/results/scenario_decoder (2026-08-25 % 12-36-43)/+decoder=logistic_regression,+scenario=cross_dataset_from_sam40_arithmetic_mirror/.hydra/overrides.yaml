@@ -1,2 +1,0 @@
-- +scenario=cross_dataset_from_sam40_arithmetic_mirror
-- +decoder=logistic_regression

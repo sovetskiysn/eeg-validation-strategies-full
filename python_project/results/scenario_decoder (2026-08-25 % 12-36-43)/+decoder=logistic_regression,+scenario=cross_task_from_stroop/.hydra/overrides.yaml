@@ -1,2 +1,0 @@
-- +scenario=cross_task_from_stroop
-- +decoder=logistic_regression

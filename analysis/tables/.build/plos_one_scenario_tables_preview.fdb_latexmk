@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1787591695.72632 "plos_one_scenario_tables_preview.tex" "plos_one_scenario_tables_preview.pdf" "plos_one_scenario_tables_preview" 1787591696.3117 0
-  ".build/plos_one_scenario_tables_preview.aux" 1787591696.25504 2244 43eb74aecd64ae3b413e20a95e7fb4fb "pdflatex"
-  ".build/plos_one_scenario_tables_preview.out" 1787591696.00904 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+["pdflatex"] 1788150744.95711 "plos_one_scenario_tables_preview.tex" "plos_one_scenario_tables_preview.pdf" "plos_one_scenario_tables_preview" 1788150745.90398 0
+  ".build/plos_one_scenario_tables_preview.aux" 1788150745.79392 2112 6645d508dc9ad839bf43388f476d7fd1 "pdflatex"
+  ".build/plos_one_scenario_tables_preview.out" 1788150745.43892 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -103,13 +103,12 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1773680018 5541377 824b1e5beafd2ebda40585373b35bb6b ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1773680140 3636401 215fbc2c335115d144305f7df373d2ee ""
   "/usr/local/texlive/2025/texmf.cnf" 1773680015 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
-  "plos_one_scenario_tables_preview.tex" 1787591679.69441 1879 ec897037b200764885857cf5d7bb7dff ""
-  "scenario_table_eegconformer.tex" 1787591545.12538 4769 ee1dfbdfc4d64520734b013903b04115 ""
-  "scenario_table_eegnet.tex" 1787591542.53544 4777 25022fdeb66f03056e48942b3edaad44 ""
-  "scenario_table_eegpt.tex" 1787591546.39935 4762 c8dea2be8483ede179185e117cdd9268 ""
-  "scenario_table_logistic_regression.tex" 1787591539.98449 4771 062bff821a1cd3c396972803e98d1f30 ""
-  "scenario_table_shallownet.tex" 1787591543.80941 4784 7a9cda40fbbef2038d7f5d39ff189c3e ""
-  "scenario_table_xgboost.tex" 1787591541.25746 4765 e1f3d0111efb694f45700578d6bfef13 ""
+  "plos_one_scenario_tables_preview.tex" 1788150743.41191 1832 c298afdbcf84baf641f3b5317ce23dbd ""
+  "scenario_table_eegconformer.tex" 1788149296.86425 4694 07ebeeb81c5ae47c5879810a030bd9bc ""
+  "scenario_table_eegnet.tex" 1788149292.45819 4685 f3da59288c7d2566af11efae7bed9469 ""
+  "scenario_table_logistic_regression.tex" 1788149287.59014 4704 22abd7d37ddbd32f7f72ffadf8aaefe2 ""
+  "scenario_table_shallownet.tex" 1788149294.63722 4694 54d47b8e24e107b913aa906a26cc69dd ""
+  "scenario_table_xgboost.tex" 1788149290.07717 4680 a02620b18f50ef9c1143e64eff1158da ""
   (generated)
   ".build/plos_one_scenario_tables_preview.aux"
   ".build/plos_one_scenario_tables_preview.log"

@@ -1,0 +1,86 @@
+[2026-08-30 22:07:34,837][preparation][INFO] - Preparation sam40_arithmetic_mirror: started for tasks relax, arithmetic, mirror (derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-arithmetic-mirror).
+[2026-08-30 22:07:44,694][preparation][INFO] - Preparation sam40_arithmetic_mirror: complete; cache reused (1521 Pipeline cache hits); derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-arithmetic-mirror; reports: /work/python_project/results/scenario_decoder (2026-08-30 % 15-48-47)/_preparation/sam40_arithmetic_mirror; full log: /work/python_project/results/scenario_decoder (2026-08-30 % 15-48-47)/eegnet/cross_task_from_sam40_arithmetic_mirror/_preparation/sam40_arithmetic_mirror.mne-bids-pipeline.log.
+[2026-08-30 22:07:47,651][preparation][INFO] - Preparation sam40_stroop: started for tasks relax, stroop (derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-stroop).
+[2026-08-30 22:07:56,936][preparation][INFO] - Preparation sam40_stroop: complete; cache reused (1041 Pipeline cache hits); derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-stroop; reports: /work/python_project/results/scenario_decoder (2026-08-30 % 15-48-47)/_preparation/sam40_stroop; full log: /work/python_project/results/scenario_decoder (2026-08-30 % 15-48-47)/eegnet/cross_task_from_sam40_arithmetic_mirror/_preparation/sam40_stroop.mne-bids-pipeline.log.
+[2026-08-30 22:07:59,160][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:07:59,161][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:08:11,997][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:08:11,997][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:08:24,343][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:08:24,343][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:08:36,783][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:08:36,784][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:08:49,088][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:08:49,089][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:09:01,512][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:09:01,512][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:09:13,896][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:09:13,897][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:09:26,226][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:09:26,226][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:09:38,524][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:09:38,524][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:09:50,886][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:09:50,886][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:10:03,259][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:10:03,259][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:10:15,525][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:10:15,526][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:10:27,857][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:10:27,857][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:10:40,144][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:10:40,144][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:10:52,413][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:10:52,413][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:11:04,736][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:11:04,736][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:11:17,198][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:11:17,198][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:11:29,477][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:11:29,477][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:11:41,821][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:11:41,822][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:11:54,090][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:11:54,090][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:12:06,410][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:12:06,410][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:12:18,816][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:12:18,816][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:12:31,314][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:12:31,315][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:12:43,701][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:12:43,701][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:12:56,118][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:12:56,118][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:13:08,552][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:13:08,552][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:13:20,977][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:13:20,977][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:13:33,296][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:13:33,297][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:13:45,386][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:13:45,386][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:13:57,722][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:13:57,722][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:14:09,960][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:14:09,960][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:14:22,330][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:14:22,330][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:14:34,609][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:14:34,609][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:14:46,767][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:14:46,767][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:14:59,128][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:14:59,128][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:15:11,530][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:15:11,530][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:15:23,967][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:15:23,968][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:15:36,521][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:15:36,522][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:15:49,028][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:15:49,028][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:16:01,268][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-08-30 22:16:01,269][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-08-30 22:16:13,453][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder (2026-08-30 % 15-48-47)/eegnet/cross_task_from_sam40_arithmetic_mirror (mean balanced accuracy 0.625)
+[2026-08-30 22:16:13,495][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

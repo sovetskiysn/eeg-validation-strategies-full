@@ -1,2 +1,0 @@
-[2026-08-29 15:35:01,280][__main__][INFO] - Completed adhoc: 1 result(s) under /home/svc-jax-dlh/.work/python_project/results/verification_cross_dataset (mean accuracy 0.451)
-[2026-08-29 15:35:01,283][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

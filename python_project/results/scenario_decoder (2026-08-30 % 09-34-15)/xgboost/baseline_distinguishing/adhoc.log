@@ -1,2 +1,0 @@
-[2026-08-30 09:56:02,502][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder (2026-08-30 % 09-34-15)/xgboost/baseline_distinguishing (mean accuracy 0.651)
-[2026-08-30 09:56:02,504][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

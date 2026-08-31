@@ -1,4 +1,4 @@
-PWD /home/datalake/models_test/analysis/tables
+PWD /home/svc-jax-dlh/.work/analysis/tables
 INPUT /usr/local/texlive/2025/texmf.cnf
 INPUT /usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt
@@ -212,9 +212,6 @@ INPUT scenario_table_shallownet.tex
 INPUT ./scenario_table_eegconformer.tex
 INPUT ./scenario_table_eegconformer.tex
 INPUT scenario_table_eegconformer.tex
-INPUT ./scenario_table_eegpt.tex
-INPUT ./scenario_table_eegpt.tex
-INPUT scenario_table_eegpt.tex
 INPUT .build/plos_one_scenario_tables_preview.aux
 INPUT .build/plos_one_scenario_tables_preview.out
 INPUT .build/plos_one_scenario_tables_preview.out

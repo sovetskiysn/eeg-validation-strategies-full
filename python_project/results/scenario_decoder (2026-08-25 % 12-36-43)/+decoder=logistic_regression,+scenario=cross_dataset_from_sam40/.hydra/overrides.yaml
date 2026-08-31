@@ -1,2 +1,0 @@
-- +scenario=cross_dataset_from_sam40
-- +decoder=logistic_regression

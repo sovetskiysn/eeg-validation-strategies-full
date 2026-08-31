@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.3.16)  24 AUG 2026 17:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.3.16)  31 AUG 2026 04:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -472,23 +472,7 @@ Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count337
 )
-(.build/plos_one_scenario_tables_preview.aux
-
-LaTeX Warning: Label `tab:scenario_template' multiply defined.
-
-
-LaTeX Warning: Label `tab:scenario_template' multiply defined.
-
-
-LaTeX Warning: Label `tab:scenario_template' multiply defined.
-
-
-LaTeX Warning: Label `tab:scenario_template' multiply defined.
-
-
-LaTeX Warning: Label `tab:scenario_template' multiply defined.
-
-)
+(.build/plos_one_scenario_tables_preview.aux)
 \openout1 = `plos_one_scenario_tables_preview.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
@@ -645,13 +629,6 @@ Overfull \hbox (1.48512pt too wide) in paragraph at lines 19--19
 
 ) [6
 
-] (./scenario_table_eegpt.tex
-Overfull \hbox (1.48512pt too wide) in paragraph at lines 19--19
- []|\OT1/cmr/m/n/9 (-20) MCC| 
- []
-
-) [7
-
 ] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (.build/plos_one_scenario_tables_preview.aux)
@@ -659,19 +636,15 @@ enddocument/afterlastpage (AED): lastpage setting LastPage.
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `plos_one_scenario_tables_preview.out' has no
 t changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 15273 strings out of 467533
- 242751 string characters out of 5419495
- 744701 words of memory out of 5000000
- 43920 multiletter control sequences out of 15000+600000
+ 15268 strings out of 467533
+ 242657 string characters out of 5419495
+ 744081 words of memory out of 5000000
+ 43921 multiletter control sequences out of 15000+600000
  635397 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  69i,14n,83p,1029b,474s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -682,11 +655,11 @@ usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr
 /local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/lo
 cal/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/loca
 l/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on .build/plos_one_scenario_tables_preview.pdf (7 pages, 115774 
+Output written on .build/plos_one_scenario_tables_preview.pdf (6 pages, 115491 
 bytes).
 PDF statistics:
- 97 PDF objects out of 1000 (max. 8388607)
- 73 compressed objects within 1 object stream
- 20 named destinations out of 1000 (max. 500000)
+ 87 PDF objects out of 1000 (max. 8388607)
+ 64 compressed objects within 1 object stream
+ 17 named destinations out of 1000 (max. 500000)
  20481 words of extra memory for PDF output out of 20736 (max. 10000000)
 

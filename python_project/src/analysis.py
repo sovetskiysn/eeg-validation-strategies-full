@@ -128,9 +128,22 @@ def scenario_key(cfg) -> tuple[object, ...]:
     return (str(cfg.validation_strategy.name), *(_side_key(side) for side in sides))
 
 
-def _side_key(side) -> str:
+def _side_key(side) -> tuple[str, tuple[str, ...]]:
     """Return the scientific identity of one composed preparation side."""
-    return str(side.name)
+    sides = {
+        "distinguishing": DISTINGUISHING,
+        "sam40_all": SAM40_FULL,
+        "sam40_stroop": SAM40_STROOP,
+        "sam40_arithmetic": SAM40_ARITHMETIC,
+        "sam40_mirror": SAM40_MIRROR,
+        "sam40_stroop_arithmetic": SAM40_STROOP_ARITHMETIC,
+        "sam40_stroop_mirror": SAM40_STROOP_MIRROR,
+        "sam40_arithmetic_mirror": SAM40_ARITHMETIC_MIRROR,
+    }
+    try:
+        return sides[str(side.name)]
+    except KeyError as error:
+        raise ValueError(f"Unknown preparation side: {side.name}.") from error
 
 
 def decoder_name(cfg) -> str:
@@ -563,12 +576,8 @@ def craft_cross_subject_model_comparison_figure(analysis_input_dir: Path) -> Fig
     }
     subject_scores_by_scenario: dict[tuple[str, str], np.ndarray] = {}
 
-    for job_dir in sorted(analysis_input_dir.iterdir()):
-        if not job_dir.is_dir():
-            continue
-        config_path = job_dir / ".hydra" / "config.yaml"
-        if not config_path.exists():
-            continue
+    for config_path in sorted(analysis_input_dir.rglob(".hydra/config.yaml")):
+        job_dir = config_path.parent.parent
         cfg = OmegaConf.load(config_path)
         if str(cfg.validation_strategy.name) != "cross_subject":
             continue
@@ -582,7 +591,7 @@ def craft_cross_subject_model_comparison_figure(analysis_input_dir: Path) -> Fig
             dataset_recipe = cfg.preparation
         else:
             raise ValueError(f"{job_dir}: config has no preparation identity.")
-        dataset = str(dataset_recipe.name)
+        dataset = _side_key(dataset_recipe)[0]
         scenario = (decoder, dataset)
         if scenario not in expected_scenarios:
             raise ValueError(f"Unexpected cross-subject scenario in {job_dir}: {scenario}.")

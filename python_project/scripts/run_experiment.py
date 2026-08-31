@@ -68,13 +68,22 @@ def main(cfg: DictConfig) -> None:
         cv=cv,
         groups=groups,
         scoring="balanced_accuracy",
-        return_train_score=False,
+        return_train_score=True,
         return_indices=True,
         return_estimator=True,
         error_score="raise",
     )
     indices = results["indices"]
     estimators = results["estimator"]
+    train_scores = results["train_score"]
+    fold_scores = results["test_score"]
+    log.info(
+        "Cross-validation balanced accuracy by fold: train %s (mean %.3f); test %s (mean %.3f)",
+        ", ".join(f"{score:.3f}" for score in train_scores),
+        train_scores.mean(),
+        ", ".join(f"{score:.3f}" for score in fold_scores),
+        fold_scores.mean(),
+    )
 
     # =============================================================================
     # Results: window identity, grain `window_index`
@@ -244,7 +253,7 @@ def main(cfg: DictConfig) -> None:
     # lands in Hydra's own per-job log file, not only on the console.
     log.info(
         f"Completed {HydraConfig.get().job.name}: {len(result_dirs)} result(s) under "
-        f"{output_dir} (mean balanced accuracy {results['test_score'].mean():.3f})"
+        f"{output_dir} (mean balanced accuracy {fold_scores.mean():.3f})"
     )
 
 

@@ -1,0 +1,3 @@
+- +experiments/scenario=baseline_sam40_stroop
+- +experiments/decoder=logistic_regression
+- +experiments=scenario_decoder

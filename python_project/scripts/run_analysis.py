@@ -38,7 +38,7 @@ def main() -> None:
     tables_dir = ANALYSIS_OUTPUT_DIR / "tables"
     tables_dir.mkdir(parents=True, exist_ok=True)
     for decoder in DECODERS:
-        scenario_glob = str(ANALYSIS_INPUT_DIR / f"+decoder={decoder},+scenario=*")
+        scenario_glob = str(ANALYSIS_INPUT_DIR / decoder / "*")
         table_path = tables_dir / f"scenario_table_{decoder}.tex"
         table_path.write_text(craft_main_table(scenario_glob))
         print(f"Wrote {table_path}")
@@ -53,7 +53,7 @@ def main() -> None:
     plt.close(figure)
 
     figure = craft_transfer_matrix_figure(
-        str(ANALYSIS_INPUT_DIR / "+decoder=logistic_regression,+scenario=*")
+        str(ANALYSIS_INPUT_DIR / "logistic_regression" / "*")
     )
     for suffix in ("svg", "png"):
         figure_path = figures_dir / f"transfer_matrix_logistic_regression.{suffix}"
@@ -62,7 +62,7 @@ def main() -> None:
     plt.close(figure)
 
     figure = craft_scenario_by_decoder_slope_figure(
-        str(ANALYSIS_INPUT_DIR / "+decoder=*,+scenario=*")
+        str(ANALYSIS_INPUT_DIR / "*" / "*")
     )
     for suffix in ("svg", "png"):
         figure_path = figures_dir / f"scenario_by_decoder_slope.{suffix}"
@@ -71,7 +71,7 @@ def main() -> None:
     plt.close(figure)
 
     figure = craft_all_scenarios_absolute_accuracy_figure(
-        str(ANALYSIS_INPUT_DIR / "+decoder=logistic_regression,+scenario=*")
+        str(ANALYSIS_INPUT_DIR / "logistic_regression" / "*")
     )
     for suffix in ("svg", "png"):
         figure_path = figures_dir / f"all_scenarios_absolute_accuracy_logistic_regression.{suffix}"
@@ -80,7 +80,7 @@ def main() -> None:
     plt.close(figure)
 
     figure = craft_all_scenarios_absolute_accuracy_figure(
-        str(ANALYSIS_INPUT_DIR / "+decoder=xgboost,+scenario=*")
+        str(ANALYSIS_INPUT_DIR / "xgboost" / "*")
     )
     for suffix in ("svg", "png"):
         figure_path = figures_dir / f"all_scenarios_absolute_accuracy_xgboost.{suffix}"
@@ -89,7 +89,7 @@ def main() -> None:
     plt.close(figure)
 
     figure = craft_all_scenarios_absolute_accuracy_figure(
-        str(ANALYSIS_INPUT_DIR / "+decoder=eegnet,+scenario=*")
+        str(ANALYSIS_INPUT_DIR / "eegnet" / "*")
     )
     for suffix in ("svg", "png"):
         figure_path = figures_dir / f"all_scenarios_absolute_accuracy_eegnet.{suffix}"
@@ -98,7 +98,7 @@ def main() -> None:
     plt.close(figure)
 
     figure = craft_all_scenarios_absolute_accuracy_figure(
-        str(ANALYSIS_INPUT_DIR / "+decoder=shallownet,+scenario=*")
+        str(ANALYSIS_INPUT_DIR / "shallownet" / "*")
     )
     for suffix in ("svg", "png"):
         figure_path = figures_dir / f"all_scenarios_absolute_accuracy_shallownet.{suffix}"
@@ -107,7 +107,7 @@ def main() -> None:
     plt.close(figure)
 
     figure = craft_all_scenarios_absolute_accuracy_figure(
-        str(ANALYSIS_INPUT_DIR / "+decoder=eegconformer,+scenario=*")
+        str(ANALYSIS_INPUT_DIR / "eegconformer" / "*")
     )
     for suffix in ("svg", "png"):
         figure_path = figures_dir / f"all_scenarios_absolute_accuracy_eegconformer.{suffix}"

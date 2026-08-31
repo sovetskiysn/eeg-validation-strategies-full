@@ -1,0 +1,3 @@
+- +experiments/scenario=baseline_sam40_arithmetic
+- +experiments/decoder=shallownet
+- +experiments=scenario_decoder

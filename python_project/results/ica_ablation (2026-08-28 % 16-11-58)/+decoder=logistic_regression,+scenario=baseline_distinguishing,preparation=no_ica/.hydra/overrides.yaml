@@ -1,3 +1,0 @@
-- +scenario=baseline_distinguishing
-- +decoder=logistic_regression
-- preparation=no_ica

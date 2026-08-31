@@ -18,47 +18,47 @@
 \hline
 {\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
 \hline
-\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.60 & 0.59 & 0.20 & 0.65 & 0.51/0.69 \\
- & Stratified K-fold(Full B) & 0.57 & 0.57 & 0.18 & 0.66 & 0.23/0.91 \\
- & Stratified K-fold(B: Stroop) & 0.65 & 0.65 & 0.30 & 0.70 & 0.62/0.68 \\
- & Stratified K-fold(B: Arithmetic) & 0.60 & 0.60 & 0.21 & 0.65 & 0.59/0.62 \\
- & Stratified K-fold(B: Mirror) & 0.60 & 0.60 & 0.20 & 0.64 & 0.56/0.63 \\
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.67 & 0.67 & 0.34 & 0.73 & 0.64/0.70 \\
+ & Stratified K-fold(Full B) & 0.68 & 0.66 & 0.33 & 0.74 & 0.60/0.76 \\
+ & Stratified K-fold(B: Stroop) & 0.69 & 0.69 & 0.38 & 0.76 & 0.68/0.70 \\
+ & Stratified K-fold(B: Arithmetic) & 0.70 & 0.69 & 0.39 & 0.75 & 0.69/0.70 \\
+ & Stratified K-fold(B: Mirror) & 0.70 & 0.70 & 0.41 & 0.76 & 0.72/0.69 \\
 \hline
-\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.57 & 0.57 & 0.15 & 0.61 & 0.43/0.71 \\
- & Leave-one-subject-out(Full B) & 0.55 & 0.56 & 0.13 & 0.62 & 0.24/0.87 \\
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.66 & 0.66 & 0.32 & 0.72 & 0.64/0.67 \\
+ & Leave-one-subject-out(Full B) & 0.65 & 0.63 & 0.28 & 0.71 & 0.58/0.72 \\
 \hline
-Cross-session & Leave-one-session-out(Full A) & 0.61 & 0.61 & 0.22 & 0.66 & 0.55/0.66 \\
+Cross-session & Leave-one-session-out(Full A) & 0.65 & 0.65 & 0.31 & 0.70 & 0.53/0.77 \\
 \hline
-\multirow{12}{=}{Cross-task (Dataset~B)} & Stroop$\!\rightarrow\!$Arithmetic & 0.55 & 0.55 & 0.10 & 0.57 & 0.65/0.45 \\
- & Stroop$\!\rightarrow\!$Mirror & 0.60 & 0.59 & 0.19 & 0.63 & 0.67/0.53 \\
- & Arithmetic$\!\rightarrow\!$Stroop & 0.56 & 0.56 & 0.12 & 0.58 & 0.57/0.55 \\
- & Arithmetic$\!\rightarrow\!$Mirror & 0.57 & 0.57 & 0.14 & 0.60 & 0.59/0.55 \\
- & Mirror$\!\rightarrow\!$Stroop & 0.58 & 0.58 & 0.17 & 0.62 & 0.58/0.58 \\
- & Mirror$\!\rightarrow\!$Arithmetic & 0.56 & 0.56 & 0.13 & 0.59 & 0.60/0.53 \\
+\multirow{12}{=}{Cross-task (Dataset~B)} & Stroop$\!\rightarrow\!$Arithmetic & 0.61 & 0.61 & 0.22 & 0.64 & 0.65/0.58 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.67 & 0.67 & 0.33 & 0.72 & 0.66/0.67 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.58 & 0.58 & 0.17 & 0.62 & 0.68/0.48 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.62 & 0.60 & 0.23 & 0.67 & 0.67/0.58 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.64 & 0.64 & 0.29 & 0.69 & 0.70/0.59 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.61 & 0.61 & 0.24 & 0.65 & 0.72/0.51 \\
 \cmidrule{2-7}
- & Arithmetic+Mirror$\!\rightarrow\!$Stroop & 0.55 & 0.53 & 0.12 & 0.61 & 0.32/0.79 \\
- & Stroop+Mirror$\!\rightarrow\!$Arithmetic & 0.54 & 0.53 & 0.09 & 0.57 & 0.37/0.72 \\
- & Stroop+Arithmetic$\!\rightarrow\!$Mirror & 0.59 & 0.57 & 0.19 & 0.63 & 0.40/0.78 \\
- & Stroop$\!\rightarrow\!$Arithmetic+Mirror & 0.59 & 0.56 & 0.17 & 0.63 & 0.65/0.53 \\
- & Arithmetic$\!\rightarrow\!$Stroop+Mirror & 0.56 & 0.54 & 0.11 & 0.59 & 0.58/0.53 \\
- & Mirror$\!\rightarrow\!$Stroop+Arithmetic & 0.57 & 0.55 & 0.13 & 0.59 & 0.58/0.55 \\
+ & Arithmetic+Mirror$\!\rightarrow\!$Stroop & 0.62 & 0.59 & 0.23 & 0.67 & 0.70/0.55 \\
+ & Stroop+Mirror$\!\rightarrow\!$Arithmetic & 0.66 & 0.66 & 0.33 & 0.72 & 0.60/0.72 \\
+ & Stroop+Arithmetic$\!\rightarrow\!$Mirror & 0.61 & 0.61 & 0.22 & 0.66 & 0.63/0.59 \\
+ & Stroop$\!\rightarrow\!$Arithmetic+Mirror & 0.56 & 0.55 & 0.12 & 0.58 & 0.67/0.45 \\
+ & Arithmetic$\!\rightarrow\!$Stroop+Mirror & 0.58 & 0.56 & 0.16 & 0.62 & 0.63/0.53 \\
+ & Mirror$\!\rightarrow\!$Stroop+Arithmetic & 0.62 & 0.62 & 0.24 & 0.66 & 0.65/0.59 \\
 \hline
-\multirow{14}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.50 & 0.43 & 0.00 & 0.51 & 0.62/0.38 \\
- & Full B$\!\rightarrow\!$Full A & 0.56 & 0.54 & 0.14 & 0.59 & 0.34/0.78 \\
+\multirow{14}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.52 & 0.52 & 0.03 & 0.52 & 0.28/0.75 \\
+ & Full B$\!\rightarrow\!$Full A & 0.54 & 0.53 & 0.09 & 0.55 & 0.37/0.71 \\
 \cmidrule{2-7}
- & Full A$\!\rightarrow\!$Stroop & 0.49 & 0.49 & -0.02 & 0.49 & 0.59/0.40 \\
- & Stroop$\!\rightarrow\!$Full A & 0.53 & 0.51 & 0.06 & 0.54 & 0.72/0.33 \\
- & Full A$\!\rightarrow\!$Arithmetic & 0.51 & 0.50 & 0.01 & 0.51 & 0.59/0.42 \\
- & Arithmetic$\!\rightarrow\!$Full A & 0.53 & 0.50 & 0.07 & 0.56 & 0.77/0.30 \\
- & Full A$\!\rightarrow\!$Mirror & 0.53 & 0.53 & 0.06 & 0.52 & 0.58/0.48 \\
- & Mirror$\!\rightarrow\!$Full A & 0.52 & 0.48 & 0.05 & 0.54 & 0.80/0.25 \\
+ & Full A$\!\rightarrow\!$Stroop & 0.48 & 0.45 & -0.05 & 0.47 & 0.26/0.70 \\
+ & Stroop$\!\rightarrow\!$Full A & 0.51 & 0.49 & 0.02 & 0.51 & 0.33/0.69 \\
+ & Full A$\!\rightarrow\!$Arithmetic & 0.54 & 0.50 & 0.10 & 0.55 & 0.27/0.81 \\
+ & Arithmetic$\!\rightarrow\!$Full A & 0.59 & 0.59 & 0.18 & 0.62 & 0.62/0.56 \\
+ & Full A$\!\rightarrow\!$Mirror & 0.51 & 0.48 & 0.03 & 0.53 & 0.27/0.76 \\
+ & Mirror$\!\rightarrow\!$Full A & 0.53 & 0.53 & 0.07 & 0.55 & 0.61/0.46 \\
 \cmidrule{2-7}
- & Full A$\!\rightarrow\!$Stroop+Arithmetic & 0.50 & 0.46 & -0.00 & 0.50 & 0.61/0.39 \\
- & Stroop+Arithmetic$\!\rightarrow\!$Full A & 0.54 & 0.54 & 0.08 & 0.55 & 0.51/0.58 \\
- & Full A$\!\rightarrow\!$Stroop+Mirror & 0.50 & 0.46 & -0.01 & 0.49 & 0.62/0.38 \\
- & Stroop+Mirror$\!\rightarrow\!$Full A & 0.54 & 0.53 & 0.08 & 0.56 & 0.39/0.68 \\
- & Full A$\!\rightarrow\!$Arithmetic+Mirror & 0.52 & 0.49 & 0.05 & 0.52 & 0.61/0.44 \\
- & Arithmetic+Mirror$\!\rightarrow\!$Full A & 0.54 & 0.54 & 0.08 & 0.56 & 0.52/0.56 \\
+ & Full A$\!\rightarrow\!$Stroop+Arithmetic & 0.52 & 0.52 & 0.04 & 0.51 & 0.29/0.75 \\
+ & Stroop+Arithmetic$\!\rightarrow\!$Full A & 0.53 & 0.52 & 0.06 & 0.53 & 0.37/0.68 \\
+ & Full A$\!\rightarrow\!$Stroop+Mirror & 0.50 & 0.50 & 0.00 & 0.50 & 0.27/0.73 \\
+ & Stroop+Mirror$\!\rightarrow\!$Full A & 0.52 & 0.51 & 0.03 & 0.52 & 0.38/0.66 \\
+ & Full A$\!\rightarrow\!$Arithmetic+Mirror & 0.52 & 0.52 & 0.05 & 0.54 & 0.27/0.78 \\
+ & Arithmetic+Mirror$\!\rightarrow\!$Full A & 0.56 & 0.56 & 0.13 & 0.58 & 0.57/0.56 \\
 \hline
 \end{tabular}
 \normalsize

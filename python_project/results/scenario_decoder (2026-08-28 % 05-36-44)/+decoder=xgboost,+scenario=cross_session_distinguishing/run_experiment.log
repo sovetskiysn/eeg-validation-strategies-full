@@ -1,2 +1,0 @@
-[2026-08-28 07:22:51,065][__main__][INFO] - Completed run_experiment: 1 result(s) under /work/python_project/results/scenario_decoder (2026-08-28 % 05-36-44)/+decoder=xgboost,+scenario=cross_session_distinguishing (mean accuracy 0.627)
-[2026-08-28 07:22:51,069][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

@@ -1,2 +1,0 @@
-[2026-08-28 16:27:06,265][__main__][INFO] - Completed run_experiment: 1 result(s) under /home/svc-jax-dlh/.work/python_project/results/ica_ablation (2026-08-28 % 16-11-58)/+decoder=xgboost,+scenario=cross_subject_sam40,preparation=no_ica (mean accuracy 0.742)
-[2026-08-28 16:27:06,300][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None
