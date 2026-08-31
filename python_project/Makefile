@@ -12,7 +12,7 @@
 # `+experiments=...` choice below when switching the reproducible sweep.
 # Each preset switches Hydra into MULTIRUN itself, so no -m flag here.
 experiment:
-	uv run python scripts/run_experiment.py +experiments=scenario_decoder
+	uv run python scripts/run_experiment.py +experiments=scenario_decoder_maybe_new
 
 # The directory is an address of existing output, not an experiment override:
 #   make analysis

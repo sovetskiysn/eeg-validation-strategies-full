@@ -28,6 +28,10 @@ from utils import PROJECT_ROOT
 
 log = logging.getLogger(__name__)
 
+# Disable the sweep-wide preparation snapshot if we only want the per-run log and
+# derivative outputs. Per-run Pipeline logs are always kept.
+CREATE_SWEEP_PREPARATION_SNAPSHOT = False
+
 
 # The native BIDS vocabulary is written by dataset_standardization. This mapping
 # is the research question: it collapses conditions into the shared, protocol-
@@ -226,42 +230,44 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
             raise FileNotFoundError(
                 f"{derivative_root} contains no MNE-BIDS-Pipeline HTML reports."
             )
-        completed_marker = destination_dir / ".snapshot_complete"
-        source_marker = destination_dir / ".source_derivative_root"
-        if completed_marker.exists():
-            saved_source = source_marker.read_text(encoding="utf-8").strip()
-            if saved_source != str(derivative_root):
-                raise RuntimeError(
-                    f"{destination_dir} already snapshots {saved_source}, not {derivative_root}."
-                )
-        else:
-            if destination_dir.exists():
-                raise RuntimeError(
-                    f"{destination_dir} exists without .snapshot_complete; "
-                    "remove the incomplete snapshot before rerunning."
-                )
-            destination_dir.parent.mkdir(parents=True, exist_ok=True)
-            with tempfile.TemporaryDirectory(
-                dir=destination_dir.parent, prefix=f".{scenario_name}.snapshot-"
-            ) as temporary_dir:
-                staged_dir = Path(temporary_dir) / scenario_name
-                for report_path in report_paths:
-                    destination = staged_dir / report_path.relative_to(derivative_root)
-                    destination.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(report_path, destination)
-                (staged_dir / ".source_derivative_root").write_text(
-                    f"{derivative_root}\n", encoding="utf-8"
-                )
-                (staged_dir / ".snapshot_complete").touch()
-                staged_dir.replace(destination_dir)
+        if CREATE_SWEEP_PREPARATION_SNAPSHOT:
+            completed_marker = destination_dir / ".snapshot_complete"
+            source_marker = destination_dir / ".source_derivative_root"
+            if completed_marker.exists():
+                saved_source = source_marker.read_text(encoding="utf-8").strip()
+                if saved_source != str(derivative_root):
+                    raise RuntimeError(
+                        f"{destination_dir} already snapshots {saved_source}, not {derivative_root}."
+                    )
+            else:
+                if destination_dir.exists():
+                    raise RuntimeError(
+                        f"{destination_dir} exists without .snapshot_complete; "
+                        "remove the incomplete snapshot before rerunning."
+                    )
+                destination_dir.parent.mkdir(parents=True, exist_ok=True)
+                with tempfile.TemporaryDirectory(
+                    dir=destination_dir.parent, prefix=f".{scenario_name}.snapshot-"
+                ) as temporary_dir:
+                    staged_dir = Path(temporary_dir) / scenario_name
+                    for report_path in report_paths:
+                        destination = staged_dir / report_path.relative_to(derivative_root)
+                        destination.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(report_path, destination)
+                    (staged_dir / ".source_derivative_root").write_text(
+                        f"{derivative_root}\n", encoding="utf-8"
+                    )
+                    (staged_dir / ".snapshot_complete").touch()
+                    staged_dir.replace(destination_dir)
 
         log.info(
-            "Preparation %s: complete; cache %s; derivatives: %s; reports: %s; full log: %s.",
+            "Preparation %s: complete; cache %s; derivatives: %s; reports: %s; full log: %s; sweep snapshot: %s.",
             scenario_name,
             cache_status,
             derivative_root,
-            destination_dir,
+            destination_dir if CREATE_SWEEP_PREPARATION_SNAPSHOT else "disabled",
             pipeline_log_path,
+            "enabled" if CREATE_SWEEP_PREPARATION_SNAPSHOT else "disabled",
         )
 
     # =============================================================================
