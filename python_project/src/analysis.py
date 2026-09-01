@@ -25,6 +25,9 @@ from sklearn.metrics import (
 from utils import LATEX_ARTIFACT_TEMPLATES_DIR
 
 
+# =============================================================================
+# Article constants
+# =============================================================================
 # Article-level order of scenario rows. A dataset side is identified by its
 # saved dataset name and selected BIDS tasks.
 DISTINGUISHING = ("distinguishing", ("attention",))
@@ -73,13 +76,67 @@ SCENARIO_ORDER = (
     ("cross_dataset", SAM40_ARITHMETIC_MIRROR, DISTINGUISHING),
 )
 
-ARTICLE_DECODERS = (
-    "logistic_regression",
-    "xgboost",
-    "eegnet",
-    "shallownet",
-    "eegconformer",
+# Article-level order of the dataset-composition table's rows. A composition is
+# named by the same side identity every scenario is keyed by, so the table and
+# the scenarios describe the same eight prepared window sets.
+ARTICLE_COMPOSITIONS = (
+    DISTINGUISHING,
+    SAM40_FULL,
+    SAM40_STROOP,
+    SAM40_ARITHMETIC,
+    SAM40_MIRROR,
+    SAM40_STROOP_ARITHMETIC,
+    SAM40_STROOP_MIRROR,
+    SAM40_ARITHMETIC_MIRROR,
 )
+
+# One entry per article model, in the order every table and figure shows them.
+# `full_name` spells the model out in a LaTeX caption; `short_name` labels the
+# narrow matrix column and the figure legends, where the full one does not fit,
+# and equals the full name wherever it already is short enough; `colour`
+# identifies the model on every figure.
+ARTICLE_DECODERS = {
+    "logistic_regression": {
+        "full_name": "Logistic Regression",
+        "short_name": "Logistic reg",
+        "colour": "#1F77B4",
+    },
+    "xgboost": {"full_name": "XGBoost", "short_name": "XGBoost", "colour": "#FF7F0E"},
+    "eegnet": {"full_name": "EEGNet", "short_name": "EEGNet", "colour": "#D62728"},
+    "shallownet": {
+        "full_name": "ShallowFBCSPNet",
+        "short_name": "ShallowNet",
+        "colour": "#9467BD",
+    },
+    "eegconformer": {
+        "full_name": "EEGConformer",
+        "short_name": "EEGConformer",
+        "colour": "#2CA02C",
+    },
+}
+
+
+# =============================================================================
+# Metric
+# =============================================================================
+# Every article artifact reports one metric, and it is calculated in exactly one
+# place. Reporting another metric means writing a second function of this shape
+# and pointing ARTICLE_METRIC at it: the tables, the figure axes and the colour
+# bar name the metric after the function itself, so no artifact needs editing.
+
+
+def balanced_accuracy(subject_test: pd.DataFrame) -> float:
+    """Score the held-out windows of one target participant."""
+    return balanced_accuracy_score(subject_test["y_true"], subject_test["y_pred"])
+
+
+ARTICLE_METRIC = balanced_accuracy
+ARTICLE_METRIC_LABEL = ARTICLE_METRIC.__name__.replace("_", " ").capitalize()
+
+
+# =============================================================================
+# Reading a finished sweep
+# =============================================================================
 
 
 def discover_scenario_results(scenario_glob: str) -> list[Path]:
@@ -102,6 +159,7 @@ def discover_scenario_results(scenario_glob: str) -> list[Path]:
         targets_dir = job_dir / "targets"
         results.extend(sorted(targets_dir.iterdir()) if targets_dir.is_dir() else [job_dir])
     return results
+
 
 def read_scenario_result(job_dir: Path) -> tuple[object, pd.DataFrame, pd.DataFrame]:
     """Return the description and the two tables of one logical scenario result.
@@ -139,12 +197,8 @@ def scenario_key(cfg) -> tuple[object, ...]:
         sides = cfg.recipe.source, cfg.recipe.target
     else:
         raise ValueError("Scenario config has neither preparation nor legacy recipe fields.")
-    return (str(cfg.validation_strategy.name), *(_side_key(side) for side in sides))
 
-
-def _side_key(side) -> tuple[str, tuple[str, ...]]:
-    """Return the scientific identity of one composed preparation side."""
-    sides = {
+    known_sides = {
         "distinguishing": DISTINGUISHING,
         "sam40_all": SAM40_FULL,
         "sam40_stroop": SAM40_STROOP,
@@ -154,10 +208,12 @@ def _side_key(side) -> tuple[str, tuple[str, ...]]:
         "sam40_stroop_mirror": SAM40_STROOP_MIRROR,
         "sam40_arithmetic_mirror": SAM40_ARITHMETIC_MIRROR,
     }
-    try:
-        return sides[str(side.name)]
-    except KeyError as error:
-        raise ValueError(f"Unknown preparation side: {side.name}.") from error
+    identities = []
+    for side in sides:
+        if str(side.name) not in known_sides:
+            raise ValueError(f"Unknown preparation side: {side.name}.")
+        identities.append(known_sides[str(side.name)])
+    return (str(cfg.validation_strategy.name), *identities)
 
 
 def decoder_name(cfg) -> str:
@@ -189,71 +245,168 @@ def held_out_predictions(
     return test.astype({"y_true": "int64", "y_pred": "int64"})
 
 
-def participant_metrics(test: pd.DataFrame, job_dir: Path) -> pd.DataFrame:
-    """Calculate every article metric per target participant before averaging."""
+def composition_windows(cfg, windows: pd.DataFrame, folds: pd.DataFrame) -> dict:
+    """Return the prepared windows of every dataset composition one result holds.
+
+    A non-transfer result was prepared from a single composition and its whole
+    window table is that composition. A transfer result carries both sides in one
+    table, and the folds are what tell them apart: the source was trained on and
+    the target was tested on, so the two window-index sets never mix. This is the
+    only place that knows a result can describe two compositions -- the callers
+    ask for compositions and never learn which protocol produced them.
+    """
+    _, source, target = scenario_key(cfg)
+    if source == target:
+        return {source: windows}
+
+    sides = {}
+    for part, side in (("train", source), ("test", target)):
+        part_windows = windows.loc[windows["window_index"].isin(folds.loc[folds["part"] == part, "window_index"])]
+        if part_windows.empty:
+            raise ValueError(f"A transfer result has no {part} windows for composition {side}.")
+        sides[side] = part_windows
+    return sides
+
+
+def participant_scores(test: pd.DataFrame, job_dir: Path) -> pd.Series:
+    """Score every target participant of one result before they are averaged.
+
+    The participant is the unit of aggregation everywhere in the article, so the
+    metric is never calculated on pooled windows: that would weight a participant
+    by how many recordings they contributed.
+    """
     class_ids = sorted(test["y_true"].unique())
-    rows = []
+    scores = {}
     for subject_id, subject_test in test.groupby("subject_id", sort=True):
         if sorted(subject_test["y_true"].unique()) != class_ids:
             raise ValueError(
                 f"{job_dir}: target participant {subject_id} does not contain both classes."
             )
-        _, recall, _, _ = precision_recall_fscore_support(
-            subject_test["y_true"], subject_test["y_pred"], labels=class_ids, zero_division=0
+        scores[subject_id] = ARTICLE_METRIC(subject_test)
+    return pd.Series(scores, name=ARTICLE_METRIC.__name__).rename_axis("subject_id")
+
+
+def collect_participant_scores(
+    scenario_glob: str, scenarios: tuple[tuple[object, ...], ...]
+) -> dict[tuple[str, tuple[object, ...]], pd.Series]:
+    """Score every article decoder on each named scenario of one finished sweep.
+
+    A sweep holds every direction that was run, while an article figure compares
+    a subset of them, so a result outside `scenarios` is skipped rather than
+    counted. What has to hold is that each named scenario was measured by every
+    article decoder, and naming the absent pairs is a stronger statement than any
+    count of result directories.
+    """
+    wanted = set(scenarios)
+    scores: dict[tuple[str, tuple[object, ...]], pd.Series] = {}
+    for job_dir in discover_scenario_results(scenario_glob):
+        cfg, windows, folds = read_scenario_result(job_dir)
+        scenario, decoder = scenario_key(cfg), decoder_name(cfg)
+        if scenario not in wanted or decoder not in ARTICLE_DECODERS:
+            continue
+        if (decoder, scenario) in scores:
+            raise ValueError(f"Duplicate result for decoder {decoder} and scenario {scenario}.")
+        scores[(decoder, scenario)] = participant_scores(
+            held_out_predictions(job_dir, windows, folds), job_dir
         )
-        rows.append(
-            {
-                "subject_id": subject_id,
-                "balanced_accuracy": balanced_accuracy_score(subject_test["y_true"], subject_test["y_pred"]),
-                "macro_f1": f1_score(
-                    subject_test["y_true"], subject_test["y_pred"], average="macro", zero_division=0
-                ),
-                "mcc": matthews_corrcoef(subject_test["y_true"], subject_test["y_pred"]),
-                "roc_auc": roc_auc_score(subject_test["y_true"], subject_test["score"]),
-                "low_recall": recall[0],
-                "high_recall": recall[1],
-            }
-        )
-    return pd.DataFrame(rows).set_index("subject_id")
+
+    missing = [
+        (decoder, scenario)
+        for decoder in ARTICLE_DECODERS
+        for scenario in scenarios
+        if (decoder, scenario) not in scores
+    ]
+    if missing:
+        raise ValueError(f"The sweep is missing scenario results: {missing}.")
+    return scores
+
+
+def bootstrap_average_interval(
+    decoder_scores: list[pd.Series], rng: np.random.Generator
+) -> tuple[float, float]:
+    """Return the 95% interval of the decoder-averaged metric of one scenario.
+
+    Resampling the target participants once per draw keeps the decoders paired:
+    they were measured on the very same participants, and drawing separately per
+    decoder would count that shared variation as if it were independent.
+    """
+    participant_ids = decoder_scores[0].index
+    for scores in decoder_scores[1:]:
+        if not scores.index.equals(participant_ids):
+            raise ValueError(
+                "Target participants differ between decoders; paired bootstrap is not defined."
+            )
+    sampled_indices = rng.integers(0, len(participant_ids), size=(10_000, len(participant_ids)))
+    bootstrap_means = np.stack(
+        [scores.to_numpy()[sampled_indices].mean(axis=1) for scores in decoder_scores]
+    ).mean(axis=0)
+    low, high = np.quantile(bootstrap_means, (0.025, 0.975))
+    return float(low), float(high)
+
+
+# =============================================================================
+# Article artifacts
+# =============================================================================
+# One craft function per artifact of the article, plus the writer that renders
+# all of them from one finished sweep. Everything above serves these.
 
 
 def craft_main_table(scenario_glob: str) -> str:
     """Fill the scenario-table template from one complete scenario-run glob."""
-    model_display_names = {
-        "logistic_regression": "logistic regression",
-        "xgboost": "XGBoost",
-        "eegnet": "EEGNet",
-        "shallownet": "ShallowFBCSPNet",
-        "eegconformer": "EEGConformer",
-    }
-    job_dirs = discover_scenario_results(scenario_glob)
-    if len(job_dirs) != len(SCENARIO_ORDER):
-        raise ValueError(
-            f"A main scenario table needs {len(SCENARIO_ORDER)} scenario results, "
-            f"got {len(job_dirs)}."
-        )
-
+    # =============================================================================
+    # Step 1: score every scenario this decoder was measured on
+    # =============================================================================
+    # This is the only artifact that reports more than the article metric: the
+    # supporting columns exist to characterise the same predictions from a second
+    # angle, so they are calculated here rather than on every read of a result.
     metrics_by_scenario: dict[tuple[str, str, str], tuple[str, str, str, str, str]] = {}
     decoder_names = set()
-    for job_dir in job_dirs:
+    for job_dir in discover_scenario_results(scenario_glob):
         cfg, windows, folds = read_scenario_result(job_dir)
         decoder = decoder_name(cfg)
-        if decoder not in model_display_names:
+        if decoder not in ARTICLE_DECODERS:
             raise ValueError(f"{job_dir}: unsupported decoder for article table: {decoder}.")
         decoder_names.add(decoder)
         scenario = scenario_key(cfg)
         if scenario in metrics_by_scenario:
             raise ValueError(f"Duplicate scenario for one decoder: {scenario}.")
 
-        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
-        format_metric = lambda value: "-" if pd.isna(value) else f"{value:.2f}"
+        test = held_out_predictions(job_dir, windows, folds)
+        scores = participant_scores(test, job_dir)
+        class_ids = sorted(test["y_true"].unique())
+        supporting = []
+        for _, subject_test in test.groupby("subject_id", sort=True):
+            _, recall, _, _ = precision_recall_fscore_support(
+                subject_test["y_true"], subject_test["y_pred"], labels=class_ids, zero_division=0
+            )
+            supporting.append(
+                {
+                    "macro_f1": f1_score(
+                        subject_test["y_true"], subject_test["y_pred"], average="macro", zero_division=0
+                    ),
+                    "mcc": matthews_corrcoef(subject_test["y_true"], subject_test["y_pred"]),
+                    "roc_auc": roc_auc_score(subject_test["y_true"], subject_test["score"]),
+                    "low_recall": recall[0],
+                    "high_recall": recall[1],
+                }
+            )
+        supporting = pd.DataFrame(supporting)
         metrics_by_scenario[scenario] = (
-            format_metric(metrics["balanced_accuracy"].mean()),
-            format_metric(metrics["macro_f1"].mean()),
-            format_metric(metrics["mcc"].mean()),
-            format_metric(metrics["roc_auc"].mean()),
-            f"{metrics['low_recall'].mean():.2f}/{metrics['high_recall'].mean():.2f}",
+            *(
+                "-" if pd.isna(value) else f"{value:.2f}"
+                for value in (
+                    scores.mean(),
+                    supporting["macro_f1"].mean(),
+                    supporting["mcc"].mean(),
+                    supporting["roc_auc"].mean(),
+                )
+            ),
+            f"{supporting['low_recall'].mean():.2f}/{supporting['high_recall'].mean():.2f}",
         )
+
+    # =============================================================================
+    # Step 2: fill the template rows in the article's scenario order
+    # =============================================================================
 
     expected, actual = Counter(SCENARIO_ORDER), Counter(metrics_by_scenario.keys())
     if actual != expected:
@@ -265,7 +418,7 @@ def craft_main_table(scenario_glob: str) -> str:
     decoder = decoder_names.pop()
 
     template = (LATEX_ARTIFACT_TEMPLATES_DIR / "scenario_table_template.tex").read_text()
-    template = template.replace("MODEL_DISPLAY_NAME", model_display_names[decoder]).replace(
+    template = template.replace("MODEL_DISPLAY_NAME", ARTICLE_DECODERS[decoder]["full_name"]).replace(
         "MODEL_SLUG", decoder
     )
     lines = template.splitlines(keepends=True)
@@ -286,6 +439,67 @@ def craft_main_table(scenario_glob: str) -> str:
     return "".join(lines)
 
 
+def craft_dataset_composition_table(scenario_glob: str) -> str:
+    """Fill the dataset-composition table from one complete scenario-run glob.
+
+    The table describes the prepared data rather than any model, so a composition
+    is measured wherever the sweep touched it and every further sighting has to
+    agree exactly. Prepared data that differs between the runs that shared it
+    would make the table describe none of them, which is why a disagreement is an
+    error here and not a choice between two numbers.
+    """
+    # =============================================================================
+    # Step 1: measure every composition the sweep prepared
+    # =============================================================================
+    stats_by_composition: dict[tuple[object, ...], tuple[str, str, str, str]] = {}
+    for job_dir in discover_scenario_results(scenario_glob):
+        cfg, windows, folds = read_scenario_result(job_dir)
+        for composition, prepared in composition_windows(cfg, windows, folds).items():
+            counts = prepared["y_true_name"].value_counts()
+            if set(counts.index) != {"low_attention", "high_attention"}:
+                raise ValueError(f"{job_dir}: composition {composition} is not a two-class window set.")
+            low, high = int(counts["low_attention"]), int(counts["high_attention"])
+            total = low + high
+            stats = (
+                f"{prepared['subject_id'].nunique()}",
+                f"{prepared['recording_unit'].nunique()}",
+                f"{low:,} / {high:,}",
+                f"{100 * low / total:.1f} / {100 * high / total:.1f}",
+            )
+            if stats_by_composition.setdefault(composition, stats) != stats:
+                raise ValueError(
+                    f"{job_dir}: composition {composition} was prepared differently elsewhere in the sweep; "
+                    f"got {stats}, already measured {stats_by_composition[composition]}."
+                )
+
+    # =============================================================================
+    # Step 2: fill the template rows in the article's composition order
+    # =============================================================================
+    expected, actual = set(ARTICLE_COMPOSITIONS), set(stats_by_composition)
+    if actual != expected:
+        raise ValueError(
+            f"Composition set does not match the table template; "
+            f"missing={sorted(expected - actual)}, unexpected={sorted(actual - expected)}."
+        )
+
+    template_path = LATEX_ARTIFACT_TEMPLATES_DIR / "dataset_composition_table_template.tex"
+    lines = template_path.read_text().splitlines(keepends=True)
+    metric_lines = []
+    for index, line in enumerate(lines):
+        cells = line.rstrip("\n").split("&")
+        if len(cells) == 6 and all(cell.strip().removesuffix(r"\\").strip() == "-" for cell in cells[2:]):
+            metric_lines.append(index)
+    if len(metric_lines) != len(ARTICLE_COMPOSITIONS):
+        raise ValueError(
+            f"{template_path} has {len(metric_lines)} measured rows; expected {len(ARTICLE_COMPOSITIONS)}."
+        )
+
+    for index, composition in zip(metric_lines, ARTICLE_COMPOSITIONS, strict=True):
+        cells = lines[index].rstrip("\n").split("&")
+        lines[index] = f"{cells[0]}&{cells[1]}& " + " & ".join(stats_by_composition[composition]) + r" \\" + "\n"
+    return "".join(lines)
+
+
 def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
     """Build the all-decoder transfer matrix with target-specific baselines."""
     sides = (
@@ -295,14 +509,9 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
         ("Full A", DISTINGUISHING),
         ("Full B", SAM40_FULL),
     )
-    decoder_specs = (
-        ("logistic_regression", "Logistic reg"),
-        ("xgboost", "XGBoost"),
-        ("eegnet", "EEGNet"),
-        ("shallownet", "ShallowNet"),
-        ("eegconformer", "EEGConformer"),
-    )
-    expected_scenarios = {
+    decoders = tuple(ARTICLE_DECODERS)
+    model_names = tuple(spec["short_name"] for spec in ARTICLE_DECODERS.values())
+    displayed_scenarios = {
         ("baseline", side, side) for _, side in sides
     } | {
         ("cross_task", source, target)
@@ -316,50 +525,24 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
         if source[0] != target[0]
     }
 
-    job_dirs = discover_scenario_results(scenario_glob)
-    expected_result_count = len(SCENARIO_ORDER) * len(decoder_specs)
-    if len(job_dirs) != expected_result_count:
-        raise ValueError(
-            f"A transfer-performance matrix needs {expected_result_count} scenario results, "
-            f"got {len(job_dirs)}."
-        )
-
-    known_decoders = {decoder for decoder, _ in decoder_specs}
-    scores: dict[tuple[str, tuple[object, ...]], float] = {}
-    for job_dir in job_dirs:
-        cfg, windows, folds = read_scenario_result(job_dir)
-        decoder = decoder_name(cfg)
-        if decoder not in known_decoders:
-            raise ValueError(f"{job_dir}: unsupported decoder for transfer-performance matrix: {decoder}.")
-        scenario = scenario_key(cfg)
-        if (decoder, scenario) in scores:
-            raise ValueError(f"Duplicate scenario in transfer-performance matrix: {decoder}, {scenario}.")
-        if scenario not in SCENARIO_ORDER:
-            raise ValueError(f"Unexpected scenario in {job_dir}: {scenario}.")
-        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
-        scores[(decoder, scenario)] = metrics["balanced_accuracy"].mean()
-
-    missing = [
-        (decoder, scenario)
-        for decoder, _ in decoder_specs
-        for scenario in expected_scenarios
-        if (decoder, scenario) not in scores
-    ]
-    if missing:
-        raise ValueError(f"Transfer-performance matrix is missing scenarios: {missing}.")
+    # Every cell of this matrix is a decoder average, so the participant-level
+    # scores are collapsed to one number per direction right after reading them.
+    scores = {
+        key: participant_score.mean()
+        for key, participant_score in collect_participant_scores(
+            scenario_glob, SCENARIO_ORDER
+        ).items()
+    }
 
     labels, compositions = zip(*sides, strict=True)
-    model_names = tuple(label for _, label in decoder_specs)
-    row_count = len(sides) * len(decoder_specs)
+    row_count = len(sides) * len(decoders)
     matrix = np.full((row_count, len(sides)), np.nan)
-    protocols = np.full(matrix.shape, "", dtype=object)
     for side_index, (_, source) in enumerate(sides):
-        for decoder_index, (decoder, _) in enumerate(decoder_specs):
-            row = side_index * len(decoder_specs) + decoder_index
+        for decoder_index, decoder in enumerate(decoders):
+            row = side_index * len(decoders) + decoder_index
             for column, target in enumerate(compositions):
                 if source == target:
                     matrix[row, column] = scores[(decoder, ("baseline", target, target))]
-                    protocols[row, column] = "baseline"
                 else:
                     scenario = next(
                         (
@@ -371,25 +554,24 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
                     )
                     if scenario:
                         matrix[row, column] = scores[(decoder, scenario)]
-                        protocols[row, column] = scenario[0]
 
-    # Summary values live at the source level. Each cell is participant-level
-    # balanced accuracy; for every displayed direction, average the five
-    # decoders first, then compare it with the equally averaged target baseline.
+    # Summary values live at the source level. Each cell is the participant-level
+    # metric; for every displayed direction, average the decoders first, then
+    # compare that with the equally averaged target baseline.
     summary_values = np.full((len(sides), 2), np.nan)
     for source_index, (_, source) in enumerate(sides):
         for summary_column, protocol in enumerate(("cross_task", "cross_dataset")):
             transfer_means, baseline_means = [], []
             for target in compositions:
                 scenario = (protocol, source, target)
-                if scenario not in expected_scenarios:
+                if scenario not in displayed_scenarios:
                     continue
                 transfer_means.append(
-                    np.mean([scores[(decoder, scenario)] for decoder, _ in decoder_specs])
+                    np.mean([scores[(decoder, scenario)] for decoder in decoders])
                 )
                 baseline_means.append(
                     np.mean(
-                        [scores[(decoder, ("baseline", target, target))] for decoder, _ in decoder_specs]
+                        [scores[(decoder, ("baseline", target, target))] for decoder in decoders]
                     )
                 )
             if transfer_means:
@@ -400,8 +582,8 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
     figure_width, figure_height = 13.6, 8.8
     matrix_left, matrix_bottom = 0.05, 0.095
     matrix_width, matrix_height = 0.61, 0.84
-    header_height = 1.15
-    source_left, decoder_left = -2.05, -1.05
+    header_height = 1.45
+    source_left, decoder_left = -2.25, -1.25
     data_column_width = matrix_width / (len(sides) - source_left)
     data_left = matrix_left - source_left * data_column_width
     summary_left = 0.69
@@ -432,7 +614,7 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
             value = matrix[row, column]
             if np.isnan(value):
                 facecolor, text, text_colour = "#F2F4F6", "—", "#667085"
-            elif row // len(decoder_specs) == column:
+            elif row // len(decoders) == column:
                 facecolor, text, text_colour = "#F2F4F6", f"{value * 100:.1f}", "#263341"
             else:
                 facecolor = cmap(normalization(value))
@@ -450,36 +632,36 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
     # The source and decoder labels are part of the table, so their group
     # borders share the exact row geometry of the performance cells.
     for source_index, label in enumerate(labels):
-        y_position = source_index * len(decoder_specs)
+        y_position = source_index * len(decoders)
         ax.add_patch(
             Rectangle(
                 (source_left, y_position), decoder_left - source_left,
-                len(decoder_specs), facecolor="#FFFFFF", edgecolor=border_colour,
+                len(decoders), facecolor="#FFFFFF", edgecolor=border_colour,
                 linewidth=0.9, clip_on=False,
             )
         )
         ax.add_patch(
             Rectangle(
                 (decoder_left, y_position), -decoder_left,
-                len(decoder_specs), facecolor="#FFFFFF", edgecolor=border_colour,
+                len(decoders), facecolor="#FFFFFF", edgecolor=border_colour,
                 linewidth=0.9, clip_on=False,
             )
         )
         ax.text(
             (source_left + decoder_left) / 2,
-            y_position + len(decoder_specs) / 2,
-            label, ha="center", va="center", fontsize=11, fontweight="bold",
+            y_position + len(decoders) / 2,
+            label, ha="center", va="center", fontsize=10, fontweight="bold",
             clip_on=False,
         )
         for decoder_index, model_name in enumerate(model_names):
             ax.text(
                 -0.08, y_position + decoder_index + 0.5, model_name,
-                ha="right", va="center", fontsize=8.5, fontweight="bold",
+                ha="right", va="center", fontsize=10, fontweight="bold",
                 clip_on=False,
             )
         ax.add_patch(
             Rectangle(
-                (0, y_position), len(sides), len(decoder_specs), fill=False,
+                (0, y_position), len(sides), len(decoders), fill=False,
                 edgecolor=border_colour, linewidth=0.9, zorder=4,
             )
         )
@@ -518,6 +700,7 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
         orientation="horizontal",
     )
     colorbar.set_ticks(np.linspace(0, 1, 5), labels=("0", "25", "50", "75", "100"))
+    colorbar.set_label(f"{ARTICLE_METRIC_LABEL}, %", fontsize=9, fontweight="bold")
     colorbar.ax.tick_params(labelsize=8)
 
     for row in range(len(sides)):
@@ -525,14 +708,14 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
             value = summary_values[row, column]
             facecolor = "#F2F4F6" if np.isnan(value) else "#FFFFFF"
             text = "—" if np.isnan(value) else f"{value:.1f}"
-            y_position = row * len(decoder_specs)
+            y_position = row * len(decoders)
             summary_ax.add_patch(
                 Rectangle(
-                    (column, y_position), 1, len(decoder_specs), facecolor=facecolor,
+                    (column, y_position), 1, len(decoders), facecolor=facecolor,
                     edgecolor=border_colour, linewidth=0.9,
                 )
             )
-            summary_ax.text(column + 0.5, y_position + len(decoder_specs) / 2, text, ha="center", va="center", fontsize=12,
+            summary_ax.text(column + 0.5, y_position + len(decoders) / 2, text, ha="center", va="center", fontsize=12,
                             fontweight="bold" if not np.isnan(value) else "normal", color="#263341")
     for column, label in enumerate((
         "Cross-task\nmean Δ",
@@ -603,61 +786,14 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
         "Full A → Arithmetic+Mirror",
         "Arithmetic+Mirror → Full A",
     )
-    decoder_specs = (
-        ("logistic_regression", "Logistic Regression", "#1F77B4"),
-        ("xgboost", "XGBoost", "#FF7F0E"),
-        ("eegnet", "EEGNet", "#D62728"),
-        ("shallownet", "ShallowNet", "#9467BD"),
-        ("eegconformer", "EEGConformer", "#2CA02C"),
-    )
+    decoders = tuple(ARTICLE_DECODERS)
     if len(validation_method_labels) != len(SCENARIO_ORDER):
         raise RuntimeError("Figure validation-method labels must match the scenario order.")
 
-    job_dirs = discover_scenario_results(scenario_glob)
-    expected_result_count = len(SCENARIO_ORDER) * len(decoder_specs)
-    if len(job_dirs) != expected_result_count:
-        raise ValueError(
-            f"An all-models figure needs {expected_result_count} scenario results "
-            f"({len(SCENARIO_ORDER)} scenarios x {len(decoder_specs)} decoders), got {len(job_dirs)}."
-        )
-
-    known_decoders = {decoder for decoder, _, _ in decoder_specs}
-    scores: dict[tuple[str, tuple[object, ...]], pd.Series] = {}
-    for job_dir in job_dirs:
-        cfg, windows, folds = read_scenario_result(job_dir)
-        decoder = decoder_name(cfg)
-        if decoder not in known_decoders:
-            raise ValueError(f"{job_dir}: unsupported decoder for article figure: {decoder}.")
-        scenario = scenario_key(cfg)
-        if scenario not in SCENARIO_ORDER:
-            raise ValueError(f"Unexpected scenario in {job_dir}: {scenario}.")
-        if (decoder, scenario) in scores:
-            raise ValueError(f"Duplicate result for decoder {decoder} and scenario {scenario}.")
-
-        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
-        scores[(decoder, scenario)] = metrics["balanced_accuracy"]
-
-    missing = [
-        (decoder, scenario)
-        for decoder, _, _ in decoder_specs
-        for scenario in SCENARIO_ORDER
-        if (decoder, scenario) not in scores
-    ]
-    if missing:
-        raise ValueError(f"Scenario set does not match the article figure; missing={missing}.")
-
-    for scenario in SCENARIO_ORDER:
-        participant_ids = scores[(decoder_specs[0][0], scenario)].index
-        for decoder, _, _ in decoder_specs[1:]:
-            if not scores[(decoder, scenario)].index.equals(participant_ids):
-                raise ValueError(
-                    f"Scenario {scenario}: target participants differ between decoders; "
-                    "paired bootstrap is not defined."
-                )
-
+    scores = collect_participant_scores(scenario_glob, SCENARIO_ORDER)
     model_means = np.array(
         [
-            [scores[(decoder, scenario)].mean() for decoder, _, _ in decoder_specs]
+            [scores[(decoder, scenario)].mean() for decoder in decoders]
             for scenario in SCENARIO_ORDER
         ]
     )
@@ -665,12 +801,9 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
     lower_errors, upper_errors = [], []
     rng = np.random.default_rng(42)
     for scenario_index, scenario in enumerate(SCENARIO_ORDER):
-        participant_ids = scores[(decoder_specs[0][0], scenario)].index
-        sampled_indices = rng.integers(0, len(participant_ids), size=(10_000, len(participant_ids)))
-        bootstrap_means = np.stack(
-            [scores[(decoder, scenario)].to_numpy()[sampled_indices].mean(axis=1) for decoder, _, _ in decoder_specs]
-        ).mean(axis=0)
-        low, high = np.quantile(bootstrap_means, (0.025, 0.975))
+        low, high = bootstrap_average_interval(
+            [scores[(decoder, scenario)] for decoder in decoders], rng
+        )
         mean = average_means[scenario_index]
         lower_errors.append(mean - low)
         upper_errors.append(high - mean)
@@ -691,17 +824,17 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
         validation_label_start += row_count
 
     fig, ax = plt.subplots(figsize=(12.2, 14.6))
-    offsets = np.linspace(-0.22, 0.22, len(decoder_specs))
-    for decoder_index, (_, label, colour) in enumerate(decoder_specs):
+    offsets = np.linspace(-0.22, 0.22, len(decoders))
+    for decoder_index, spec in enumerate(ARTICLE_DECODERS.values()):
         ax.scatter(
             model_means[:, decoder_index],
             np.asarray(method_y_positions) + offsets[decoder_index],
             s=38,
-            color=colour,
+            color=spec["colour"],
             alpha=0.65,
             edgecolor="#24354F",
             linewidth=0.35,
-            label=label,
+            label=spec["short_name"],
             zorder=3,
         )
     ax.errorbar(
@@ -722,6 +855,7 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
     ax.axvline(0.5, color="#7C8AA0", linestyle=(0, (4, 3)), linewidth=1.0, zorder=1)
     ax.text(0.5, 1.0, "chance level", color="#62718A", ha="center", va="bottom", fontsize=10,
             transform=ax.get_xaxis_transform())
+    ax.set_xlabel(ARTICLE_METRIC_LABEL, fontsize=12, fontweight="bold", color="#24354F")
     ax.set_yticks(y_positions, ("",) * len(y_positions))
     ax.set_ylim(min(y_positions) - 0.8, max(y_positions) + 0.8)
     plotted_scores = np.concatenate((model_means.ravel(), np.asarray(average_means) - lower_errors,
@@ -751,7 +885,9 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
         columnspacing=0.75,
     )
     plt.setp(legend.get_texts(), fontweight="bold")
-    fig.subplots_adjust(left=0.22, right=0.98, top=0.9385, bottom=0.02)
+    # This figure is saved with the margins it sets here rather than a tight
+    # bounding box, so the bottom margin has to hold the metric label itself.
+    fig.subplots_adjust(left=0.22, right=0.98, top=0.9385, bottom=0.048)
     return fig
 
 
@@ -759,13 +895,7 @@ def craft_baseline_cross_shift_comparison_figure(scenario_glob: str) -> Figure:
     """Build the per-dataset baseline-to-cross-subject trajectory of every decoder."""
     panel_specs = (("Dataset A", DISTINGUISHING), ("Dataset B", SAM40_FULL))
     protocol_specs = (("baseline", "Baseline"), ("cross_subject", "Cross-subject"))
-    decoder_specs = (
-        ("logistic_regression", "Logistic Regression", "#1F77B4"),
-        ("xgboost", "XGBoost", "#FF7F0E"),
-        ("eegnet", "EEGNet", "#D62728"),
-        ("shallownet", "ShallowNet", "#9467BD"),
-        ("eegconformer", "EEGConformer", "#2CA02C"),
-    )
+    decoders = tuple(ARTICLE_DECODERS)
     # A panel column is one non-transfer scenario, which is its own target.
     panel_scenarios = tuple(
         tuple((protocol, side, side) for protocol, _ in protocol_specs)
@@ -776,30 +906,11 @@ def craft_baseline_cross_shift_comparison_figure(scenario_glob: str) -> Figure:
     # Step 1: read the few scenarios this figure compares
     # =============================================================================
     # The sweep also holds every transfer direction, and none of them belongs on
-    # a protocol axis, so unrelated scenarios are skipped instead of counted.
-    wanted = {scenario for scenarios in panel_scenarios for scenario in scenarios}
-    known_decoders = {decoder for decoder, _, _ in decoder_specs}
-    scores: dict[tuple[str, tuple[object, ...]], pd.Series] = {}
-    for job_dir in discover_scenario_results(scenario_glob):
-        cfg, windows, folds = read_scenario_result(job_dir)
-        scenario = scenario_key(cfg)
-        decoder = decoder_name(cfg)
-        if scenario not in wanted or decoder not in known_decoders:
-            continue
-        if (decoder, scenario) in scores:
-            raise ValueError(f"Duplicate result for decoder {decoder} and scenario {scenario}.")
-
-        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
-        scores[(decoder, scenario)] = metrics["balanced_accuracy"]
-
-    missing = [
-        (decoder, scenario)
-        for decoder, _, _ in decoder_specs
-        for scenario in sorted(wanted)
-        if (decoder, scenario) not in scores
-    ]
-    if missing:
-        raise ValueError(f"The baseline-to-cross-subject figure is missing scenarios: {missing}.")
+    # a protocol axis, so only the scenarios of the two panels are asked for.
+    scores = collect_participant_scores(
+        scenario_glob,
+        tuple(scenario for scenarios in panel_scenarios for scenario in scenarios),
+    )
 
     # =============================================================================
     # Step 2: decoder means and the paired bootstrap interval of their average
@@ -811,25 +922,16 @@ def craft_baseline_cross_shift_comparison_figure(scenario_glob: str) -> Figure:
     for scenarios in panel_scenarios:
         means = np.array(
             [
-                [scores[(decoder, scenario)].mean() for decoder, _, _ in decoder_specs]
+                [scores[(decoder, scenario)].mean() for decoder in decoders]
                 for scenario in scenarios
             ]
         )
         averages = means.mean(axis=1)
         lower_errors, upper_errors = [], []
         for scenario_index, scenario in enumerate(scenarios):
-            participant_ids = scores[(decoder_specs[0][0], scenario)].index
-            for decoder, _, _ in decoder_specs[1:]:
-                if not scores[(decoder, scenario)].index.equals(participant_ids):
-                    raise ValueError(
-                        f"Scenario {scenario}: target participants differ between decoders; "
-                        "paired bootstrap is not defined."
-                    )
-            sampled_indices = rng.integers(0, len(participant_ids), size=(10_000, len(participant_ids)))
-            bootstrap_means = np.stack(
-                [scores[(decoder, scenario)].to_numpy()[sampled_indices].mean(axis=1) for decoder, _, _ in decoder_specs]
-            ).mean(axis=0)
-            low, high = np.quantile(bootstrap_means, (0.025, 0.975))
+            low, high = bootstrap_average_interval(
+                [scores[(decoder, scenario)] for decoder in decoders], rng
+            )
             lower_errors.append(averages[scenario_index] - low)
             upper_errors.append(high - averages[scenario_index])
         panel_means.append(means)
@@ -857,18 +959,18 @@ def craft_baseline_cross_shift_comparison_figure(scenario_glob: str) -> Figure:
             panel_averages[panel_index],
             panel_errors[panel_index],
         )
-        for decoder_index, (_, label, colour) in enumerate(decoder_specs):
+        for decoder_index, spec in enumerate(ARTICLE_DECODERS.values()):
             ax.plot(
                 x_positions,
                 means[:, decoder_index],
-                color=colour,
+                color=spec["colour"],
                 linewidth=2.4,
                 alpha=0.65,
                 marker="o",
                 markersize=7,
                 markeredgecolor="#24354F",
                 markeredgewidth=0.35,
-                label=label if panel_index == 0 else None,
+                label=spec["short_name"] if panel_index == 0 else None,
                 zorder=3,
             )
         # Only the connecting line of the average is translucent, so that it
@@ -900,6 +1002,7 @@ def craft_baseline_cross_shift_comparison_figure(scenario_glob: str) -> Figure:
         ax.spines[["top", "right"]].set_visible(False)
         ax.tick_params(axis="both", length=0, labelsize=11)
     axes[0].set_ylim(plotted_scores.min() - score_padding, plotted_scores.max() + score_padding)
+    axes[0].set_ylabel(ARTICLE_METRIC_LABEL, fontsize=12, fontweight="bold", color="#24354F")
 
     handles, labels = axes[0].get_legend_handles_labels()
     legend = fig.legend(
@@ -918,12 +1021,6 @@ def craft_baseline_cross_shift_comparison_figure(scenario_glob: str) -> Figure:
     return fig
 
 
-def save_svg_without_trailing_whitespace(figure: Figure, path: Path, **savefig_kwargs) -> None:
-    """Write a stable source SVG that also passes the repository whitespace check."""
-    figure.savefig(path, format="svg", **savefig_kwargs)
-    path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()) + "\n")
-
-
 def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
     """Write all article tables and figures from one completed result sweep."""
     input_dir, output_dir = Path(input_dir), Path(output_dir)
@@ -940,33 +1037,41 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
         written.append(table_path)
 
     scenario_glob = str(input_dir / "*" / "*")
+    # Read across every decoder rather than one of them: the compositions are the
+    # same prepared data for all five, so the whole sweep is the strongest place
+    # to notice that they are not.
+    composition_table_path = tables_dir / "datasets_info.tex"
+    composition_table_path.write_text(craft_dataset_composition_table(scenario_glob))
+    written.append(composition_table_path)
 
-    figure = craft_transfer_degradation_matrix_figure(scenario_glob)
-    figure_path = figures_dir / "transfer_degradation_matrix.png"
-    source_svg_path = source_svg_dir / "transfer_degradation_matrix.svg"
-    figure.savefig(figure_path, dpi=300, bbox_inches="tight", pad_inches=0.03)
-    save_svg_without_trailing_whitespace(
-        figure, source_svg_path, bbox_inches="tight", pad_inches=0.03
+    figure_specs = (
+        (
+            "transfer_degradation_matrix",
+            craft_transfer_degradation_matrix_figure,
+            {"bbox_inches": "tight", "pad_inches": 0.03},
+        ),
+        (
+            "baseline_cross_shift_comparison",
+            craft_baseline_cross_shift_comparison_figure,
+            {"bbox_inches": "tight", "pad_inches": 0.03},
+        ),
+        # The all-scenarios figure places its own margins with subplots_adjust and
+        # draws its row labels outside the axes, which a tight bounding box would
+        # crop; it is saved with the margins it asked for.
+        ("all_scenarios_model_comparison", craft_all_scenarios_model_comparison_figure, {}),
     )
-    plt.close(figure)
-    written.extend((figure_path, source_svg_path))
-
-    figure = craft_baseline_cross_shift_comparison_figure(scenario_glob)
-    figure_path = figures_dir / "baseline_cross_shift_comparison.png"
-    source_svg_path = source_svg_dir / "baseline_cross_shift_comparison.svg"
-    figure.savefig(figure_path, dpi=300, bbox_inches="tight", pad_inches=0.03)
-    save_svg_without_trailing_whitespace(
-        figure, source_svg_path, bbox_inches="tight", pad_inches=0.03
-    )
-    plt.close(figure)
-    written.extend((figure_path, source_svg_path))
-
-    figure = craft_all_scenarios_model_comparison_figure(scenario_glob)
-    figure_path = figures_dir / "all_scenarios_model_comparison.png"
-    source_svg_path = source_svg_dir / "all_scenarios_model_comparison.svg"
-    figure.savefig(figure_path, dpi=300)
-    save_svg_without_trailing_whitespace(figure, source_svg_path)
-    plt.close(figure)
-    written.extend((figure_path, source_svg_path))
+    for name, craft_figure, savefig_kwargs in figure_specs:
+        figure = craft_figure(scenario_glob)
+        figure_path = figures_dir / f"{name}.png"
+        source_svg_path = source_svg_dir / f"{name}.svg"
+        figure.savefig(figure_path, dpi=300, **savefig_kwargs)
+        # Matplotlib pads SVG lines with trailing spaces, which the repository
+        # whitespace check rejects, so the source is rewritten without them.
+        figure.savefig(source_svg_path, format="svg", **savefig_kwargs)
+        source_svg_path.write_text(
+            "\n".join(line.rstrip() for line in source_svg_path.read_text().splitlines()) + "\n"
+        )
+        plt.close(figure)
+        written.extend((figure_path, source_svg_path))
 
     return written

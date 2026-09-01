@@ -249,29 +249,26 @@ The simulator-based and task-based datasets correspond, respectively, to the \te
 
 \subsection*{\revs{Validation strategies [revise need]}}
 
-\rev{We evaluated the decoders under five validation protocols, each addressing a distinct generalization question. To preserve the independence of the training and test data, all windows originating from the same recording unit were assigned to the same partition. This prevents overlapping windows from being divided between training and test sets, reducing the risk of overly optimistic performance estimates due to temporal autocorrelation between neighboring EEG windows~\cite{chen2025hybrid}. The within-domain baseline estimates performance when training and test data share the same dataset and condition composition but originate from different recording units. The remaining protocols examine whether discriminative performance is retained when training and testing are separated by participant, recording session, task composition, or dataset. These protocols were applied only where the structure of each release supported their interpretation: repeated recording days in the mental attention-state dataset enabled cross-session validation, whereas multiple tasks in SAM-40 enabled cross-task validation. Model fitting was confined to the training data, and the resulting decoder was evaluated on held-out data without target-specific adaptation. Any class imbalance was handled by oversampling the minority class within the training data only, while the test data retained their observed class distribution.}
+\rev{We evaluated the decoders under four validation protocols, each addressing a distinct generalization question. To preserve the independence of the training and test data, all windows originating from the same recording unit were assigned to the same partition. This prevents overlapping windows from being divided between training and test sets, reducing the risk of overly optimistic performance estimates due to temporal autocorrelation between neighboring EEG windows~\cite{chen2025hybrid}. The within-domain baseline estimates performance when training and test data share the same dataset and condition composition but originate from different recording units. The remaining protocols examine whether discriminative performance is retained when training and testing are separated by participant, task composition, or dataset. These protocols were applied only where the structure of each release supported their interpretation: multiple tasks in SAM-40 enabled cross-task validation. Model fitting was confined to the training data, and the resulting decoder was evaluated on held-out data without target-specific adaptation. Any class imbalance was addressed through inverse-frequency class weighting calculated independently within each training fold, while test data retained their observed class distribution.}
 
-\textbf{Baseline (within-dataset, within-subject evaluation).}
-\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the complete SAM-40 composition, and each single-task composition of SAM-40. The grouping variable was the physical recording unit: one selected session in the mental attention-state dataset and one run-level recording unit in SAM-40, comprising all task recordings included in the analysis for that run. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. These estimates serve as within-domain comparators for the transfer protocols. No separate baseline was defined for the two-task composite compositions.}
+\textbf{Baseline evaluation.}
+\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the complete SAM-40 composition, and each task-specific composition of SAM-40. The grouping variable was the physical recording unit: one selected session in the mental attention-state dataset and one run-level recording unit in SAM-40, comprising all task recordings included in the analysis for that run. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. These estimates serve as within-domain comparators for the transfer protocols.}
 
 \textbf{Cross-subject validation.}
 \rev{In each leave-one-subject-out fold, the decoder was trained on all selected data from the remaining participants and tested on all selected data from the held-out participant. The resulting performance quantifies zero-shot generalization to an unseen participant.}
 
-\textbf{Cross-session validation.}
-\rev{For each participant in the mental attention-state dataset, the decoder was trained on the selected sessions other than one and tested on the held-out session. Participant identity, task protocol, and acquisition system were therefore held constant while the recording day changed. Although individual recordings in SAM-40 are distributed as separate files, the source article describes the three repetitions as trials and does not identify them as distinct recording sessions. SAM-40 was therefore not included in this analysis.}
-
 \textbf{Cross-task validation.}
-\rev{In SAM-40, each task composition represented the same binary contrast of relaxation versus one or two high-demand tasks, rather than classification of task identity. Cross-task transfer therefore asked whether a decoder fitted to this contrast under one task composition retained discriminative performance under another. We evaluated both directions between the three single-task compositions and between single-task and complementary two-task compositions. Single-task targets were interpreted relative to their corresponding within-domain baselines.}
+\rev{In SAM-40, each task composition represented the same binary contrast of relaxation versus high-demand task conditions, rather than classification of task identity. Cross-task transfer therefore asked whether a decoder fitted to this contrast under one task composition retained discriminative performance under another.}
 
 \rev{The cross-task folds were also subject-disjoint. For each fold, the source composition from all but one participant formed the training set, whereas the target composition from the held-out participant formed the test set. The protocol thus evaluates the combined shift to an unseen participant and a different task composition, rather than within-participant transfer between tasks. This distinction prevents participant-specific EEG patterns from contributing to apparent cross-task generalization~\cite{kamrud2021vigilance,ke2021crosstask}.}
 
 \textbf{Cross-dataset validation.}
-\rev{To evaluate transfer between datasets, models were trained on all available data from a source composition and tested on a composition from the other dataset, in both transfer directions and without target-specific adaptation. SAM-40 was considered as a complete composition and through its single-task and two-task compositions. Unlike the preceding protocols, cross-dataset validation changes several factors simultaneously, including the participant population, experimental paradigm, recording setup, and condition definitions. It therefore measures transfer under their compound distribution shift rather than attributing a performance change to any single factor~\cite{lan2019domain}. The common sampling rate, harmonized binary labels, and shared 12-channel montage establish a compatible input and prediction space, but do not remove the substantive differences between the two datasets.}
+\rev{To evaluate transfer between datasets, models were trained on all available data from a source composition and tested on a composition from the other dataset, in both transfer directions and without target-specific adaptation. SAM-40 was considered as a complete composition and through its task-specific compositions. Unlike the preceding protocols, cross-dataset validation changes several factors simultaneously, including the participant population, experimental paradigm, recording setup, and condition definitions. It therefore measures transfer under their compound distribution shift rather than attributing a performance change to any single factor~\cite{lan2019domain}. The common sampling rate, harmonized binary labels, and shared 12-channel montage establish a compatible input and prediction space, but do not remove the substantive differences between the two datasets.}
 
 \subsection*{Data preparation [revise need]}
 
-\rev{A common, deliberately parsimonious preparation pipeline, implemented in
-MNE-Python, was applied to both datasets and across all validation protocols.
+\rev{The same preparation pipeline was applied to
+both datasets and across all validation protocols.
 Its filtering, ICA, channel
 alignment and windowing parameters were fixed in advance and were not tuned
 separately for a dataset, task composition, validation protocol or decoder. The
@@ -290,8 +287,8 @@ permitted to close their eyes and enter a drowsy state. This condition differs
 from the \textit{Focused} and \textit{Unfocused} conditions not only in
 protocol-defined task demand, but also in arousal, visual input and ocular
 activity. Including it in the low-attention class would therefore confound the
-intended contrast, so no drowsy epochs were generated or presented to a
-classifier. In contrast, the complete collection of SAM-40 recordings was
+intended contrast. The drowsy segment was removed before filtering and ICA, so
+no drowsy epochs were generated or presented to a classifier. In contrast, the complete collection of SAM-40 recordings was
 retained for analysis. SAM-40 provides the task recordings of each trial as
 separate files. Within each scenario, the task recordings selected from one
 trial were grouped into a single recording unit, whereas task recordings not
@@ -299,27 +296,23 @@ selected by the scenario were not carried forward to later preparation steps.
 Accordingly, the binary mapping in Table~\ref{tab:label_mapping} was applied to the
 retained recordings from the two datasets.}
 
-\rev{\textbf{Filtering and ICA cleaning.} Processing was performed for
-each recording unit, defined by the combination of participant, session and run
-identifiers. To prevent preprocessing from becoming an additional source of
-variation, we used a deliberately restrained, conventional procedure:
+\rev{\textbf{Filtering and ICA cleaning.} Filtering was applied to each
+recording, and ICA was fitted within participant-specific acquisition
+groupings. For the mental attention-state dataset, each grouping corresponded
+to a selected session; for SAM-40, it comprised the selected task recordings
+of a participant. To prevent preprocessing from becoming an additional source
+of variation, we used a deliberately restrained, conventional procedure:
 standard filtering followed by ICA-based artifact cleaning. Keeping
 preparation deliberately simple allows differences in performance to be
 interpreted primarily in relation to the recordings and validation protocols,
-rather than to a complex preparation pipeline. Within each recording unit, EEG channels were
-notch-filtered at 50~Hz,
-band-pass filtered from 0.5 to 45~Hz and rereferenced to the average reference.
-Artifact removal used FastICA fitted to the concatenated recordings of each
-recording unit, retaining components that explained 99\% of the variance. The
-decomposition was fitted to a 1--45~Hz copy of the prepared signal and then
-applied to each recording separately, while the analysis signal retained the
-0.5--45~Hz band-pass. Ocular components were identified with F3, F4, F7 and F8
-as EOG-proxy channels at a z-score threshold of 2.4 and removed. The ICA random
-state was fixed by the experiment configuration. When an excluded condition
-occurred as a block within an otherwise selected continuous recording, it
-remained available for ICA fitting but was omitted from window generation and
-the analysis sets. In the mental attention-state dataset, this applied to the
-\textit{Drowsy} block.}
+rather than to a complex preparation pipeline. EEG channels were notch-filtered
+at 50~Hz, band-pass filtered from 1 to 45~Hz and rereferenced to the average
+reference. Artifact correction used independent component analysis with
+extended-Infomax optimization, retaining components that explained 99\% of the
+variance. The resulting components were automatically classified from their
+spatial, spectral and temporal characteristics; components identified as
+eye-blink or muscle artifacts with a probability of at least 0.80 were removed.
+The ICA random state was fixed by the experiment-wide configuration.}
 
 \rev{\textbf{Channel alignment and window segmentation.} After signal cleaning, each
 recording was restricted to the 12 channels shared by
@@ -335,12 +328,12 @@ yielded a deterministic analytical window set for each dataset composition.
 All model-specific input representations were derived from these same prepared
 windows, rather than from separately prepared data. Table~\ref{tab:dataset_compositions}
 summarizes the resulting compositions, including their retained recording units,
-window counts and observed class distributions before any training-fold
-oversampling. All Dataset~B configurations contain the same 40 participants and
+window counts and observed class distributions. Class weights were calculated
+independently within each training fold. All Dataset~B configurations contain the same 40 participants and
 differ only in the task recordings retained alongside the resting-state
 recordings.}
 
-\input{tables/dataset_info}
+\input{tables/datasets_info}
 
 \subsection*{\revs{Models [revise need]}}
 

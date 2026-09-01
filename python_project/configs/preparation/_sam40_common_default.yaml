@@ -29,6 +29,8 @@ mne_bids_pipeline_config:
   # baseline; the project creates their labelled windows from cleaned raw data.
   baseline: null
   spatial_filter: ica
+  # Keep ICA initialization tied to the experiment-wide reproducibility seed.
+  random_state: ${seed}
   # Picard's extended-Infomax mode yields the same decomposition while usually
   # converging sooner than the original extended-Infomax solver.
   ica_algorithm: picard-extended_infomax
