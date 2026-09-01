@@ -513,14 +513,26 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         ("Stroop", SAM40_STROOP),
         ("Arithmetic", SAM40_ARITHMETIC),
         ("Mirror", SAM40_MIRROR),
-        ("Full A", DISTINGUISHING),
         ("Full B", SAM40_FULL),
+        ("Full A", DISTINGUISHING),
+    )
+    # The two transfer blocks intentionally repeat Full B: it is a target in
+    # both the within-SAM-40 and between-dataset comparisons.  Keeping the
+    # protocol with each column prevents a value from leaking into the block
+    # whose summary does not use it.
+    column_specs = (
+        ("cross_task", "Stroop", SAM40_STROOP),
+        ("cross_task", "Arithmetic", SAM40_ARITHMETIC),
+        ("cross_task", "Mirror", SAM40_MIRROR),
+        ("cross_task", "Full B", SAM40_FULL),
+        ("cross_dataset", "Stroop", SAM40_STROOP),
+        ("cross_dataset", "Arithmetic", SAM40_ARITHMETIC),
+        ("cross_dataset", "Mirror", SAM40_MIRROR),
+        ("cross_dataset", "Full B", SAM40_FULL),
+        ("cross_dataset", "Full A", DISTINGUISHING),
     )
     decoders = tuple(ARTICLE_DECODERS)
     model_names = tuple(spec["short_name"] for spec in ARTICLE_DECODERS.values())
-    # Cross-task transfer stays inside Dataset B and now includes its full
-    # composition, so the displayed pairs follow SAM40_SIDES rather than a slice
-    # of the row order.
     displayed_scenarios = {
         ("baseline", side, side) for _, side in sides
     } | {
@@ -529,13 +541,10 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         for target in SAM40_SIDES
         if source != target
     } | {
-        # Dataset A is shown only against the full Dataset B composition when it
-        # is the source; its transfers into the single-task compositions stay
-        # measured but out of the figure.
         ("cross_dataset", source, target)
         for _, source in sides
         for _, target in sides
-        if source[0] != target[0] and (source != DISTINGUISHING or target == SAM40_FULL)
+        if source[0] != target[0]
     }
 
     # Every cell of this matrix is a decoder average, so the participant-level
@@ -547,26 +556,17 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         ).items()
     }
 
-    labels, compositions = zip(*sides, strict=True)
+    row_labels, _ = zip(*sides, strict=True)
     row_count = len(sides) * len(decoders)
-    matrix = np.full((row_count, len(sides)), np.nan)
+    matrix = np.full((row_count, len(column_specs)), np.nan)
     for side_index, (_, source) in enumerate(sides):
         for decoder_index, decoder in enumerate(decoders):
             row = side_index * len(decoders) + decoder_index
-            for column, target in enumerate(compositions):
+            for column, (protocol, _, target) in enumerate(column_specs):
                 if source == target:
                     matrix[row, column] = scores[(decoder, ("baseline", target, target))]
-                else:
-                    scenario = next(
-                        (
-                            (protocol, source, target)
-                            for protocol in ("cross_task", "cross_dataset")
-                            if (protocol, source, target) in displayed_scenarios
-                        ),
-                        None,
-                    )
-                    if scenario:
-                        matrix[row, column] = scores[(decoder, scenario)]
+                elif (protocol, source, target) in displayed_scenarios:
+                    matrix[row, column] = scores[(decoder, (protocol, source, target))]
 
     # Summary values live at the source level. Each cell is the participant-level
     # metric; for every displayed direction, average the decoders first, then
@@ -575,7 +575,9 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
     for source_index, (_, source) in enumerate(sides):
         for summary_column, protocol in enumerate(("cross_task", "cross_dataset")):
             transfer_means, baseline_means = [], []
-            for target in compositions:
+            for column_protocol, _, target in column_specs:
+                if column_protocol != protocol:
+                    continue
                 scenario = (protocol, source, target)
                 if scenario not in displayed_scenarios:
                     continue
@@ -594,22 +596,22 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
 
     # The target columns carry a two-level header: the transfer protocol that
     # reaching each target from another source represents, above the target
-    # itself. The groups are ranges over the column order set by `sides`.
-    column_groups = (("Cross-task", 0, 3), ("Cross-dataset", 3, 5))
-    figure_width, figure_height = 13.6, 8.8
-    matrix_left, matrix_bottom = 0.05, 0.095
-    matrix_width, matrix_height = 0.61, 0.84
-    group_header_height = 0.8
-    header_height = 1.45 + group_header_height
-    source_left, decoder_left = -2.25, -1.25
-    data_column_width = matrix_width / (len(sides) - source_left)
+    # itself. The two blocks carry their own target lists, including Full B.
+    column_groups = (("Cross-task", 0, 4), ("Cross-dataset", 4, 9))
+    figure_width, figure_height = 18.0, 8.8
+    matrix_left, matrix_bottom = 0.045, 0.095
+    matrix_width, matrix_height = 0.54, 0.84
+    group_header_height = 1.3
+    header_height = 2 * group_header_height
+    source_left, decoder_left = -2.50, -1.25
+    data_column_width = matrix_width / (len(column_specs) - source_left)
     data_left = matrix_left - source_left * data_column_width
-    summary_left = 0.69
-    separator_x = (matrix_left + matrix_width + summary_left) / 2
+    summary_left, summary_width = 0.62, 0.13
+    separator_x = 0.6025
     fig = plt.figure(figsize=(figure_width, figure_height))
     ax = fig.add_axes((matrix_left, matrix_bottom, matrix_width, matrix_height))
-    colorbar_ax = fig.add_axes((data_left, 0.05, len(sides) * data_column_width, 0.016))
-    summary_ax = fig.add_axes((summary_left, matrix_bottom, 2 * data_column_width, matrix_height))
+    colorbar_ax = fig.add_axes((data_left, 0.05, len(column_specs) * data_column_width, 0.016))
+    summary_ax = fig.add_axes((summary_left, matrix_bottom, summary_width, matrix_height))
     fig.add_artist(
         Line2D(
             (separator_x, separator_x),
@@ -628,12 +630,12 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
     grid_colour = (1.0, 1.0, 1.0, 0.3)
 
     for row in range(row_count):
-        for column in range(len(sides)):
+        for column in range(len(column_specs)):
             value = matrix[row, column]
             if np.isnan(value):
                 facecolor, text, text_colour = "#FFFFFF", "—", "#667085"
-            elif row // len(decoders) == column:
-                facecolor, text, text_colour = "#FFFFFF", f"{value * 100:.1f}", "#263341"
+            elif sides[row // len(decoders)][1] == column_specs[column][2]:
+                facecolor, text, text_colour = "#EAECF0", f"{value * 100:.1f}", "#263341"
             else:
                 facecolor = cmap(normalization(value))
                 text = f"{value * 100:.1f}"
@@ -644,12 +646,21 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
                     edgecolor=grid_colour, linewidth=0.35,
                 )
             )
-            ax.text(column + 0.5, row + 0.5, text, ha="center", va="center",
-                    fontsize=9.5, fontweight="bold" if not np.isnan(value) else "normal", color=text_colour)
+            ax.text(
+                column + 0.5,
+                row + 0.5,
+                text,
+                ha="center",
+                va="center",
+                fontsize=8.4,
+                fontweight="bold" if not np.isnan(value) else "normal",
+                color=text_colour,
+            )
 
     # The source and decoder labels are part of the table, so their group
     # borders share the exact row geometry of the performance cells.
-    for source_index, label in enumerate(labels):
+    for source_index, label in enumerate(row_labels):
+        source = sides[source_index][1]
         y_position = source_index * len(decoders)
         ax.add_patch(
             Rectangle(
@@ -668,33 +679,32 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         ax.text(
             (source_left + decoder_left) / 2,
             y_position + len(decoders) / 2,
-            label, ha="center", va="center", fontsize=10, fontweight="bold",
+            label, ha="center", va="center", fontsize=9, fontweight="bold",
             clip_on=False,
         )
         for decoder_index, model_name in enumerate(model_names):
             ax.text(
                 -0.08, y_position + decoder_index + 0.5, model_name,
-                ha="right", va="center", fontsize=10, fontweight="bold",
+                ha="right", va="center", fontsize=9, fontweight="bold",
                 clip_on=False,
             )
         ax.add_patch(
             Rectangle(
-                (0, y_position), len(sides), len(decoders), fill=False,
+                (0, y_position), len(column_specs), len(decoders), fill=False,
                 edgecolor=border_colour, linewidth=0.9, zorder=4,
             )
         )
-        # The baseline block sits on the diagonal and is read against the transfer
-        # cells beside it, so it gets a thin outline of its own to stand apart
-        # from the group border it shares an edge with.
-        ax.add_patch(
-            Rectangle(
-                (source_index, y_position), 1, len(decoders), fill=False,
-                edgecolor=border_colour, linewidth=0.9, zorder=5,
-            )
-        )
+        for column, (_, _, target) in enumerate(column_specs):
+            if source == target:
+                ax.add_patch(
+                    Rectangle(
+                        (column, y_position), 1, len(decoders), fill=False,
+                        edgecolor=border_colour, linewidth=0.9, zorder=5,
+                    )
+                )
 
     label_header_top = -header_height + group_header_height
-    for column, label in enumerate(labels):
+    for column, (_, label, _) in enumerate(column_specs):
         ax.add_patch(
             Rectangle(
                 (column, label_header_top), 1, -label_header_top, facecolor="#FFFFFF",
@@ -703,7 +713,7 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         )
         ax.text(
             column + 0.5, label_header_top / 2, label, ha="center", va="center",
-            fontsize=10, fontweight="bold", clip_on=False,
+            fontsize=9, fontweight="bold", clip_on=False,
         )
     for group_label, first_column, last_column in column_groups:
         ax.add_patch(
@@ -715,11 +725,11 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         )
         ax.text(
             (first_column + last_column) / 2, -header_height + group_header_height / 2,
-            group_label, ha="center", va="center", fontsize=10, fontweight="bold",
+            group_label, ha="center", va="center", fontsize=9, fontweight="bold",
             clip_on=False,
         )
     ax.text(
-        len(sides) / 2, -header_height - 0.42, "Target (test)", ha="center",
+        len(column_specs) / 2, -header_height - 0.42, "Target (test)", ha="center",
         va="center", fontsize=11, fontweight="bold", clip_on=False,
     )
     ax.text(
@@ -727,7 +737,7 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         va="center", rotation=90, fontsize=11, fontweight="bold", clip_on=False,
     )
 
-    ax.set_xlim(source_left, len(sides))
+    ax.set_xlim(source_left, len(column_specs))
     ax.set_ylim(row_count, -header_height)
     ax.set_aspect("auto")
     ax.set_xticks([])
@@ -756,11 +766,19 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
                     edgecolor=border_colour, linewidth=0.9,
                 )
             )
-            summary_ax.text(column + 0.5, y_position + len(decoders) / 2, text, ha="center", va="center", fontsize=12,
-                            fontweight="bold" if not np.isnan(value) else "normal", color="#263341")
+            summary_ax.text(
+                column + 0.5,
+                y_position + len(decoders) / 2,
+                text,
+                ha="center",
+                va="center",
+                fontsize=11,
+                fontweight="bold" if not np.isnan(value) else "normal",
+                color="#263341",
+            )
     for column, label in enumerate((
-        "Baseline vs\ncross-task\nmean Δ",
-        "Baseline vs\ncross-dataset\nmean Δ",
+        "Baseline\nvs\ncross-task\nmean diff",
+        "Baseline\nvs\ncross-dataset\nmean diff",
     )):
         summary_ax.add_patch(
             Rectangle(
@@ -770,7 +788,7 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         )
         summary_ax.text(
             column + 0.5, -header_height / 2, label, ha="center", va="center",
-            fontsize=10, fontweight="bold", clip_on=False,
+            fontsize=9, fontweight="bold", clip_on=False,
         )
     summary_ax.set_xlim(0, 2)
     summary_ax.set_ylim(row_count, -header_height)

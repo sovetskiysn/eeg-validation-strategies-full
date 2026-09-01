@@ -252,7 +252,7 @@ The simulator-based and task-based datasets correspond, respectively, to the \te
 \rev{We evaluated the decoders under four validation protocols, each addressing a distinct generalization question. To preserve the independence of the training and test data, all windows originating from the same recording unit were assigned to the same partition. This prevents overlapping windows from being divided between training and test sets, reducing the risk of overly optimistic performance estimates due to temporal autocorrelation between neighboring EEG windows~\cite{chen2025hybrid}. The within-domain baseline estimates performance when training and test data share the same dataset and condition composition but originate from different recording units. The remaining protocols examine whether discriminative performance is retained when training and testing are separated by participant, task composition, or dataset. These protocols were applied only where the structure of each release supported their interpretation: multiple tasks in SAM-40 enabled cross-task validation. Model fitting was confined to the training data, and the resulting decoder was evaluated on held-out data without target-specific adaptation. Any class imbalance was addressed through inverse-frequency class weighting calculated independently within each training fold, while test data retained their observed class distribution.}
 
 \textbf{Baseline evaluation.}
-\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the complete SAM-40 composition, and each task-specific composition of SAM-40. The grouping variable was the physical recording unit: one selected session in the mental attention-state dataset and one run-level recording unit in SAM-40, comprising all task recordings included in the analysis for that run. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. Keeping each unit intact prevented temporally adjacent or partially overlapping windows from the same acquisition from being assigned to opposite folds, thereby avoiding window-level temporal leakage. These estimates serve as within-domain comparators for the transfer protocols.}
+\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the SAM-40 dataset, and each task-specific composition of SAM-40. The grouping variable was the physical recording unit: one selected session in the mental attention-state dataset and one run-level recording unit in SAM-40, comprising all task recordings included in the analysis for that run. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. Keeping each unit intact prevented temporally adjacent or partially overlapping windows from the same acquisition from being assigned to opposite folds, thereby avoiding window-level temporal leakage. These estimates serve as within-domain comparators for the transfer protocols.}
 
 \textbf{Cross-subject validation.}
 \rev{In each leave-one-subject-out fold, the decoder was trained on all selected data from the remaining participants and tested on all selected data from the held-out participant. The resulting performance quantifies zero-shot generalization to an unseen participant.}
@@ -461,8 +461,8 @@ therefore indicate lower transfer performance than the applicable target
 baselines, whereas dashes identify comparisons that are not applicable.
 
 Figure~\ref{fig:baseline_vs_cross_subject} compares baseline and
-leave-one-subject-out cross-subject validation for Dataset~A and the complete
-Dataset~B composition. For each decoder and scenario, balanced accuracy was
+leave-one-subject-out cross-subject validation for the mental attention-state
+dataset and the SAM-40 dataset. For each decoder and scenario, balanced accuracy was
 calculated separately from the held-out windows of each target participant and
 then averaged across target participants; the coloured lines show these
 decoder-specific means. Black points show the mean of the five decoder-specific
@@ -472,36 +472,94 @@ decoders to preserve their pairing.
 
 \input{figures/transfer_matrix}
 
+For cross-task transfer, the mean difference from the target-specific baseline,
+averaged across all five decoders, was $9.6$, $6.3$, $6.6$, and $3.1$
+percentage points lower for the Stroop, Arithmetic, and Mirror task
+compositions and the SAM-40 dataset, respectively. The mean decrease across these sources was
+$6.4$ percentage points. For cross-dataset transfer, the decoder-averaged
+decreases for the Stroop, Arithmetic, and Mirror task compositions, the
+SAM-40 dataset, and the mental attention-state dataset were $13.1$, $10.4$,
+$13.1$, $11.0$, and $20.9$ percentage points, respectively. The mean decrease was $13.7$ percentage
+points. Thus, zero-shot transfer reduced performance in every eligible
+comparison, with a larger reduction when training and test data came from
+different datasets.
+
 \input{figures/baseline_vs_cross_subject}
 
-[TO DO - test about results of above figures]
+In the mental attention-state dataset, mean balanced accuracy was 65.5\% in the
+baseline scenario and 65.4\% in cross-subject validation, a decrease of 0.1
+percentage points. In the SAM-40 dataset, it decreased from 69.1\% to 67.1\%,
+a difference of 2.0 percentage points.
+
+With two exceptions, all decoder-specific estimates fell within the
+corresponding 95\% bootstrap interval. In the SAM-40 baseline scenario,
+ShallowFBCSPNet reached 72.0\%, which was slightly above the interval upper
+bound of 71.6\%. In cross-subject validation, EEGConformer reached 70.7\%,
+which was above the upper bound of 69.7\%.
+
 \subsection*{Performance consistency across decoders}
 
 To assess whether performance patterns across validation strategies depended on
 decoder choice, Figure~\ref{fig:scenario_accuracy_by_decoder} compares all
-validation scenarios across the five decoders. For each decoder and scenario,
-balanced accuracy was calculated separately for each target participant and
-then averaged across target participants (coloured points). Black points show
-the mean of the five decoder-specific estimates, and horizontal bars show
-paired 95\% percentile bootstrap intervals from 10,000 target-participant
-resamples; the same resample was used for all decoders to preserve their
-pairing. The dashed vertical line marks chance-level balanced accuracy (0.50).
+validation scenarios across the five decoders. Each coloured point represents
+the balanced accuracy of one decoder, averaged across target participants in a
+given scenario. The black point and horizontal bar show the mean
+across the five decoders and its paired 95\% percentile bootstrap confidence
+interval (CI), respectively, estimated from 10,000 target-participant
+resamples. The same resample was used for all decoders to preserve their
+pairing.
 
 \input{figures/scenario_accuracy_by_decoder}
 
-[TO DO - test about results of above figures]
+Across the 27 scenarios, 42 of 135 coloured decoder points lay outside the
+corresponding 95\% bootstrap interval. Logistic Regression lay outside the
+interval in seven scenarios, with four points below and three above the
+interval. XGBoost lay outside the interval in four scenarios, with one point
+below and three above the interval; all of these departures occurred in
+cross-dataset transfer settings.
+
+EEGNet lay outside the interval in 12 scenarios, always below it.
+ShallowFBCSPNet lay outside the interval in 10 scenarios, always above it.
+These were the two decoders with the most frequent departures from the
+scenario-average interval.
+
+EEGConformer lay outside the interval in nine scenarios, with two points below
+and seven above the interval. Overall, these patterns show that decoder choice
+materially influenced balanced accuracy across validation scenarios, including
+both within-dataset baselines and transfer settings.
 
 \section*{Discussion}
 
-\textbf{[TODO --- Discussion paragraph 1: Summary of the paper's main conclusion.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Across the data compositions and validation protocols examined here, zero-shot
+discriminative performance declined as the difference between the training and
+test data increased. Performance was comparatively stable when generalization
+was limited to an unseen participant within a dataset, but was lower when the
+training and test compositions differed by task and lower still when they came
+from different datasets. Thus, for these protocol-defined high- versus
+low-demand contrasts, technical compatibility and a common binary label space
+were insufficient to preserve target-specific performance under increasingly
+heterogeneous zero-shot transfer conditions.
 
 \medskip
 
-\textbf{[TODO --- Discussion paragraph 2: Comparison with previous results or theories.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+The overall degradation pattern was observed across the five decoders, but the
+absolute level of balanced accuracy varied materially with decoder choice.
+This finding makes the decoder an important factor in comparative EEG
+evaluation rather than an interchangeable implementation detail. In
+particular, conclusions about a validation scenario should distinguish a
+pattern that is reproduced across model families from the performance of any
+single predeclared model recipe.
 
 \medskip
 
-\textbf{[TODO --- Discussion paragraph 3: Scientific or engineering implications of this work.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+These results provide leakage-resistant, pre-adaptation baselines for assessing
+source--target suitability in the studied data compositions. They indicate that
+nominally aligned labels and partially harmonized acquisition specifications do
+not by themselves establish that a source dataset will support useful zero-shot
+transfer to a target dataset or task composition. Such baselines can therefore
+inform source selection and provide a reference against which subsequent
+transfer-learning, domain-adaptation, and personalization methods can be
+evaluated.
 
 \medskip
 
@@ -516,22 +574,27 @@ not be interpreted as the maximum attainable for any individual scenario: more
 extensive, dataset-specific data cleaning and preparation could alter
 performance, but evaluating such optimization was outside the aim of
 maintaining a common analytical basis for comparative zero-shot evaluation. The
-same reservation applies to the decoders themselves. No hyperparameter search
-or architecture selection was carried out, and the capacity of the Transformer
-decoder was deliberately constrained to suit the size of the available training
-folds, so the reported figures characterize predeclared model recipes rather
-than optimized ones.
-Finally, all source--target transfers were evaluated without target-specific
-domain adaptation or personalization. The present results thus provide
-pre-adaptation baselines for source--target suitability, but do not quantify
-the benefit of adaptation relative to the corresponding zero-shot condition.
-Future work should evaluate these factors explicitly while retaining
-leakage-resistant splits and clearly separating improvements in optimized
-within-domain performance from gains in cross-domain generalization.
+available data also limited the amount of independent training material,
+particularly for the mental attention-state dataset and for training folds
+created by group-disjoint validation. This limitation may have constrained the
+estimation of model parameters and contributed to lower or less stable
+performance estimates. The same reservation applies to the decoders themselves.
+No hyperparameter search or architecture selection was carried out, and the
+capacity of the Transformer decoder was deliberately constrained to suit the
+size of the available training folds, so the reported figures characterize
+predeclared model recipes rather than optimized ones.
 
 \medskip
 
-\textbf{[TODO --- Discussion paragraph 5: Forward-looking statement.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Future work should, first, optimize hyperparameters and architectural choices
+solely within training folds to distinguish limitations of the predeclared
+recipes from limitations imposed by the data compositions and transfer
+scenarios. Second, it should compare prespecified data-preparation pipelines
+and domain-adaptation methods separately and in combination, testing whether
+adaptation provides benefit under a common preparation procedure and whether
+that benefit changes with the preparation strategy. These comparisons should
+retain group-disjoint, leakage-resistant splits and avoid using target test
+data for model selection or parameter tuning.
 
 \section*{Conclusion}
 
