@@ -1026,8 +1026,9 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
     input_dir, output_dir = Path(input_dir), Path(output_dir)
     tables_dir = output_dir / "tables"
     figures_dir = output_dir / "figures"
+    source_png_dir = figures_dir / "source_png"
     source_svg_dir = figures_dir / "source_svg"
-    for directory in (tables_dir, figures_dir, source_svg_dir):
+    for directory in (tables_dir, figures_dir, source_png_dir, source_svg_dir):
         directory.mkdir(parents=True, exist_ok=True)
 
     written = []
@@ -1044,6 +1045,17 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
     composition_table_path.write_text(craft_dataset_composition_table(scenario_glob))
     written.append(composition_table_path)
 
+    # The label mapping states the class definition rather than a measured result,
+    # so nothing is filled into it; it is copied so that every table the manuscript
+    # inputs comes from the same place.
+    label_mapping_path = tables_dir / "label_mapping.tex"
+    label_mapping_path.write_text(
+        (LATEX_ARTIFACT_TEMPLATES_DIR / "label_mapping_table_template.tex").read_text()
+    )
+    written.append(label_mapping_path)
+
+    # Each figure carries its own \begin{figure} wrapper template, so the caption
+    # and label travel with the image instead of living in the manuscript.
     figure_specs = (
         (
             "transfer_degradation_matrix",
@@ -1062,7 +1074,7 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
     )
     for name, craft_figure, savefig_kwargs in figure_specs:
         figure = craft_figure(scenario_glob)
-        figure_path = figures_dir / f"{name}.png"
+        figure_path = source_png_dir / f"{name}.png"
         source_svg_path = source_svg_dir / f"{name}.svg"
         figure.savefig(figure_path, dpi=300, **savefig_kwargs)
         # Matplotlib pads SVG lines with trailing spaces, which the repository
@@ -1072,6 +1084,12 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
             "\n".join(line.rstrip() for line in source_svg_path.read_text().splitlines()) + "\n"
         )
         plt.close(figure)
-        written.extend((figure_path, source_svg_path))
+
+        figure_template = (
+            LATEX_ARTIFACT_TEMPLATES_DIR / f"{name}_figure_template.tex"
+        ).read_text()
+        figure_tex_path = figures_dir / f"{name}.tex"
+        figure_tex_path.write_text(figure_template.replace("FIGURE_SLUG", name))
+        written.extend((figure_tex_path, figure_path, source_svg_path))
 
     return written

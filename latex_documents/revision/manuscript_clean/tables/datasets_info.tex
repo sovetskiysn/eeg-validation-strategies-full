@@ -3,32 +3,35 @@
 \begingroup
 \singlespacing
 \normalsize
-% Distribute the remaining width across the 10 internal cell-side paddings.
+% Column widths are set to the measured width of their own widest cell, so the
+% gaps between columns are only the padding below and not slack inside a column.
+% Their sum is 12.76cm; the rest of \textwidth is the 10 internal cell-side
+% paddings left once @{} removes the two outer ones.
 \setlength{\tabcolsep}{\textwidth}
-\addtolength{\tabcolsep}{-12.7cm}
+\addtolength{\tabcolsep}{-12.76cm}
 \setlength{\tabcolsep}{0.1\tabcolsep}
-\renewcommand{\arraystretch}{1.0}
+\renewcommand{\arraystretch}{1.15}
 \begin{table}[H]
 \centering
 \caption{\textbf{Analytical dataset compositions.}}
 \label{tab:dataset_compositions}
-\begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{2.55cm}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{3.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.75cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.45cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.95cm}@{}}
+\begin{tabular}{@{}>{\fontsize{7}{8}\selectfont\raggedright\arraybackslash}m{2.97cm}>{\fontsize{7}{8}\selectfont\raggedright\arraybackslash}m{3.10cm}>{\fontsize{7}{8}\selectfont\centering\arraybackslash}m{1.63cm}>{\fontsize{7}{8}\selectfont\centering\arraybackslash}m{1.38cm}>{\fontsize{7}{8}\selectfont\centering\arraybackslash}m{1.67cm}>{\fontsize{7}{8}\selectfont\centering\arraybackslash}m{2.01cm}@{}}
 \hline
-{\fontsize{9}{10}\selectfont Dataset configuration} & {\fontsize{9}{10}\selectfont Retained conditions} & {\fontsize{9}{10}\selectfont Participants} & {\fontsize{9}{10}\selectfont Recording units} & {\fontsize{9}{10}\selectfont Windows, n (low / high)} & {\fontsize{9}{10}\selectfont Class distribution, \% (low / high)} \\
+{\fontsize{8}{9}\selectfont Dataset configuration} & {\fontsize{8}{9}\selectfont Retained conditions} & {\fontsize{8}{9}\selectfont Participants} & {\fontsize{8}{9}\selectfont Recording units} & {\fontsize{8}{9}\selectfont Windows, n} & {\fontsize{8}{9}\selectfont Class distribution, \%} \\
 \hline
 Full Dataset~A & Focused, Unfocused & 5 & 24 & 3,192 / 3,192 & 50.0 / 50.0 \\
 Full Dataset~B & Rest, Stroop, Arithmetic, Mirror & 40 & 120 & 600 / 1,800 & 25.0 / 75.0 \\
-Dataset~B: Stroop & Rest, Stroop & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
-Dataset~B: Arithmetic & Rest, Arithmetic & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
-Dataset~B: Mirror & Rest, Mirror & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
-Dataset~B: Stroop + Arithmetic & Rest, Stroop, Arithmetic & 40 & 120 & 600 / 1,200 & 33.3 / 66.7 \\
-Dataset~B: Stroop + Mirror & Rest, Stroop, Mirror & 40 & 120 & 600 / 1,200 & 33.3 / 66.7 \\
-Dataset~B: Arithmetic + Mirror & Rest, Arithmetic, Mirror & 40 & 120 & 600 / 1,200 & 33.3 / 66.7 \\
+B: Stroop & Rest, Stroop & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
+B: Arithmetic & Rest, Arithmetic & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
+B: Mirror & Rest, Mirror & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
+B: Stroop + Arithmetic & Rest, Stroop, Arithmetic & 40 & 120 & 600 / 1,200 & 33.3 / 66.7 \\
+B: Stroop + Mirror & Rest, Stroop, Mirror & 40 & 120 & 600 / 1,200 & 33.3 / 66.7 \\
+B: Arithmetic + Mirror & Rest, Arithmetic, Mirror & 40 & 120 & 600 / 1,200 & 33.3 / 66.7 \\
 \hline
 \end{tabular}
 \normalsize
 \begin{flushleft}
-\textit{Note.} Low and high denote the unified binary attention labels of Table~\ref{tab:label_mapping}. A recording unit is one participant--session--run recording. Counts are the prepared analytical windows, before any training-fold class weighting.
+\textit{Note.} Low and high denote the unified binary attention labels of Table~\ref{tab:label_mapping}; window counts and class distributions are given as low / high. Dataset~B rows name the SAM-40 task composition. A recording unit is one participant--session--run recording. Counts are the prepared analytical windows, before any training-fold class weighting.
 \end{flushleft}
 \end{table}
 \endgroup

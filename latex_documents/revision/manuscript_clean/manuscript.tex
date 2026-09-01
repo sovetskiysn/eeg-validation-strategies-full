@@ -433,19 +433,9 @@ within-composition baseline of each target composition. These comparisons test
 whether the binary contrast was retained when training and test data differed
 in task composition or dataset.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{figures/transfer_degradation_matrix.png}
-\caption{\textbf{Zero-shot transfer performance across source and target compositions.} Each cell reports participant-level balanced accuracy (\%) for one decoder trained on the source composition (rows) and evaluated on the target composition (columns). Grey diagonal cells show the corresponding within-composition baselines; coloured cells show cross-task or cross-dataset transfer; dashes indicate unavailable source--target combinations. For each compatible target composition, each summary first averages participant-level balanced accuracy across the five decoders and subtracts the equally averaged target-specific baseline; it then averages these differences across targets. Negative values indicate lower transfer performance. Cross-task differences combine task-composition and held-out-participant shifts relative to the within-domain baseline.}
-\label{fig:transfer_degradation_matrix}
-\end{figure}
+\input{figures/transfer_degradation_matrix}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{figures/baseline_cross_shift_comparison.png}
-\caption{\textbf{Baseline and cross-subject performance across decoders.} For Full~A and Full~B, coloured lines connect the participant-level mean balanced accuracy of each decoder between baseline and cross-subject validation. Black points show the mean across the five decoders, and bars show paired 95\% bootstrap intervals from 10,000 target-participant resamples.}
-\label{fig:baseline_cross_shift_comparison}
-\end{figure}
+\input{figures/baseline_cross_shift_comparison}
 
 Each directed cross-task estimate was compared with the within-composition
 reference performance of its target composition. The mean balanced-accuracy
@@ -478,12 +468,7 @@ decoder choice, we visualized participant-level balanced accuracy for all five
 decoders. This enabled us to compare the consistency of the observed patterns
 across decoder families.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{figures/all_scenarios_model_comparison.png}
-\caption{\textbf{Participant-level balanced accuracy across experimental scenarios for the five decoders.} For each decoder and scenario, balanced accuracy was calculated separately for each target participant and averaged across participants (coloured points). Black points show the mean of the five decoder-specific estimates; horizontal bars show paired 95\% percentile bootstrap intervals from 10,000 target-participant resamples. The dashed vertical line marks chance-level balanced accuracy (0.50).}
-\label{fig:all_scenarios_model_comparison}
-\end{figure}
+\input{figures/all_scenarios_model_comparison}
 
 Within-composition reference performance was used to evaluate zero-shot
 generalization to a held-out target participant. Averaged across the five
