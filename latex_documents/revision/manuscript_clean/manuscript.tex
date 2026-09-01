@@ -418,116 +418,72 @@ weights were used.}
 
 \textbf{[TODO --- Which decoder carries the Results narrative?]}
 
-\subsection*{Evaluation metrics and summary comparisons}
+\section*{Results and analysis}
 
-\rev{The evaluation design comprised two explicit factors: the validation
-scenario and the decoder. The 34 scenario configurations covered the
-within-domain baseline, cross-subject, cross-session, cross-task and
-cross-dataset protocols described above; each configuration was evaluated with
-the same five decoders. We therefore interpret a pattern that recurs across
-decoders as evidence about the data and validation protocol rather than as a
-property of one particular classifier. The scenario-specific estimates remain
-important: cross-session evaluation was available only for Dataset~A, and
-cross-task evaluation only for Dataset~B, because the releases differ in the
-recording structure needed to define those tests.}
+To characterize zero-shot generalization across the prespecified validation
+strategies, we evaluated the binary contrast between high-demand conditions and
+rest or task disengagement with five decoders.
+Table~\ref{tab:scenario_logistic_regression} reports decoder-specific
+performance across these strategies. It presents
+participant-level balanced accuracy, macro F1, MCC, ROC-AUC, and per-class
+recall for logistic regression, the interpretable reference decoder.
+Corresponding tables for XGBoost, EEGNet, ShallowFBCSPNet, and EEGConformer are
+provided in the Supporting Information.
 
-\rev{For each logical scenario result, each held-out window appeared in only
-one fold. We calculated balanced accuracy, macro F1, the Matthews correlation
-coefficient (MCC), the area under the receiver operating characteristic curve
-(ROC-AUC), and recall for each class separately for every target participant,
-then used the unweighted mean across participants as the scenario estimate.
-This gives each participant the same influence regardless of the number of
-retained windows. Balanced accuracy was the primary measure for comparisons
-across scenarios because it weights the recall of the low- and high-demand
-classes equally despite their potentially unequal frequencies in a test set.
-Macro F1 and MCC provide complementary summaries that also give equal weight to
-the two classes, whereas ROC-AUC describes the ability of the decoder scores to
-rank the two classes. Per-class recall was reported to identify performance
-asymmetries that a single summary metric can conceal. The scenario tables and
-both figures use these same participant-level estimates.}
+\input{tables/result_table_logistic_regression}
 
-\rev{In the all-scenarios comparison figure, coloured points show the
-participant-level balanced-accuracy mean of each decoder and black points show
-the mean of these five decoder estimates. To quantify uncertainty in the latter
-mean, we generated 10,000 bootstrap samples by resampling target participants
-with replacement. The same sampled participant identifiers were used for all
-five decoders in each resample, preserving the pairing of their results. The
-95\% interval is given by the 2.5th and 97.5th percentiles of the resulting
-mean estimates.}
+\subsection*{Generalization under increasingly stringent validation strategies}
 
-\rev{For summaries of zero-shot transfer, each directed source--target result
-was compared with the within-domain participant-level balanced-accuracy
-baseline for the same target composition. For decoder $m$, source composition
-$s$, and target composition $t$, transfer degradation was defined as
-$\Delta_{m,s\rightarrow t}=\overline{\mathrm{BA}}_{m,s\rightarrow t}-\overline{\mathrm{BA}}_{m,t\rightarrow t}$,
-where the overbar denotes the unweighted mean across target participants.
-Thus, a negative value indicates that applying a decoder trained on the source
-reduced discriminative performance relative to a decoder evaluated in the
-target composition. Mean $\Delta$ values in the transfer matrix average this
-quantity only over decoders and target compositions for which the corresponding
-target-specific baseline was defined; they are descriptive summaries, not
-additional independent experiments. In particular, a cross-task $\Delta$
-combines a change of task composition with generalization to a held-out
-participant, because the cross-task protocol is subject-disjoint whereas its
-within-domain target baseline is not. It must therefore not be interpreted as
-the effect of task composition alone.}
+To examine generalization under increasingly stringent validation strategies,
+we compared directed cross-task and cross-dataset transfer with the
+within-composition baseline of each target composition. These comparisons test
+whether the binary contrast was retained when training and test data differed
+in task composition or dataset.
 
-\section*{Results}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/transfer_degradation_matrix.png}
+\caption{\textbf{Zero-shot transfer performance across source and target compositions.} Each cell reports participant-level balanced accuracy (\%) for one decoder trained on the source composition (rows) and evaluated on the target composition (columns). Grey diagonal cells show the corresponding within-composition baselines; coloured cells show cross-task or cross-dataset transfer; dashes indicate unavailable source--target combinations. For each compatible target composition, each summary first averages participant-level balanced accuracy across the five decoders and subtracts the equally averaged target-specific baseline; it then averages these differences across targets. Negative values indicate lower transfer performance. Cross-task differences combine task-composition and held-out-participant shifts relative to the within-domain baseline.}
+\label{fig:transfer_degradation_matrix}
+\end{figure}
 
-Across the 34 scenario configurations, balanced accuracy was summarized at the
-participant level and then compared across the five decoders. Table~\ref{tab:results_summary}
-gives compact all-decoder summaries for the principal validation contrasts,
-Figure~\ref{fig:all_scenarios_model_comparison} shows every scenario and the
-paired 95\% bootstrap intervals around its all-decoder mean, and
-Figure~\ref{fig:transfer_degradation_matrix} shows the directed task and
-dataset-transfer results. Decoder-specific metrics for every scenario are
-reported in Supporting Information.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/baseline_cross_shift_comparison.png}
+\caption{\textbf{Baseline and cross-subject performance across decoders.} For Full~A and Full~B, coloured lines connect the participant-level mean balanced accuracy of each decoder between baseline and cross-subject validation. Black points show the mean across the five decoders, and bars show paired 95\% bootstrap intervals from 10,000 target-participant resamples.}
+\label{fig:baseline_cross_shift_comparison}
+\end{figure}
 
-\subsection*{Within-composition discrimination was retained across participants and sessions}
-
-We first established reference performance within each dataset composition and
-then evaluated transfer to held-out participants and, for Dataset~A, to held-out
-recording sessions. Averaged across the five decoders, balanced accuracy was
-0.66 for the Full~A baseline and 0.69 for the Full~B baseline
-(Table~\ref{tab:results_summary}; Figure~\ref{fig:all_scenarios_model_comparison}).
-When the target participant was held out, the corresponding all-decoder means
-were 0.65 for Full~A and 0.67 for Full~B. Holding out a recording session in
-Full~A yielded an all-decoder mean balanced accuracy of 0.64. Thus, the
-discrimination of the protocol-defined high-demand versus rest or
-task-disengagement contrast was retained under the participant and session
-shifts evaluated here, with the pattern reproduced across the five decoders.
-
-\subsection*{Changing Dataset~B task composition reduced performance, with direction-dependent magnitude}
-
-We next tested whether a decoder trained on the same binary contrast under one
-Dataset~B task composition transferred to another. Relative to the
-target-specific baseline, the mean balanced-accuracy degradation across the
-two other single-task targets was $-10.1$ percentage points for a Stroop
-source, $-7.2$ points for an Arithmetic source, and $-6.9$ points for a Mirror
-source (Table~\ref{tab:results_summary};
-Figure~\ref{fig:transfer_degradation_matrix}). The direction-level means
+Each directed cross-task estimate was compared with the within-composition
+reference performance of its target composition. The mean balanced-accuracy
+degradation across the two other single-task targets was $-10.1$ percentage
+points for a Stroop source, $-7.2$ points for an Arithmetic source, and $-6.9$
+points for a Mirror source (Figure~\ref{fig:transfer_degradation_matrix}). The
+direction-level means
 therefore differed between source--target pairs, while each source showed a
 lower average than its corresponding target-specific baselines. These
 cross-task results combine a change in task composition with zero-shot
 generalization to a held-out participant; they do not isolate the effect of
 task composition alone.
 
-\subsection*{Cross-dataset transfer was lower and asymmetric}
-
-Finally, transfer between Dataset~A and Dataset~B produced lower
-all-decoder balanced accuracy than the corresponding within-composition
-baselines. When Full~A was the source, its mean balanced accuracy across the
+The same target-specific comparison was applied to directed cross-dataset
+transfers. When Full~A was the source, its mean balanced accuracy across the
 Full~B and single-task Dataset~B targets was 0.49 (range, 0.46--0.52), a mean
 degradation of $-20.6$ percentage points relative to the relevant target
 baselines. In the reverse Full~B$\rightarrow$Full~A direction, mean balanced
 accuracy was 0.55 and the degradation was $-10.9$ points
-(Table~\ref{tab:results_summary}; Figure~\ref{fig:transfer_degradation_matrix}).
+(Figure~\ref{fig:transfer_degradation_matrix}).
 The directed transfers from the individual Dataset~B task compositions to
 Full~A also varied, with mean degradations from $-10.2$ to $-13.0$ points.
 Thus, the observed cross-dataset performance depended on transfer direction
 under the compound dataset shift represented by this protocol.
 
-\input{tables/results_summary}
+\subsection*{Performance consistency across decoders}
+
+To assess whether performance patterns across validation strategies depended on
+decoder choice, we visualized participant-level balanced accuracy for all five
+decoders. This enabled us to compare the consistency of the observed patterns
+across decoder families.
 
 \begin{figure}[H]
 \centering
@@ -536,12 +492,15 @@ under the compound dataset shift represented by this protocol.
 \label{fig:all_scenarios_model_comparison}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{figures/transfer_degradation_matrix.png}
-\caption{\textbf{Zero-shot transfer performance across source and target compositions.} Each cell reports participant-level balanced accuracy (\%) for one decoder trained on the source composition (rows) and evaluated on the target composition (columns). Grey diagonal cells show the corresponding within-composition baselines; coloured cells show cross-task or cross-dataset transfer; dashes indicate unavailable source--target combinations. For each compatible target composition, each summary first averages participant-level balanced accuracy across the five decoders and subtracts the equally averaged target-specific baseline; it then averages these differences across targets. Negative values indicate lower transfer performance. Cross-task differences combine task-composition and held-out-participant shifts relative to the within-domain baseline.}
-\label{fig:transfer_degradation_matrix}
-\end{figure}
+Within-composition reference performance was used to evaluate zero-shot
+generalization to a held-out target participant. Averaged across the five
+decoders, balanced accuracy was 0.66 for the Full~A baseline and 0.69 for the
+Full~B baseline (Figure~\ref{fig:all_scenarios_model_comparison}).
+When the target participant was held out, the corresponding all-decoder means
+were 0.65 for Full~A and 0.67 for Full~B. Thus, the discrimination of the
+protocol-defined high-demand versus rest or task-disengagement contrast was
+retained under the participant shifts evaluated here, with the pattern
+reproduced across the five decoders.
 
 \section*{Discussion}
 
@@ -557,7 +516,24 @@ under the compound dataset shift represented by this protocol.
 
 \medskip
 
-\textbf{[TODO --- Discussion paragraph 4: Paper's limitations in scope.]} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Several limitations delimit the interpretation of these findings. First, the
+binary labels represent protocol-defined contrasts and do not isolate attention
+from related differences in arousal, visual input, stress, or task demands.
+Second, restriction to the 12 channels shared by the datasets limits the
+stability of ICA-based artefact removal. Third, the common preparation pipeline
+was deliberately parsimonious and fixed across datasets, task compositions,
+validation protocols, and decoders. The reported performance should therefore
+not be interpreted as the maximum attainable for any individual scenario: more
+extensive, dataset-specific data cleaning and preparation could alter
+performance, but evaluating such optimization was outside the aim of
+maintaining a common analytical basis for comparative zero-shot evaluation.
+Finally, all source--target transfers were evaluated without target-specific
+domain adaptation or personalization. The present results thus provide
+pre-adaptation baselines for source--target suitability, but do not quantify
+the benefit of adaptation relative to the corresponding zero-shot condition.
+Future work should evaluate these factors explicitly while retaining
+leakage-resistant splits and clearly separating improvements in optimized
+within-domain performance from gains in cross-domain generalization.
 
 \medskip
 
@@ -588,7 +564,6 @@ under the compound dataset shift represented by this protocol.
 
 \textbf{[TODO --- Supporting information is currently in progress.]}
 
-\input{tables/result_table_logistic_regression}
 \input{tables/result_table_xgboost}
 \input{tables/result_table_eegnet}
 \input{tables/result_table_shallownet}

@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.figure import Figure
-from matplotlib.colors import LinearSegmentedColormap, Normalize
+from matplotlib.colors import LinearSegmentedColormap, Normalize, to_rgba
 from matplotlib.lines import Line2D
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import MaxNLocator
@@ -284,106 +284,6 @@ def craft_main_table(scenario_glob: str) -> str:
         cells = lines[index].rstrip("\n").split("&")
         lines[index] = f"{cells[0]}&{cells[1]}& " + " & ".join(metrics_by_scenario[scenario]) + r" \\" + "\n"
     return "".join(lines)
-
-
-def craft_results_summary_table(scenario_glob: str) -> str:
-    """Summarize the all-decoder contrasts carried by the Results narrative."""
-    job_dirs = discover_scenario_results(scenario_glob)
-    expected_result_count = len(SCENARIO_ORDER) * len(ARTICLE_DECODERS)
-    if len(job_dirs) != expected_result_count:
-        raise ValueError(
-            f"A Results summary needs {expected_result_count} scenario results, got {len(job_dirs)}."
-        )
-
-    scores: dict[tuple[str, tuple[object, ...]], float] = {}
-    for job_dir in job_dirs:
-        cfg, windows, folds = read_scenario_result(job_dir)
-        decoder = decoder_name(cfg)
-        scenario = scenario_key(cfg)
-        if decoder not in ARTICLE_DECODERS or scenario not in SCENARIO_ORDER:
-            raise ValueError(f"Unexpected article result in {job_dir}.")
-        key = decoder, scenario
-        if key in scores:
-            raise ValueError(f"Duplicate Results-summary score for {decoder}, {scenario}.")
-        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
-        scores[key] = metrics["balanced_accuracy"].mean()
-
-    missing = [
-        (decoder, scenario)
-        for decoder in ARTICLE_DECODERS
-        for scenario in SCENARIO_ORDER
-        if (decoder, scenario) not in scores
-    ]
-    if missing:
-        raise ValueError(f"Results summary is missing scenarios: {missing}.")
-
-    def scenario_mean(scenario: tuple[object, ...]) -> float:
-        return float(np.mean([scores[(decoder, scenario)] for decoder in ARTICLE_DECODERS]))
-
-    summary_rows = (
-        ("Baseline", "Full A", (("baseline", DISTINGUISHING, DISTINGUISHING),)),
-        ("Baseline", "Full B", (("baseline", SAM40_FULL, SAM40_FULL),)),
-        ("Cross-subject", "Full A", (("cross_subject", DISTINGUISHING, DISTINGUISHING),)),
-        ("Cross-subject", "Full B", (("cross_subject", SAM40_FULL, SAM40_FULL),)),
-        ("Cross-session", "Full A", (("cross_session", DISTINGUISHING, DISTINGUISHING),)),
-        (
-            "Cross-task",
-            "Stroop",
-            (
-                ("cross_task", SAM40_STROOP, SAM40_ARITHMETIC),
-                ("cross_task", SAM40_STROOP, SAM40_MIRROR),
-            ),
-        ),
-        (
-            "Cross-task",
-            "Arithmetic",
-            (
-                ("cross_task", SAM40_ARITHMETIC, SAM40_STROOP),
-                ("cross_task", SAM40_ARITHMETIC, SAM40_MIRROR),
-            ),
-        ),
-        (
-            "Cross-task",
-            "Mirror",
-            (
-                ("cross_task", SAM40_MIRROR, SAM40_STROOP),
-                ("cross_task", SAM40_MIRROR, SAM40_ARITHMETIC),
-            ),
-        ),
-        (
-            "Cross-dataset",
-            "Full A",
-            (
-                ("cross_dataset", DISTINGUISHING, SAM40_FULL),
-                ("cross_dataset", DISTINGUISHING, SAM40_STROOP),
-                ("cross_dataset", DISTINGUISHING, SAM40_ARITHMETIC),
-                ("cross_dataset", DISTINGUISHING, SAM40_MIRROR),
-            ),
-        ),
-        ("Cross-dataset", "Full B", (("cross_dataset", SAM40_FULL, DISTINGUISHING),)),
-        ("Cross-dataset", "Stroop", (("cross_dataset", SAM40_STROOP, DISTINGUISHING),)),
-        ("Cross-dataset", "Arithmetic", (("cross_dataset", SAM40_ARITHMETIC, DISTINGUISHING),)),
-        ("Cross-dataset", "Mirror", (("cross_dataset", SAM40_MIRROR, DISTINGUISHING),)),
-    )
-
-    lines = []
-    for protocol, source_label, scenarios in summary_rows:
-        direction_means = [scenario_mean(scenario) for scenario in scenarios]
-        balanced_accuracy = np.mean(direction_means)
-        accuracy_text = f"{balanced_accuracy:.2f} ({min(direction_means):.2f}--{max(direction_means):.2f})"
-        deltas = []
-        for scenario_protocol, source, target in scenarios:
-            baseline = ("baseline", target, target)
-            if scenario_protocol != "baseline" and baseline in SCENARIO_ORDER:
-                deltas.append(scenario_mean((scenario_protocol, source, target)) - scenario_mean(baseline))
-        delta_text = "--" if not deltas else f"{100 * np.mean(deltas):.1f}"
-        lines.append(
-            f"{protocol} & {source_label} & {len(scenarios)} & {accuracy_text} & {delta_text} "
-            + r"\\"
-        )
-
-    template = (LATEX_ARTIFACT_TEMPLATES_DIR / "results_summary_table_template.tex").read_text()
-    return template.replace("SUMMARY_ROWS", "\n".join(lines))
 
 
 def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
@@ -855,6 +755,169 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
     return fig
 
 
+def craft_baseline_cross_shift_comparison_figure(scenario_glob: str) -> Figure:
+    """Build the per-dataset baseline-to-cross-subject trajectory of every decoder."""
+    panel_specs = (("Dataset A", DISTINGUISHING), ("Dataset B", SAM40_FULL))
+    protocol_specs = (("baseline", "Baseline"), ("cross_subject", "Cross-subject"))
+    decoder_specs = (
+        ("logistic_regression", "Logistic Regression", "#1F77B4"),
+        ("xgboost", "XGBoost", "#FF7F0E"),
+        ("eegnet", "EEGNet", "#D62728"),
+        ("shallownet", "ShallowNet", "#9467BD"),
+        ("eegconformer", "EEGConformer", "#2CA02C"),
+    )
+    # A panel column is one non-transfer scenario, which is its own target.
+    panel_scenarios = tuple(
+        tuple((protocol, side, side) for protocol, _ in protocol_specs)
+        for _, side in panel_specs
+    )
+
+    # =============================================================================
+    # Step 1: read the few scenarios this figure compares
+    # =============================================================================
+    # The sweep also holds every transfer direction, and none of them belongs on
+    # a protocol axis, so unrelated scenarios are skipped instead of counted.
+    wanted = {scenario for scenarios in panel_scenarios for scenario in scenarios}
+    known_decoders = {decoder for decoder, _, _ in decoder_specs}
+    scores: dict[tuple[str, tuple[object, ...]], pd.Series] = {}
+    for job_dir in discover_scenario_results(scenario_glob):
+        cfg, windows, folds = read_scenario_result(job_dir)
+        scenario = scenario_key(cfg)
+        decoder = decoder_name(cfg)
+        if scenario not in wanted or decoder not in known_decoders:
+            continue
+        if (decoder, scenario) in scores:
+            raise ValueError(f"Duplicate result for decoder {decoder} and scenario {scenario}.")
+
+        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
+        scores[(decoder, scenario)] = metrics["balanced_accuracy"]
+
+    missing = [
+        (decoder, scenario)
+        for decoder, _, _ in decoder_specs
+        for scenario in sorted(wanted)
+        if (decoder, scenario) not in scores
+    ]
+    if missing:
+        raise ValueError(f"The baseline-to-cross-subject figure is missing scenarios: {missing}.")
+
+    # =============================================================================
+    # Step 2: decoder means and the paired bootstrap interval of their average
+    # =============================================================================
+    # Resampling the participants once per draw keeps the five decoders paired:
+    # they were measured on the very same target participants.
+    rng = np.random.default_rng(42)
+    panel_means, panel_averages, panel_errors = [], [], []
+    for scenarios in panel_scenarios:
+        means = np.array(
+            [
+                [scores[(decoder, scenario)].mean() for decoder, _, _ in decoder_specs]
+                for scenario in scenarios
+            ]
+        )
+        averages = means.mean(axis=1)
+        lower_errors, upper_errors = [], []
+        for scenario_index, scenario in enumerate(scenarios):
+            participant_ids = scores[(decoder_specs[0][0], scenario)].index
+            for decoder, _, _ in decoder_specs[1:]:
+                if not scores[(decoder, scenario)].index.equals(participant_ids):
+                    raise ValueError(
+                        f"Scenario {scenario}: target participants differ between decoders; "
+                        "paired bootstrap is not defined."
+                    )
+            sampled_indices = rng.integers(0, len(participant_ids), size=(10_000, len(participant_ids)))
+            bootstrap_means = np.stack(
+                [scores[(decoder, scenario)].to_numpy()[sampled_indices].mean(axis=1) for decoder, _, _ in decoder_specs]
+            ).mean(axis=0)
+            low, high = np.quantile(bootstrap_means, (0.025, 0.975))
+            lower_errors.append(averages[scenario_index] - low)
+            upper_errors.append(high - averages[scenario_index])
+        panel_means.append(means)
+        panel_averages.append(averages)
+        panel_errors.append(np.array((lower_errors, upper_errors)))
+
+    # =============================================================================
+    # Step 3: draw both panels on one shared accuracy scale
+    # =============================================================================
+    # The accuracy range follows the data instead of a fixed window: an article
+    # figure comparing protocols is read by the size of the gaps between them,
+    # and a hardcoded scale would push a well-performing sweep into a corner.
+    plotted_scores = np.concatenate(
+        [means.ravel() for means in panel_means]
+        + [averages - errors[0] for averages, errors in zip(panel_averages, panel_errors, strict=True)]
+        + [averages + errors[1] for averages, errors in zip(panel_averages, panel_errors, strict=True)]
+    )
+    score_padding = np.ptp(plotted_scores) * 0.25
+
+    x_positions = np.arange(len(protocol_specs))
+    fig, axes = plt.subplots(1, len(panel_specs), figsize=(11.4, 5.6), sharey=True)
+    for panel_index, (ax, (title, _)) in enumerate(zip(axes, panel_specs, strict=True)):
+        means, averages, errors = (
+            panel_means[panel_index],
+            panel_averages[panel_index],
+            panel_errors[panel_index],
+        )
+        for decoder_index, (_, label, colour) in enumerate(decoder_specs):
+            ax.plot(
+                x_positions,
+                means[:, decoder_index],
+                color=colour,
+                linewidth=2.4,
+                alpha=0.65,
+                marker="o",
+                markersize=7,
+                markeredgecolor="#24354F",
+                markeredgewidth=0.35,
+                label=label if panel_index == 0 else None,
+                zorder=3,
+            )
+        # Only the connecting line of the average is translucent, so that it
+        # summarises the five trajectories without painting over them; its point
+        # and interval stay as solid as on the other article figures.
+        ax.plot(x_positions, averages, color="#1F2937", alpha=0.45, linewidth=3.0, zorder=4)
+        ax.errorbar(
+            x_positions,
+            averages,
+            yerr=errors,
+            fmt="o",
+            color="#1F2937",
+            ecolor="#1F2937",
+            markerfacecolor=to_rgba("#1F2937", 0.6),
+            markersize=10,
+            markeredgecolor="white",
+            markeredgewidth=1.0,
+            elinewidth=1.4,
+            capsize=4,
+            label="Average (95% bootstrap CI)" if panel_index == 0 else None,
+            zorder=5,
+        )
+        ax.set_title(title, fontsize=15, fontweight="bold", color="#172B4D", loc="left", pad=12)
+        ax.set_xticks(x_positions, [label for _, label in protocol_specs], fontsize=12,
+                      fontweight="bold", color="#24354F")
+        ax.set_xlim(-0.45, len(protocol_specs) - 0.55)
+        ax.grid(axis="y", color="#E0E6EF", linewidth=0.8)
+        ax.set_axisbelow(True)
+        ax.spines[["top", "right"]].set_visible(False)
+        ax.tick_params(axis="both", length=0, labelsize=11)
+    axes[0].set_ylim(plotted_scores.min() - score_padding, plotted_scores.max() + score_padding)
+
+    handles, labels = axes[0].get_legend_handles_labels()
+    legend = fig.legend(
+        handles,
+        labels,
+        ncols=len(handles),
+        loc="lower center",
+        bbox_to_anchor=(0.5, 0.0),
+        frameon=False,
+        fontsize=11,
+        handletextpad=0.45,
+        columnspacing=1.4,
+    )
+    plt.setp(legend.get_texts(), fontweight="bold")
+    fig.subplots_adjust(left=0.055, right=0.985, top=0.865, bottom=0.145, wspace=0.07)
+    return fig
+
+
 def save_svg_without_trailing_whitespace(figure: Figure, path: Path, **savefig_kwargs) -> None:
     """Write a stable source SVG that also passes the repository whitespace check."""
     figure.savefig(path, format="svg", **savefig_kwargs)
@@ -877,13 +940,20 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
         written.append(table_path)
 
     scenario_glob = str(input_dir / "*" / "*")
-    summary_table_path = tables_dir / "results_summary.tex"
-    summary_table_path.write_text(craft_results_summary_table(scenario_glob))
-    written.append(summary_table_path)
 
     figure = craft_transfer_degradation_matrix_figure(scenario_glob)
     figure_path = figures_dir / "transfer_degradation_matrix.png"
     source_svg_path = source_svg_dir / "transfer_degradation_matrix.svg"
+    figure.savefig(figure_path, dpi=300, bbox_inches="tight", pad_inches=0.03)
+    save_svg_without_trailing_whitespace(
+        figure, source_svg_path, bbox_inches="tight", pad_inches=0.03
+    )
+    plt.close(figure)
+    written.extend((figure_path, source_svg_path))
+
+    figure = craft_baseline_cross_shift_comparison_figure(scenario_glob)
+    figure_path = figures_dir / "baseline_cross_shift_comparison.png"
+    source_svg_path = source_svg_dir / "baseline_cross_shift_comparison.svg"
     figure.savefig(figure_path, dpi=300, bbox_inches="tight", pad_inches=0.03)
     save_svg_without_trailing_whitespace(
         figure, source_svg_path, bbox_inches="tight", pad_inches=0.03
