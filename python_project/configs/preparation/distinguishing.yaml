@@ -1,10 +1,11 @@
 
 name: distinguishing
 dataset_dir: datasets/bids/distinguishing
+save_preparation_html_reports: false
 
 # This node alone is passed to MNE-BIDS-Pipeline after annotation-based type
 # coercion in preparation.py. Omitted settings use Pipeline 1.10.1 defaults.
-mne_bids_pipeline:
+mne_bids_pipeline_config:
   bids_root: ${..dataset_dir}
   deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/attention
   allow_missing_sessions: true

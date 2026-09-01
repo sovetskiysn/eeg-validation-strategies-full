@@ -1,10 +1,11 @@
 
 name: sam40
 dataset_dir: datasets/bids/sam40
+save_preparation_html_reports: false
 
 # Shared SAM-40 pipeline recipe. It is a base config, not a runnable recipe:
 # every `sam40_*` composition supplies its own task list and derivatives root.
-mne_bids_pipeline:
+mne_bids_pipeline_config:
   bids_root: ${..dataset_dir}
   ch_types: [eeg]
   analyze_channels: [F3, F4, F7, F8, FC5, FC6, O1, O2, P7, P8, T7, T8]

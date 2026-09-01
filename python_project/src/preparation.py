@@ -28,10 +28,6 @@ from utils import PROJECT_ROOT
 
 log = logging.getLogger(__name__)
 
-# Disable the sweep-wide preparation snapshot if we only want the per-run log and
-# derivative outputs. Per-run Pipeline logs are always kept.
-CREATE_SWEEP_PREPARATION_SNAPSHOT = False
-
 
 # The native BIDS vocabulary is written by dataset_standardization. This mapping
 # is the research question: it collapses conditions into the shared, protocol-
@@ -111,7 +107,8 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
     # =============================================================================
     scenario_name = str(preparation_config.name)
     dataset_name = Path(str(preparation_config.dataset_dir)).name
-    pipeline_config = preparation_config.mne_bids_pipeline
+    save_html_reports = bool(preparation_config.save_preparation_html_reports)
+    pipeline_config = preparation_config.mne_bids_pipeline_config
     tasks = pipeline_config.task
     if OmegaConf.is_config(tasks):
         tasks = OmegaConf.to_container(tasks, resolve=True)
@@ -132,7 +129,7 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
     annotations = mbp_config.__annotations__
     if unknown := sorted(set(params) - set(annotations)):
         raise ValueError(
-            f"Unknown mne_bids_pipeline settings {unknown}. "
+            f"Unknown mne_bids_pipeline_config settings {unknown}. "
             "Check the preparation YAML for a typo or a renamed option."
         )
     params = {key: _coerce(value, annotations[key]) for key, value in params.items()}
@@ -221,16 +218,16 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
         else:
             cache_status = "not reused"
 
-        report_paths = sorted(
-            report_path
-            for report_path in derivative_root.rglob("*_report.html")
-            if "sub-average" not in report_path.parts
-        )
-        if not report_paths:
-            raise FileNotFoundError(
-                f"{derivative_root} contains no MNE-BIDS-Pipeline HTML reports."
+        if save_html_reports:
+            report_paths = sorted(
+                report_path
+                for report_path in derivative_root.rglob("*_report.html")
+                if "sub-average" not in report_path.parts
             )
-        if CREATE_SWEEP_PREPARATION_SNAPSHOT:
+            if not report_paths:
+                raise FileNotFoundError(
+                    f"{derivative_root} contains no MNE-BIDS-Pipeline HTML reports."
+                )
             completed_marker = destination_dir / ".snapshot_complete"
             source_marker = destination_dir / ".source_derivative_root"
             if completed_marker.exists():
@@ -241,10 +238,12 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
                     )
             else:
                 if destination_dir.exists():
-                    raise RuntimeError(
-                        f"{destination_dir} exists without .snapshot_complete; "
-                        "remove the incomplete snapshot before rerunning."
-                    )
+                    if any(destination_dir.iterdir()):
+                        raise RuntimeError(
+                            f"{destination_dir} exists without .snapshot_complete; "
+                            "remove the incomplete snapshot before rerunning."
+                        )
+                    destination_dir.rmdir()
                 destination_dir.parent.mkdir(parents=True, exist_ok=True)
                 with tempfile.TemporaryDirectory(
                     dir=destination_dir.parent, prefix=f".{scenario_name}.snapshot-"
@@ -259,15 +258,16 @@ def prepare_epochs(preparation_config: DictConfig) -> mne.Epochs:
                     )
                     (staged_dir / ".snapshot_complete").touch()
                     staged_dir.replace(destination_dir)
+        else:
+            destination_dir.mkdir(parents=True, exist_ok=True)
 
         log.info(
-            "Preparation %s: complete; cache %s; derivatives: %s; reports: %s; full log: %s; sweep snapshot: %s.",
+            "Preparation %s: complete; cache %s; derivatives: %s; HTML report snapshot: %s; full log: %s.",
             scenario_name,
             cache_status,
             derivative_root,
-            destination_dir if CREATE_SWEEP_PREPARATION_SNAPSHOT else "disabled",
+            destination_dir if save_html_reports else "disabled",
             pipeline_log_path,
-            "enabled" if CREATE_SWEEP_PREPARATION_SNAPSHOT else "disabled",
         )
 
     # =============================================================================

@@ -4,4 +4,4 @@ targets: {}
 # Expose the source preparation recipe at the ordinary path used by the
 # classical feature config. Transfer validation still receives source and
 # targets separately; this alias only resolves shared feature parameters.
-mne_bids_pipeline: ${.source.mne_bids_pipeline}
+mne_bids_pipeline_config: ${.source.mne_bids_pipeline_config}

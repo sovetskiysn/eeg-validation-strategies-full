@@ -4,6 +4,6 @@ defaults:
 
 name: sam40_stroop_mirror
 
-mne_bids_pipeline:
+mne_bids_pipeline_config:
   task: [relax, stroop, mirror]
   deriv_root: ${..dataset_dir}/derivatives/mne-bids-pipeline/relax-stroop-mirror

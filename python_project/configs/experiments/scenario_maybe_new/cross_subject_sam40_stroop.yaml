@@ -1,0 +1,5 @@
+# @package _global_
+
+defaults:
+  - override /validation_strategy: cross_subject
+  - override /preparation: sam40_stroop

@@ -1,0 +1,23 @@
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{table}[H]
+\centering
+\caption{\textbf{All-decoder balanced-accuracy summaries for the principal validation contrasts.}}
+\label{tab:results_summary}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{2.6cm}>{\centering\arraybackslash}p{1.25cm}>{\centering\arraybackslash}p{2.35cm}>{\centering\arraybackslash}p{1.8cm}@{}}
+\hline
+Protocol & Source composition & Directed comparisons & Mean balanced accuracy & Mean $\Delta$ (percentage points) \\
+\hline
+SUMMARY_ROWS
+\hline
+\end{tabular}
+\begin{flushleft}
+\textit{Note.} Each directed result is the participant-level balanced-accuracy mean, first averaged across the five decoders. The displayed balanced accuracy is then averaged across the listed directions; parentheses give the range of these direction-level means. $\Delta$ is the equally weighted mean difference from the corresponding target-specific baseline. It is reported only for directions whose target has a defined baseline. Full scenario-level results and decoder-specific metrics are reported in Supporting Information.
+\end{flushleft}
+\end{table}
+\endgroup

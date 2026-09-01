@@ -151,7 +151,7 @@ def build_cross_task(
     if not preparation_config.targets:
         raise ValueError("cross-task validation needs at least one target task composition.")
     source_dataset = Path(str(preparation_config.source.dataset_dir)).name
-    source_task = preparation_config.source.mne_bids_pipeline.task
+    source_task = preparation_config.source.mne_bids_pipeline_config.task
     source_tasks = {source_task} if isinstance(source_task, str) else set(source_task)
     for index, target in enumerate(preparation_config.targets.values()):
         target_dataset = Path(str(target.dataset_dir)).name
@@ -160,7 +160,7 @@ def build_cross_task(
                 "cross-task validation requires the same dataset on the source and every "
                 f"target; target {index} is {target_dataset}, the source is {source_dataset}."
             )
-        target_task = target.mne_bids_pipeline.task
+        target_task = target.mne_bids_pipeline_config.task
         target_tasks = {target_task} if isinstance(target_task, str) else set(target_task)
         if source_tasks == target_tasks:
             raise ValueError(

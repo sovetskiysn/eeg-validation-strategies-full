@@ -286,6 +286,106 @@ def craft_main_table(scenario_glob: str) -> str:
     return "".join(lines)
 
 
+def craft_results_summary_table(scenario_glob: str) -> str:
+    """Summarize the all-decoder contrasts carried by the Results narrative."""
+    job_dirs = discover_scenario_results(scenario_glob)
+    expected_result_count = len(SCENARIO_ORDER) * len(ARTICLE_DECODERS)
+    if len(job_dirs) != expected_result_count:
+        raise ValueError(
+            f"A Results summary needs {expected_result_count} scenario results, got {len(job_dirs)}."
+        )
+
+    scores: dict[tuple[str, tuple[object, ...]], float] = {}
+    for job_dir in job_dirs:
+        cfg, windows, folds = read_scenario_result(job_dir)
+        decoder = decoder_name(cfg)
+        scenario = scenario_key(cfg)
+        if decoder not in ARTICLE_DECODERS or scenario not in SCENARIO_ORDER:
+            raise ValueError(f"Unexpected article result in {job_dir}.")
+        key = decoder, scenario
+        if key in scores:
+            raise ValueError(f"Duplicate Results-summary score for {decoder}, {scenario}.")
+        metrics = participant_metrics(held_out_predictions(job_dir, windows, folds), job_dir)
+        scores[key] = metrics["balanced_accuracy"].mean()
+
+    missing = [
+        (decoder, scenario)
+        for decoder in ARTICLE_DECODERS
+        for scenario in SCENARIO_ORDER
+        if (decoder, scenario) not in scores
+    ]
+    if missing:
+        raise ValueError(f"Results summary is missing scenarios: {missing}.")
+
+    def scenario_mean(scenario: tuple[object, ...]) -> float:
+        return float(np.mean([scores[(decoder, scenario)] for decoder in ARTICLE_DECODERS]))
+
+    summary_rows = (
+        ("Baseline", "Full A", (("baseline", DISTINGUISHING, DISTINGUISHING),)),
+        ("Baseline", "Full B", (("baseline", SAM40_FULL, SAM40_FULL),)),
+        ("Cross-subject", "Full A", (("cross_subject", DISTINGUISHING, DISTINGUISHING),)),
+        ("Cross-subject", "Full B", (("cross_subject", SAM40_FULL, SAM40_FULL),)),
+        ("Cross-session", "Full A", (("cross_session", DISTINGUISHING, DISTINGUISHING),)),
+        (
+            "Cross-task",
+            "Stroop",
+            (
+                ("cross_task", SAM40_STROOP, SAM40_ARITHMETIC),
+                ("cross_task", SAM40_STROOP, SAM40_MIRROR),
+            ),
+        ),
+        (
+            "Cross-task",
+            "Arithmetic",
+            (
+                ("cross_task", SAM40_ARITHMETIC, SAM40_STROOP),
+                ("cross_task", SAM40_ARITHMETIC, SAM40_MIRROR),
+            ),
+        ),
+        (
+            "Cross-task",
+            "Mirror",
+            (
+                ("cross_task", SAM40_MIRROR, SAM40_STROOP),
+                ("cross_task", SAM40_MIRROR, SAM40_ARITHMETIC),
+            ),
+        ),
+        (
+            "Cross-dataset",
+            "Full A",
+            (
+                ("cross_dataset", DISTINGUISHING, SAM40_FULL),
+                ("cross_dataset", DISTINGUISHING, SAM40_STROOP),
+                ("cross_dataset", DISTINGUISHING, SAM40_ARITHMETIC),
+                ("cross_dataset", DISTINGUISHING, SAM40_MIRROR),
+            ),
+        ),
+        ("Cross-dataset", "Full B", (("cross_dataset", SAM40_FULL, DISTINGUISHING),)),
+        ("Cross-dataset", "Stroop", (("cross_dataset", SAM40_STROOP, DISTINGUISHING),)),
+        ("Cross-dataset", "Arithmetic", (("cross_dataset", SAM40_ARITHMETIC, DISTINGUISHING),)),
+        ("Cross-dataset", "Mirror", (("cross_dataset", SAM40_MIRROR, DISTINGUISHING),)),
+    )
+
+    lines = []
+    for protocol, source_label, scenarios in summary_rows:
+        direction_means = [scenario_mean(scenario) for scenario in scenarios]
+        balanced_accuracy = np.mean(direction_means)
+        accuracy_text = f"{balanced_accuracy:.2f} ({min(direction_means):.2f}--{max(direction_means):.2f})"
+        deltas = []
+        for scenario_protocol, source, target in scenarios:
+            baseline = ("baseline", target, target)
+            if scenario_protocol != "baseline" and baseline in SCENARIO_ORDER:
+                deltas.append(scenario_mean((scenario_protocol, source, target)) - scenario_mean(baseline))
+        delta_text = "--" if not deltas else f"{100 * np.mean(deltas):.1f}"
+        lines.append(
+            f"{protocol} & {source_label} & {len(scenarios)} & {accuracy_text} & {delta_text} "
+            + r"\\"
+        )
+
+    template = (LATEX_ARTIFACT_TEMPLATES_DIR / "results_summary_table_template.tex").read_text()
+    return template.replace("SUMMARY_ROWS", "\n".join(lines))
+
+
 def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
     """Build the all-decoder transfer matrix with target-specific baselines."""
     sides = (
@@ -777,6 +877,10 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
         written.append(table_path)
 
     scenario_glob = str(input_dir / "*" / "*")
+    summary_table_path = tables_dir / "results_summary.tex"
+    summary_table_path.write_text(craft_results_summary_table(scenario_glob))
+    written.append(summary_table_path)
+
     figure = craft_transfer_degradation_matrix_figure(scenario_glob)
     figure_path = figures_dir / "transfer_degradation_matrix.png"
     source_svg_path = source_svg_dir / "transfer_degradation_matrix.svg"

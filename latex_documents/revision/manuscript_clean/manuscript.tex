@@ -474,9 +474,60 @@ the effect of task composition alone.}
 
 \section*{Results}
 
-\textbf{[TODO --- Results section is currently in progress.]}
+Across the 34 scenario configurations, balanced accuracy was summarized at the
+participant level and then compared across the five decoders. Table~\ref{tab:results_summary}
+gives compact all-decoder summaries for the principal validation contrasts,
+Figure~\ref{fig:all_scenarios_model_comparison} shows every scenario and the
+paired 95\% bootstrap intervals around its all-decoder mean, and
+Figure~\ref{fig:transfer_degradation_matrix} shows the directed task and
+dataset-transfer results. Decoder-specific metrics for every scenario are
+reported in Supporting Information.
 
-\input{tables/result_table_shallownet}
+\subsection*{Within-composition discrimination was retained across participants and sessions}
+
+We first established reference performance within each dataset composition and
+then evaluated transfer to held-out participants and, for Dataset~A, to held-out
+recording sessions. Averaged across the five decoders, balanced accuracy was
+0.66 for the Full~A baseline and 0.69 for the Full~B baseline
+(Table~\ref{tab:results_summary}; Figure~\ref{fig:all_scenarios_model_comparison}).
+When the target participant was held out, the corresponding all-decoder means
+were 0.65 for Full~A and 0.67 for Full~B. Holding out a recording session in
+Full~A yielded an all-decoder mean balanced accuracy of 0.64. Thus, the
+discrimination of the protocol-defined high-demand versus rest or
+task-disengagement contrast was retained under the participant and session
+shifts evaluated here, with the pattern reproduced across the five decoders.
+
+\subsection*{Changing Dataset~B task composition reduced performance, with direction-dependent magnitude}
+
+We next tested whether a decoder trained on the same binary contrast under one
+Dataset~B task composition transferred to another. Relative to the
+target-specific baseline, the mean balanced-accuracy degradation across the
+two other single-task targets was $-10.1$ percentage points for a Stroop
+source, $-7.2$ points for an Arithmetic source, and $-6.9$ points for a Mirror
+source (Table~\ref{tab:results_summary};
+Figure~\ref{fig:transfer_degradation_matrix}). The direction-level means
+therefore differed between source--target pairs, while each source showed a
+lower average than its corresponding target-specific baselines. These
+cross-task results combine a change in task composition with zero-shot
+generalization to a held-out participant; they do not isolate the effect of
+task composition alone.
+
+\subsection*{Cross-dataset transfer was lower and asymmetric}
+
+Finally, transfer between Dataset~A and Dataset~B produced lower
+all-decoder balanced accuracy than the corresponding within-composition
+baselines. When Full~A was the source, its mean balanced accuracy across the
+Full~B and single-task Dataset~B targets was 0.49 (range, 0.46--0.52), a mean
+degradation of $-20.6$ percentage points relative to the relevant target
+baselines. In the reverse Full~B$\rightarrow$Full~A direction, mean balanced
+accuracy was 0.55 and the degradation was $-10.9$ points
+(Table~\ref{tab:results_summary}; Figure~\ref{fig:transfer_degradation_matrix}).
+The directed transfers from the individual Dataset~B task compositions to
+Full~A also varied, with mean degradations from $-10.2$ to $-13.0$ points.
+Thus, the observed cross-dataset performance depended on transfer direction
+under the compound dataset shift represented by this protocol.
+
+\input{tables/results_summary}
 
 \begin{figure}[H]
 \centering
@@ -540,6 +591,7 @@ the effect of task composition alone.}
 \input{tables/result_table_logistic_regression}
 \input{tables/result_table_xgboost}
 \input{tables/result_table_eegnet}
+\input{tables/result_table_shallownet}
 \input{tables/result_table_eegconformer}
 
 \end{document}
