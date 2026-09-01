@@ -1,0 +1,15 @@
+[2026-09-01 09:05:20,992][preparation][INFO] - Preparation distinguishing: started for tasks attention (derivatives: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention).
+[2026-09-01 09:05:28,993][preparation][INFO] - Preparation distinguishing: complete; cache reused (193 Pipeline cache hits); derivatives: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention; HTML report snapshot: disabled; full log: /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/eegnet/baseline_distinguishing/_preparation/distinguishing.mne-bids-pipeline.log.
+[2026-09-01 09:05:31,652][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:05:31,652][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 09:06:08,479][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:06:08,480][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 09:06:43,757][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:06:43,758][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 09:07:18,995][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:07:18,995][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 09:07:54,690][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:07:54,691][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 09:08:31,583][__main__][INFO] - Cross-validation balanced accuracy by fold: train 0.800, 0.819, 0.825, 0.766, 0.800 (mean 0.802); test 0.714, 0.628, 0.717, 0.653, 0.625 (mean 0.667)
+[2026-09-01 09:08:32,761][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/eegnet/baseline_distinguishing (mean balanced accuracy 0.667)
+[2026-09-01 09:08:32,773][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

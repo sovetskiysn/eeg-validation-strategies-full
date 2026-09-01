@@ -1,0 +1,20 @@
+[2026-09-01 10:12:54,425][preparation][INFO] - Preparation sam40_stroop: started for tasks relax, stroop (derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-stroop).
+[2026-09-01 10:21:28,159][preparation][INFO] - Preparation sam40_stroop: complete; cache not reused; derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-stroop; HTML report snapshot: disabled; full log: /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/eegconformer/baseline_sam40_stroop/_preparation/sam40_stroop.mne-bids-pipeline.log.
+[2026-09-01 10:21:30,182][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:21:30,183][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('n_filters_time', 16), ('num_layers', 2), ('num_heads', 4)]).
+[2026-09-01 10:21:30,183][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.
+[2026-09-01 10:21:49,775][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:21:49,775][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('n_filters_time', 16), ('num_layers', 2), ('num_heads', 4)]).
+[2026-09-01 10:21:49,775][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.
+[2026-09-01 10:22:09,928][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:22:09,928][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('n_filters_time', 16), ('num_layers', 2), ('num_heads', 4)]).
+[2026-09-01 10:22:09,928][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.
+[2026-09-01 10:22:30,121][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:22:30,121][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('n_filters_time', 16), ('num_layers', 2), ('num_heads', 4)]).
+[2026-09-01 10:22:30,121][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.
+[2026-09-01 10:22:50,404][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:22:50,404][braindecode.eegneuralnet.EEGClassifier][INFO] - Overriding inferred parameters with user specified parametersdict_items([('n_filters_time', 16), ('num_layers', 2), ('num_heads', 4)]).
+[2026-09-01 10:22:50,404][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegconformer.EEGConformer'>.
+[2026-09-01 10:23:10,632][__main__][INFO] - Cross-validation balanced accuracy by fold: train 0.833, 0.876, 0.854, 0.860, 0.853 (mean 0.855); test 0.704, 0.742, 0.750, 0.758, 0.708 (mean 0.732)
+[2026-09-01 10:23:10,847][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/eegconformer/baseline_sam40_stroop (mean balanced accuracy 0.732)
+[2026-09-01 10:23:10,854][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

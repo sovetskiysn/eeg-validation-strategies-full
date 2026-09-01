@@ -11,14 +11,14 @@ from utils import PROJECT_ROOT, REPOSITORY_ROOT
 
 ANALYSIS_INPUT_DIR = Path(
     os.environ.get(
-        "ANALYZE_DIR",
-        PROJECT_ROOT / "results" / "scenario_decoder (2026-08-25 % 12-36-43)",
+        "ANALYSIS_INPUT_DIR",
+        PROJECT_ROOT / "results" / "scenario_decoder_maybe_new (2026-09-01 % 08-54-09)",
     )
 )
 ANALYSIS_OUTPUT_DIR = Path(
     os.environ.get(
         "ANALYSIS_OUTPUT_DIR",
-        REPOSITORY_ROOT / "analysis",
+        REPOSITORY_ROOT / "analysis_3",
     )
 )
 

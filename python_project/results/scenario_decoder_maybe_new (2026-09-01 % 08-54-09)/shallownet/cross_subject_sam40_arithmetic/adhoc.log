@@ -1,0 +1,85 @@
+[2026-09-01 13:21:27,469][preparation][INFO] - Preparation sam40_arithmetic: started for tasks relax, arithmetic (derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-arithmetic).
+[2026-09-01 13:21:36,793][preparation][INFO] - Preparation sam40_arithmetic: complete; cache reused (1041 Pipeline cache hits); derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-arithmetic; HTML report snapshot: disabled; full log: /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/shallownet/cross_subject_sam40_arithmetic/_preparation/sam40_arithmetic.mne-bids-pipeline.log.
+[2026-09-01 13:21:38,825][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:21:38,825][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:21:45,974][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:21:45,975][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:21:53,029][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:21:53,030][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:22:00,241][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:22:00,242][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:22:07,396][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:22:07,396][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:22:14,501][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:22:14,502][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:22:21,661][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:22:21,661][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:22:28,789][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:22:28,789][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:22:35,883][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:22:35,883][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:22:43,102][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:22:43,102][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:22:50,376][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:22:50,377][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:22:57,607][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:22:57,608][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:23:04,715][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:23:04,715][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:23:11,885][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:23:11,885][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:23:18,985][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:23:18,985][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:23:26,053][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:23:26,054][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:23:33,200][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:23:33,201][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:23:40,355][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:23:40,355][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:23:47,565][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:23:47,565][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:23:54,649][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:23:54,649][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:24:01,832][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:24:01,832][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:24:08,882][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:24:08,882][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:24:15,897][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:24:15,897][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:24:22,999][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:24:23,000][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:24:30,082][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:24:30,082][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:24:37,080][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:24:37,081][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:24:44,125][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:24:44,126][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:24:51,144][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:24:51,144][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:24:58,232][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:24:58,232][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:25:05,715][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:25:05,715][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:25:12,849][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:25:12,850][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:25:19,909][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:25:19,909][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:25:27,092][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:25:27,093][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:25:34,158][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:25:34,158][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:25:41,309][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:25:41,309][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:25:48,443][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:25:48,443][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:25:55,516][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:25:55,517][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:26:02,597][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:26:02,597][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:26:09,743][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:26:09,743][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:26:16,883][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 13:26:16,883][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 13:26:23,732][__main__][INFO] - Cross-validation balanced accuracy by fold: train 0.998, 0.998, 0.997, 0.999, 0.997, 0.997, 0.997, 0.999, 0.998, 0.997, 0.997, 0.999, 0.997, 1.000, 0.997, 0.999, 0.999, 0.997, 0.998, 0.997, 0.999, 0.997, 0.999, 0.998, 0.997, 0.998, 1.000, 0.999, 0.996, 0.996, 0.997, 0.999, 0.996, 0.997, 0.999, 0.999, 0.997, 0.998, 0.998, 1.000 (mean 0.998); test 0.867, 1.000, 0.700, 0.633, 0.767, 0.533, 0.767, 0.767, 0.667, 0.800, 0.433, 0.633, 0.900, 0.500, 0.833, 0.867, 0.833, 0.533, 0.667, 0.867, 0.700, 0.700, 0.867, 0.833, 0.600, 0.667, 0.967, 0.600, 0.767, 0.533, 0.800, 0.600, 0.700, 0.833, 0.567, 0.800, 0.767, 0.533, 0.700, 0.733 (mean 0.721)
+[2026-09-01 13:26:24,050][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/shallownet/cross_subject_sam40_arithmetic (mean balanced accuracy 0.721)
+[2026-09-01 13:26:24,075][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

@@ -13,55 +13,46 @@
 \begin{table}[H]
 \centering
 \caption{\textbf{Performance metrics across experimental scenarios for EEGConformer.}}
-\label{tab:scenario_eegconformer}
+\label{tab:scenario_metrics_eegconformer}
 \begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
 \hline
 {\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
 \hline
-\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.65 & 0.64 & 0.31 & 0.73 & 0.70/0.59 \\
- & Stratified K-fold(Full B) & 0.70 & 0.69 & 0.41 & 0.80 & 0.55/0.84 \\
- & Stratified K-fold(B: Stroop) & 0.72 & 0.70 & 0.46 & 0.79 & 0.59/0.84 \\
- & Stratified K-fold(B: Arithmetic) & 0.72 & 0.71 & 0.47 & 0.80 & 0.61/0.83 \\
- & Stratified K-fold(B: Mirror) & 0.69 & 0.67 & 0.40 & 0.80 & 0.59/0.78 \\
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.64 & 0.64 & 0.29 & 0.73 & 0.61/0.67 \\
+ & Stratified K-fold(Full B) & 0.72 & 0.71 & 0.44 & 0.81 & 0.60/0.84 \\
+ & Stratified K-fold(B: Stroop) & 0.73 & 0.72 & 0.48 & 0.81 & 0.64/0.82 \\
+ & Stratified K-fold(B: Arithmetic) & 0.71 & 0.69 & 0.46 & 0.81 & 0.58/0.84 \\
+ & Stratified K-fold(B: Mirror) & 0.69 & 0.67 & 0.41 & 0.79 & 0.57/0.81 \\
 \hline
-\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.65 & 0.64 & 0.32 & 0.76 & 0.66/0.64 \\
- & Leave-one-subject-out(Full B) & 0.71 & 0.68 & 0.42 & 0.80 & 0.60/0.82 \\
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.66 & 0.65 & 0.33 & 0.75 & 0.65/0.66 \\
+ & Leave-one-subject-out(Full B) & 0.71 & 0.68 & 0.42 & 0.82 & 0.61/0.81 \\
 \hline
-\multirow{12}{=}{Cross-task (Dataset~B)} & Stroop$\!\rightarrow\!$Arithmetic & 0.62 & 0.59 & 0.25 & 0.70 & 0.65/0.59 \\
- & Stroop$\!\rightarrow\!$Mirror & 0.68 & 0.65 & 0.38 & 0.78 & 0.62/0.73 \\
- & Arithmetic$\!\rightarrow\!$Stroop & 0.60 & 0.56 & 0.22 & 0.68 & 0.61/0.59 \\
- & Arithmetic$\!\rightarrow\!$Mirror & 0.64 & 0.59 & 0.28 & 0.73 & 0.62/0.66 \\
- & Mirror$\!\rightarrow\!$Stroop & 0.67 & 0.65 & 0.39 & 0.77 & 0.64/0.71 \\
- & Mirror$\!\rightarrow\!$Arithmetic & 0.62 & 0.60 & 0.27 & 0.68 & 0.65/0.60 \\
+\multirow{12}{=}{Cross-task (Dataset~B)} & Full B$\!\rightarrow\!$Stroop & 0.71 & 0.68 & 0.44 & 0.80 & 0.61/0.80 \\
+ & Full B$\!\rightarrow\!$Arithmetic & 0.70 & 0.68 & 0.44 & 0.81 & 0.60/0.80 \\
+ & Full B$\!\rightarrow\!$Mirror & 0.73 & 0.71 & 0.48 & 0.82 & 0.63/0.82 \\
 \cmidrule{2-7}
- & Arithmetic+Mirror$\!\rightarrow\!$Stroop & 0.65 & 0.61 & 0.30 & 0.73 & 0.65/0.65 \\
- & Stroop+Mirror$\!\rightarrow\!$Arithmetic & 0.69 & 0.66 & 0.41 & 0.79 & 0.56/0.81 \\
- & Stroop+Arithmetic$\!\rightarrow\!$Mirror & 0.65 & 0.61 & 0.33 & 0.74 & 0.61/0.69 \\
- & Stroop$\!\rightarrow\!$Arithmetic+Mirror & 0.55 & 0.51 & 0.12 & 0.62 & 0.67/0.44 \\
- & Arithmetic$\!\rightarrow\!$Stroop+Mirror & 0.59 & 0.53 & 0.20 & 0.67 & 0.62/0.56 \\
- & Mirror$\!\rightarrow\!$Stroop+Arithmetic & 0.63 & 0.60 & 0.29 & 0.71 & 0.63/0.63 \\
+ & Stroop$\!\rightarrow\!$Full B & 0.62 & 0.56 & 0.24 & 0.72 & 0.59/0.64 \\
+ & Stroop$\!\rightarrow\!$Arithmetic & 0.56 & 0.51 & 0.12 & 0.61 & 0.66/0.45 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.61 & 0.58 & 0.25 & 0.71 & 0.62/0.60 \\
+\cmidrule{2-7}
+ & Arithmetic$\!\rightarrow\!$Full B & 0.67 & 0.63 & 0.33 & 0.77 & 0.64/0.71 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.62 & 0.59 & 0.26 & 0.69 & 0.61/0.62 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.69 & 0.67 & 0.41 & 0.79 & 0.63/0.76 \\
+\cmidrule{2-7}
+ & Mirror$\!\rightarrow\!$Full B & 0.65 & 0.60 & 0.28 & 0.75 & 0.59/0.71 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.61 & 0.58 & 0.23 & 0.68 & 0.58/0.63 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.65 & 0.61 & 0.32 & 0.75 & 0.57/0.72 \\
 \hline
-\multirow{14}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.47 & 0.31 & -0.07 & 0.43 & 0.70/0.24 \\
+\multirow{8}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.47 & 0.31 & -0.07 & 0.43 & 0.70/0.24 \\
  & Full B$\!\rightarrow\!$Full A & 0.58 & 0.56 & 0.18 & 0.64 & 0.62/0.54 \\
 \cmidrule{2-7}
  & Full A$\!\rightarrow\!$Stroop & 0.42 & 0.34 & -0.18 & 0.33 & 0.65/0.20 \\
  & Stroop$\!\rightarrow\!$Full A & 0.52 & 0.43 & 0.07 & 0.62 & 0.13/0.91 \\
- & Full A$\!\rightarrow\!$Arithmetic & 0.52 & 0.45 & 0.05 & 0.56 & 0.60/0.45 \\
+ & Full A$\!\rightarrow\!$Arithmetic & 0.53 & 0.45 & 0.05 & 0.56 & 0.60/0.45 \\
  & Arithmetic$\!\rightarrow\!$Full A & 0.59 & 0.57 & 0.20 & 0.66 & 0.68/0.50 \\
- & Full A$\!\rightarrow\!$Mirror & 0.47 & 0.39 & -0.05 & 0.42 & 0.66/0.29 \\
+ & Full A$\!\rightarrow\!$Mirror & 0.47 & 0.39 & -0.05 & 0.43 & 0.66/0.29 \\
  & Mirror$\!\rightarrow\!$Full A & 0.54 & 0.50 & 0.08 & 0.57 & 0.76/0.31 \\
-\cmidrule{2-7}
- & Full A$\!\rightarrow\!$Stroop+Arithmetic & 0.48 & 0.36 & -0.05 & 0.44 & 0.68/0.27 \\
- & Stroop+Arithmetic$\!\rightarrow\!$Full A & 0.58 & 0.55 & 0.18 & 0.64 & 0.58/0.58 \\
- & Full A$\!\rightarrow\!$Stroop+Mirror & 0.44 & 0.32 & -0.14 & 0.37 & 0.65/0.23 \\
- & Stroop+Mirror$\!\rightarrow\!$Full A & 0.54 & 0.49 & 0.11 & 0.61 & 0.31/0.78 \\
- & Full A$\!\rightarrow\!$Arithmetic+Mirror & 0.50 & 0.39 & -0.00 & 0.49 & 0.68/0.32 \\
- & Arithmetic+Mirror$\!\rightarrow\!$Full A & 0.59 & 0.57 & 0.19 & 0.63 & 0.60/0.57 \\
 \hline
 \end{tabular}
-\normalsize
-\begin{flushleft}
-\textit{Note.} Per-class recall is reported as Low/High. MCC, Matthews correlation coefficient; ROC-AUC, area under the receiver operating characteristic curve.
-\end{flushleft}
 \end{table}
 \endgroup

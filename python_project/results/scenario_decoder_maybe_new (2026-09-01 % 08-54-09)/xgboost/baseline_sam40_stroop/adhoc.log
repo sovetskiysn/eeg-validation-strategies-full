@@ -1,0 +1,5 @@
+[2026-09-01 10:25:16,598][preparation][INFO] - Preparation sam40_stroop: started for tasks relax, stroop (derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-stroop).
+[2026-09-01 10:25:25,755][preparation][INFO] - Preparation sam40_stroop: complete; cache reused (1041 Pipeline cache hits); derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-stroop; HTML report snapshot: disabled; full log: /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/xgboost/baseline_sam40_stroop/_preparation/sam40_stroop.mne-bids-pipeline.log.
+[2026-09-01 10:25:58,723][__main__][INFO] - Cross-validation balanced accuracy by fold: train 0.916, 0.921, 0.920, 0.925, 0.920 (mean 0.920); test 0.704, 0.675, 0.729, 0.708, 0.633 (mean 0.690)
+[2026-09-01 10:25:58,761][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/xgboost/baseline_sam40_stroop (mean balanced accuracy 0.690)
+[2026-09-01 10:25:58,765][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

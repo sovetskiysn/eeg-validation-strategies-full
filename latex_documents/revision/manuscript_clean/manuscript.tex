@@ -243,16 +243,16 @@ The conceptual rationale for combining the datasets rests on the cognitive condi
     \item \textbf{Mirror image recognition task} --- engages visuospatial processing and requires both \textit{selective} and \textit{sustained attention} to discriminate between symmetric and asymmetric patterns, relying on mental rotation processes that demand continuous cognitive effort~\cite{shepard1971mental, hyun2007visual, tomasino2016mental}.
 \end{itemize}
 
-The simulator-based and task-based datasets correspond, respectively, to the \textit{naturalistic stimulus-based protocols} and \textit{continuous cognitive engagement} paradigms described in~\cite{chen2025hybrid}. In the unified labeling scheme, \textit{Rest} and \textit{Unfocused} are treated as low-attention states, whereas \textit{Focused}, \textit{Stroop}, \textit{Arithmetic}, and \textit{Mirror recognition} are treated as high-attention states. The \textit{Drowsy} phase is excluded from this mapping and from all subsequent preprocessing and analyses because permitted eye closure and drowsiness may confound the comparison with differences in arousal, visual input, and ocular activity. This mapping is summarized in Table~\ref{tab:label_mapping}.
+The simulator-based and task-based datasets correspond, respectively, to the \textit{naturalistic stimulus-based protocols} and \textit{continuous cognitive engagement} paradigms described in~\cite{chen2025hybrid}. In the unified labeling scheme, \textit{Rest} and \textit{Unfocused} are treated as low-attention states, whereas \textit{Focused}, \textit{Stroop}, \textit{Arithmetic}, and \textit{Mirror recognition} are treated as high-attention states. The \textit{Drowsy} phase is excluded from this mapping and from all subsequent preprocessing and analyses because permitted eye closure and drowsiness may confound the comparison with differences in arousal, visual input, and ocular activity. This mapping is summarized in Table~\ref{tab:attention_label_mapping}.
 
-\input{tables/label_mapping}
+\input{tables/attention_label_mapping}
 
 \subsection*{\revs{Validation strategies [revise need]}}
 
 \rev{We evaluated the decoders under four validation protocols, each addressing a distinct generalization question. To preserve the independence of the training and test data, all windows originating from the same recording unit were assigned to the same partition. This prevents overlapping windows from being divided between training and test sets, reducing the risk of overly optimistic performance estimates due to temporal autocorrelation between neighboring EEG windows~\cite{chen2025hybrid}. The within-domain baseline estimates performance when training and test data share the same dataset and condition composition but originate from different recording units. The remaining protocols examine whether discriminative performance is retained when training and testing are separated by participant, task composition, or dataset. These protocols were applied only where the structure of each release supported their interpretation: multiple tasks in SAM-40 enabled cross-task validation. Model fitting was confined to the training data, and the resulting decoder was evaluated on held-out data without target-specific adaptation. Any class imbalance was addressed through inverse-frequency class weighting calculated independently within each training fold, while test data retained their observed class distribution.}
 
 \textbf{Baseline evaluation.}
-\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the complete SAM-40 composition, and each task-specific composition of SAM-40. The grouping variable was the physical recording unit: one selected session in the mental attention-state dataset and one run-level recording unit in SAM-40, comprising all task recordings included in the analysis for that run. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. These estimates serve as within-domain comparators for the transfer protocols.}
+\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the complete SAM-40 composition, and each task-specific composition of SAM-40. The grouping variable was the physical recording unit: one selected session in the mental attention-state dataset and one run-level recording unit in SAM-40, comprising all task recordings included in the analysis for that run. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. Keeping each unit intact prevented temporally adjacent or partially overlapping windows from the same acquisition from being assigned to opposite folds, thereby avoiding window-level temporal leakage. These estimates serve as within-domain comparators for the transfer protocols.}
 
 \textbf{Cross-subject validation.}
 \rev{In each leave-one-subject-out fold, the decoder was trained on all selected data from the remaining participants and tested on all selected data from the held-out participant. The resulting performance quantifies zero-shot generalization to an unseen participant.}
@@ -275,7 +275,14 @@ separately for a dataset, task composition, validation protocol or decoder. The
 purpose was to place recordings in a common input space while limiting
 preprocessing itself as an additional source of variation. Differences between
 validation results are therefore interpreted against a fixed preparation
-procedure.}
+procedure. The pipeline was instantiated as a fixed set of dataset
+preparations, that is, the analytical compositions on which every validation
+protocol was run; they are collected in
+Table~\ref{tab:dataset_compositions}. The remainder of this subsection
+describes the selection, cleaning, alignment and segmentation steps that
+produced them.}
+
+\input{tables/dataset_compositions}
 
 \rev{\textbf{Recording and label selection.} Recordings were selected
 before signal processing. Following the source study, the first two recording
@@ -293,7 +300,7 @@ retained for analysis. SAM-40 provides the task recordings of each trial as
 separate files. Within each scenario, the task recordings selected from one
 trial were grouped into a single recording unit, whereas task recordings not
 selected by the scenario were not carried forward to later preparation steps.
-Accordingly, the binary mapping in Table~\ref{tab:label_mapping} was applied to the
+Accordingly, the binary mapping in Table~\ref{tab:attention_label_mapping} was applied to the
 retained recordings from the two datasets.}
 
 \rev{\textbf{Filtering and ICA cleaning.} Filtering was applied to each
@@ -326,159 +333,163 @@ that all overlapping windows from a unit remained on the same side of a split.}
 \rev{The fixed selection, cleaning, alignment and segmentation steps therefore
 yielded a deterministic analytical window set for each dataset composition.
 All model-specific input representations were derived from these same prepared
-windows, rather than from separately prepared data. Table~\ref{tab:dataset_compositions}
-summarizes the resulting compositions, including their retained recording units,
-window counts and observed class distributions. Class weights were calculated
+windows, rather than from separately prepared data. The retained recording
+units, window counts and observed class distributions of the resulting
+compositions are those reported in Table~\ref{tab:dataset_compositions}. Class weights were calculated
 independently within each training fold. All Dataset~B configurations contain the same 40 participants and
 differ only in the task recordings retained alongside the resting-state
 recordings.}
 
-\input{tables/datasets_info}
-
-\subsection*{\revs{Models [revise need]}}
+\subsection*{\revs{Models}}
 
 \rev{We evaluated five classifiers rather than relying on a single decoder to
 test whether the conclusions are robust to a change in modelling assumptions.
 This makes the decoder an explicit factor of the design: a difference between
 validation protocols that is reproduced across models is more credibly
 attributed to the data and evaluation protocol than to the idiosyncrasies of
-one learner. The selected models span three major families used in EEG
-decoding: linear and tree-based traditional machine-learning models, and
-deep-learning architectures. We place particular emphasis on deep learning
-because these models learn task-relevant representations directly from the
+one learner. The selected models span three families used in EEG decoding:
+linear, tree-based, and deep-learning architectures. The deep networks are
+included because they learn task-relevant representations directly from the
 channel-by-time EEG windows, reducing reliance on a manually specified feature
-set. Hyperparameters were fixed \textit{a priori} for each model and held
-constant across validation protocols and experimental runs; they were not tuned
-to an individual protocol or run and are recorded in full in the configuration
-stored with every run. All models were trained to predict whether a window
-belonged to a high-demand or a low-demand condition in the sense of
-Table~\ref{tab:label_mapping}, and not to predict a level of attention.}
+set. All models were trained to predict whether a window belonged to a
+high-demand or a low-demand condition in the sense of
+Table~\ref{tab:attention_label_mapping}}
+
+\rev{Hyperparameters were fixed \textit{a priori} and held constant across
+datasets, task compositions, validation protocols and runs. No hyperparameter
+search was performed. Values followed library defaults or published reference
+recipes, except for the departures specified below. A fixed random seed
+governed fold construction, model initialization and network training. The
+resolved configuration of each run was stored with its outputs.}
 
 \textbf{Traditional machine learning.}
-\rev{Logistic regression provides a
-transparent linear baseline and represents the simplest decision rule supported
-by the fixed feature representation. XGBoost~\cite{chen2016xgboost} represents
-tree-based ensemble learning, allowing nonlinear relations and feature
-interactions to be modelled within the same representation. It was also the
-decoder used in the originally submitted version of this study, preserving a
-direct point of comparison with those results. Both models received a fixed,
-label-free feature representation. The features were selected to provide
-complementary and interpretable summaries of each EEG window: band power
-describes its spectral distribution across conventional frequency ranges,
-entropy features characterize signal irregularity and complexity, and
-descriptive statistics characterize its amplitude distribution. The same
-prespecified feature set was used in every scenario rather than being selected
-or tuned separately for a dataset or validation protocol. It comprised log band
-power in delta
-(0.5--4~Hz), theta (4--8~Hz), alpha (8--13~Hz), beta (13--30~Hz) and gamma
-(30--45~Hz), together with spectral, approximate, sample and
-singular-value-decomposition entropy, mean, standard deviation, variance,
-skewness and kurtosis, computed for each channel. This produced 168 features
-per window (12 channels $\times$ 14 features per channel). Feature extraction
-contained no trainable transformation. Transformations that learn from data were
-fitted within each training fold only: logistic-regression features were
-standardized on the training data, whereas XGBoost received unscaled features.}
+\rev{Both classical classifiers used the same fixed, label-free feature
+representation. For each of the 12 channels, we computed log relative power in
+the 1--4~Hz, 4--8~Hz, 8--13~Hz and 13--45~Hz bands, together with sample
+entropy, mean, variance, skewness and kurtosis. Relative band power was
+normalized by the channel total before log transformation. The nine features
+from each channel formed one 108-dimensional feature vector per window.}
+
+\rev{Logistic regression provides a transparent linear baseline. It estimates
+a linear decision boundary from the feature vectors, allowing the contribution
+of individual features to be inspected. Its feature vectors were z-score
+standardized using the mean and standard deviation estimated from the training
+fold only.}
+
+\rev{XGBoost~\cite{chen2016xgboost} represents tree-based ensemble learning,
+allowing nonlinear relations and feature interactions to be modelled within the
+same feature representation. It was also the decoder used in the originally
+submitted version of this study, preserving a direct point of comparison with
+those results. It received the same feature vectors without scaling. For both
+classical models, inverse-frequency class weights were calculated from the
+training fold only.}
 
 \textbf{Deep learning.}
 \rev{The remaining three classifiers operate directly on the prepared
-channel-by-time EEG windows and learn their representations during training.
-\textit{ShallowFBCSPNet}~\cite{schirrmeister2017deep} is a shallow
+channel-by-time EEG windows, rather than on the classical feature vectors. Each
+input window had a $12 \times 640$ channel-by-time shape and was standardized
+using statistics estimated from the training fold only.}
+
+\rev{\textit{ShallowFBCSPNet}~\cite{schirrmeister2017deep} is a shallow
 convolutional neural network designed to emulate the main operations of the
 filter-bank common spatial pattern (FBCSP) pipeline within a trainable model.
 It first applies temporal convolution and spatial filtering across channels,
 then uses a squaring nonlinearity, mean pooling and a logarithmic activation to
 form band-power-like features. Thus, its inductive bias reflects a conventional
 EEG decoding approach, while its filters are optimized jointly with the
-classifier.
+classifier.}
 
-\textit{EEGNet}~\cite{lawhern2018eegnet} is a compact convolutional neural
+\rev{\textit{EEGNet}~\cite{lawhern2018eegnet} is a compact convolutional neural
 network designed specifically for EEG. Its temporal convolutions learn filters
 over time, depthwise convolutions learn spatial filters across electrodes for
 each temporal feature map, and separable convolutions combine these learned
 features efficiently. This factorized design substantially limits the number
 of trainable parameters while retaining separate temporal and spatial feature
-learning, making EEGNet the smallest network in the present comparison.
+learning.}
 
-\textit{EEG Conformer}~\cite{song2023conformer} combines a convolutional
+\rev{\textit{EEG Conformer}~\cite{song2023conformer} combines a convolutional
 front end with a Transformer encoder. The convolutional module forms local
 temporal and spatial features and converts them into a sequence of embeddings;
 self-attention in the Transformer then models global dependencies between these
 embeddings. It therefore complements the local receptive fields of convolution
-with a mechanism for relating EEG patterns over longer time spans. The only
-fixed input transformation for the deep-learning models was conversion from
-volts to microvolts. The networks were trained from scratch. No pretrained
-weights were used.}
+with a mechanism for relating EEG patterns over longer time spans. Its capacity
+was reduced relative to the reference configuration and then fixed across all
+scenarios.}
 
-\textbf{[TODO --- Which decoder carries the Results narrative?]}
+\rev{All three networks were trained from scratch, with no pretrained weights,
+for 100 epochs with a batch size of 64. Their loss functions used
+inverse-frequency class weights calculated from the training fold only; no
+resampling was applied.}
 
 \section*{Results and analysis}
 
 To characterize zero-shot generalization across the prespecified validation
 strategies, we evaluated the binary contrast between high-demand conditions and
 rest or task disengagement with five decoders.
-Table~\ref{tab:scenario_logistic_regression} reports decoder-specific
+Table~\ref{tab:scenario_metrics_logistic_regression} reports decoder-specific
 performance across these strategies. It presents
 participant-level balanced accuracy, macro F1, MCC, ROC-AUC, and per-class
 recall for logistic regression, the interpretable reference decoder.
 Corresponding tables for XGBoost, EEGNet, ShallowFBCSPNet, and EEGConformer are
 provided in the Supporting Information.
 
-\input{tables/result_table_logistic_regression}
+\input{tables/scenario_metrics_logistic_regression}
 
 \subsection*{Generalization under increasingly stringent validation strategies}
 
 To examine generalization under increasingly stringent validation strategies,
 we compared directed cross-task and cross-dataset transfer with the
-within-composition baseline of each target composition. These comparisons test
-whether the binary contrast was retained when training and test data differed
-in task composition or dataset.
+baseline scenario for each target composition. These comparisons place
+performance under progressively less similar training and test data in relation
+to a target-specific reference. They therefore assess whether the binary
+contrast was retained without target-specific adaptation as the participant,
+task composition, or dataset differed between training and test data.
 
-\input{figures/transfer_degradation_matrix}
+Figure~\ref{fig:transfer_matrix} summarizes the directed cross-task and
+cross-dataset comparisons. Rows are grouped by source composition and decoder,
+and columns denote target compositions. Each nonmissing matrix cell reports
+balanced accuracy calculated separately from the held-out windows of each
+target participant and then averaged across target participants for the given
+decoder and direction. Off-diagonal cells represent zero-shot transfers without
+target-specific adaptation, whereas the grey diagonal reports the
+target-specific baseline estimated with five-fold stratified group validation
+that keeps recording units disjoint between training and test folds. For each
+applicable target in a summary column, the participant-level means are first
+averaged across the five decoders; these decoder-averaged transfer and baseline
+values are then averaged across targets and subtracted. Negative values
+therefore indicate lower transfer performance than the applicable target
+baselines, whereas dashes identify comparisons that are not applicable.
 
-\input{figures/baseline_cross_shift_comparison}
+Figure~\ref{fig:baseline_vs_cross_subject} compares baseline and
+leave-one-subject-out cross-subject validation for Dataset~A and the complete
+Dataset~B composition. For each decoder and scenario, balanced accuracy was
+calculated separately from the held-out windows of each target participant and
+then averaged across target participants; the coloured lines show these
+decoder-specific means. Black points show the mean of the five decoder-specific
+estimates. Their bars show paired 95\% percentile bootstrap intervals from
+10,000 target-participant resamples, with the same resample used for all
+decoders to preserve their pairing.
 
-Each directed cross-task estimate was compared with the within-composition
-reference performance of its target composition. The mean balanced-accuracy
-degradation across the two other single-task targets was $-10.1$ percentage
-points for a Stroop source, $-7.2$ points for an Arithmetic source, and $-6.9$
-points for a Mirror source (Figure~\ref{fig:transfer_degradation_matrix}). The
-direction-level means
-therefore differed between source--target pairs, while each source showed a
-lower average than its corresponding target-specific baselines. These
-cross-task results combine a change in task composition with zero-shot
-generalization to a held-out participant; they do not isolate the effect of
-task composition alone.
+\input{figures/transfer_matrix}
 
-The same target-specific comparison was applied to directed cross-dataset
-transfers. When Full~A was the source, its mean balanced accuracy across the
-Full~B and single-task Dataset~B targets was 0.49 (range, 0.46--0.52), a mean
-degradation of $-20.6$ percentage points relative to the relevant target
-baselines. In the reverse Full~B$\rightarrow$Full~A direction, mean balanced
-accuracy was 0.55 and the degradation was $-10.9$ points
-(Figure~\ref{fig:transfer_degradation_matrix}).
-The directed transfers from the individual Dataset~B task compositions to
-Full~A also varied, with mean degradations from $-10.2$ to $-13.0$ points.
-Thus, the observed cross-dataset performance depended on transfer direction
-under the compound dataset shift represented by this protocol.
+\input{figures/baseline_vs_cross_subject}
 
+[TO DO - test about results of above figures]
 \subsection*{Performance consistency across decoders}
 
 To assess whether performance patterns across validation strategies depended on
-decoder choice, we visualized participant-level balanced accuracy for all five
-decoders. This enabled us to compare the consistency of the observed patterns
-across decoder families.
+decoder choice, Figure~\ref{fig:scenario_accuracy_by_decoder} compares all
+validation scenarios across the five decoders. For each decoder and scenario,
+balanced accuracy was calculated separately for each target participant and
+then averaged across target participants (coloured points). Black points show
+the mean of the five decoder-specific estimates, and horizontal bars show
+paired 95\% percentile bootstrap intervals from 10,000 target-participant
+resamples; the same resample was used for all decoders to preserve their
+pairing. The dashed vertical line marks chance-level balanced accuracy (0.50).
 
-\input{figures/all_scenarios_model_comparison}
+\input{figures/scenario_accuracy_by_decoder}
 
-Within-composition reference performance was used to evaluate zero-shot
-generalization to a held-out target participant. Averaged across the five
-decoders, balanced accuracy was 0.66 for the Full~A baseline and 0.69 for the
-Full~B baseline (Figure~\ref{fig:all_scenarios_model_comparison}).
-When the target participant was held out, the corresponding all-decoder means
-were 0.65 for Full~A and 0.67 for Full~B. Thus, the discrimination of the
-protocol-defined high-demand versus rest or task-disengagement contrast was
-retained under the participant shifts evaluated here, with the pattern
-reproduced across the five decoders.
+[TO DO - test about results of above figures]
 
 \section*{Discussion}
 
@@ -504,7 +515,12 @@ validation protocols, and decoders. The reported performance should therefore
 not be interpreted as the maximum attainable for any individual scenario: more
 extensive, dataset-specific data cleaning and preparation could alter
 performance, but evaluating such optimization was outside the aim of
-maintaining a common analytical basis for comparative zero-shot evaluation.
+maintaining a common analytical basis for comparative zero-shot evaluation. The
+same reservation applies to the decoders themselves. No hyperparameter search
+or architecture selection was carried out, and the capacity of the Transformer
+decoder was deliberately constrained to suit the size of the available training
+folds, so the reported figures characterize predeclared model recipes rather
+than optimized ones.
 Finally, all source--target transfers were evaluated without target-specific
 domain adaptation or personalization. The present results thus provide
 pre-adaptation baselines for source--target suitability, but do not quantify
@@ -542,9 +558,9 @@ within-domain performance from gains in cross-domain generalization.
 
 \textbf{[TODO --- Supporting information is currently in progress.]}
 
-\input{tables/result_table_xgboost}
-\input{tables/result_table_eegnet}
-\input{tables/result_table_shallownet}
-\input{tables/result_table_eegconformer}
+\input{tables/scenario_metrics_xgboost}
+\input{tables/scenario_metrics_eegnet}
+\input{tables/scenario_metrics_shallownet}
+\input{tables/scenario_metrics_eegconformer}
 
 \end{document}

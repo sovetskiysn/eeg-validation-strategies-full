@@ -1,0 +1,15 @@
+[2026-09-01 10:10:07,759][preparation][INFO] - Preparation sam40_mirror: started for tasks relax, mirror (derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-mirror).
+[2026-09-01 10:10:16,866][preparation][INFO] - Preparation sam40_mirror: complete; cache reused (1041 Pipeline cache hits); derivatives: /work/python_project/datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-mirror; HTML report snapshot: disabled; full log: /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/eegnet/baseline_sam40_mirror/_preparation/sam40_mirror.mne-bids-pipeline.log.
+[2026-09-01 10:10:19,194][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:10:19,194][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 10:10:25,914][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:10:25,914][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 10:10:32,699][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:10:32,699][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 10:10:39,457][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:10:39,458][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 10:10:46,176][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 10:10:46,177][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.eegnet.EEGNet'>.
+[2026-09-01 10:10:52,733][__main__][INFO] - Cross-validation balanced accuracy by fold: train 0.800, 0.805, 0.817, 0.825, 0.801 (mean 0.810); test 0.700, 0.650, 0.683, 0.662, 0.654 (mean 0.670)
+[2026-09-01 10:10:52,926][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/eegnet/baseline_sam40_mirror (mean balanced accuracy 0.670)
+[2026-09-01 10:10:52,932][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

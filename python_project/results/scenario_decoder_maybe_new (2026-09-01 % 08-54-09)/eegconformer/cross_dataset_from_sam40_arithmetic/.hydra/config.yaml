@@ -1,0 +1,266 @@
+preparation:
+  name: from_sam40_arithmetic
+  source:
+    name: sam40_arithmetic
+    dataset_dir: datasets/bids/sam40
+    save_preparation_html_reports: false
+    mne_bids_pipeline_config:
+      bids_root: datasets/bids/sam40
+      ch_types:
+      - eeg
+      analyze_channels:
+      - F3
+      - F4
+      - F7
+      - F8
+      - FC5
+      - FC6
+      - O1
+      - O2
+      - P7
+      - P8
+      - T7
+      - T8
+      drop_channels:
+      - CZ
+      - FZ
+      - Fp1
+      - FC1
+      - C3
+      - FT9
+      - CP5
+      - CP1
+      - P3
+      - PO9
+      - PZ
+      - OZ
+      - PO10
+      - P4
+      - CP2
+      - CP6
+      - FT10
+      - C4
+      - FC2
+      - Fp2
+      eeg_reference: average
+      l_freq: 1.0
+      h_freq: 45.0
+      notch_freq:
+      - 50.0
+      raw_resample_sfreq: 128.0
+      contrasts: {}
+      epochs_tmin: 0.0
+      rest_epochs_duration: 5.0
+      rest_epochs_overlap: 0.5
+      task_is_rest: true
+      baseline: null
+      spatial_filter: ica
+      ica_algorithm: picard-extended_infomax
+      ica_decim: 2
+      ica_exclusion_thresholds:
+        eye blink: 0.8
+        muscle artifact: 0.8
+      ica_h_freq: 100.0
+      ica_icalabel_include:
+      - brain
+      - other
+      - heart beat
+      - line noise
+      - channel noise
+      ica_l_freq: 1.0
+      ica_n_components: 0.99
+      ica_reject: null
+      ica_use_icalabel: true
+      n_jobs: 4
+      run_source_estimation: false
+      task:
+      - relax
+      - arithmetic
+      deriv_root: datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-arithmetic
+  targets:
+    distinguishing:
+      name: distinguishing
+      dataset_dir: datasets/bids/distinguishing
+      save_preparation_html_reports: false
+      mne_bids_pipeline_config:
+        bids_root: datasets/bids/distinguishing
+        deriv_root: datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention
+        allow_missing_sessions: true
+        sessions:
+        - '03'
+        - '04'
+        - '05'
+        - '06'
+        - '07'
+        task: attention
+        ch_types:
+        - eeg
+        analyze_channels:
+        - F3
+        - F4
+        - F7
+        - F8
+        - FC5
+        - FC6
+        - O1
+        - O2
+        - P7
+        - P8
+        - T7
+        - T8
+        drop_channels:
+        - AF3
+        - AF4
+        eeg_reference: average
+        l_freq: 1.0
+        h_freq: 45.0
+        notch_freq:
+        - 50.0
+        raw_resample_sfreq: 128.0
+        crop_runs:
+        - 0.0
+        - 1200.0
+        epochs_tmin: 0.0
+        rest_epochs_duration: 5.0
+        rest_epochs_overlap: 0.5
+        task_is_rest: true
+        baseline: null
+        spatial_filter: ica
+        ica_algorithm: picard-extended_infomax
+        ica_decim: 2
+        ica_exclusion_thresholds:
+          eye blink: 0.8
+          muscle artifact: 0.8
+        ica_h_freq: 100.0
+        ica_icalabel_include:
+        - brain
+        - other
+        - heart beat
+        - line noise
+        - channel noise
+        ica_l_freq: 1.0
+        ica_n_components: 0.99
+        ica_reject: null
+        ica_use_icalabel: true
+        n_jobs: 4
+        run_source_estimation: false
+  mne_bids_pipeline_config:
+    bids_root: datasets/bids/sam40
+    ch_types:
+    - eeg
+    analyze_channels:
+    - F3
+    - F4
+    - F7
+    - F8
+    - FC5
+    - FC6
+    - O1
+    - O2
+    - P7
+    - P8
+    - T7
+    - T8
+    drop_channels:
+    - CZ
+    - FZ
+    - Fp1
+    - FC1
+    - C3
+    - FT9
+    - CP5
+    - CP1
+    - P3
+    - PO9
+    - PZ
+    - OZ
+    - PO10
+    - P4
+    - CP2
+    - CP6
+    - FT10
+    - C4
+    - FC2
+    - Fp2
+    eeg_reference: average
+    l_freq: 1.0
+    h_freq: 45.0
+    notch_freq:
+    - 50.0
+    raw_resample_sfreq: 128.0
+    contrasts: {}
+    epochs_tmin: 0.0
+    rest_epochs_duration: 5.0
+    rest_epochs_overlap: 0.5
+    task_is_rest: true
+    baseline: null
+    spatial_filter: ica
+    ica_algorithm: picard-extended_infomax
+    ica_decim: 2
+    ica_exclusion_thresholds:
+      eye blink: 0.8
+      muscle artifact: 0.8
+    ica_h_freq: 100.0
+    ica_icalabel_include:
+    - brain
+    - other
+    - heart beat
+    - line noise
+    - channel noise
+    ica_l_freq: 1.0
+    ica_n_components: 0.99
+    ica_reject: null
+    ica_use_icalabel: true
+    n_jobs: 4
+    run_source_estimation: false
+    task:
+    - relax
+    - arithmetic
+    deriv_root: datasets/bids/sam40/derivatives/mne-bids-pipeline/relax-arithmetic
+features:
+  name: deep_learning
+  transform:
+    _target_: sklearn.preprocessing.FunctionTransformer
+    validate: false
+pipeline:
+  name: eegconformer
+  estimator:
+    _target_: imblearn.pipeline.make_pipeline
+    _args_:
+    - _target_: mne.decoding.Scaler
+      scalings: mean
+    - _target_: sklearn.preprocessing.FunctionTransformer
+      func:
+        _target_: hydra.utils.get_method
+        path: numpy.float32
+      validate: false
+    - _target_: braindecode.EEGClassifier
+      _convert_: all
+      module:
+        _target_: hydra.utils.get_class
+        path: braindecode.models.EEGConformer
+      module__n_filters_time: 16
+      module__num_layers: 2
+      module__num_heads: 4
+      optimizer:
+        _target_: hydra.utils.get_class
+        path: torch.optim.AdamW
+      max_epochs: 100
+      batch_size: 64
+      lr: 0.000625
+      optimizer__weight_decay: 0.0001
+      iterator_train__drop_last: false
+      callbacks:
+      - _target_: skorch.callbacks.LRScheduler
+        policy: CosineAnnealingLR
+        T_max: 99
+      - _target_: pipeline.BalancedClassWeight
+      device: cuda
+      train_split: null
+      verbose: 0
+validation_strategy:
+  name: cross_dataset
+  protocol:
+    _target_: validation.build_cross_dataset
+seed: 42
+torch_num_threads: 12

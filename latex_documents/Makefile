@@ -1,5 +1,8 @@
 .PHONY: prepare-marked-manuscript prepare-plos-submission pull-artifacts clean
 
+.ONESHELL:
+.SHELLFLAGS := -ec
+
 # Kept in lockstep with .vscode/settings.json so the tracked-changes source is
 # generated with the same TeX Live release as the manuscript PDF.
 TEXLIVE_IMAGE := texlive/texlive:TL2025-historic
@@ -93,17 +96,11 @@ prepare-marked-manuscript:
 		initial_submission/main.tex revision/manuscript_clean/manuscript.tex \
 		> revision/manuscript_marked/manuscript-track-changes.tex
 
-# Copy all publication figures and tables from one completed analysis into the
-# working manuscript. Choosing which tables to \input remains manual.
-# Example: make pull-artifacts ANALYSIS_DIR="/abs/path/to/analysis"
+# Render publication figures and tables directly into the working manuscript.
+# Example: make pull-artifacts ANALYSIS_INPUT_DIR="/abs/path/to/results"
 pull-artifacts:
-	@test -n "$(ANALYSIS_DIR)" || { echo "Usage: make pull-artifacts ANALYSIS_DIR=path/to/analysis" >&2; exit 2; }
-	@test -d "$(ANALYSIS_DIR)/figures" || { echo "Missing figures/: $(ANALYSIS_DIR)" >&2; exit 2; }
-	@test -d "$(ANALYSIS_DIR)/tables" || { echo "Missing tables/: $(ANALYSIS_DIR)" >&2; exit 2; }
-	@mkdir -p revision/manuscript_clean/figures revision/manuscript_clean/tables
-	@cp -a "$(ANALYSIS_DIR)/figures/." revision/manuscript_clean/figures/
-	@cp -a "$(ANALYSIS_DIR)/tables/." revision/manuscript_clean/tables/
-	@echo "Pulled figures/ and tables/ from $(ANALYSIS_DIR)"
+	export ANALYSIS_OUTPUT_DIR="$(CURDIR)/revision/manuscript_clean"
+	$(MAKE) -C ../python_project analysis
 
 # Create a separate self-contained PLOS submission project. It contains the
 # manuscript without embedded graphics and figures/Fig<N>.tif.

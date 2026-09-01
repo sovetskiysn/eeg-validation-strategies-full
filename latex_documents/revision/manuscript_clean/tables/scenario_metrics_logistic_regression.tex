@@ -12,8 +12,8 @@
 \renewcommand{\arraystretch}{1.0}
 \begin{table}[H]
 \centering
-\caption{\textbf{Performance metrics across experimental scenarios for logistic regression.}}
-\label{tab:scenario_logistic_regression}
+\caption{\textbf{Performance metrics across experimental scenarios for Logistic Regression.}}
+\label{tab:scenario_metrics_logistic_regression}
 \begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
 \hline
 {\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
@@ -27,21 +27,23 @@
 \multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.63 & 0.61 & 0.29 & 0.73 & 0.63/0.63 \\
  & Leave-one-subject-out(Full B) & 0.66 & 0.61 & 0.31 & 0.74 & 0.63/0.69 \\
 \hline
-\multirow{12}{=}{Cross-task (Dataset~B)} & Stroop$\!\rightarrow\!$Arithmetic & 0.59 & 0.57 & 0.21 & 0.65 & 0.65/0.54 \\
- & Stroop$\!\rightarrow\!$Mirror & 0.66 & 0.64 & 0.35 & 0.73 & 0.67/0.66 \\
- & Arithmetic$\!\rightarrow\!$Stroop & 0.56 & 0.53 & 0.14 & 0.61 & 0.67/0.46 \\
- & Arithmetic$\!\rightarrow\!$Mirror & 0.61 & 0.56 & 0.22 & 0.66 & 0.65/0.56 \\
- & Mirror$\!\rightarrow\!$Stroop & 0.62 & 0.59 & 0.27 & 0.70 & 0.63/0.62 \\
- & Mirror$\!\rightarrow\!$Arithmetic & 0.60 & 0.57 & 0.21 & 0.65 & 0.66/0.54 \\
+\multirow{12}{=}{Cross-task (Dataset~B)} & Full B$\!\rightarrow\!$Stroop & 0.66 & 0.64 & 0.34 & 0.73 & 0.64/0.68 \\
+ & Full B$\!\rightarrow\!$Arithmetic & 0.64 & 0.62 & 0.31 & 0.72 & 0.64/0.65 \\
+ & Full B$\!\rightarrow\!$Mirror & 0.67 & 0.65 & 0.36 & 0.77 & 0.63/0.71 \\
 \cmidrule{2-7}
- & Arithmetic+Mirror$\!\rightarrow\!$Stroop & 0.61 & 0.56 & 0.22 & 0.67 & 0.65/0.56 \\
- & Stroop+Mirror$\!\rightarrow\!$Arithmetic & 0.66 & 0.64 & 0.35 & 0.74 & 0.59/0.74 \\
- & Stroop+Arithmetic$\!\rightarrow\!$Mirror & 0.62 & 0.60 & 0.27 & 0.68 & 0.62/0.63 \\
- & Stroop$\!\rightarrow\!$Arithmetic+Mirror & 0.58 & 0.55 & 0.16 & 0.60 & 0.65/0.50 \\
- & Arithmetic$\!\rightarrow\!$Stroop+Mirror & 0.60 & 0.56 & 0.21 & 0.63 & 0.63/0.58 \\
- & Mirror$\!\rightarrow\!$Stroop+Arithmetic & 0.63 & 0.60 & 0.27 & 0.68 & 0.64/0.62 \\
+ & Stroop$\!\rightarrow\!$Full B & 0.63 & 0.58 & 0.25 & 0.67 & 0.63/0.63 \\
+ & Stroop$\!\rightarrow\!$Arithmetic & 0.58 & 0.55 & 0.16 & 0.60 & 0.65/0.50 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.63 & 0.60 & 0.27 & 0.68 & 0.64/0.62 \\
+\cmidrule{2-7}
+ & Arithmetic$\!\rightarrow\!$Full B & 0.62 & 0.55 & 0.23 & 0.68 & 0.66/0.58 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.56 & 0.53 & 0.14 & 0.61 & 0.67/0.46 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.66 & 0.64 & 0.35 & 0.73 & 0.67/0.66 \\
+\cmidrule{2-7}
+ & Mirror$\!\rightarrow\!$Full B & 0.64 & 0.57 & 0.26 & 0.70 & 0.68/0.60 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.60 & 0.57 & 0.21 & 0.65 & 0.66/0.54 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.62 & 0.59 & 0.27 & 0.70 & 0.63/0.62 \\
 \hline
-\multirow{14}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.52 & 0.37 & 0.03 & 0.54 & 0.78/0.26 \\
+\multirow{8}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.52 & 0.37 & 0.03 & 0.54 & 0.78/0.26 \\
  & Full B$\!\rightarrow\!$Full A & 0.55 & 0.53 & 0.12 & 0.58 & 0.35/0.76 \\
 \cmidrule{2-7}
  & Full A$\!\rightarrow\!$Stroop & 0.49 & 0.42 & -0.03 & 0.51 & 0.71/0.27 \\
@@ -50,18 +52,7 @@
  & Arithmetic$\!\rightarrow\!$Full A & 0.52 & 0.52 & 0.04 & 0.54 & 0.43/0.61 \\
  & Full A$\!\rightarrow\!$Mirror & 0.53 & 0.47 & 0.06 & 0.55 & 0.72/0.34 \\
  & Mirror$\!\rightarrow\!$Full A & 0.52 & 0.48 & 0.06 & 0.54 & 0.26/0.79 \\
-\cmidrule{2-7}
- & Full A$\!\rightarrow\!$Stroop+Arithmetic & 0.51 & 0.41 & 0.02 & 0.54 & 0.72/0.30 \\
- & Stroop+Arithmetic$\!\rightarrow\!$Full A & 0.52 & 0.50 & 0.04 & 0.53 & 0.36/0.68 \\
- & Full A$\!\rightarrow\!$Stroop+Mirror & 0.51 & 0.40 & 0.00 & 0.52 & 0.75/0.27 \\
- & Stroop+Mirror$\!\rightarrow\!$Full A & 0.53 & 0.49 & 0.07 & 0.54 & 0.28/0.77 \\
- & Full A$\!\rightarrow\!$Arithmetic+Mirror & 0.54 & 0.43 & 0.07 & 0.56 & 0.77/0.30 \\
- & Arithmetic+Mirror$\!\rightarrow\!$Full A & 0.55 & 0.51 & 0.11 & 0.58 & 0.28/0.81 \\
 \hline
 \end{tabular}
-\normalsize
-\begin{flushleft}
-\textit{Note.} Per-class recall is reported as Low/High. MCC, Matthews correlation coefficient; ROC-AUC, area under the receiver operating characteristic curve.
-\end{flushleft}
 \end{table}
 \endgroup

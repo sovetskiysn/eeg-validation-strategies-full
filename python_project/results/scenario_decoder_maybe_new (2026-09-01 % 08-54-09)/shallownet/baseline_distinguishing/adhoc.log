@@ -1,0 +1,15 @@
+[2026-09-01 09:11:21,291][preparation][INFO] - Preparation distinguishing: started for tasks attention (derivatives: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention).
+[2026-09-01 09:11:29,204][preparation][INFO] - Preparation distinguishing: complete; cache reused (193 Pipeline cache hits); derivatives: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention; HTML report snapshot: disabled; full log: /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/shallownet/baseline_distinguishing/_preparation/distinguishing.mne-bids-pipeline.log.
+[2026-09-01 09:11:31,569][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:11:31,569][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 09:11:59,259][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:11:59,260][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 09:12:26,978][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:12:26,978][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 09:12:54,571][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:12:54,572][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 09:13:22,305][braindecode.datautil.util][INFO] - Using array-like to find signal-related parameters.
+[2026-09-01 09:13:22,305][braindecode.eegneuralnet.EEGClassifier][INFO] - Passing additional parameters {'n_outputs': 2, 'n_times': 640, 'n_chans': 12} to module <class 'braindecode.models.shallow_fbcsp.ShallowFBCSPNet'>.
+[2026-09-01 09:13:51,230][__main__][INFO] - Cross-validation balanced accuracy by fold: train 0.904, 0.917, 0.916, 0.890, 0.910 (mean 0.907); test 0.672, 0.652, 0.725, 0.653, 0.618 (mean 0.664)
+[2026-09-01 09:13:52,432][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/shallownet/baseline_distinguishing (mean balanced accuracy 0.664)
+[2026-09-01 09:13:52,443][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

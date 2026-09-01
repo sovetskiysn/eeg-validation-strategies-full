@@ -2,7 +2,7 @@
 % Generated figures belong in latex_documents/revision/manuscript_clean/figures/.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/source_png/transfer_degradation_matrix.png}
-\caption{\textbf{Zero-shot transfer performance across source and target compositions.} Each cell reports participant-level balanced accuracy (\%) for one decoder trained on the source composition (rows) and evaluated on the target composition (columns). Grey diagonal cells show the corresponding within-composition baselines; coloured cells show cross-task or cross-dataset transfer; dashes indicate unavailable source--target combinations. For each compatible target composition, each summary first averages participant-level balanced accuracy across the five decoders and subtracts the equally averaged target-specific baseline; it then averages these differences across targets. Negative values indicate lower transfer performance. Cross-task differences combine task-composition and held-out-participant shifts relative to the within-domain baseline.}
-\label{fig:transfer_degradation_matrix}
+\includegraphics[width=\textwidth]{figures/source_png/transfer_matrix.png}
+\caption{\textbf{Zero-shot transfer performance across source and target compositions.} Rows and columns denote source and target compositions. The grey diagonal shows the target-specific baseline scenario. The two right-hand columns show mean differences from the relevant target baselines; negative values indicate lower performance, and dashes mark contrasts that are not applicable.}
+\label{fig:transfer_matrix}
 \end{figure}

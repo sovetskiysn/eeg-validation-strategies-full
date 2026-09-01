@@ -1,0 +1,5 @@
+[2026-09-01 09:13:52,537][preparation][INFO] - Preparation distinguishing: started for tasks attention (derivatives: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention).
+[2026-09-01 09:14:00,542][preparation][INFO] - Preparation distinguishing: complete; cache reused (193 Pipeline cache hits); derivatives: /work/python_project/datasets/bids/distinguishing/derivatives/mne-bids-pipeline/attention; HTML report snapshot: disabled; full log: /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/xgboost/baseline_distinguishing/_preparation/distinguishing.mne-bids-pipeline.log.
+[2026-09-01 09:16:37,239][__main__][INFO] - Cross-validation balanced accuracy by fold: train 0.840, 0.846, 0.844, 0.837, 0.847 (mean 0.843); test 0.752, 0.627, 0.645, 0.676, 0.648 (mean 0.670)
+[2026-09-01 09:16:37,279][__main__][INFO] - Completed adhoc: 1 result(s) under /work/python_project/results/scenario_decoder_maybe_new (2026-09-01 % 08-54-09)/xgboost/baseline_distinguishing (mean balanced accuracy 0.670)
+[2026-09-01 09:16:37,281][hydra.experimental.callbacks.LogJobReturnCallback][INFO] - Succeeded with return value: None

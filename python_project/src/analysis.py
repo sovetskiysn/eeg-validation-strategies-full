@@ -35,9 +35,11 @@ SAM40_FULL = ("sam40", ("arithmetic", "mirror", "relax", "stroop"))
 SAM40_STROOP = ("sam40", ("relax", "stroop"))
 SAM40_ARITHMETIC = ("sam40", ("arithmetic", "relax"))
 SAM40_MIRROR = ("sam40", ("mirror", "relax"))
-SAM40_STROOP_ARITHMETIC = ("sam40", ("arithmetic", "relax", "stroop"))
-SAM40_STROOP_MIRROR = ("sam40", ("mirror", "relax", "stroop"))
-SAM40_ARITHMETIC_MIRROR = ("sam40", ("arithmetic", "mirror", "relax"))
+
+# Every SAM-40 side the sweep prepared. Cross-task transfer is run in both
+# directions between all of them, so naming them once here keeps the scenario
+# order and the transfer figure from spelling the same twelve pairs out twice.
+SAM40_SIDES = (SAM40_FULL, SAM40_STROOP, SAM40_ARITHMETIC, SAM40_MIRROR)
 
 SCENARIO_ORDER = (
     ("baseline", DISTINGUISHING, DISTINGUISHING),
@@ -45,21 +47,24 @@ SCENARIO_ORDER = (
     ("baseline", SAM40_STROOP, SAM40_STROOP),
     ("baseline", SAM40_ARITHMETIC, SAM40_ARITHMETIC),
     ("baseline", SAM40_MIRROR, SAM40_MIRROR),
+    # Cross-subject transfer is reported on the full composition of each dataset
+    # only: a leave-one-subject-out run inside a single SAM-40 task would name
+    # the participant shift after a scenario that also narrows the task set, so
+    # the three single-task sides stay out of this protocol.
     ("cross_subject", DISTINGUISHING, DISTINGUISHING),
     ("cross_subject", SAM40_FULL, SAM40_FULL),
-    ("cross_session", DISTINGUISHING, DISTINGUISHING),
-    ("cross_task", SAM40_ARITHMETIC_MIRROR, SAM40_STROOP),
-    ("cross_task", SAM40_ARITHMETIC, SAM40_MIRROR),
-    ("cross_task", SAM40_ARITHMETIC, SAM40_STROOP),
-    ("cross_task", SAM40_ARITHMETIC, SAM40_STROOP_MIRROR),
-    ("cross_task", SAM40_MIRROR, SAM40_ARITHMETIC),
-    ("cross_task", SAM40_MIRROR, SAM40_STROOP),
-    ("cross_task", SAM40_MIRROR, SAM40_STROOP_ARITHMETIC),
-    ("cross_task", SAM40_STROOP_ARITHMETIC, SAM40_MIRROR),
-    ("cross_task", SAM40_STROOP_MIRROR, SAM40_ARITHMETIC),
+    ("cross_task", SAM40_FULL, SAM40_STROOP),
+    ("cross_task", SAM40_FULL, SAM40_ARITHMETIC),
+    ("cross_task", SAM40_FULL, SAM40_MIRROR),
+    ("cross_task", SAM40_STROOP, SAM40_FULL),
     ("cross_task", SAM40_STROOP, SAM40_ARITHMETIC),
-    ("cross_task", SAM40_STROOP, SAM40_ARITHMETIC_MIRROR),
     ("cross_task", SAM40_STROOP, SAM40_MIRROR),
+    ("cross_task", SAM40_ARITHMETIC, SAM40_FULL),
+    ("cross_task", SAM40_ARITHMETIC, SAM40_STROOP),
+    ("cross_task", SAM40_ARITHMETIC, SAM40_MIRROR),
+    ("cross_task", SAM40_MIRROR, SAM40_FULL),
+    ("cross_task", SAM40_MIRROR, SAM40_STROOP),
+    ("cross_task", SAM40_MIRROR, SAM40_ARITHMETIC),
     ("cross_dataset", DISTINGUISHING, SAM40_FULL),
     ("cross_dataset", SAM40_FULL, DISTINGUISHING),
     ("cross_dataset", DISTINGUISHING, SAM40_STROOP),
@@ -68,27 +73,12 @@ SCENARIO_ORDER = (
     ("cross_dataset", SAM40_ARITHMETIC, DISTINGUISHING),
     ("cross_dataset", DISTINGUISHING, SAM40_MIRROR),
     ("cross_dataset", SAM40_MIRROR, DISTINGUISHING),
-    ("cross_dataset", DISTINGUISHING, SAM40_STROOP_ARITHMETIC),
-    ("cross_dataset", SAM40_STROOP_ARITHMETIC, DISTINGUISHING),
-    ("cross_dataset", DISTINGUISHING, SAM40_STROOP_MIRROR),
-    ("cross_dataset", SAM40_STROOP_MIRROR, DISTINGUISHING),
-    ("cross_dataset", DISTINGUISHING, SAM40_ARITHMETIC_MIRROR),
-    ("cross_dataset", SAM40_ARITHMETIC_MIRROR, DISTINGUISHING),
 )
 
 # Article-level order of the dataset-composition table's rows. A composition is
 # named by the same side identity every scenario is keyed by, so the table and
-# the scenarios describe the same eight prepared window sets.
-ARTICLE_COMPOSITIONS = (
-    DISTINGUISHING,
-    SAM40_FULL,
-    SAM40_STROOP,
-    SAM40_ARITHMETIC,
-    SAM40_MIRROR,
-    SAM40_STROOP_ARITHMETIC,
-    SAM40_STROOP_MIRROR,
-    SAM40_ARITHMETIC_MIRROR,
-)
+# the scenarios describe the same five prepared window sets.
+ARTICLE_COMPOSITIONS = (DISTINGUISHING, *SAM40_SIDES)
 
 # One entry per article model, in the order every table and figure shows them.
 # `full_name` spells the model out in a LaTeX caption; `short_name` labels the
@@ -161,6 +151,28 @@ def discover_scenario_results(scenario_glob: str) -> list[Path]:
     return results
 
 
+def article_scenario_results(
+    scenario_glob: str,
+) -> list[tuple[Path, object, pd.DataFrame, pd.DataFrame]]:
+    """Return the read results of every direction the article actually reports.
+
+    A sweep holds every direction that was executed, and the article reports a
+    subset of them: an already finished sweep still holds `cross_session` and the
+    per-task cross-subject runs whose recipes were dropped afterwards, and they
+    sit in `results/` next to the directions the tables and figures describe.
+    Deciding here what belongs to the article keeps that fact in one place -- an
+    artifact asks for the directions it reports and never learns that the sweep
+    held more.
+    """
+    wanted = set(SCENARIO_ORDER)
+    results = []
+    for job_dir in discover_scenario_results(scenario_glob):
+        cfg, windows, folds = read_scenario_result(job_dir)
+        if scenario_key(cfg) in wanted:
+            results.append((job_dir, cfg, windows, folds))
+    return results
+
+
 def read_scenario_result(job_dir: Path) -> tuple[object, pd.DataFrame, pd.DataFrame]:
     """Return the description and the two tables of one logical scenario result.
 
@@ -204,9 +216,6 @@ def scenario_key(cfg) -> tuple[object, ...]:
         "sam40_stroop": SAM40_STROOP,
         "sam40_arithmetic": SAM40_ARITHMETIC,
         "sam40_mirror": SAM40_MIRROR,
-        "sam40_stroop_arithmetic": SAM40_STROOP_ARITHMETIC,
-        "sam40_stroop_mirror": SAM40_STROOP_MIRROR,
-        "sam40_arithmetic_mirror": SAM40_ARITHMETIC_MIRROR,
     }
     identities = []
     for side in sides:
@@ -351,7 +360,7 @@ def bootstrap_average_interval(
 # all of them from one finished sweep. Everything above serves these.
 
 
-def craft_main_table(scenario_glob: str) -> str:
+def craft_scenario_metrics_table(scenario_glob: str) -> str:
     """Fill the scenario-table template from one complete scenario-run glob."""
     # =============================================================================
     # Step 1: score every scenario this decoder was measured on
@@ -361,8 +370,7 @@ def craft_main_table(scenario_glob: str) -> str:
     # angle, so they are calculated here rather than on every read of a result.
     metrics_by_scenario: dict[tuple[str, str, str], tuple[str, str, str, str, str]] = {}
     decoder_names = set()
-    for job_dir in discover_scenario_results(scenario_glob):
-        cfg, windows, folds = read_scenario_result(job_dir)
+    for job_dir, cfg, windows, folds in article_scenario_results(scenario_glob):
         decoder = decoder_name(cfg)
         if decoder not in ARTICLE_DECODERS:
             raise ValueError(f"{job_dir}: unsupported decoder for article table: {decoder}.")
@@ -408,16 +416,16 @@ def craft_main_table(scenario_glob: str) -> str:
     # Step 2: fill the template rows in the article's scenario order
     # =============================================================================
 
-    expected, actual = Counter(SCENARIO_ORDER), Counter(metrics_by_scenario.keys())
-    if actual != expected:
-        missing = list((expected - actual).elements())
-        unexpected = list((actual - expected).elements())
-        raise ValueError(f"Scenario set does not match the table template; missing={missing}, unexpected={unexpected}.")
+    # Directions outside the article were filtered out on the way in, so what is
+    # left to check is that none of the reported ones is absent.
+    missing = list((Counter(SCENARIO_ORDER) - Counter(metrics_by_scenario.keys())).elements())
+    if missing:
+        raise ValueError(f"The sweep is missing scenario results for this decoder: {missing}.")
     if len(decoder_names) != 1:
         raise ValueError(f"A main scenario table needs one decoder, got {sorted(decoder_names)}.")
     decoder = decoder_names.pop()
 
-    template = (LATEX_ARTIFACT_TEMPLATES_DIR / "scenario_table_template.tex").read_text()
+    template = (LATEX_ARTIFACT_TEMPLATES_DIR / "scenario_metrics_table_template.tex").read_text()
     template = template.replace("MODEL_DISPLAY_NAME", ARTICLE_DECODERS[decoder]["full_name"]).replace(
         "MODEL_SLUG", decoder
     )
@@ -429,7 +437,7 @@ def craft_main_table(scenario_glob: str) -> str:
             metric_lines.append(index)
     if len(metric_lines) != len(SCENARIO_ORDER):
         raise ValueError(
-            f"{LATEX_ARTIFACT_TEMPLATES_DIR / 'scenario_table_template.tex'} has {len(metric_lines)} metric rows; "
+            f"{LATEX_ARTIFACT_TEMPLATES_DIR / 'scenario_metrics_table_template.tex'} has {len(metric_lines)} metric rows; "
             f"expected {len(SCENARIO_ORDER)}."
         )
 
@@ -452,8 +460,7 @@ def craft_dataset_composition_table(scenario_glob: str) -> str:
     # Step 1: measure every composition the sweep prepared
     # =============================================================================
     stats_by_composition: dict[tuple[object, ...], tuple[str, str, str, str]] = {}
-    for job_dir in discover_scenario_results(scenario_glob):
-        cfg, windows, folds = read_scenario_result(job_dir)
+    for job_dir, cfg, windows, folds in article_scenario_results(scenario_glob):
         for composition, prepared in composition_windows(cfg, windows, folds).items():
             counts = prepared["y_true_name"].value_counts()
             if set(counts.index) != {"low_attention", "high_attention"}:
@@ -482,7 +489,7 @@ def craft_dataset_composition_table(scenario_glob: str) -> str:
             f"missing={sorted(expected - actual)}, unexpected={sorted(actual - expected)}."
         )
 
-    template_path = LATEX_ARTIFACT_TEMPLATES_DIR / "dataset_composition_table_template.tex"
+    template_path = LATEX_ARTIFACT_TEMPLATES_DIR / "dataset_compositions_table_template.tex"
     lines = template_path.read_text().splitlines(keepends=True)
     metric_lines = []
     for index, line in enumerate(lines):
@@ -500,7 +507,7 @@ def craft_dataset_composition_table(scenario_glob: str) -> str:
     return "".join(lines)
 
 
-def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
+def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
     """Build the all-decoder transfer matrix with target-specific baselines."""
     sides = (
         ("Stroop", SAM40_STROOP),
@@ -511,18 +518,24 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
     )
     decoders = tuple(ARTICLE_DECODERS)
     model_names = tuple(spec["short_name"] for spec in ARTICLE_DECODERS.values())
+    # Cross-task transfer stays inside Dataset B and now includes its full
+    # composition, so the displayed pairs follow SAM40_SIDES rather than a slice
+    # of the row order.
     displayed_scenarios = {
         ("baseline", side, side) for _, side in sides
     } | {
         ("cross_task", source, target)
-        for _, source in sides[:3]
-        for _, target in sides[:3]
+        for source in SAM40_SIDES
+        for target in SAM40_SIDES
         if source != target
     } | {
+        # Dataset A is shown only against the full Dataset B composition when it
+        # is the source; its transfers into the single-task compositions stay
+        # measured but out of the figure.
         ("cross_dataset", source, target)
         for _, source in sides
         for _, target in sides
-        if source[0] != target[0]
+        if source[0] != target[0] and (source != DISTINGUISHING or target == SAM40_FULL)
     }
 
     # Every cell of this matrix is a decoder average, so the participant-level
@@ -548,7 +561,7 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
                         (
                             (protocol, source, target)
                             for protocol in ("cross_task", "cross_dataset")
-                            if (decoder, (protocol, source, target)) in scores
+                            if (protocol, source, target) in displayed_scenarios
                         ),
                         None,
                     )
@@ -579,10 +592,15 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
                     np.mean(transfer_means) - np.mean(baseline_means)
                 ) * 100
 
+    # The target columns carry a two-level header: the transfer protocol that
+    # reaching each target from another source represents, above the target
+    # itself. The groups are ranges over the column order set by `sides`.
+    column_groups = (("Cross-task", 0, 3), ("Cross-dataset", 3, 5))
     figure_width, figure_height = 13.6, 8.8
     matrix_left, matrix_bottom = 0.05, 0.095
     matrix_width, matrix_height = 0.61, 0.84
-    header_height = 1.45
+    group_header_height = 0.8
+    header_height = 1.45 + group_header_height
     source_left, decoder_left = -2.25, -1.25
     data_column_width = matrix_width / (len(sides) - source_left)
     data_left = matrix_left - source_left * data_column_width
@@ -613,9 +631,9 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
         for column in range(len(sides)):
             value = matrix[row, column]
             if np.isnan(value):
-                facecolor, text, text_colour = "#F2F4F6", "—", "#667085"
+                facecolor, text, text_colour = "#FFFFFF", "—", "#667085"
             elif row // len(decoders) == column:
-                facecolor, text, text_colour = "#F2F4F6", f"{value * 100:.1f}", "#263341"
+                facecolor, text, text_colour = "#FFFFFF", f"{value * 100:.1f}", "#263341"
             else:
                 facecolor = cmap(normalization(value))
                 text = f"{value * 100:.1f}"
@@ -665,17 +683,40 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
                 edgecolor=border_colour, linewidth=0.9, zorder=4,
             )
         )
+        # The baseline block sits on the diagonal and is read against the transfer
+        # cells beside it, so it gets a thin outline of its own to stand apart
+        # from the group border it shares an edge with.
+        ax.add_patch(
+            Rectangle(
+                (source_index, y_position), 1, len(decoders), fill=False,
+                edgecolor=border_colour, linewidth=0.9, zorder=5,
+            )
+        )
 
+    label_header_top = -header_height + group_header_height
     for column, label in enumerate(labels):
         ax.add_patch(
             Rectangle(
-                (column, -header_height), 1, header_height, facecolor="#FFFFFF",
+                (column, label_header_top), 1, -label_header_top, facecolor="#FFFFFF",
                 edgecolor=border_colour, linewidth=0.9, clip_on=False,
             )
         )
         ax.text(
-            column + 0.5, -header_height / 2, label, ha="center", va="center",
+            column + 0.5, label_header_top / 2, label, ha="center", va="center",
             fontsize=10, fontweight="bold", clip_on=False,
+        )
+    for group_label, first_column, last_column in column_groups:
+        ax.add_patch(
+            Rectangle(
+                (first_column, -header_height), last_column - first_column,
+                group_header_height, facecolor="#FFFFFF", edgecolor=border_colour,
+                linewidth=0.9, clip_on=False,
+            )
+        )
+        ax.text(
+            (first_column + last_column) / 2, -header_height + group_header_height / 2,
+            group_label, ha="center", va="center", fontsize=10, fontweight="bold",
+            clip_on=False,
         )
     ax.text(
         len(sides) / 2, -header_height - 0.42, "Target (test)", ha="center",
@@ -706,7 +747,7 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
     for row in range(len(sides)):
         for column in range(2):
             value = summary_values[row, column]
-            facecolor = "#F2F4F6" if np.isnan(value) else "#FFFFFF"
+            facecolor = "#FFFFFF"
             text = "—" if np.isnan(value) else f"{value:.1f}"
             y_position = row * len(decoders)
             summary_ax.add_patch(
@@ -718,8 +759,8 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
             summary_ax.text(column + 0.5, y_position + len(decoders) / 2, text, ha="center", va="center", fontsize=12,
                             fontweight="bold" if not np.isnan(value) else "normal", color="#263341")
     for column, label in enumerate((
-        "Cross-task\nmean Δ",
-        "Cross-dataset\nmean Δ",
+        "Baseline vs\ncross-task\nmean Δ",
+        "Baseline vs\ncross-dataset\nmean Δ",
     )):
         summary_ax.add_patch(
             Rectangle(
@@ -741,14 +782,13 @@ def craft_transfer_degradation_matrix_figure(scenario_glob: str) -> Figure:
     return fig
 
 
-def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
-    """Build one all-scenarios accuracy figure with every decoder and their mean."""
+def craft_scenario_accuracy_by_decoder_figure(scenario_glob: str) -> Figure:
+    """Build one per-scenario accuracy figure with every decoder and their mean."""
     protocol_labels = (
         ("Baseline", 5),
         ("Cross-subject", 2),
-        ("Cross-session", 1),
         ("Cross-task (Dataset B)", 12),
-        ("Cross-dataset", 14),
+        ("Cross-dataset", 8),
     )
     validation_method_labels = (
         "Stratified K-fold(Full A)",
@@ -758,19 +798,18 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
         "Stratified K-fold(B: Mirror)",
         "Leave-one-subject-out(Full A)",
         "Leave-one-subject-out(Full B)",
-        "Leave-one-session-out(Full A)",
+        "Full B → Stroop",
+        "Full B → Arithmetic",
+        "Full B → Mirror",
+        "Stroop → Full B",
         "Stroop → Arithmetic",
         "Stroop → Mirror",
+        "Arithmetic → Full B",
         "Arithmetic → Stroop",
         "Arithmetic → Mirror",
+        "Mirror → Full B",
         "Mirror → Stroop",
         "Mirror → Arithmetic",
-        "Arithmetic+Mirror → Stroop",
-        "Stroop+Mirror → Arithmetic",
-        "Stroop+Arithmetic → Mirror",
-        "Stroop → Arithmetic+Mirror",
-        "Arithmetic → Stroop+Mirror",
-        "Mirror → Stroop+Arithmetic",
         "Full A → Full B",
         "Full B → Full A",
         "Full A → Stroop",
@@ -779,12 +818,6 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
         "Arithmetic → Full A",
         "Full A → Mirror",
         "Mirror → Full A",
-        "Full A → Stroop+Arithmetic",
-        "Stroop+Arithmetic → Full A",
-        "Full A → Stroop+Mirror",
-        "Stroop+Mirror → Full A",
-        "Full A → Arithmetic+Mirror",
-        "Arithmetic+Mirror → Full A",
     )
     decoders = tuple(ARTICLE_DECODERS)
     if len(validation_method_labels) != len(SCENARIO_ORDER):
@@ -823,7 +856,7 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
         next_y_position -= row_count
         validation_label_start += row_count
 
-    fig, ax = plt.subplots(figsize=(12.2, 14.6))
+    fig, ax = plt.subplots(figsize=(12.2, 12.9))
     offsets = np.linspace(-0.22, 0.22, len(decoders))
     for decoder_index, spec in enumerate(ARTICLE_DECODERS.values()):
         ax.scatter(
@@ -891,9 +924,12 @@ def craft_all_scenarios_model_comparison_figure(scenario_glob: str) -> Figure:
     return fig
 
 
-def craft_baseline_cross_shift_comparison_figure(scenario_glob: str) -> Figure:
+def craft_baseline_vs_cross_subject_figure(scenario_glob: str) -> Figure:
     """Build the per-dataset baseline-to-cross-subject trajectory of every decoder."""
-    panel_specs = (("Dataset A", DISTINGUISHING), ("Dataset B", SAM40_FULL))
+    panel_specs = (
+        ("Mental attention-state dataset", DISTINGUISHING),
+        ("SAM-40 dataset", SAM40_FULL),
+    )
     protocol_specs = (("baseline", "Baseline"), ("cross_subject", "Cross-subject"))
     decoders = tuple(ARTICLE_DECODERS)
     # A panel column is one non-transfer scenario, which is its own target.
@@ -1033,24 +1069,24 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
 
     written = []
     for decoder in ARTICLE_DECODERS:
-        table_path = tables_dir / f"result_table_{decoder}.tex"
-        table_path.write_text(craft_main_table(str(input_dir / decoder / "*")))
+        table_path = tables_dir / f"scenario_metrics_{decoder}.tex"
+        table_path.write_text(craft_scenario_metrics_table(str(input_dir / decoder / "*")))
         written.append(table_path)
 
     scenario_glob = str(input_dir / "*" / "*")
     # Read across every decoder rather than one of them: the compositions are the
     # same prepared data for all five, so the whole sweep is the strongest place
     # to notice that they are not.
-    composition_table_path = tables_dir / "datasets_info.tex"
+    composition_table_path = tables_dir / "dataset_compositions.tex"
     composition_table_path.write_text(craft_dataset_composition_table(scenario_glob))
     written.append(composition_table_path)
 
     # The label mapping states the class definition rather than a measured result,
     # so nothing is filled into it; it is copied so that every table the manuscript
     # inputs comes from the same place.
-    label_mapping_path = tables_dir / "label_mapping.tex"
+    label_mapping_path = tables_dir / "attention_label_mapping.tex"
     label_mapping_path.write_text(
-        (LATEX_ARTIFACT_TEMPLATES_DIR / "label_mapping_table_template.tex").read_text()
+        (LATEX_ARTIFACT_TEMPLATES_DIR / "attention_label_mapping_table_template.tex").read_text()
     )
     written.append(label_mapping_path)
 
@@ -1058,19 +1094,19 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
     # and label travel with the image instead of living in the manuscript.
     figure_specs = (
         (
-            "transfer_degradation_matrix",
-            craft_transfer_degradation_matrix_figure,
+            "transfer_matrix",
+            craft_transfer_matrix_figure,
             {"bbox_inches": "tight", "pad_inches": 0.03},
         ),
         (
-            "baseline_cross_shift_comparison",
-            craft_baseline_cross_shift_comparison_figure,
+            "baseline_vs_cross_subject",
+            craft_baseline_vs_cross_subject_figure,
             {"bbox_inches": "tight", "pad_inches": 0.03},
         ),
-        # The all-scenarios figure places its own margins with subplots_adjust and
+        # The per-scenario accuracy figure places its own margins with subplots_adjust and
         # draws its row labels outside the axes, which a tight bounding box would
         # crop; it is saved with the margins it asked for.
-        ("all_scenarios_model_comparison", craft_all_scenarios_model_comparison_figure, {}),
+        ("scenario_accuracy_by_decoder", craft_scenario_accuracy_by_decoder_figure, {}),
     )
     for name, craft_figure, savefig_kwargs in figure_specs:
         figure = craft_figure(scenario_glob)
