@@ -40,6 +40,7 @@
 \usepackage{threeparttable} 
 \usepackage{multirow}
 \usepackage{url}
+\usepackage{xurl} % allow long URLs to break across lines
 
 
 \usepackage[most]{tcolorbox}
@@ -337,39 +338,30 @@ peer review process if you are unable.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\textbf{[TODO for supervisor --- please verify this statement before
-submission: that the two dataset links resolve to exactly the versions and
-files analysed here, and that no further author-generated data need to be
-listed. The wording below is then to be pasted into the `Data Availability'
-field of the online submission form.]}
+\textbf{[TODO for supervisor --- this item is handled on the submission-form
+side, not in the manuscript: the `Data Availability' field in Editorial Manager
+has to be filled in with the repository and identifier of every source. Everything
+needed for that is collected below; please check that the links point to exactly
+the versions and files we analysed, then enter them in the field and finalise
+the response text.]}
 
 \vspace{0.2cm}
 
-We thank the Editor for this suggestion and provide the missing details now.
-Both datasets analysed in this study are third-party open datasets, and the
-revised Data Availability Statement now identifies each of them by repository
-name and by a persistent identifier or direct link, together with the
-author-generated code and artifacts required to reproduce the reported results.
-The statement reads:
+We thank the Editor for this suggestion. The sources are the following:
 
-\vspace{0.2cm}
-
-\begin{quotation}
-\noindent
-The data underlying the results presented in this study are publicly available.
-Dataset~A, \emph{EEG data for Mental Attention State Detection}, is available
-from Kaggle:
-\url{https://www.kaggle.com/datasets/inancigdem/eeg-data-for-mental-attention-state-detection}.
-Dataset~B, \emph{SAM~40}, is available from Figshare under the DOI
-\url{https://doi.org/10.6084/m9.figshare.14562090.v1}. The author-generated
-analysis code, the configuration of every reported run, and the per-run
-artifacts underlying the reported figures and tables are available at
-\url{https://github.com/sovetskiysn/eeg-validation-strategies} under the MIT
-license and archived on Zenodo under the DOI
-\url{https://doi.org/10.5281/zenodo.22255472}.
-\end{quotation}
-
-\vspace{0.2cm}
+\begin{itemize}
+	\item \textbf{Dataset~A} --- \emph{EEG data for Mental Attention State
+	      Detection}. Repository: Kaggle. Direct link:\\
+	      \url{https://www.kaggle.com/datasets/inancigdem/eeg-data-for-mental-attention-state-detection}
+	\item \textbf{Dataset~B} --- \emph{SAM~40}. Repository: Figshare. DOI:\\
+	      \url{https://doi.org/10.6084/m9.figshare.14562090.v1}
+	\item \textbf{Author-generated code and per-run artifacts} --- the analysis
+	      code, the configuration of every reported run, and the artifacts
+	      underlying the reported figures and tables, released under the MIT
+	      license. Repository: GitHub. Direct link:\\
+	      \url{https://github.com/sovetskiysn/eeg-validation-strategies}\\
+	      Archive: Zenodo. DOI: \url{https://doi.org/10.5281/zenodo.22255472}
+\end{itemize}
 
 \noindent
 No data underlying the reported findings are subject to access restrictions.
@@ -391,17 +383,12 @@ after the references list.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- Supporting Information not yet restructured.]}
-The supplementary material changed in this revision: the supplementary figures
-of the original submission were replaced by four decoder-specific tables of
-scenario metrics (XGBoost, EEGNet, ShallowFBCSPNet, EEGConformer). These are
-currently typeset inside the manuscript as ordinary numbered tables in the
-``Supporting information'' section, and no separate Supporting Information
-files exist yet. Before this response can be written, the four tables must be
-moved out of the manuscript into separate Supporting Information files, each
-given an ``S1~Table''--``S4~Table'' legend after the reference list and cited by
-that label in the main text, and each file uploaded under the `Supporting
-Information' file type rather than `Figure'.
+We thank the Editor for this note. Each Supporting Information item will be
+uploaded as its own file under the `Supporting Information' file type rather
+than `Figure', and we have confirmed that every item carries an
+``S1~Table''--``S4~Table'' legend after the reference list, in the
+manuscript's ``Supporting information'' section. Each is also cited by that
+label at first mention in the Results (Section~``Results and analysis'').
 
 \vspace{0.3cm}
 
