@@ -244,7 +244,21 @@ The conceptual rationale for combining the datasets rests on the cognitive condi
 
 The simulator-based and task-based datasets correspond, respectively, to the \textit{naturalistic stimulus-based protocols} and \textit{continuous cognitive engagement} paradigms described in~\cite{chen2025hybrid}. In the unified labeling scheme, \textit{Rest} and \textit{Unfocused} are treated as low-attention states, whereas \textit{Focused}, \textit{Stroop}, \textit{Arithmetic}, and \textit{Mirror recognition} are treated as high-attention states. The \textit{Drowsy} phase is excluded from this mapping and from all subsequent preprocessing and analyses because permitted eye closure and drowsiness may confound the comparison with differences in arousal, visual input, and ocular activity. This mapping is summarized in Table~\ref{tab:attention_label_mapping}. \rev{Throughout this paper, ``high-attention'' and ``low-attention'' states denote these operationally defined protocol conditions rather than an independently validated attention construct.}
 
-\input{tables/attention_label_mapping}
+% This source template is copied verbatim by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begin{table}[!ht]
+\centering
+\caption{\textbf{Unified binary attention label mapping across datasets.}}
+\label{tab:attention_label_mapping}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Attention State} & \textbf{Conditions} \\
+\hline
+High Attention & Focused, Stroop, Arithmetic, Mirror \\
+Low Attention  & Unfocused, Rest \\
+\hline
+\end{tabular}
+\end{table}
 
 \subsection*{\revs{Validation strategies}}
 
@@ -281,7 +295,36 @@ Table~\ref{tab:dataset_compositions}. The remainder of this subsection
 describes the selection, cleaning, alignment and segmentation steps that
 produced them.}
 
-\input{tables/dataset_compositions}
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+% Column widths are set to the measured width of their own widest cell, so the
+% gaps between columns are only the padding below and not slack inside a column.
+% Their sum is 14.83cm; the rest of \textwidth is the 10 internal cell-side
+% paddings left once @{} removes the two outer ones.
+\setlength{\tabcolsep}{\textwidth}
+\addtolength{\tabcolsep}{-14.83cm}
+\setlength{\tabcolsep}{0.1\tabcolsep}
+\renewcommand{\arraystretch}{1.15}
+\begin{table}[H]
+\centering
+\caption{\textbf{Analytical dataset compositions.}}
+\label{tab:dataset_compositions}
+\begin{tabular}{@{}>{\fontsize{7}{8}\selectfont\raggedright\arraybackslash}m{2.97cm}>{\fontsize{7}{8}\selectfont\raggedright\arraybackslash}m{4.35cm}>{\fontsize{7}{8}\selectfont\centering\arraybackslash}m{1.63cm}>{\fontsize{7}{8}\selectfont\centering\arraybackslash}m{1.38cm}>{\fontsize{7}{8}\selectfont\centering\arraybackslash}m{1.80cm}>{\fontsize{7}{8}\selectfont\centering\arraybackslash}m{2.70cm}@{}}
+\hline
+{\fontsize{8}{9}\selectfont Dataset configuration} & {\fontsize{8}{9}\selectfont Retained conditions} & {\fontsize{8}{9}\selectfont Participants} & {\fontsize{8}{9}\selectfont Recording units} & {\fontsize{8}{9}\selectfont Windows, n (low / high)} & {\fontsize{8}{9}\selectfont Class distribution, \% (low / high)} \\
+\hline
+Full Dataset~A & Focused, Unfocused & 5 & 24 & 3,192 / 3,192 & 50.0 / 50.0 \\
+Full Dataset~B & Rest, Stroop, Arithmetic, Mirror & 40 & 120 & 600 / 1,800 & 25.0 / 75.0 \\
+B: Stroop & Rest, Stroop & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
+B: Arithmetic & Rest, Arithmetic & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
+B: Mirror & Rest, Mirror & 40 & 120 & 600 / 600 & 50.0 / 50.0 \\
+\hline
+\end{tabular}
+\end{table}
+\endgroup
 
 \rev{\textbf{Recording and label selection.} Recordings were selected
 before signal processing. Following the source study, the first two recording
@@ -438,7 +481,64 @@ recall for logistic regression, the interpretable reference decoder.
 Corresponding tables for XGBoost, EEGNet, ShallowFBCSPNet, and EEGConformer are
 provided in the Supporting Information.
 
-\input{tables/scenario_metrics_logistic_regression}
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+% Add visible, compact spacing around task-transition arrows.
+\def\!{\mskip4mu}
+% Distribute the remaining width across the 12 internal cell-side paddings.
+\setlength{\tabcolsep}{\textwidth}
+\addtolength{\tabcolsep}{-12.5cm}
+\setlength{\tabcolsep}{0.0833333\tabcolsep}
+\renewcommand{\arraystretch}{1.0}
+\begin{table}[H]
+\centering
+\caption{\textbf{Performance metrics across experimental scenarios for Logistic Regression.}}
+\label{tab:scenario_metrics_logistic_regression}
+\begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
+\hline
+{\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
+\hline
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.64 & 0.63 & 0.30 & 0.73 & 0.62/0.66 \\
+ & Stratified K-fold(Full B) & 0.68 & 0.64 & 0.34 & 0.74 & 0.65/0.71 \\
+ & Stratified K-fold(B: Stroop) & 0.69 & 0.68 & 0.40 & 0.74 & 0.67/0.71 \\
+ & Stratified K-fold(B: Arithmetic) & 0.66 & 0.65 & 0.35 & 0.74 & 0.66/0.67 \\
+ & Stratified K-fold(B: Mirror) & 0.69 & 0.67 & 0.39 & 0.75 & 0.66/0.72 \\
+\hline
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.63 & 0.61 & 0.29 & 0.73 & 0.63/0.63 \\
+ & Leave-one-subject-out(Full B) & 0.66 & 0.61 & 0.31 & 0.74 & 0.63/0.69 \\
+\hline
+\multirow{12}{=}{Cross-task (Dataset~B)} & Full B$\!\rightarrow\!$Stroop & 0.66 & 0.64 & 0.34 & 0.73 & 0.64/0.68 \\
+ & Full B$\!\rightarrow\!$Arithmetic & 0.64 & 0.62 & 0.31 & 0.72 & 0.64/0.65 \\
+ & Full B$\!\rightarrow\!$Mirror & 0.67 & 0.65 & 0.36 & 0.77 & 0.63/0.71 \\
+\cmidrule{2-7}
+ & Stroop$\!\rightarrow\!$Full B & 0.63 & 0.58 & 0.25 & 0.67 & 0.63/0.63 \\
+ & Stroop$\!\rightarrow\!$Arithmetic & 0.58 & 0.55 & 0.16 & 0.60 & 0.65/0.50 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.63 & 0.60 & 0.27 & 0.68 & 0.64/0.62 \\
+\cmidrule{2-7}
+ & Arithmetic$\!\rightarrow\!$Full B & 0.62 & 0.55 & 0.23 & 0.68 & 0.66/0.58 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.56 & 0.53 & 0.14 & 0.61 & 0.67/0.46 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.66 & 0.64 & 0.35 & 0.73 & 0.67/0.66 \\
+\cmidrule{2-7}
+ & Mirror$\!\rightarrow\!$Full B & 0.64 & 0.57 & 0.26 & 0.70 & 0.68/0.60 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.60 & 0.57 & 0.21 & 0.65 & 0.66/0.54 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.62 & 0.59 & 0.27 & 0.70 & 0.63/0.62 \\
+\hline
+\multirow{8}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.52 & 0.37 & 0.03 & 0.54 & 0.78/0.26 \\
+ & Full B$\!\rightarrow\!$Full A & 0.55 & 0.53 & 0.12 & 0.58 & 0.35/0.76 \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop & 0.49 & 0.42 & -0.03 & 0.51 & 0.71/0.27 \\
+ & Stroop$\!\rightarrow\!$Full A & 0.54 & 0.53 & 0.08 & 0.56 & 0.45/0.63 \\
+ & Full A$\!\rightarrow\!$Arithmetic & 0.53 & 0.48 & 0.08 & 0.58 & 0.68/0.38 \\
+ & Arithmetic$\!\rightarrow\!$Full A & 0.52 & 0.52 & 0.04 & 0.54 & 0.43/0.61 \\
+ & Full A$\!\rightarrow\!$Mirror & 0.53 & 0.47 & 0.06 & 0.55 & 0.72/0.34 \\
+ & Mirror$\!\rightarrow\!$Full A & 0.52 & 0.48 & 0.06 & 0.54 & 0.26/0.79 \\
+\hline
+\end{tabular}
+\end{table}
+\endgroup
 
 \subsection*{Generalization under increasingly stringent validation strategies}
 
@@ -476,7 +576,14 @@ estimates. Their bars show paired 95\% percentile bootstrap intervals from
 10,000 target-participant resamples, with the same resample used for all
 decoders to preserve their pairing.
 
-\input{figures/transfer_matrix}
+% This source template is filled by python_project/src/analysis.py.
+% Generated figures belong in latex_documents/revision/manuscript_clean/figures/.
+\begin{figure}[H]
+\centering
+% Figure uploaded separately as Fig1.tif
+\caption{\textbf{Zero-shot transfer performance across source and target compositions.} Rows and columns denote source and target compositions. The gray diagonal shows the target-specific baseline scenario. The two right-hand columns show mean differences from the relevant target baselines. Negative values indicate lower performance, and dashes mark contrasts that are not applicable.}
+\label{fig:transfer_matrix}
+\end{figure}
 
 For cross-task transfer, the mean decreases from the corresponding
 target-specific baselines, averaged across all five decoders, were $9.6$,
@@ -491,7 +598,14 @@ transfer yielded lower performance in every eligible comparison, with a larger
 reduction when training and test data came from
 different datasets.
 
-\input{figures/baseline_vs_cross_subject}
+% This source template is filled by python_project/src/analysis.py.
+% Generated figures belong in latex_documents/revision/manuscript_clean/figures/.
+\begin{figure}[H]
+\centering
+% Figure uploaded separately as Fig2.tif
+\caption{\textbf{Baseline and cross-subject performance across decoders.}}
+\label{fig:baseline_vs_cross_subject}
+\end{figure}
 
 In the mental attention-state dataset, mean balanced accuracy was 65.5\% in the
 baseline scenario and 65.4\% in cross-subject validation, a decrease of 0.1
@@ -516,7 +630,14 @@ interval (CI), respectively, estimated from 10,000 target-participant
 resamples. The same resample was used for all decoders to preserve their
 pairing.
 
-\input{figures/scenario_accuracy_by_decoder}
+% This source template is filled by python_project/src/analysis.py.
+% Generated figures belong in latex_documents/revision/manuscript_clean/figures/.
+\begin{figure}[H]
+\centering
+% Figure uploaded separately as Fig3.tif
+\caption{\textbf{Participant-level balanced accuracy across experimental scenarios for the five decoders.}}
+\label{fig:scenario_accuracy_by_decoder}
+\end{figure}
 
 Across the 27 scenarios, 42 of 135 decoder-specific estimates lay outside the
 corresponding 95\% bootstrap interval. Logistic Regression lay outside the
@@ -619,9 +740,237 @@ model selection or parameter tuning.
 
 \section*{Supporting information}
 
-\input{tables/scenario_metrics_xgboost}
-\input{tables/scenario_metrics_eegnet}
-\input{tables/scenario_metrics_shallownet}
-\input{tables/scenario_metrics_eegconformer}
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+% Add visible, compact spacing around task-transition arrows.
+\def\!{\mskip4mu}
+% Distribute the remaining width across the 12 internal cell-side paddings.
+\setlength{\tabcolsep}{\textwidth}
+\addtolength{\tabcolsep}{-12.5cm}
+\setlength{\tabcolsep}{0.0833333\tabcolsep}
+\renewcommand{\arraystretch}{1.0}
+\begin{table}[H]
+\centering
+\caption{\textbf{Performance metrics across experimental scenarios for XGBoost.}}
+\label{tab:scenario_metrics_xgboost}
+\begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
+\hline
+{\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
+\hline
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.67 & 0.67 & 0.35 & 0.74 & 0.64/0.70 \\
+ & Stratified K-fold(Full B) & 0.68 & 0.65 & 0.36 & 0.75 & 0.60/0.76 \\
+ & Stratified K-fold(B: Stroop) & 0.69 & 0.68 & 0.40 & 0.76 & 0.68/0.70 \\
+ & Stratified K-fold(B: Arithmetic) & 0.70 & 0.68 & 0.41 & 0.76 & 0.69/0.70 \\
+ & Stratified K-fold(B: Mirror) & 0.70 & 0.70 & 0.43 & 0.77 & 0.72/0.69 \\
+\hline
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.66 & 0.65 & 0.33 & 0.74 & 0.65/0.67 \\
+ & Leave-one-subject-out(Full B) & 0.65 & 0.61 & 0.31 & 0.73 & 0.58/0.72 \\
+\hline
+\multirow{12}{=}{Cross-task (Dataset~B)} & Full B$\!\rightarrow\!$Stroop & 0.64 & 0.61 & 0.31 & 0.71 & 0.60/0.68 \\
+ & Full B$\!\rightarrow\!$Arithmetic & 0.65 & 0.63 & 0.33 & 0.71 & 0.59/0.71 \\
+ & Full B$\!\rightarrow\!$Mirror & 0.67 & 0.65 & 0.37 & 0.77 & 0.58/0.77 \\
+\cmidrule{2-7}
+ & Stroop$\!\rightarrow\!$Full B & 0.61 & 0.54 & 0.22 & 0.67 & 0.63/0.58 \\
+ & Stroop$\!\rightarrow\!$Arithmetic & 0.56 & 0.52 & 0.13 & 0.58 & 0.67/0.45 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.62 & 0.59 & 0.27 & 0.69 & 0.65/0.59 \\
+\cmidrule{2-7}
+ & Arithmetic$\!\rightarrow\!$Full B & 0.64 & 0.56 & 0.25 & 0.70 & 0.68/0.59 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.58 & 0.55 & 0.18 & 0.62 & 0.68/0.48 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.67 & 0.64 & 0.36 & 0.74 & 0.66/0.67 \\
+\cmidrule{2-7}
+ & Mirror$\!\rightarrow\!$Full B & 0.65 & 0.58 & 0.28 & 0.73 & 0.71/0.59 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.61 & 0.58 & 0.25 & 0.67 & 0.72/0.51 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.64 & 0.62 & 0.32 & 0.72 & 0.70/0.59 \\
+\hline
+\multirow{8}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.52 & 0.49 & 0.04 & 0.52 & 0.28/0.75 \\
+ & Full B$\!\rightarrow\!$Full A & 0.54 & 0.52 & 0.09 & 0.55 & 0.37/0.71 \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop & 0.48 & 0.42 & -0.04 & 0.47 & 0.26/0.70 \\
+ & Stroop$\!\rightarrow\!$Full A & 0.51 & 0.48 & 0.02 & 0.50 & 0.32/0.69 \\
+ & Full A$\!\rightarrow\!$Arithmetic & 0.54 & 0.47 & 0.10 & 0.55 & 0.27/0.81 \\
+ & Arithmetic$\!\rightarrow\!$Full A & 0.59 & 0.58 & 0.18 & 0.62 & 0.63/0.55 \\
+ & Full A$\!\rightarrow\!$Mirror & 0.51 & 0.45 & 0.05 & 0.52 & 0.27/0.76 \\
+ & Mirror$\!\rightarrow\!$Full A & 0.53 & 0.52 & 0.07 & 0.56 & 0.61/0.45 \\
+\hline
+\end{tabular}
+\end{table}
+\endgroup
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+% Add visible, compact spacing around task-transition arrows.
+\def\!{\mskip4mu}
+% Distribute the remaining width across the 12 internal cell-side paddings.
+\setlength{\tabcolsep}{\textwidth}
+\addtolength{\tabcolsep}{-12.5cm}
+\setlength{\tabcolsep}{0.0833333\tabcolsep}
+\renewcommand{\arraystretch}{1.0}
+\begin{table}[H]
+\centering
+\caption{\textbf{Performance metrics across experimental scenarios for EEGNet.}}
+\label{tab:scenario_metrics_eegnet}
+\begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
+\hline
+{\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
+\hline
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.67 & 0.66 & 0.34 & 0.74 & 0.57/0.76 \\
+ & Stratified K-fold(Full B) & 0.67 & 0.64 & 0.33 & 0.74 & 0.58/0.76 \\
+ & Stratified K-fold(B: Stroop) & 0.66 & 0.64 & 0.35 & 0.73 & 0.59/0.73 \\
+ & Stratified K-fold(B: Arithmetic) & 0.65 & 0.64 & 0.33 & 0.71 & 0.63/0.68 \\
+ & Stratified K-fold(B: Mirror) & 0.67 & 0.66 & 0.36 & 0.74 & 0.62/0.72 \\
+\hline
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.65 & 0.63 & 0.32 & 0.76 & 0.62/0.68 \\
+ & Leave-one-subject-out(Full B) & 0.66 & 0.62 & 0.33 & 0.75 & 0.59/0.73 \\
+\hline
+\multirow{12}{=}{Cross-task (Dataset~B)} & Full B$\!\rightarrow\!$Stroop & 0.66 & 0.63 & 0.35 & 0.74 & 0.61/0.70 \\
+ & Full B$\!\rightarrow\!$Arithmetic & 0.65 & 0.62 & 0.33 & 0.73 & 0.59/0.70 \\
+ & Full B$\!\rightarrow\!$Mirror & 0.68 & 0.67 & 0.40 & 0.76 & 0.60/0.77 \\
+\cmidrule{2-7}
+ & Stroop$\!\rightarrow\!$Full B & 0.59 & 0.53 & 0.19 & 0.67 & 0.57/0.62 \\
+ & Stroop$\!\rightarrow\!$Arithmetic & 0.54 & 0.50 & 0.08 & 0.59 & 0.62/0.45 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.59 & 0.55 & 0.19 & 0.66 & 0.59/0.59 \\
+\cmidrule{2-7}
+ & Arithmetic$\!\rightarrow\!$Full B & 0.62 & 0.56 & 0.24 & 0.69 & 0.61/0.63 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.59 & 0.55 & 0.20 & 0.64 & 0.62/0.56 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.64 & 0.62 & 0.32 & 0.70 & 0.63/0.66 \\
+\cmidrule{2-7}
+ & Mirror$\!\rightarrow\!$Full B & 0.64 & 0.60 & 0.27 & 0.69 & 0.62/0.66 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.61 & 0.59 & 0.24 & 0.65 & 0.61/0.61 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.63 & 0.61 & 0.30 & 0.68 & 0.61/0.66 \\
+\hline
+\multirow{8}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.47 & 0.34 & -0.07 & 0.46 & 0.61/0.32 \\
+ & Full B$\!\rightarrow\!$Full A & 0.51 & 0.48 & 0.04 & 0.53 & 0.30/0.72 \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop & 0.45 & 0.37 & -0.13 & 0.39 & 0.60/0.29 \\
+ & Stroop$\!\rightarrow\!$Full A & 0.50 & 0.46 & 0.01 & 0.50 & 0.27/0.74 \\
+ & Full A$\!\rightarrow\!$Arithmetic & 0.49 & 0.43 & -0.00 & 0.52 & 0.58/0.40 \\
+ & Arithmetic$\!\rightarrow\!$Full A & 0.50 & 0.43 & 0.01 & 0.51 & 0.16/0.84 \\
+ & Full A$\!\rightarrow\!$Mirror & 0.46 & 0.38 & -0.10 & 0.46 & 0.60/0.32 \\
+ & Mirror$\!\rightarrow\!$Full A & 0.49 & 0.48 & -0.02 & 0.48 & 0.44/0.53 \\
+\hline
+\end{tabular}
+\end{table}
+\endgroup
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+% Add visible, compact spacing around task-transition arrows.
+\def\!{\mskip4mu}
+% Distribute the remaining width across the 12 internal cell-side paddings.
+\setlength{\tabcolsep}{\textwidth}
+\addtolength{\tabcolsep}{-12.5cm}
+\setlength{\tabcolsep}{0.0833333\tabcolsep}
+\renewcommand{\arraystretch}{1.0}
+\begin{table}[H]
+\centering
+\caption{\textbf{Performance metrics across experimental scenarios for ShallowFBCSPNet.}}
+\label{tab:scenario_metrics_shallownet}
+\begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
+\hline
+{\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
+\hline
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.66 & 0.66 & 0.34 & 0.74 & 0.64/0.68 \\
+ & Stratified K-fold(Full B) & 0.72 & 0.72 & 0.46 & 0.82 & 0.57/0.87 \\
+ & Stratified K-fold(B: Stroop) & 0.78 & 0.78 & 0.59 & 0.86 & 0.77/0.80 \\
+ & Stratified K-fold(B: Arithmetic) & 0.76 & 0.76 & 0.54 & 0.84 & 0.76/0.76 \\
+ & Stratified K-fold(B: Mirror) & 0.74 & 0.73 & 0.49 & 0.81 & 0.74/0.74 \\
+\hline
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.67 & 0.66 & 0.36 & 0.77 & 0.71/0.63 \\
+ & Leave-one-subject-out(Full B) & 0.67 & 0.64 & 0.38 & 0.81 & 0.54/0.80 \\
+\hline
+\multirow{12}{=}{Cross-task (Dataset~B)} & Full B$\!\rightarrow\!$Stroop & 0.67 & 0.63 & 0.38 & 0.80 & 0.55/0.79 \\
+ & Full B$\!\rightarrow\!$Arithmetic & 0.68 & 0.64 & 0.40 & 0.80 & 0.54/0.81 \\
+ & Full B$\!\rightarrow\!$Mirror & 0.67 & 0.64 & 0.37 & 0.80 & 0.56/0.78 \\
+\cmidrule{2-7}
+ & Stroop$\!\rightarrow\!$Full B & 0.65 & 0.59 & 0.29 & 0.75 & 0.68/0.63 \\
+ & Stroop$\!\rightarrow\!$Arithmetic & 0.59 & 0.55 & 0.21 & 0.67 & 0.73/0.45 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.64 & 0.61 & 0.31 & 0.72 & 0.74/0.54 \\
+\cmidrule{2-7}
+ & Arithmetic$\!\rightarrow\!$Full B & 0.68 & 0.61 & 0.35 & 0.79 & 0.74/0.62 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.63 & 0.59 & 0.28 & 0.72 & 0.74/0.52 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.71 & 0.69 & 0.45 & 0.80 & 0.76/0.66 \\
+\cmidrule{2-7}
+ & Mirror$\!\rightarrow\!$Full B & 0.68 & 0.62 & 0.33 & 0.78 & 0.69/0.66 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.63 & 0.61 & 0.28 & 0.70 & 0.70/0.57 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.67 & 0.65 & 0.37 & 0.77 & 0.67/0.68 \\
+\hline
+\multirow{8}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.49 & 0.28 & -0.05 & 0.49 & 0.83/0.16 \\
+ & Full B$\!\rightarrow\!$Full A & 0.55 & 0.48 & 0.11 & 0.58 & 0.28/0.81 \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop & 0.47 & 0.36 & -0.08 & 0.41 & 0.82/0.13 \\
+ & Stroop$\!\rightarrow\!$Full A & 0.56 & 0.52 & 0.12 & 0.60 & 0.52/0.59 \\
+ & Full A$\!\rightarrow\!$Arithmetic & 0.52 & 0.42 & 0.04 & 0.57 & 0.79/0.24 \\
+ & Arithmetic$\!\rightarrow\!$Full A & 0.56 & 0.53 & 0.14 & 0.61 & 0.55/0.56 \\
+ & Full A$\!\rightarrow\!$Mirror & 0.48 & 0.37 & -0.08 & 0.49 & 0.82/0.13 \\
+ & Mirror$\!\rightarrow\!$Full A & 0.55 & 0.53 & 0.11 & 0.58 & 0.53/0.57 \\
+\hline
+\end{tabular}
+\end{table}
+\endgroup
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+% Add visible, compact spacing around task-transition arrows.
+\def\!{\mskip4mu}
+% Distribute the remaining width across the 12 internal cell-side paddings.
+\setlength{\tabcolsep}{\textwidth}
+\addtolength{\tabcolsep}{-12.5cm}
+\setlength{\tabcolsep}{0.0833333\tabcolsep}
+\renewcommand{\arraystretch}{1.0}
+\begin{table}[H]
+\centering
+\caption{\textbf{Performance metrics across experimental scenarios for EEGConformer.}}
+\label{tab:scenario_metrics_eegconformer}
+\begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
+\hline
+{\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
+\hline
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.64 & 0.64 & 0.29 & 0.73 & 0.61/0.67 \\
+ & Stratified K-fold(Full B) & 0.72 & 0.71 & 0.44 & 0.81 & 0.60/0.84 \\
+ & Stratified K-fold(B: Stroop) & 0.73 & 0.72 & 0.48 & 0.81 & 0.64/0.82 \\
+ & Stratified K-fold(B: Arithmetic) & 0.71 & 0.69 & 0.46 & 0.81 & 0.58/0.84 \\
+ & Stratified K-fold(B: Mirror) & 0.69 & 0.67 & 0.41 & 0.79 & 0.57/0.81 \\
+\hline
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.66 & 0.65 & 0.33 & 0.75 & 0.65/0.66 \\
+ & Leave-one-subject-out(Full B) & 0.71 & 0.68 & 0.42 & 0.82 & 0.61/0.81 \\
+\hline
+\multirow{12}{=}{Cross-task (Dataset~B)} & Full B$\!\rightarrow\!$Stroop & 0.71 & 0.68 & 0.44 & 0.80 & 0.61/0.80 \\
+ & Full B$\!\rightarrow\!$Arithmetic & 0.70 & 0.68 & 0.44 & 0.81 & 0.60/0.80 \\
+ & Full B$\!\rightarrow\!$Mirror & 0.73 & 0.71 & 0.48 & 0.82 & 0.63/0.82 \\
+\cmidrule{2-7}
+ & Stroop$\!\rightarrow\!$Full B & 0.62 & 0.56 & 0.24 & 0.72 & 0.59/0.64 \\
+ & Stroop$\!\rightarrow\!$Arithmetic & 0.56 & 0.51 & 0.12 & 0.61 & 0.66/0.45 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.61 & 0.58 & 0.25 & 0.71 & 0.62/0.60 \\
+\cmidrule{2-7}
+ & Arithmetic$\!\rightarrow\!$Full B & 0.67 & 0.63 & 0.33 & 0.77 & 0.64/0.71 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.62 & 0.59 & 0.26 & 0.69 & 0.61/0.62 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.69 & 0.67 & 0.41 & 0.79 & 0.63/0.76 \\
+\cmidrule{2-7}
+ & Mirror$\!\rightarrow\!$Full B & 0.65 & 0.60 & 0.28 & 0.75 & 0.59/0.71 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.61 & 0.58 & 0.23 & 0.68 & 0.58/0.63 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.65 & 0.61 & 0.32 & 0.75 & 0.57/0.72 \\
+\hline
+\multirow{8}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.47 & 0.31 & -0.07 & 0.43 & 0.70/0.24 \\
+ & Full B$\!\rightarrow\!$Full A & 0.58 & 0.56 & 0.18 & 0.64 & 0.62/0.54 \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop & 0.42 & 0.34 & -0.18 & 0.33 & 0.65/0.20 \\
+ & Stroop$\!\rightarrow\!$Full A & 0.52 & 0.43 & 0.07 & 0.62 & 0.13/0.91 \\
+ & Full A$\!\rightarrow\!$Arithmetic & 0.53 & 0.45 & 0.05 & 0.56 & 0.60/0.45 \\
+ & Arithmetic$\!\rightarrow\!$Full A & 0.59 & 0.57 & 0.20 & 0.66 & 0.68/0.50 \\
+ & Full A$\!\rightarrow\!$Mirror & 0.47 & 0.39 & -0.05 & 0.43 & 0.66/0.29 \\
+ & Mirror$\!\rightarrow\!$Full A & 0.54 & 0.50 & 0.08 & 0.57 & 0.76/0.31 \\
+\hline
+\end{tabular}
+\end{table}
+\endgroup
 
 \end{document}
