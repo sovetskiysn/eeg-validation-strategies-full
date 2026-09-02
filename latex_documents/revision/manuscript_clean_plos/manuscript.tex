@@ -227,7 +227,7 @@ EEG signals were recorded using an Emotiv Epoc Flex headset with 32 wet electrod
 
 The methodological design of this study was developed to evaluate the generalizability and transferability of EEG-based attention decoding across different recording conditions, participants, and task paradigms. To this end, we adopted two publicly available datasets that differ in experimental protocols but share compatible technical specifications, thereby enabling a controlled comparative analysis. \rev{The datasets were harmonized through a binary operational labeling scheme that distinguishes high-attention states, defined by protocol-imposed task demand, from low-attention states of rest or task disengagement, enabling consistent evaluation across scenarios.} This section outlines the rationale for dataset alignment, the strategies employed for cross-validation, and the experimental settings designed to assess within-dataset performance as well as cross-subject, cross-task, and cross-dataset generalization.
 
-All experiments were executed through a version-controlled computational workflow. For every run, the workflow stores the resolved configuration of data preparation, validation, and model settings together with the run outputs needed to reconstruct the reported evaluation metrics. These records provide run-level provenance and allow each reported metric to be traced to the experiment that produced it. The complete implementation, experiment configurations, and run-level artifacts are available at \url{https://github.com/sovetskiysn/eeg-validation-strategies}.
+All experiments were executed through a version-controlled computational workflow. For every run, the workflow stores the resolved configuration of data preparation, validation, and model settings together with the run outputs needed to reconstruct the reported evaluation metrics. These records provide run-level provenance and allow each reported metric to be traced to the experiment that produced it. The complete implementation, experiment configurations, and run-level artifacts are available at \url{https://github.com/sovetskiysn/eeg-validation-strategies}, released under the MIT license and archived at \url{https://doi.org/10.5281/zenodo.22255472}.
 
 \subsection*{Dataset alignment and integration rationale}
 
@@ -550,7 +550,7 @@ to a target-specific reference. They therefore assess whether the binary
 contrast was retained without target-specific adaptation as the participant,
 task composition, or dataset differed between training and test data.
 
-Figure~\ref{fig:transfer_matrix} summarizes the directed cross-task and
+Fig~\ref{fig:transfer_matrix} summarizes the directed cross-task and
 cross-dataset comparisons. Rows are grouped by source composition and decoder,
 and columns denote target compositions. Each nonmissing matrix cell reports
 balanced accuracy calculated separately from the held-out windows of each
@@ -566,7 +566,7 @@ Negative values therefore indicate lower transfer performance than the
 applicable target baselines, whereas dashes identify comparisons that are not
 applicable.
 
-Figure~\ref{fig:baseline_vs_cross_subject} compares baseline and
+Fig~\ref{fig:baseline_vs_cross_subject} compares baseline and
 leave-one-subject-out cross-subject validation for the mental attention-state
 dataset and the SAM-40 dataset. For each decoder and scenario, balanced accuracy was
 calculated separately from the held-out windows of each target participant and
@@ -621,7 +621,7 @@ which was above the upper bound of 69.7\%.
 \subsection*{Performance consistency across decoders}
 
 To assess whether performance patterns across validation strategies depended on
-decoder choice, Figure~\ref{fig:scenario_accuracy_by_decoder} compares all
+decoder choice, Fig~\ref{fig:scenario_accuracy_by_decoder} compares all
 validation scenarios across the five decoders. Each colored point represents
 the balanced accuracy of one decoder, averaged across target participants in a
 given scenario. The black point and horizontal bar show the mean

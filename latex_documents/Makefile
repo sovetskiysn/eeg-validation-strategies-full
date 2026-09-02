@@ -17,6 +17,10 @@ from PIL import Image
 
 source, output = map(Path, sys.argv[1:3])
 source, output = source.resolve(), output.resolve()
+# PLOS ONE figure limits at 300 dpi: https://journals.plos.org/plosone/s/figures
+PLOS_MIN_WIDTH_PX = 789
+PLOS_MAX_WIDTH_PX = 2250
+PLOS_MAX_HEIGHT_PX = 2625
 # initial_submission/ uses main.tex, revision/manuscript_clean/ uses manuscript.tex.
 main = next((source / name for name in ("main.tex", "manuscript.tex")
              if (source / name).is_file()), None)
@@ -72,8 +76,11 @@ for number, graphic in enumerate(graphics, 1):
         width, height = image.size
         image.save(figures / f"Fig{number}.tif", format="TIFF",
                    compression="tiff_lzw", dpi=(300, 300))
-    if width < 789 or width > 2250 or height > 2625:
-        print(f"WARNING: {graphic.name} is {width}x{height}px; verify PLOS figure dimensions.")
+    if width < PLOS_MIN_WIDTH_PX or width > PLOS_MAX_WIDTH_PX or height > PLOS_MAX_HEIGHT_PX:
+        raise SystemExit(
+            f"{graphic.name} is {width}x{height}px; outside PLOS figure limits "
+            f"({PLOS_MIN_WIDTH_PX}-{PLOS_MAX_WIDTH_PX}px wide, up to {PLOS_MAX_HEIGHT_PX}px tall)."
+        )
 print(f"PLOS submission project: {output}")
 endef
 export PLOS_PREPARE

@@ -11,7 +11,6 @@ import numpy as np
 import pandas as pd
 from matplotlib.figure import Figure
 from matplotlib.colors import LinearSegmentedColormap, Normalize, to_rgba
-from matplotlib.lines import Line2D
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import MaxNLocator
 from omegaconf import OmegaConf
@@ -23,6 +22,13 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 from utils import LATEX_ARTIFACT_TEMPLATES_DIR
+
+# PLOS accepts Arial, Times or Symbol inside figures. Arial is absent on this
+# machine; Liberation Sans is its metric-compatible clone and carries the arrow
+# and dash glyphs the scenario labels use. The fallback chain keeps the figures
+# identical on a machine that does have Arial installed.
+plt.rcParams["font.family"] = "sans-serif"
+plt.rcParams["font.sans-serif"] = ["Arial", "Liberation Sans", "DejaVu Sans"]
 
 
 # =============================================================================
@@ -598,29 +604,19 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
     # reaching each target from another source represents, above the target
     # itself. The two blocks carry their own target lists, including Full B.
     column_groups = (("Cross-task", 0, 4), ("Cross-dataset", 4, 9))
-    figure_width, figure_height = 18.0, 8.8
+    figure_width, figure_height = 9.30, 7.10
     matrix_left, matrix_bottom = 0.045, 0.095
     matrix_width, matrix_height = 0.54, 0.84
-    group_header_height = 1.3
-    header_height = 2 * group_header_height
-    source_left, decoder_left = -3.10, -1.85
+    group_header_height = 1.5
+    header_height = group_header_height + 5.4
+    source_left, decoder_left = -4.15, -2.35
     data_column_width = matrix_width / (len(column_specs) - source_left)
     data_left = matrix_left - source_left * data_column_width
-    summary_left, summary_width = 0.62, 0.13
-    separator_x = 0.6025
+    summary_left, summary_width = 0.605, 0.13
     fig = plt.figure(figsize=(figure_width, figure_height))
     ax = fig.add_axes((matrix_left, matrix_bottom, matrix_width, matrix_height))
     colorbar_ax = fig.add_axes((data_left, 0.05, len(column_specs) * data_column_width, 0.016))
     summary_ax = fig.add_axes((summary_left, matrix_bottom, summary_width, matrix_height))
-    fig.add_artist(
-        Line2D(
-            (separator_x, separator_x),
-            (0.0, 1.0),
-            transform=fig.transFigure,
-            color="#D0D5DD",
-            linewidth=0.6,
-        )
-    )
     cmap = LinearSegmentedColormap.from_list(
         "transfer_accuracy",
         ("#FFF7E6", "#FFB17E", "#FF624D", "#C83279", "#5B1D8B", "#00002D"),
@@ -652,7 +648,7 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
                 text,
                 ha="center",
                 va="center",
-                fontsize=8.4,
+                fontsize=8.0,
                 fontweight="bold" if not np.isnan(value) else "normal",
                 color=text_colour,
             )
@@ -679,13 +675,13 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         ax.text(
             (source_left + decoder_left) / 2,
             y_position + len(decoders) / 2,
-            label, ha="center", va="center", fontsize=9, fontweight="bold",
+            label, ha="center", va="center", fontsize=8, fontweight="bold",
             clip_on=False,
         )
         for decoder_index, model_name in enumerate(model_names):
             ax.text(
                 -0.08, y_position + decoder_index + 0.5, model_name,
-                ha="right", va="center", fontsize=9, fontweight="bold",
+                ha="right", va="center", fontsize=8, fontweight="bold",
                 clip_on=False,
             )
         ax.add_patch(
@@ -713,7 +709,7 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         )
         ax.text(
             column + 0.5, label_header_top / 2, label, ha="center", va="center",
-            fontsize=9, fontweight="bold", clip_on=False,
+            rotation=90, fontsize=8, fontweight="bold", clip_on=False,
         )
     for group_label, first_column, last_column in column_groups:
         ax.add_patch(
@@ -728,15 +724,6 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
             group_label, ha="center", va="center", fontsize=9, fontweight="bold",
             clip_on=False,
         )
-    ax.text(
-        len(column_specs) / 2, -header_height - 0.42, "Target (test)", ha="center",
-        va="center", fontsize=11, fontweight="bold", clip_on=False,
-    )
-    ax.text(
-        source_left - 0.28, row_count / 2, "Source (train)", ha="center",
-        va="center", rotation=90, fontsize=11, fontweight="bold", clip_on=False,
-    )
-
     ax.set_xlim(source_left, len(column_specs))
     ax.set_ylim(row_count, -header_height)
     ax.set_aspect("auto")
@@ -751,7 +738,7 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         orientation="horizontal",
     )
     colorbar.set_ticks(np.linspace(0, 1, 5), labels=("0", "25", "50", "75", "100"))
-    colorbar.set_label(f"{ARTICLE_METRIC_LABEL}, %", fontsize=9, fontweight="bold")
+    colorbar.set_label(f"{ARTICLE_METRIC_LABEL}, %", fontsize=8, fontweight="bold")
     colorbar.ax.tick_params(labelsize=8)
 
     for row in range(len(sides)):
@@ -772,13 +759,13 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
                 text,
                 ha="center",
                 va="center",
-                fontsize=11,
+                fontsize=10,
                 fontweight="bold" if not np.isnan(value) else "normal",
                 color="#263341",
             )
     for column, label in enumerate((
-        "Baseline\nvs\ncross-task\nmean diff",
-        "Baseline\nvs\ncross-dataset\nmean diff",
+        "Baseline\nvs\nCross-\ntask\nmean diff",
+        "Baseline\nvs\nCross-\ndataset\nmean diff",
     )):
         summary_ax.add_patch(
             Rectangle(
@@ -788,7 +775,7 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
         )
         summary_ax.text(
             column + 0.5, -header_height / 2, label, ha="center", va="center",
-            fontsize=9, fontweight="bold", clip_on=False,
+            fontsize=8, fontweight="bold", clip_on=False,
         )
     summary_ax.set_xlim(0, 2)
     summary_ax.set_ylim(row_count, -header_height)
@@ -874,13 +861,13 @@ def craft_scenario_accuracy_by_decoder_figure(scenario_glob: str) -> Figure:
         next_y_position -= row_count
         validation_label_start += row_count
 
-    fig, ax = plt.subplots(figsize=(12.2, 12.9))
+    fig, ax = plt.subplots(figsize=(7.5, 8.2))
     offsets = np.linspace(-0.22, 0.22, len(decoders))
     for decoder_index, spec in enumerate(ARTICLE_DECODERS.values()):
         ax.scatter(
             model_means[:, decoder_index],
             np.asarray(method_y_positions) + offsets[decoder_index],
-            s=38,
+            s=20,
             color=spec["colour"],
             alpha=0.65,
             edgecolor="#24354F",
@@ -895,18 +882,18 @@ def craft_scenario_accuracy_by_decoder_figure(scenario_glob: str) -> Figure:
         fmt="o",
         color="#1F2937",
         ecolor="#1F2937",
-        markersize=9,
+        markersize=6,
         markeredgecolor="white",
-        markeredgewidth=0.9,
-        elinewidth=1.15,
-        capsize=3,
+        markeredgewidth=0.7,
+        elinewidth=1.0,
+        capsize=2.5,
         label="Average",
         zorder=5,
     )
     ax.axvline(0.5, color="#7C8AA0", linestyle=(0, (4, 3)), linewidth=1.0, zorder=1)
-    ax.text(0.5, 1.0, "chance level", color="#62718A", ha="center", va="bottom", fontsize=10,
+    ax.text(0.5, 1.0, "chance level", color="#62718A", ha="center", va="bottom", fontsize=8,
             transform=ax.get_xaxis_transform())
-    ax.set_xlabel(ARTICLE_METRIC_LABEL, fontsize=12, fontweight="bold", color="#24354F")
+    ax.set_xlabel(ARTICLE_METRIC_LABEL, fontsize=10, fontweight="bold", color="#24354F")
     ax.set_yticks(y_positions, ("",) * len(y_positions))
     ax.set_ylim(min(y_positions) - 0.8, max(y_positions) + 0.8)
     plotted_scores = np.concatenate((model_means.ravel(), np.asarray(average_means) - lower_errors,
@@ -919,34 +906,36 @@ def craft_scenario_accuracy_by_decoder_figure(scenario_glob: str) -> Figure:
     ax.spines[["top", "right", "left"]].set_visible(False)
     ax.tick_params(axis="y", length=0)
     protocol_label_set = dict(protocol_labels)
+    # A section heading shares its row with the rule that opens the block, so the
+    # label gutter is kept wide enough for the longest heading to clear the rule.
     for y_position, label in zip(y_positions, y_labels, strict=True):
-        ax.text(-0.27, y_position, label, transform=ax.get_yaxis_transform(), ha="left", va="center",
+        ax.text(-0.267, y_position, label, transform=ax.get_yaxis_transform(), ha="left", va="center",
                 fontweight="bold" if label in protocol_label_set else "normal",
-                fontsize=11 if label in protocol_label_set else 10)
+                fontsize=9 if label in protocol_label_set else 8)
     for protocol_y_position in protocol_y_positions:
         ax.axhline(protocol_y_position, color="#7A7A7A", alpha=0.65, linewidth=1.3, zorder=1)
     legend = ax.legend(
-        ncols=6,
+        ncols=len(ARTICLE_DECODERS) + 1,
         loc="upper center",
-        bbox_to_anchor=(0.37, 1.054),
+        bbox_to_anchor=(0.42, 1.055),
         frameon=False,
-        fontsize=11,
-        markerscale=1.15,
+        fontsize=8,
+        markerscale=1.25,
         handletextpad=0.35,
-        columnspacing=0.75,
+        columnspacing=0.9,
     )
     plt.setp(legend.get_texts(), fontweight="bold")
     # This figure is saved with the margins it sets here rather than a tight
     # bounding box, so the bottom margin has to hold the metric label itself.
-    fig.subplots_adjust(left=0.22, right=0.98, top=0.9385, bottom=0.048)
+    fig.subplots_adjust(left=0.223, right=0.985, top=0.930, bottom=0.058)
     return fig
 
 
 def craft_baseline_vs_cross_subject_figure(scenario_glob: str) -> Figure:
     """Build the per-dataset baseline-to-cross-subject trajectory of every decoder."""
     panel_specs = (
-        ("Mental attention-state dataset", DISTINGUISHING),
-        ("SAM-40 dataset", SAM40_FULL),
+        ("Dataset A (mental attention-state)", DISTINGUISHING),
+        ("Dataset B (SAM-40)", SAM40_FULL),
     )
     protocol_specs = (("baseline", "Baseline"), ("cross_subject", "Cross-subject"))
     decoders = tuple(ARTICLE_DECODERS)
@@ -1006,7 +995,7 @@ def craft_baseline_vs_cross_subject_figure(scenario_glob: str) -> Figure:
     score_padding = np.ptp(plotted_scores) * 0.25
 
     x_positions = np.arange(len(protocol_specs))
-    fig, axes = plt.subplots(1, len(panel_specs), figsize=(11.4, 5.6), sharey=True)
+    fig, axes = plt.subplots(1, len(panel_specs), figsize=(7.5, 3.9), sharey=True)
     for panel_index, (ax, (title, _)) in enumerate(zip(axes, panel_specs, strict=True)):
         means, averages, errors = (
             panel_means[panel_index],
@@ -1018,10 +1007,10 @@ def craft_baseline_vs_cross_subject_figure(scenario_glob: str) -> Figure:
                 x_positions,
                 means[:, decoder_index],
                 color=spec["colour"],
-                linewidth=2.4,
+                linewidth=1.8,
                 alpha=0.65,
                 marker="o",
-                markersize=7,
+                markersize=5,
                 markeredgecolor="#24354F",
                 markeredgewidth=0.35,
                 label=spec["short_name"] if panel_index == 0 else None,
@@ -1030,7 +1019,7 @@ def craft_baseline_vs_cross_subject_figure(scenario_glob: str) -> Figure:
         # Only the connecting line of the average is translucent, so that it
         # summarises the five trajectories without painting over them; its point
         # and interval stay as solid as on the other article figures.
-        ax.plot(x_positions, averages, color="#1F2937", alpha=0.45, linewidth=3.0, zorder=4)
+        ax.plot(x_positions, averages, color="#1F2937", alpha=0.45, linewidth=2.2, zorder=4)
         ax.errorbar(
             x_positions,
             averages,
@@ -1039,24 +1028,24 @@ def craft_baseline_vs_cross_subject_figure(scenario_glob: str) -> Figure:
             color="#1F2937",
             ecolor="#1F2937",
             markerfacecolor=to_rgba("#1F2937", 0.6),
-            markersize=10,
+            markersize=7,
             markeredgecolor="white",
-            markeredgewidth=1.0,
-            elinewidth=1.4,
-            capsize=4,
-            label="Average (95% bootstrap CI)" if panel_index == 0 else None,
+            markeredgewidth=0.8,
+            elinewidth=1.2,
+            capsize=3,
+            label="Average" if panel_index == 0 else None,
             zorder=5,
         )
-        ax.set_title(title, fontsize=15, fontweight="bold", color="#172B4D", loc="left", pad=12)
-        ax.set_xticks(x_positions, [label for _, label in protocol_specs], fontsize=12,
+        ax.set_title(title, fontsize=10, fontweight="bold", color="#172B4D", loc="left", pad=8)
+        ax.set_xticks(x_positions, [label for _, label in protocol_specs], fontsize=9,
                       fontweight="bold", color="#24354F")
         ax.set_xlim(-0.45, len(protocol_specs) - 0.55)
         ax.grid(axis="y", color="#E0E6EF", linewidth=0.8)
         ax.set_axisbelow(True)
         ax.spines[["top", "right"]].set_visible(False)
-        ax.tick_params(axis="both", length=0, labelsize=11)
+        ax.tick_params(axis="both", length=0, labelsize=8)
     axes[0].set_ylim(plotted_scores.min() - score_padding, plotted_scores.max() + score_padding)
-    axes[0].set_ylabel(ARTICLE_METRIC_LABEL, fontsize=12, fontweight="bold", color="#24354F")
+    axes[0].set_ylabel(ARTICLE_METRIC_LABEL, fontsize=10, fontweight="bold", color="#24354F")
 
     handles, labels = axes[0].get_legend_handles_labels()
     legend = fig.legend(
@@ -1066,12 +1055,12 @@ def craft_baseline_vs_cross_subject_figure(scenario_glob: str) -> Figure:
         loc="lower center",
         bbox_to_anchor=(0.5, 0.0),
         frameon=False,
-        fontsize=11,
+        fontsize=8,
         handletextpad=0.45,
         columnspacing=1.4,
     )
     plt.setp(legend.get_texts(), fontweight="bold")
-    fig.subplots_adjust(left=0.055, right=0.985, top=0.865, bottom=0.145, wspace=0.07)
+    fig.subplots_adjust(left=0.085, right=0.985, top=0.885, bottom=0.13, wspace=0.07)
     return fig
 
 
