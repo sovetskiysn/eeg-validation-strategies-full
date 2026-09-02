@@ -9,6 +9,9 @@ dependencies = [
     # flattened and restored around RandomOverSampler in src/pipeline.py.
     "imbalanced-learn>=0.14,<0.15",
     "matplotlib",
+    # Converts article figures to the TIFF PLOS ONE requires for submission
+    # (see write_article_artifacts in src/analysis.py).
+    "pillow",
     "mne==1.12.1",
     "mne-features",
     # method="iclabel" (the only one used) is pure numpy/scipy; its network

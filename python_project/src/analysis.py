@@ -14,6 +14,7 @@ from matplotlib.colors import LinearSegmentedColormap, Normalize, to_rgba
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import MaxNLocator
 from omegaconf import OmegaConf
+from PIL import Image
 from sklearn.metrics import (
     balanced_accuracy_score,
     f1_score,
@@ -1066,12 +1067,18 @@ def craft_baseline_vs_cross_subject_figure(scenario_glob: str) -> Figure:
 
 def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
     """Write all article tables and figures from one completed result sweep."""
+    # PLOS ONE figure limits at 300 dpi: https://journals.plos.org/plosone/s/figures
+    PLOS_MIN_WIDTH_PX = 789
+    PLOS_MAX_WIDTH_PX = 2250
+    PLOS_MAX_HEIGHT_PX = 2625
+
     input_dir, output_dir = Path(input_dir), Path(output_dir)
     tables_dir = output_dir / "tables"
     figures_dir = output_dir / "figures"
     source_png_dir = figures_dir / "source_png"
     source_svg_dir = figures_dir / "source_svg"
-    for directory in (tables_dir, figures_dir, source_png_dir, source_svg_dir):
+    source_tiff_dir = figures_dir / "source_tiff"
+    for directory in (tables_dir, figures_dir, source_png_dir, source_svg_dir, source_tiff_dir):
         directory.mkdir(parents=True, exist_ok=True)
 
     written = []
@@ -1128,11 +1135,24 @@ def write_article_artifacts(input_dir: Path, output_dir: Path) -> list[Path]:
         )
         plt.close(figure)
 
+        # The PLOS TIFF is derived from the just-rendered PNG rather than the
+        # figure object, so the check below sees exactly the pixels PLOS would.
+        with Image.open(figure_path) as png_image:
+            width, height = png_image.size
+            if width < PLOS_MIN_WIDTH_PX or width > PLOS_MAX_WIDTH_PX or height > PLOS_MAX_HEIGHT_PX:
+                raise ValueError(
+                    f"{figure_path.name} is {width}x{height}px; outside PLOS figure limits "
+                    f"({PLOS_MIN_WIDTH_PX}-{PLOS_MAX_WIDTH_PX}px wide, up to {PLOS_MAX_HEIGHT_PX}px tall)."
+                )
+            tiff_image = png_image if png_image.mode in {"1", "L", "RGB"} else png_image.convert("RGB")
+            tiff_path = source_tiff_dir / f"{name}.tif"
+            tiff_image.save(tiff_path, format="TIFF", compression="tiff_lzw", dpi=(300, 300))
+
         figure_template = (
             LATEX_ARTIFACT_TEMPLATES_DIR / f"{name}_figure_template.tex"
         ).read_text()
         figure_tex_path = figures_dir / f"{name}.tex"
         figure_tex_path.write_text(figure_template.replace("FIGURE_SLUG", name))
-        written.extend((figure_tex_path, figure_path, source_svg_path))
+        written.extend((figure_tex_path, figure_path, source_svg_path, tiff_path))
 
     return written
