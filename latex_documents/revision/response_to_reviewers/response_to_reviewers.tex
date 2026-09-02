@@ -102,6 +102,18 @@ to revise it locally.
 The major revisions are the following:
 
 \begin{itemize}
+	\item \textbf{Revised title.} The manuscript has been retitled from
+	      ``Evaluation of validation strategies and transferability of EEG
+	      attention decoding: a comparative analysis on open datasets'' to
+	      \textbf{``Zero-shot generalization of EEG attention-state decoding
+	      across increasingly stringent validation strategies on open
+	      datasets''} (the heading above retains the submitted title for
+	      identification). The new title replaces ``transferability'' with the
+	      \textbf{zero-shot, pre-adaptation} framing that is actually
+	      evaluated, names the target as \textbf{attention-state decoding} to
+	      match the operational high-/low-attention labels used throughout the
+	      revised text, and states that the protocols are compared under
+	      \textbf{increasingly stringent validation}.
 	\item \textbf{Reformulated Introduction and study scope.} The Introduction
 	      was rewritten in full around an \textbf{explicit research goal}, the
 	      \textbf{knowledge gap} it addresses and a \textbf{contribution} the
@@ -359,8 +371,9 @@ protocol features may contribute to discriminability.
 We therefore revised the research question, motivation, and knowledge gap
 throughout the manuscript. The study no longer treats its results as evidence
 for or against invariant neural markers of attention. Instead, it evaluates
-zero-shot transfer of a \emph{protocol-defined} contrast between higher-demand
-conditions and rest or task disengagement, and reports pre-adaptation benchmarks
+zero-shot transfer of an \emph{operationally defined} contrast between
+high-attention states, set by protocol-imposed task demand, and low-attention
+states of rest or task disengagement, and reports pre-adaptation benchmarks
 for source--target suitability and negative transfer. The revised Introduction
 states this boundary of inference explicitly. We also excluded the
 \textit{Drowsy} phase because eye closure and drowsiness would add pronounced
@@ -499,7 +512,7 @@ results for all experimental scenarios under the revised analysis workflow.
 Revised Tables~3--7 in the revised manuscript replace accuracy and support-weighted recall with metrics
 that make class-specific performance and class imbalance explicit: balanced
 accuracy, macro F1, Matthews correlation coefficient (MCC), ROC--AUC, and
-recall for the low- and high-demand classes separately. The revised values are
+recall for the low- and high-attention classes separately. The revised values are
 internally consistent; in particular, we no longer report support-weighted
 recall as a quantity distinct from accuracy in this single-label classification
 setting.
@@ -584,8 +597,9 @@ attention classification supported by independent attention measurements.
 \vspace{0.2cm}
 
 We adopted the first formulation. The revised manuscript defines the target as
-discrimination between protocol-defined higher-demand and lower-demand
-conditions, not measurement of an individual's level of attention. It therefore
+discrimination between operationally defined high-attention and low-attention
+states, that is, protocol-imposed task demand versus rest or task
+disengagement, not measurement of an individual's level of attention. It therefore
 interprets the results as zero-shot transfer of this operational contrast and
 does not treat them as evidence for or against invariant neural markers of
 attention.
@@ -693,7 +707,7 @@ MCC, and AUROC should be reported alongside majority-class baselines.
 We audited the saved test predictions and revised the metric reporting to
 emphasize class-balanced and class-specific performance. Tables~3--7 report
 balanced accuracy, macro F1, MCC, ROC--AUC, and recall for the low- and
-high-demand classes for each decoder; Table~2 reports the corresponding class
+high-attention classes for each decoder; Table~2 reports the corresponding class
 distributions.
 
 We did not add a separate confusion matrix for every decoder and scenario, or
@@ -877,8 +891,8 @@ We thank the Reviewer for identifying these issues. We corrected the relevant
 statements throughout the revised manuscript. The Methods now state that the
 datasets share a sampling rate of 128~Hz and a voltage resolution of
 0.51~$\mu$V, but have different electrode montages (14 versus 32 channels). We
-also limit the interpretation throughout to protocol-defined high- and
-low-demand contrasts, rather than causal or universal neurophysiological
+also limit the interpretation throughout to operationally defined high- and
+low-attention contrasts, rather than causal or universal neurophysiological
 markers of attention, and revised the relevant references. The manuscript
 includes an ``Open-access datasets'' section, where we describe the publicly
 available datasets used in this study and cite their original publications.
@@ -920,9 +934,9 @@ representation learning for electroencephalography over the last several years.
 We sincerely thank the Reviewer for the careful and constructive assessment.
 This feedback helped us reconsider the framing of the study. We substantially
 revised the Introduction and narrowed the study objective to the evaluation of
-leakage-resistant, zero-shot transfer of protocol-defined high- and low-demand
-contrasts, rather than to a broad claim about universal neural markers of
-attention.
+leakage-resistant, zero-shot transfer of operationally defined high- and
+low-attention contrasts, rather than to a broad claim about universal neural
+markers of attention.
 
 We agree that conclusions should not rely on a single classical model. In
 response, we added Logistic Regression and XGBoost as linear and tree-based
@@ -1081,7 +1095,8 @@ rather than attention levels.
 We agree that drowsiness should not be combined with resting or
 task-disengagement conditions. We therefore excluded the Drowsy condition from
 the revised label mapping and all analyses. We also reframed the study around
-protocol-defined high-demand versus rest or task-disengagement contrasts, rather
+operationally defined high-attention versus low-attention contrasts, that is,
+protocol-imposed task demand versus rest or task disengagement, rather
 than a unitary measure of attention.
 
 \vspace{0.3cm}

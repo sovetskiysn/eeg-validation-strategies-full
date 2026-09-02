@@ -144,7 +144,7 @@
 % Title must be 250 characters or less.
 \begin{flushleft}
 {\Large
-\textbf{Evaluation of validation strategies and transferability of EEG attention decoding: a comparative analysis of open datasets} % Please use "sentence case" for title and headings.
+\textbf{Zero-shot generalization of EEG attention-state decoding across increasingly stringent validation strategies on open datasets} % Please use "sentence case" for title and headings.
 }
 \newline
 % Insert author names, affiliations and corresponding author email (do not include titles, positions, or degrees).
@@ -173,7 +173,7 @@ Almira Kustubayeva\textsuperscript{2,3}
 
 \section*{Abstract}
 
-EEG decoding models must generalize across people and experimental paradigms, yet non-stationary signals and the uncertain equivalence of labels such as ``attention'' make this difficult. Evidence on whether nominally aligned attention-related datasets provide useful zero-shot transfer across tasks and datasets remains limited. Here, we evaluated zero-shot generalization of a protocol-defined binary contrast between high-demand and low-demand conditions in two technically compatible public EEG datasets. The datasets were harmonized through a shared 12-channel input space, a fixed preprocessing pipeline, and a common label mapping. Drowsiness was excluded to avoid conflating the contrast with differences in arousal, visual input, and ocular activity. Five classifiers spanning linear, tree-based, and deep-learning approaches were assessed using group-disjoint within-dataset, cross-subject, cross-task, and cross-dataset validation, without target-specific adaptation. Mean balanced accuracy across decoders was nearly unchanged when generalizing to unseen participants within a dataset, decreasing from 65.5\% to 65.4\% in the mental attention-state dataset and from 69.1\% to 67.1\% in SAM-40. In contrast, cross-task transfer was on average 6.4 percentage points below the corresponding target-specific baselines, and cross-dataset transfer was 13.7 percentage points below them. Performance declined in every eligible zero-shot transfer comparison. Absolute accuracy also varied materially across decoders. Thus, shared channels, technically compatible acquisition, and nominally aligned labels were insufficient to preserve target-specific performance under heterogeneous transfer. These leakage-resistant, directed pre-adaptation benchmarks support empirical source selection and provide matched references for evaluating whether transfer learning, domain adaptation, or personalization yields meaningful gains. The findings concern protocol-defined contrasts rather than a unitary neural marker of attention.
+EEG decoding models must generalize across people and experimental paradigms, yet non-stationary signals and the uncertain equivalence of labels such as ``attention'' make this difficult. Evidence on whether nominally aligned attention-related datasets provide useful zero-shot transfer across tasks and datasets remains limited. Here, we evaluated zero-shot generalization of an operationally defined binary contrast between high- and low-attention states in two technically compatible public EEG datasets. The datasets were harmonized through a shared 12-channel input space, a fixed preprocessing pipeline, and a common label mapping. Drowsiness was excluded to avoid conflating the contrast with differences in arousal, visual input, and ocular activity. Five classifiers spanning linear, tree-based, and deep-learning approaches were assessed using group-disjoint within-dataset, cross-subject, cross-task, and cross-dataset validation, without target-specific adaptation. Mean balanced accuracy across decoders was nearly unchanged when generalizing to unseen participants within a dataset, decreasing from 65.5\% to 65.4\% in the mental attention-state dataset and from 69.1\% to 67.1\% in SAM-40. In contrast, cross-task transfer was on average 6.4 percentage points below the corresponding target-specific baselines, and cross-dataset transfer was 13.7 percentage points below them. Performance declined in every eligible zero-shot transfer comparison. Absolute accuracy also varied materially across decoders. Thus, shared channels, technically compatible acquisition, and nominally aligned labels were insufficient to preserve target-specific performance under heterogeneous transfer. These leakage-resistant, directed pre-adaptation benchmarks support empirical source selection and provide matched references for evaluating whether transfer learning, domain adaptation, or personalization yields meaningful gains. The findings concern protocol-defined contrasts rather than a unitary neural marker of attention.
 
 \clearpage
 \newgeometry{top=0.85in,left=1in,right=1in,footskip=0.75in}
@@ -225,7 +225,7 @@ EEG signals were recorded using an Emotiv Epoc Flex headset with 32 wet electrod
 
 \section*{Methodology}
 
-The methodological design of this study was developed to evaluate the generalizability and transferability of EEG-based attention decoding across different recording conditions, participants, and task paradigms. To this end, we adopted two publicly available datasets that differ in experimental protocols but share compatible technical specifications, thereby enabling a controlled comparative analysis. \rev{The datasets were harmonized through a binary operational labeling scheme that distinguishes conditions of high protocol-defined task demand from conditions of rest or task disengagement, enabling consistent evaluation across scenarios.} This section outlines the rationale for dataset alignment, the strategies employed for cross-validation, and the experimental settings designed to assess within-dataset performance as well as cross-subject, cross-task, and cross-dataset generalization.
+The methodological design of this study was developed to evaluate the generalizability and transferability of EEG-based attention decoding across different recording conditions, participants, and task paradigms. To this end, we adopted two publicly available datasets that differ in experimental protocols but share compatible technical specifications, thereby enabling a controlled comparative analysis. \rev{The datasets were harmonized through a binary operational labeling scheme that distinguishes high-attention states, defined by protocol-imposed task demand, from low-attention states of rest or task disengagement, enabling consistent evaluation across scenarios.} This section outlines the rationale for dataset alignment, the strategies employed for cross-validation, and the experimental settings designed to assess within-dataset performance as well as cross-subject, cross-task, and cross-dataset generalization.
 
 All experiments were executed through a version-controlled computational workflow. For every run, the workflow stores the resolved configuration of data preparation, validation, and model settings together with the run outputs needed to reconstruct the reported evaluation metrics. These records provide run-level provenance and allow each reported metric to be traced to the experiment that produced it. The complete implementation, experiment configurations, and run-level artifacts are available at \url{https://github.com/sovetskiysn/eeg-validation-strategies}.
 
@@ -242,7 +242,7 @@ The conceptual rationale for combining the datasets rests on the cognitive condi
     \item \textbf{Mirror Image Recognition}: engages visuospatial processing and requires both \textit{selective} and \textit{sustained attention} to discriminate between symmetric and asymmetric patterns, relying on mental rotation processes that demand continuous cognitive effort~\cite{shepard1971mental, hyun2007visual, tomasino2016mental}.
 \end{itemize}
 
-The simulator-based and task-based datasets correspond, respectively, to the \textit{naturalistic stimulus-based protocols} and \textit{continuous cognitive engagement} paradigms described in~\cite{chen2025hybrid}. In the unified labeling scheme, \textit{Rest} and \textit{Unfocused} are treated as low-attention states, whereas \textit{Focused}, \textit{Stroop}, \textit{Arithmetic}, and \textit{Mirror recognition} are treated as high-attention states. The \textit{Drowsy} phase is excluded from this mapping and from all subsequent preprocessing and analyses because permitted eye closure and drowsiness may confound the comparison with differences in arousal, visual input, and ocular activity. This mapping is summarized in Table~\ref{tab:attention_label_mapping}.
+The simulator-based and task-based datasets correspond, respectively, to the \textit{naturalistic stimulus-based protocols} and \textit{continuous cognitive engagement} paradigms described in~\cite{chen2025hybrid}. In the unified labeling scheme, \textit{Rest} and \textit{Unfocused} are treated as low-attention states, whereas \textit{Focused}, \textit{Stroop}, \textit{Arithmetic}, and \textit{Mirror recognition} are treated as high-attention states. The \textit{Drowsy} phase is excluded from this mapping and from all subsequent preprocessing and analyses because permitted eye closure and drowsiness may confound the comparison with differences in arousal, visual input, and ocular activity. This mapping is summarized in Table~\ref{tab:attention_label_mapping}. \rev{Throughout this paper, ``high-attention'' and ``low-attention'' states denote these operationally defined protocol conditions rather than an independently validated attention construct.}
 
 \input{tables/attention_label_mapping}
 
@@ -257,7 +257,7 @@ The simulator-based and task-based datasets correspond, respectively, to the \te
 \rev{In each leave-one-subject-out fold, the decoder was trained on all selected data from the remaining participants and tested on all selected data from the held-out participant. The resulting performance quantifies zero-shot generalization to an unseen participant.}
 
 \textbf{Cross-task validation.}
-\rev{In SAM-40, each task composition represented the same binary contrast of relaxation versus high-demand task conditions, rather than classification of task identity. Cross-task transfer therefore asked whether a decoder fitted to this contrast under one task composition retained discriminative performance under another.}
+\rev{In SAM-40, each task composition represented the same binary contrast of low-attention rest versus high-attention task conditions, rather than classification of task identity. Cross-task transfer therefore asked whether a decoder fitted to this contrast under one task composition retained discriminative performance under another.}
 
 \rev{The cross-task folds were also subject-disjoint. For each fold, the source composition from all but one participant formed the training set, whereas the target composition from the held-out participant formed the test set. The protocol thus evaluates the combined shift to an unseen participant and a different task composition, rather than within-participant transfer between tasks. This distinction prevents participant-specific EEG patterns from contributing to apparent cross-task generalization~\cite{kamrud2021vigilance,ke2021crosstask}.}
 
@@ -351,7 +351,7 @@ linear, tree-based, and deep-learning architectures. The deep networks are
 included because they learn task-relevant representations directly from the
 channel-by-time EEG windows, reducing reliance on a manually specified feature
 set. All models were trained to predict whether a window belonged to a
-high-demand or a low-demand condition in the sense of
+high-attention or a low-attention state in the sense of
 Table~\ref{tab:attention_label_mapping}.}
 
 \rev{Hyperparameters were fixed \textit{a priori} and held constant across
@@ -429,8 +429,8 @@ resampling was applied.}
 \section*{Results and analysis}
 
 To characterize zero-shot generalization across the prespecified validation
-strategies, we evaluated the binary contrast between high-demand conditions and
-rest or task disengagement with five decoders.
+strategies, we evaluated the binary contrast between high-attention and
+low-attention states with five decoders.
 Table~\ref{tab:scenario_metrics_logistic_regression} reports decoder-specific
 performance across these strategies. It presents
 participant-level balanced accuracy, macro F1, MCC, ROC-AUC, and per-class
@@ -542,8 +542,8 @@ discriminative performance declined as the difference between the training and
 test data increased. Performance was comparatively stable when generalization
 was limited to an unseen participant within a dataset, but was lower when the
 training and test compositions differed by task and lower still when they came
-from different datasets. Thus, for these protocol-defined high- versus
-low-demand contrasts, technical compatibility and a common binary label space
+from different datasets. Thus, for these operationally defined high- versus
+low-attention contrasts, technical compatibility and a common binary label space
 were insufficient to preserve target-specific performance under increasingly
 heterogeneous zero-shot transfer conditions.
 

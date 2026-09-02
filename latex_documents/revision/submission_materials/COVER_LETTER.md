@@ -1,7 +1,7 @@
 # Cover letter — PONE-D-26-28965
 
 **To:** PLOS ONE Editors  
-**Re:** *Evaluation of validation strategies and transferability of EEG attention decoding: a comparative analysis on open datasets*  
+**Re:** *Zero-shot generalization of EEG attention-state decoding across increasingly stringent validation strategies on open datasets*  
 **Manuscript ID:** PONE-D-26-28965
 
 Dear Dr. Jouzdani and PLOS ONE Editors,
@@ -9,6 +9,12 @@ Dear Dr. Jouzdani and PLOS ONE Editors,
 Please find our revised manuscript and point-by-point response to the editor
 and reviewers. `[Add a concise author-confirmed summary of the substantive
 scientific revisions.]`
+
+The manuscript title has been revised from “Evaluation of validation strategies
+and transferability of EEG attention decoding: a comparative analysis on open
+datasets” to the title above, so that it reflects the zero-shot, pre-adaptation
+framing of the revised analysis and the operational definition of the
+high- and low-attention labels.
 
 We confirm the following administrative items:
 
