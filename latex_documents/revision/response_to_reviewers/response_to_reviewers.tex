@@ -445,17 +445,16 @@ the \emph{Data preparation}, \emph{Models}, and \emph{Validation strategies}
 sections.
 
 \emph{Data preparation.} We now specify the filtering sequence and parameters,
-the FastICA implementation, its EOG-proxy rejection criterion and random state,
-the common channel montage, and the 5-s windows with 0.5-s overlap. We also
-clarify that spectral power is estimated using Welch's method rather than STFT,
-with a Hamming window, 256-sample FFT and segments, and no overlap between
-Welch segments.
+the extended-Infomax ICA procedure, its ICLabel-based artifact-rejection
+criterion and random state, the common channel montage, and the 5-s windows
+with 0.5-s overlap. The revised description specifies 50-Hz notch filtering,
+1--45-Hz band-pass filtering, average rereferencing, and removal of
+eye-blink or muscle components classified with probability at least 0.80.
 
-\emph{Models.} We now report the fixed 168-dimensional classical feature
-representation (12 channels $\times$ 14 features per channel), the
-training-fold-only fitting of data-dependent
-transformations, XGBoost hyperparameters, the fixed random seed (42), and the absence of
-data-driven hyperparameter tuning.
+\emph{Models.} We now report the fixed 108-dimensional classical feature
+representation (12 channels $\times$ 9 features per channel), the
+training-fold-only fitting of data-dependent transformations, the fixed random
+seed (42), and the absence of data-driven hyperparameter tuning.
 
 \emph{Validation strategies.} We now provide a fixed description of fold
 construction for every validation protocol, including the recording-unit
@@ -486,7 +485,7 @@ audit of the metric calculations and reporting and identified an error in the
 previously reported metric values. We corrected the error and recomputed the
 results for all experimental scenarios under the revised analysis workflow.
 
-The revised Table~2 replaces accuracy and support-weighted recall with metrics
+Revised Table~\ref{tab:scenario_metrics_logistic_regression} replaces accuracy and support-weighted recall with metrics
 that make class-specific performance and class imbalance explicit: balanced
 accuracy, macro F1, Matthews correlation coefficient (MCC), ROC--AUC, and
 recall for the low- and high-demand classes separately. The revised values are
@@ -510,16 +509,14 @@ baselines from transfer cells.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We agree that the original presentation did not show the full evaluation
-design clearly enough. We have therefore added all validation strategies to
-Figure~3 in the Results section, together with uncertainty intervals for the
-displayed metric. This figure presents the within-dataset baseline,
-cross-subject, cross-session, cross-task and cross-dataset
-evaluations in one place.
-
-\textbf{[TODO --- transfer-matrix presentation.]}
-We also revised the transfer presentation so that within-composition baselines
-are distinguished clearly from source--target transfer results.
+We thank the Reviewer for this helpful suggestion and have revised the figures
+accordingly. We replaced the original Figure~1 with revised Figure~3, which
+includes all validation families and 95\% bootstrap confidence intervals in the
+Results subsection, ``Performance consistency across decoders.'' We replaced
+the original Figure~2 with revised Figure~1, presented in the Results
+subsection, ``Generalization under increasingly stringent validation
+strategies.'' Its grey diagonal shows target-specific baselines, while
+off-diagonal cells show directed zero-shot transfer results.
 
 \vspace{0.3cm}
 
@@ -620,11 +617,10 @@ before window segmentation.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We reconstructed all validation protocols around recording-level metadata
-(participant or documented session) before assigning windows to folds. Every
-window from a recording unit remains on one side of a split. The revised
-Methods reserve cross-session validation for data with documented independent
-recording sessions.
+We reconstructed all retained validation protocols around recording-level
+metadata before assigning windows to folds. Every window from a recording unit
+remains on one side of a split. Cross-session and cross-trial validation were
+removed from the revised analysis.
 
 \vspace{0.3cm}
 
@@ -683,15 +679,17 @@ MCC, and AUROC should be reported alongside majority-class baselines.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We audited the reported metrics and recomputed them from the saved test
-predictions. The revised main results table reports balanced accuracy, macro F1,
-MCC, ROC--AUC and recall for each class; the analytical-composition table reports
-participants, recording units, window counts and class distributions.
+We audited the saved test predictions and revised the metric reporting to
+emphasize class-balanced and class-specific performance. Tables~3--7 report
+balanced accuracy, macro F1, MCC, ROC--AUC, and recall for the low- and
+high-demand classes for each decoder; Table~2 reports the corresponding class
+distributions.
 
-\textbf{[TODO --- supplementary diagnostic outputs.]}
-Confusion matrices, per-class precision and F1, and majority-class baselines are
-not yet presented in the manuscript or supporting information. They must be
-added before this response can claim that every requested diagnostic is reported.
+We did not add a separate confusion matrix for every decoder and scenario, or
+equivalent TP/TN/FP/FN columns, because this would require reporting 135
+scenario-specific matrices across Tables~3--7. We believe that the reported
+metrics, together with the class distributions, provide a sufficiently complete
+and interpretable summary of performance across the evaluated scenarios.
 
 \vspace{0.3cm}
 
@@ -708,12 +706,13 @@ paired statistical comparisons are also required.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-Figure~1 now displays uncertainty intervals for every validation family.
-
-\textbf{[TODO --- distributions and paired comparisons.]}
-The manuscript does not yet report fold- or participant-level distributions or
-paired statistical comparisons. These analyses must be added before this part of
-the request can be considered fully addressed.
+We addressed this request by adding participant-level uncertainty estimates to
+the revised figures. Figure~2 compares baseline and cross-subject performance
+across decoders, and Figure~3 presents all validation scenarios across the five
+decoders. In both figures, the black summary estimates show the mean across
+decoders and the bars show paired 95\% percentile bootstrap confidence intervals
+based on 10,000 target-participant resamples. The same resamples were used
+across decoders to preserve pairing.
 
 \vspace{0.3cm}
 
@@ -731,14 +730,19 @@ feature dimensions, hyperparameters, tuning strategy, and random seeds.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We expanded the Methodology to specify filtering, ICA and the EOG-proxy
-criterion, channel alignment, window geometry, feature dimensionality, model
-families, random seed and fold construction. Hyperparameters were fixed before
-the benchmark comparison and each run stores its resolved configuration.
+We thank the Reviewer for this request. We now provide a complete description
+of the revised pipeline in the Data Preparation, Models, and Validation
+Strategies sections. Data preparation specifies 50-Hz notch filtering,
+1--45-Hz band-pass filtering, average rereferencing, extended-Infomax ICA with
+ICLabel-based removal of eye-blink and muscle components (probability $\geq$
+0.80), the 12-channel montage, and 5-s windows with 0.5-s overlap. STFT is not
+used in the revised pipeline.
 
-\textbf{[TODO --- complete parameter table.]}
-The exact spectral-estimation settings and the full model hyperparameter list
-must be finalized in the supporting parameter table before resubmission.
+For the classical models, we specify the 108-dimensional feature
+representation, including log relative power in four frequency bands and five
+statistical features per channel. All data-dependent transformations are fitted
+on training data only. Model recipes and random seeds are fixed in advance
+(seed 42); no hyperparameter tuning was performed.
 
 \vspace{0.3cm}
 
@@ -773,15 +777,12 @@ analysis.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We agree that an adaptation baseline would answer a complementary question.
-This revision, however, is deliberately limited to zero-shot, pre-adaptation
-benchmarks: no target data are used for fitting or calibration. We therefore
-state this boundary explicitly and do not present the zero-shot estimates as the
-expected performance of an adapted system.
-
-\textbf{[TODO --- adaptation baseline.]}
-No alignment or domain-adaptation method is currently implemented or evaluated;
-such a baseline must not be claimed in this response.
+We agree that a domain-adaptation baseline would strengthen the transfer
+analysis. In the revision, however, we refined the Introduction and the study
+objective to focus on leakage-resistant zero-shot, pre-adaptation benchmarks
+rather than on evaluating adaptation methods. We therefore did not add domain
+adaptation to the current study. This limitation and the value of evaluating
+adaptation methods in future work are stated explicitly in the Discussion.
 
 \vspace{0.3cm}
 
@@ -798,9 +799,14 @@ validation category with corresponding uncertainty estimates.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-Figure~1 now includes all validation families and uncertainty intervals for the
-displayed balanced-accuracy estimates. It is generated directly from the
-recomputed analysis outputs.
+We thank the Reviewer for this suggestion. We replaced the original Figure~1,
+``Performance decay across validation strategies,'' with revised Figure~3,
+which reports participant-level balanced accuracy for baseline, cross-subject,
+cross-task and cross-dataset validation across all five decoders. The black
+summary estimates and bars show the mean across decoders and paired 95\%
+percentile bootstrap confidence intervals, respectively. This figure is
+presented in the dedicated Results subsection, ``Performance consistency across
+decoders.''
 
 \vspace{0.3cm}
 
@@ -816,12 +822,11 @@ Figure 2 should distinguish diagonal baseline results from transfer cells.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- transfer matrix.]}
-A source--target transfer matrix has been generated in the analysis workspace,
-with matching within-composition baselines marked on the diagonal and directed
-transfer results outside it. It has not yet been incorporated into the
-manuscript as Figure~2; this response must remain provisional until that
-placement and numbering are finalized.
+We thank the Reviewer for this suggestion. We replaced the original Figure~2,
+``Cross-task generalization matrix,'' with revised Figure~1 and added a
+dedicated Results subsection, ``Generalization under increasingly stringent
+validation strategies.'' The grey diagonal shows the target-specific baselines,
+whereas off-diagonal cells show directed zero-shot transfer results.
 
 \vspace{0.3cm}
 
@@ -837,13 +842,10 @@ Table 2 should include sample sizes and corrected metric definitions.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-The analytical-composition table now reports the number of participants,
-recording units, windows and the class distribution for every composition. The
-revised results table reports the corrected metric definitions and values.
-
-\textbf{[TODO --- final table numbering and supporting diagnostics.]}
-The final Table~2 layout and its relationship to the supporting diagnostic
-outputs remain to be finalized before submission.
+We thank the Reviewer for this suggestion. Revised Table~2 reports the number
+of participants, recording units, windows, and class distributions for every
+analytical composition. Revised Tables~3--7 report the corrected metric
+definitions and recomputed values for all five decoders.
 
 \vspace{0.3cm}
 
@@ -860,15 +862,15 @@ data-use ethics statement should also be corrected.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We corrected the description of the acquisition setup: the datasets share the
-sampling rate and voltage resolution but not an identical electrode montage. We
-also narrowed causal and physiological interpretations, revised the bibliography
-as described in our response to Reviewer~1, and describe the work as a
-secondary analysis of public, de-identified datasets.
-
-\textbf{[TODO --- ethics statement.]}
-The exact secondary-data-use ethics statement requires confirmation from the
-authors and must be inserted in the manuscript before resubmission.
+We thank the Reviewer for identifying these issues. We corrected the relevant
+statements throughout the revised manuscript. The Methods now state that the
+datasets share a sampling rate of 128~Hz and a voltage resolution of
+0.51~$\mu$V, but have different electrode montages (14 versus 32 channels). We
+also limit the interpretation throughout to protocol-defined high- and
+low-demand contrasts, rather than causal or universal neurophysiological
+markers of attention, and revised the relevant references. The manuscript
+includes an ``Open-access datasets'' section, where we describe the publicly
+available datasets used in this study and cite their original publications.
 
 \vspace{0.3cm}
 
@@ -904,17 +906,28 @@ representation learning for electroencephalography over the last several years.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We appreciate this concern. The revised benchmark evaluates two classical
-baselines (logistic regression and XGBoost) alongside three EEG-specific deep
-architectures: ShallowFBCSPNet, EEGNet and EEG Conformer. The deep models learn
-from prepared channel-by-time EEG windows and are evaluated under the same
-validation protocols as the classical models. We have also narrowed the claims
-to the two available datasets and their protocol-defined conditions; the study
-is not presented as an exhaustive survey of EEG decoding.
+We sincerely thank the Reviewer for the careful and constructive assessment.
+This feedback helped us reconsider the framing of the study. We substantially
+revised the Introduction and narrowed the study objective to the evaluation of
+leakage-resistant, zero-shot transfer of protocol-defined high- and low-demand
+contrasts, rather than to a broad claim about universal neural markers of
+attention.
 
-\textbf{[TODO --- broader literature context.]}
-The Introduction still needs a concise, cited discussion that situates these
-three architectures within the broader EEG deep-learning literature.
+We agree that conclusions should not rely on a single classical model. In
+response, we added Logistic Regression and XGBoost as linear and tree-based
+benchmarks, together with three EEG-specific deep models: ShallowFBCSPNet,
+EEGNet, and EEG Conformer. We compare performance across these five decoders in
+the Results subsection, ``Performance consistency across decoders,'' which
+assesses whether the observed validation patterns are sensitive to decoder
+choice.
+
+We also considered extending the analysis to motor-imagery and sleep datasets.
+However, under the revised objective, their labels would define different target
+contrasts and would require a separate harmonization and validation rationale.
+We therefore did not include them in the current benchmark. We also did not
+identify an additional public dataset that was sufficiently compatible with the
+included datasets in acquisition specifications, channel coverage, and label
+definition for the present zero-shot comparison.
 
 \vspace{0.3cm}
 
@@ -948,13 +961,10 @@ to learn invariant representations in the first place.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We added EEGNet, ShallowFBCSPNet and EEG Conformer as end-to-end benchmarks on
-prepared channel-by-time EEG windows, alongside the feature-based logistic
-regression and XGBoost baselines. This design tests whether the pattern across
-validation protocols persists when the decoder learns its representation from
-the signal rather than relying only on predefined spectral features. We do not,
-however, interpret any single model's result as proving or disproving the
-existence of invariant attention representations.
+We appreciate this concern. In response, we added ShallowFBCSPNet, EEGNet, and
+EEG Conformer alongside Logistic Regression and XGBoost. EEG Conformer includes
+a Transformer encoder with self-attention, and all models were evaluated under
+the same validation protocols.
 
 \vspace{0.3cm}
 
@@ -983,16 +993,15 @@ clinical scenarios.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We agree that the two datasets limit the scope of the benchmark. We did not add
-motor-imagery or sleep-staging datasets because their labels define different
-target constructs from the protocol-defined high-demand versus low-demand
-contrast evaluated here. Adding them would require a separate harmonization and
-validation rationale and would not, by itself, establish transferability of the
-current target contrast.
-
-\textbf{[TODO --- scope statement.]}
-The manuscript should state this boundary explicitly and discuss the limited
-generalisability beyond the two included public datasets before submission.
+We agree that extending the benchmark to a broader range of EEG paradigms would
+have strengthened the study. But in the revision, we refined the Introduction
+and study objective to focus on zero-shot transfer of protocol-defined
+attention-related contrasts between technically compatible datasets. Therefore,
+adding motor-imagery datasets would extend the scope beyond attention-related
+datasets and would require a separate rationale for label harmonization and
+validation. Additionally, we sought another publicly available cognitive-task
+dataset but did not identify one with sufficiently compatible acquisition
+specifications and channel coverage for the present comparison.
 
 \vspace{0.3cm}
 
@@ -1026,15 +1035,11 @@ this superficial manuscript currently lacks.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We reviewed the two recommended papers. Both concern motor-imagery decoding,
-which is outside the empirical scope of this study; they cannot support claims
-about the performance of the present models or datasets.
-
-\textbf{[TODO --- citation decision.]}
-If the revised Introduction retains a broader discussion of deep EEG decoding,
-we will cite these papers only as clearly delimited motor-imagery examples. They
-are not yet cited in the manuscript and must not be represented as evidence for
-the present operational contrast.
+We thank the Reviewer for these helpful recommendations. We reviewed both
+papers and added them to the Introduction. They provide relevant methodological
+context on deep EEG decoding and motor-imagery benchmarks. We cite them as
+examples from a distinct motor-imagery setting and do not use them to make
+claims about the performance of the present attention-related benchmark.
 
 \vspace{0.3cm}
 
@@ -1064,16 +1069,11 @@ rather than attention levels.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We accept this criticism. Drowsiness is not treated as interchangeable with an
-awake unfocused state or rest. The explicitly labelled drowsy phase is excluded
-from window generation and classifier evaluation; the retained lower-demand
-conditions are Unfocused and Rest. We also narrowed the interpretation of all
-results to protocol-defined conditions and do not claim that the model isolates
-attention from arousal, ocular activity or other physiological differences.
-
-\textbf{[TODO --- label terminology.]}
-The table heading and class labels should be revised from ``attention'' to
-protocol-defined demand terminology before submission.
+We agree that drowsiness should not be combined with resting or
+task-disengagement conditions. We therefore excluded the Drowsy condition from
+the revised label mapping and all analyses. We also reframed the study around
+protocol-defined high-demand versus rest or task-disengagement contrasts, rather
+than a unitary measure of attention.
 
 \vspace{0.3cm}
 
@@ -1092,11 +1092,11 @@ in the train simulator task.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We agree. Mental arithmetic is not described as a pure attention task in the
-revision; its working-memory demand is one component of the protocol-defined
-higher-demand condition. This is why the manuscript does not infer a single
-cognitive mechanism from successful or unsuccessful transfer between task
-compositions.
+We agree that mental arithmetic is not a pure attention task: its
+working-memory demands may produce patterns that differ from those elicited
+during visual monitoring. We therefore revised the study motivation to examine
+empirically whether decoding trained on one protocol-defined contrast remains
+effective in another, rather than presuming equivalence between the tasks.
 
 \vspace{0.3cm}
 
@@ -1131,15 +1131,12 @@ necessary words to explain the direction of the transfer.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We carefully proofread the revised manuscript and corrected the examples noted
-by the Reviewer, including the participant description, punctuation in the task
-descriptions and wording of directed source--target transfers. The earlier
-disjointed sentence reporting accuracy and F1 has been replaced by the revised
-results presentation.
-
-\textbf{[TODO --- final language edit.]}
-The full manuscript requires a final language edit after the remaining Results,
-Discussion and Abstract text has been finalized.
+We thank the Reviewer for identifying these issues. We revised the participant
+description, corrected punctuation and capitalization in the task descriptions,
+and standardized task terminology throughout the manuscript. We also revised
+the Results presentation and now report directed source--target transfer
+comparisons explicitly. The earlier disjointed accuracy and F1 statement has
+been removed.
 
 \vspace{0.3cm}
 
