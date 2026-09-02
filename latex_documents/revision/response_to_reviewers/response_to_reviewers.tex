@@ -102,56 +102,57 @@ to revise it locally.
 The major revisions are the following:
 
 \begin{itemize}
-	\item \textbf{Revised title.} The manuscript has been retitled from
-	      ``Evaluation of validation strategies and transferability of EEG
-	      attention decoding: a comparative analysis on open datasets'' to
-	      \textbf{``Zero-shot generalization of EEG attention-state decoding
-	      across increasingly stringent validation strategies on open
-	      datasets''} (the heading above retains the submitted title for
-	      identification). The new title replaces ``transferability'' with the
-	      \textbf{zero-shot, pre-adaptation} framing that is actually
-	      evaluated, names the target as \textbf{attention-state decoding} to
-	      match the operational high-/low-attention labels used throughout the
-	      revised text, and states that the protocols are compared under
-	      \textbf{increasingly stringent validation}.
-	\item \textbf{Reformulated Introduction and study scope.} The Introduction
-	      was rewritten in full around an \textbf{explicit research goal}, the
-	      \textbf{knowledge gap} it addresses and a \textbf{contribution} the
-	      data can support: the paper now claims \textbf{discrimination between
-	      operationally defined experimental conditions rather than decoding of
-	      attention as a psychological construct}. ``Results and analysis'' 
-	      follows the same scope and is organized around \textbf{two focused
-	      questions} --- how performance behaves under increasingly stringent
-	      validation, and whether the effects hold across decoders --- each
-	      answered by a dedicated aggregate figure.
-	\item \textbf{Additional models and a sensitivity analysis across them.}
-	      The model set was expanded from the single gradient-boosting decoder
-	      to \textbf{five classifiers spanning the linear, tree-based and
-	      deep-learning families} --- \textbf{logistic regression},
-	      \textbf{XGBoost}, \textbf{ShallowFBCSPNet}, \textbf{EEGNet} and
-	      \textbf{EEG Conformer} --- and every scenario is now repeated with
-	      each of them, making the \textbf{decoder an explicit factor of the
-	      design}. An effect reproduced across all five is attributable to the
-	      data and the protocol rather than to one learner, which is what the
-	      \textbf{sensitivity analysis} in ``Performance consistency across
-	      decoders'' reports.
-	\item \textbf{Leakage-free validation throughout.} All identified sources
-	      of data leakage were eliminated, and every reported protocol is now
-	      free of leakage and of subject-identity confounds. The within-domain
-	      baseline is \textbf{grouped by the physical recording unit} --- a
-	      \textbf{session} in the mental attention-state dataset, a
-	      \textbf{run-level unit} in SAM-40, since the datasets define
-	      acquisition differently --- so overlapping windows from one
+	\item \textbf{Redefined study scope, research goal, knowledge gap and
+	      contribution.} We reconsidered what the data can legitimately support
+	      and \textbf{narrowed the scope} accordingly: the paper now claims
+	      discrimination between operationally defined experimental conditions
+	      rather than decoding of attention as a psychological construct, and
+	      \textbf{transferability was replaced by the zero-shot, pre-adaptation}
+	      framing that is actually evaluated. The Introduction was rewritten in
+	      full around this research goal, the knowledge gap it addresses and the
+	      contribution that follows, and ``Results and analysis'' was reorganized
+	      around \textbf{two focused questions}:
+	      \begin{itemize}
+		      \item how performance behaves under increasingly stringent
+		            validation.
+		      \item whether the effects hold across decoders.
+	      \end{itemize}
+	      Each of them is answered by a dedicated aggregate figure. For
+	      consistency across the paper, \textbf{the manuscript was retitled
+	      ``Zero-shot generalization of EEG attention-state decoding across
+	      increasingly stringent validation strategies on open datasets''}.
+	\item \textbf{Extension of the model set and a sensitivity analysis across
+	      decoders.} The single gradient-boosting decoder was replaced by five
+	      classifiers spanning the linear, tree-based and deep-learning
+	      families: \textbf{Logistic Regression}, \textbf{XGBoost},
+	      \textbf{ShallowFBCSPNet}, \textbf{EEGNet} and \textbf{EEGConformer}.
+	      Every scenario is now repeated with each of them, so the decoder
+	      became an explicit factor of the design instead of a fixed choice, and
+	      the five decoders are compared scenario by scenario \textbf{in
+	      Figure~3, the sensitivity analysis in the ``Performance consistency
+	      across decoders'' section}.
+	\item \textbf{Leakage-free validation strategies.} All identified pathways
+	      of data leakage were eliminated. The within-domain \textbf{baseline is
+	      grouped by the physical recording unit}. Since the datasets define
+	      acquisition differently, this unit is a \textbf{session in the mental
+	      attention-state dataset} and a \textbf{run-level unit in the SAM-40
+	      dataset}. Grouping this way ensures that overlapping windows from one
 	      acquisition never span folds. The \textbf{cross-session scenario was
 	      removed} and no cross-trial variant was introduced in its place.
 	      \textbf{Cross-task evaluation was made subject-disjoint}, training on
 	      the source composition of all but one participant and testing on the
-	      target composition of the held-out participant. The cross-dataset
-	      protocol drew no protocol-level objection and is unchanged; the
-	      concerns raised about it, label semantics and the reduced montage, are
-	      addressed by the corrected label mapping and the narrowed
-	      interpretation.
-	\item \emph{[Additional major revision, if needed.]}
+	      target composition of the held-out participant. The
+	      \textbf{cross-dataset protocol drew no objection and is unchanged}.
+	\item \textbf{Revised figures and tables.} The new conception of the paper
+	      required the existing \textbf{figures and tables to be reworked and
+	      new ones to be added}. All of them, together with the code, the
+	      experiment configurations and the \textbf{per-run artifacts} they are
+	      built from, are available at
+	      \url{https://github.com/sovetskiysn/eeg-validation-strategies}. Each
+	      run stores its resolved configuration alongside tabular records of the
+	      fold assignments, the window-level predictions and the resulting
+	      metrics, so every number in a figure or table can be traced back to
+	      the run that produced it.
 \end{itemize}
 
 \noindent
@@ -168,8 +169,7 @@ For clarity, our response is organized into four sections:
 Reviewer and journal comments are reproduced below and followed by our
 point-by-point responses. Where a single original paragraph contains several
 independent criticisms or requests, it is divided into separate response points
-so that each issue can be addressed explicitly. Changes to the manuscript are
-identified with the corresponding page and line numbers wherever applicable.
+so that each issue can be addressed explicitly.
 
 \vspace{0.4cm}
 \noindent
@@ -177,7 +177,8 @@ Yours sincerely,
 
 \vspace{0.2cm}
 \noindent
-\emph{[TODO: author list]}
+Sanzhar Sovet, Beibit Abdikenov, Manzura Zholdasova, Altyngul Kamzanova,
+Medet Mukushev and Almira Kustubayeva
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Journal Requirements
