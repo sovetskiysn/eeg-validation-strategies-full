@@ -60,9 +60,10 @@ Methods section.
 
 ### Code Availability
 
-- Public repository URL: `[pending final release decision]`
-- Licence: `[pending author decision]`
-- Release/tag or archival DOI: `[pending final release]`
+- Public repository URL: <https://github.com/sovetskiysn/eeg-validation-strategies>
+- Licence: MIT (`python_project/LICENSE`)
+- Release/tag or archival DOI: <https://doi.org/10.5281/zenodo.22255472>
+  (concept DOI, resolves to the latest archived version)
 - Confirmation of unrestricted public availability on publication:
   `[author confirmation required]`
 

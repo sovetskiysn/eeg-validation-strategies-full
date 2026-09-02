@@ -244,6 +244,14 @@ supplied as a separate file named \texttt{Fig1.tif}, \texttt{Fig2.tif} and
 manuscript, the tracked-changes version and this response letter are uploaded
 as separate files under the file types requested in the decision letter.
 
+\textbf{[TODO --- figure files.]}
+The figure part of this requirement is not yet closed: the three figures still
+exceed the PLOS width limit and the final \texttt{Fig1--Fig3.tif} files have not
+been regenerated. The paragraph below is the current draft wording and must be
+reconciled with the final figures before submission.
+
+\vspace{0.2cm}
+
 We were, however, unable to bring the three figures within the maximum width of
 7.5~inches specified in the PLOS figure guidelines. Each figure is a dense
 multi-panel comparison: the transfer matrix reports eleven source--target
@@ -277,7 +285,29 @@ facilitates reproducibility and reuse.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+We thank the editor for this reminder and have reviewed the PLOS code sharing
+guidelines. All author-generated code underpinning the findings is publicly
+available without restrictions. The repository contains the complete analysis
+implementation, the configurations of every reported run, and the per-run
+artifacts from which the reported numbers are computed: the resolved
+configuration of each run, the window index with its labels, the fold
+assignments with the window-level predictions, and the per-fold feature
+importances. Every figure and table in the manuscript can therefore be rebuilt
+from the deposited artifacts without rerunning the experiments, and each
+reported value can be traced back to the run that produced it. The repository
+also documents the software stack, the environment (pinned through a lock
+file), and the commands that reproduce each stage of the analysis, from dataset
+retrieval and standardization to the validation sweep and the rendering of the
+article artifacts.
+
+Following the recommended best practice, the code is released under the MIT
+license and archived in a repository issuing persistent identifiers. It is
+available at
+\url{https://github.com/sovetskiysn/eeg-validation-strategies} and archived on
+Zenodo under the DOI \url{https://doi.org/10.5281/zenodo.22255472}, which
+resolves to the most recent archived version. These details have been added to
+the Data Availability Statement and to the Materials and Methods section of the
+revised manuscript.
 
 \vspace{0.3cm}
 
@@ -295,7 +325,15 @@ the awards you received for your study in the `Funding Information' section.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+\textbf{[TODO --- author-confirmed grant information.]}
+This item cannot be drafted from the manuscript: only the authors know which
+grant numbers were entered in each field and which of them is correct. The
+decision letter quotes Grant no.~BR27198099 (Committee of Science of the
+Ministry of Science and Higher Education of the Republic of Kazakhstan) in the
+Financial Disclosure. The corresponding author must confirm the complete and
+correct list of awards, after which the `Funding Information' field, the
+`Financial Disclosure' field, the cover letter and this response are to be made
+identical.
 
 \vspace{0.3cm}
 
@@ -325,7 +363,23 @@ will change the online submission form on your behalf.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+We thank the Editor for this request. The funders had no role in the study, and
+we have therefore adopted the standard wording:
+
+\vspace{0.2cm}
+\noindent
+``The funders had no role in study design, data collection and analysis,
+decision to publish, or preparation of the manuscript.''
+\vspace{0.2cm}
+
+This statement has been added to the cover letter of the revised submission, in
+wording identical to the Financial Disclosure field, so that the online
+submission form can be updated accordingly.
+
+\vspace{0.2cm}
+\textbf{[TODO --- author confirmation.]}
+The authors must confirm that the funder had no role in any of the listed
+stages before this wording is submitted.
 
 \vspace{0.3cm}
 
@@ -346,7 +400,26 @@ peer review process if you are unable.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+We thank the Editor for this suggestion and have provided the missing details
+now. Both datasets analysed in this study are third-party open datasets, and
+the revised Data Availability Statement identifies each of them by repository
+and persistent link:
+
+\begin{itemize}
+  \item \emph{EEG data for Mental Attention State Detection} (referred to as
+        Dataset~A in the manuscript), deposited on Kaggle and available at
+        \url{https://www.kaggle.com/datasets/inancigdem/eeg-data-for-mental-attention-state-detection}.
+  \item \emph{SAM~40} (Dataset~B), deposited on Figshare under the DOI
+        \url{https://doi.org/10.6084/m9.figshare.14562090.v1}.
+\end{itemize}
+
+The statement further records the author-generated material required to
+reproduce the reported results: the analysis code, the configuration of every
+reported run, and the per-run artifacts underlying the final figures and tables
+are available at
+\url{https://github.com/sovetskiysn/eeg-validation-strategies} and archived on
+Zenodo under the DOI \url{https://doi.org/10.5281/zenodo.22255472}. No data
+underlying the reported findings are subject to access restrictions.
 
 \vspace{0.3cm}
 
@@ -365,7 +438,17 @@ after the references list.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+\textbf{[TODO --- Supporting Information not yet restructured.]}
+The supplementary material changed in this revision: the supplementary figures
+of the original submission were replaced by four decoder-specific tables of
+scenario metrics (XGBoost, EEGNet, ShallowFBCSPNet, EEGConformer). These are
+currently typeset inside the manuscript as ordinary numbered tables in the
+``Supporting information'' section, and no separate Supporting Information
+files exist yet. Before this response can be written, the four tables must be
+moved out of the manuscript into separate Supporting Information files, each
+given an ``S1~Table''--``S4~Table'' legend after the reference list and cited by
+that label in the main text, and each file uploaded under the `Supporting
+Information' file type rather than `Figure'.
 
 \vspace{0.3cm}
 
@@ -384,7 +467,19 @@ these works unless the editor has indicated otherwise.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\emph{[TODO]}
+We thank the Editor for this clarification. One reviewer recommended two
+specific publications, both from 2025: \emph{Investigating the impact of
+rational dilated wavelet transform on motor imagery EEG decoding with deep
+learning models} and \emph{RatioWaveNet: A Learnable RDWT Front-End for Robust
+and Interpretable EEG Motor-Imagery Classification}. We reviewed both papers,
+found them relevant to the methodological context of our study, and cited and
+discussed them in the Introduction of the revised manuscript: the first in the
+account of inter-subject and inter-session variability in EEG decoding, and the
+second where we note that recent work evaluates cross-subject robustness of deep
+decoders while keeping the task paradigm fixed, which is precisely the
+constraint our cross-task and cross-dataset protocols relax. The corresponding
+response is given under Reviewer~\#3, Comment~4.4. No further publications were
+recommended for citation in the review reports.
 
 \vspace{0.3cm}
 
@@ -1404,12 +1499,5 @@ Reviewer's detailed feedback, which helped us make the study more focused,
 transparent, and scientifically rigorous. We believe the revised version now
 delivers on the objectives stated in the Introduction and draws conclusions that
 are appropriately supported by the reported evidence.
-
-\textbf{[TODO --- final consistency audit.]}
-Before submission, the remaining manuscript TODOs, supporting diagnostics,
-transfer-matrix placement, ethics statement and final language edit must be
-completed and reconciled with this letter.
-
-\vspace{0.3cm}
 
 \end{document}

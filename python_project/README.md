@@ -25,7 +25,8 @@ If you use this code, or if it helped your work, please cite the article:
 }
 ```
 
-Archived snapshot of this code: <https://doi.org/<ZENODO-DOI>>
+Archived snapshot of this code (all versions):
+<https://doi.org/10.5281/zenodo.22255472>
 
 ## Stack
 
