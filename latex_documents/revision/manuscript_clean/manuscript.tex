@@ -144,7 +144,7 @@
 % Title must be 250 characters or less.
 \begin{flushleft}
 {\Large
-\textbf{Evaluation of validation strategies and transferability of EEG attention decoding: a comparative analysis on open datasets} % Please use "sentence case" for title and headings.
+\textbf{Evaluation of validation strategies and transferability of EEG attention decoding: a comparative analysis of open datasets} % Please use "sentence case" for title and headings.
 }
 \newline
 % Insert author names, affiliations and corresponding author email (do not include titles, positions, or degrees).
@@ -173,7 +173,7 @@ Almira Kustubayeva\textsuperscript{2,3}
 
 \section*{Abstract}
 
-EEG decoding models must generalize across people and experimental paradigms, yet non-stationary signals and the uncertain equivalence of labels such as ``attention'' make this difficult. Evidence on whether nominally aligned attention-related datasets provide useful zero-shot transfer across tasks and datasets remains limited. Here, we evaluated zero-shot generalization of a protocol-defined binary contrast between high-demand and low-demand conditions in two technically compatible public EEG datasets. The datasets were harmonized through shared 12-channel input, a fixed preprocessing pipeline, and a common label mapping. Drowsiness was excluded to avoid conflating the contrast with differences in arousal, visual input, and ocular activity. Five classifiers spanning linear, tree-based, and deep-learning approaches were assessed using group-disjoint within-dataset, cross-subject, cross-task, and cross-dataset validation, without target-specific adaptation. Mean balanced accuracy across decoders was nearly unchanged when generalizing to unseen participants within a dataset, decreasing from 65.5\% to 65.4\% in the mental attention-state dataset and from 69.1\% to 67.1\% in SAM-40. In contrast, cross-task transfer was on average 6.4 percentage points below the corresponding target-specific baselines, and cross-dataset transfer was 13.7 percentage points below them. Performance declined in every eligible zero-shot transfer comparison. Absolute accuracy also varied materially across decoders. Thus, shared channels, technically compatible acquisition, and nominally aligned labels were insufficient to preserve target-specific performance under heterogeneous transfer. These leakage-resistant, directed pre-adaptation benchmarks support empirical source selection and provide matched references for evaluating whether transfer learning, domain adaptation, or personalization yields meaningful gains. The findings concern protocol-defined contrasts rather than a unitary neural marker of attention.
+EEG decoding models must generalize across people and experimental paradigms, yet non-stationary signals and the uncertain equivalence of labels such as ``attention'' make this difficult. Evidence on whether nominally aligned attention-related datasets provide useful zero-shot transfer across tasks and datasets remains limited. Here, we evaluated zero-shot generalization of a protocol-defined binary contrast between high-demand and low-demand conditions in two technically compatible public EEG datasets. The datasets were harmonized through a shared 12-channel input space, a fixed preprocessing pipeline, and a common label mapping. Drowsiness was excluded to avoid conflating the contrast with differences in arousal, visual input, and ocular activity. Five classifiers spanning linear, tree-based, and deep-learning approaches were assessed using group-disjoint within-dataset, cross-subject, cross-task, and cross-dataset validation, without target-specific adaptation. Mean balanced accuracy across decoders was nearly unchanged when generalizing to unseen participants within a dataset, decreasing from 65.5\% to 65.4\% in the mental attention-state dataset and from 69.1\% to 67.1\% in SAM-40. In contrast, cross-task transfer was on average 6.4 percentage points below the corresponding target-specific baselines, and cross-dataset transfer was 13.7 percentage points below them. Performance declined in every eligible zero-shot transfer comparison. Absolute accuracy also varied materially across decoders. Thus, shared channels, technically compatible acquisition, and nominally aligned labels were insufficient to preserve target-specific performance under heterogeneous transfer. These leakage-resistant, directed pre-adaptation benchmarks support empirical source selection and provide matched references for evaluating whether transfer learning, domain adaptation, or personalization yields meaningful gains. The findings concern protocol-defined contrasts rather than a unitary neural marker of attention.
 
 \clearpage
 \newgeometry{top=0.85in,left=1in,right=1in,footskip=0.75in}
@@ -182,14 +182,14 @@ EEG decoding models must generalize across people and experimental paradigms, ye
 % Use "Eq" instead of "Equation" for equation citations.
 \section*{Introduction}
 
-Electroencephalography (EEG) is a technique for recording brain activity using multichannel scalp electrodes that measure voltage signals reflecting underlying cognitive processes. It is widely used in neuroscience and brain--computer interface (BCI) research due to its non-invasive nature, high temporal resolution, portability and relatively low cost~\cite{rashid2020bci}. At the same time, EEG signals are inherently noisy, non-stationary, and exhibit high inter-subject and inter-session variability~\cite{wu2022transfer,siino2025rdwt}. In addition, these challenges are compounded by the scarcity of large, diverse, and well-annotated open EEG datasets~\cite{sun2025attention}. Consequently, developing a robust decoding model with strong generalization capabilities across subjects, sessions and tasks remains an open and central challenge~\cite{li2025foundation,wu2022transfer}. One promising approach to solve these problems is transfer learning (TL). TL reuses representations already learned on one or more source problems to reduce the amount of labeled data and training effort a related target problem would otherwise require~\cite{zhang2020transfer}. Its success depends not only on modeling and learning strategies but also on the degree of domain and label compatibility between source and target datasets.
+Electroencephalography (EEG) is a technique for recording brain activity using multichannel scalp electrodes that measure voltage signals reflecting underlying cognitive processes. It is widely used in neuroscience and brain--computer interface (BCI) research because of its non-invasive nature, high temporal resolution, portability, and relatively low cost~\cite{rashid2020bci}. At the same time, EEG signals are inherently noisy, non-stationary, and exhibit high inter-subject and inter-session variability~\cite{wu2022transfer,siino2025rdwt}. In addition, these challenges are compounded by the scarcity of large, diverse, and well-annotated open EEG datasets~\cite{sun2025attention}. Consequently, developing a robust decoding model with strong generalization capabilities across subjects, sessions, and tasks remains an open and central challenge~\cite{li2025foundation,wu2022transfer}. One promising approach to address these problems is transfer learning (TL). TL reuses representations already learned on one or more source problems to reduce the amount of labeled data and training effort a related target problem would otherwise require~\cite{zhang2020transfer}. Its success depends not only on modeling and learning strategies but also on the degree of domain and label compatibility between source and target datasets.
 
-For cognitive constructs such as attention, this compatibility is especially consequential and difficult to guarantee because attention has always been an ambiguous concept and is not a unitary construct with a single universally accepted operational definition~\cite{sun2025attention,hommel2019noone}. Rather, attention is an umbrella term encompassing a set of partially independent processes and functions, such as selecting relevant information, maintaining focus over time, shifting attention between tasks, and allocating cognitive resources. These processes may operate on both external sensory input and internally represented information, including information maintained in working memory~\cite{hommel2019noone,knudsen2007components,petersen2012attention}. The relative contributions of these processes may vary with task demands, sensory modalities, task goals, experimental instructions, assigned conditions, self-reported assessments, and other aspects of experimental design and label definition. Consequently, experimental paradigms described as measuring ``attention'' may probe non-equivalent configurations of cognitive processes. As a result, different datasets may represent different attention-related cognitive states while assigning them the same nominal labels.
+For cognitive constructs such as attention, this compatibility is especially consequential and difficult to guarantee because attention remains an ambiguous concept and is not a unitary construct with a single universally accepted operational definition~\cite{sun2025attention,hommel2019noone}. Rather, attention is an umbrella term encompassing a set of partially independent processes and functions, such as selecting relevant information, maintaining focus over time, shifting attention between tasks, and allocating cognitive resources. These processes may operate on both external sensory input and internally represented information, including information maintained in working memory~\cite{hommel2019noone,knudsen2007components,petersen2012attention}. The relative contributions of these processes may vary with task demands, sensory modalities, task goals, experimental instructions, assigned conditions, self-reported assessments, and other aspects of experimental design and label definition. Consequently, experimental paradigms described as measuring ``attention'' may probe non-equivalent configurations of cognitive processes. As a result, different datasets may represent different attention-related cognitive states while assigning them the same nominal labels.
 
 Previous EEG transfer-learning research has been predominantly concerned with cross-subject and cross-session generalization, whereas cross-task, cross-dataset, and cross-paradigm transfer have received comparatively less systematic attention~\cite{wu2022transfer,zhou2022crosstask,song2024signal}. Other recent work has evaluated cross-subject robustness of deep decoders on multiple motor-imagery benchmark datasets while keeping the task paradigm fixed~\cite{siino2025ratiowavenet}. Consequently, systematic empirical evidence for source--target suitability across heterogeneous attention-related EEG datasets and tasks remains limited. Source--target suitability is often motivated conceptually or inferred from nominally aligned labels. This leaves unclear which source--target combinations provide useful zero-shot transfer, how much target discriminability is retained relative to target-specific baselines, and whether transferability is direction-dependent. Establishing such pre-adaptation baselines is necessary to justify source selection and to interpret gains or negative transfer from subsequent transfer-learning and domain-adaptation methods~\cite{zhang2023negative}.
 
 
-Here, we contribute to addressing this gap by systematically evaluating zero-shot generalization across two technically compatible public EEG datasets spanning multiple tasks and paradigms. We examine within-dataset baseline performance, cross-subject generalization, and zero-shot transfer across tasks and datasets under a common preprocessing pipeline, compare directed source--target pairs against target-specific baselines, and assess transferability using five decoders ranging from linear and tree-based baselines to deep neural networks. Together, these analyses yield reproducible pre-adaptation benchmarks for evaluating candidate sources and contextualizing both gains and negative transfer produced by subsequent transfer-learning and domain-adaptation methods.
+Here, we address this gap by systematically evaluating zero-shot generalization across two technically compatible public EEG datasets spanning multiple tasks and paradigms. We examine within-dataset baseline performance, cross-subject generalization, and zero-shot transfer across tasks and datasets under a common preprocessing pipeline, compare directed source--target pairs against target-specific baselines, and assess transferability using five decoders ranging from linear and tree-based baselines to deep neural networks. Together, these analyses yield reproducible pre-adaptation benchmarks for evaluating candidate sources and contextualizing both gains and negative transfer produced by subsequent transfer-learning and domain-adaptation methods.
 
 
 \section*{Open-access datasets}
@@ -198,7 +198,7 @@ Here, we contribute to addressing this gap by systematically evaluating zero-sho
 
 The dataset described in~\cite{aci2019attention} comprises 34 EEG recordings collected from five participants over the course of seven days, with the fifth participant completing only six sessions. During each session, participants operated a virtual train using the \textit{Microsoft Train Simulator}. Each recording lasted approximately 35 to 55 minutes. The participant cohort consisted of healthy university student volunteers.
 
-Each session followed the same predefined route in the virtual train simulator, which required little active control and kept task demands comparable across recordings. Within each session, the protocol comprised three sequential phases, each designed to reflect a different target mental state: \textit{focused}, \textit{unfocused}, and \textit{drowsy}. Participants followed standardized instructions from the experiment supervisor for each phase:
+During every session, participants followed the same predefined route in the virtual train simulator. The route required little active control and kept task demands comparable across recordings. Each session comprised three sequential phases designed to reflect distinct target mental states: \textit{focused}, \textit{unfocused}, and \textit{drowsy}. Participants received standardized instructions from the experiment supervisor for each phase:
 
 \begin{itemize}
   \item \textbf{Focused (0--10 min):} The focused phase required active monitoring of and mental engagement with the simulator, including sustained attention to the virtual controls and screen events.
@@ -210,32 +210,32 @@ EEG signals were recorded using a modified Emotiv headset, equipped with wet ele
 
 \subsection*{SAM-40: dataset of 40-subject EEG recordings (Dataset B)}
 
-The \textbf{SAM-40} dataset, described in~\cite{ghosh2022sam40}, contains EEG recordings from 40 healthy participants (14 females and 26 males) with a mean age of 21.5 years. It was originally collected to investigate short-term stress responses induced by various cognitive tasks, which correspond to a \textit{continuous cognitive engagement} paradigm as described in~\cite{chen2025hybrid}. The experimental protocol included four conditions:
+The \textbf{SAM-40} dataset, described in~\cite{ghosh2022sam40}, contains EEG recordings from 40 healthy participants (14 females and 26 males) with a mean age of 21.5 years. It was originally collected to investigate short-term stress responses induced by various cognitive tasks. Its protocol corresponded to the \textit{continuous cognitive engagement} paradigm described in~\cite{chen2025hybrid} and included four conditions:
 
 \begin{itemize}
-  \item \textbf{Resting state}: EEG recording during relaxation while listening to music.
-  \item \textbf{Stroop Color-Word Test}: Participants were required to identify the color of the ink in which a word was printed, while ignoring the word's semantic meaning. The task included two types of stimuli: \textit{congruent} (the color name matched the ink color) and \textit{incongruent} (the color name and ink color differed). Each execution of the task included 11 stimuli.
-  \item \textbf{Arithmetic problem solving}: Participants mentally solved a mathematical problem and determined whether the presented answer was correct, responding with a ``thumbs up'' or ``thumbs down'' gesture. Each execution of the task included 6 arithmetic stimuli.
-  \item \textbf{Mirror Image Recognition}: Participants were shown images and asked to determine whether they were mirror-symmetric or asymmetric, responding with the same gestures. Each execution of the task included 8 images.
+  \item \textbf{Resting state}: Participants relaxed while listening to music during EEG recording.
+  \item \textbf{Stroop Color-Word Test}: Participants identified the color of the ink in which a word was printed while ignoring the word's semantic meaning. The task included two types of stimuli: \textit{congruent} (the color name matched the ink color) and \textit{incongruent} (the color name and ink color differed). Each task run included 11 stimuli.
+  \item \textbf{Arithmetic problem solving}: Participants mentally solved a mathematical problem and determined whether the presented answer was correct, responding with a ``thumbs up'' or ``thumbs down'' gesture. Each task run included 6 arithmetic stimuli.
+  \item \textbf{Mirror Image Recognition}: Participants were shown images and asked to determine whether they were mirror-symmetric or asymmetric, responding with the same gestures. Each task run included 8 images.
 \end{itemize}
 
-Each task lasted 25 seconds, with 5-second rest intervals and a 10-second instruction period preceding the next task. After the completion of each trial, participants rated the level of stress experienced for each task on a 10-point scale, where 1 indicated minimal stress and 10 indicated maximal stress. For each participant, three trials were recorded using different sets of stimuli.
+Each task was performed for 25 seconds. Between consecutive cognitive tasks, participants rested for 5 seconds and then received 10 seconds of instructions for the next task. After each trial, participants rated the stress experienced during each task on a 10-point scale, where 1 indicated minimal stress and 10 indicated maximal stress. Three trials, each using a different set of stimuli, were recorded for every participant.
 
-EEG signals were recorded using an Emotiv Epoc Flex headset with 32 wet electrodes, labeled according to the international 10--20 system. Data were acquired at a sampling rate of 128~Hz and a voltage resolution of 0.51~$\mu$V. The 32 channels included in the dataset are: Cz, Fz, Fp1, F7, F3, FC1, C3, FC5, FT9, T7, CP5, CP1, P3, P7, PO9, O1, Pz, Oz, O2, PO10, P8, P4, CP2, CP6, T8, FT10, FC6, C4, FC2, F4, F8, and Fp2.
+EEG signals were recorded using an Emotiv Epoc Flex headset with 32 wet electrodes, labeled according to the international 10--20 system. Data were acquired at a sampling rate of 128~Hz and a voltage resolution of 0.51~$\mu$V.
 
 \section*{Methodology}
 
 The methodological design of this study was developed to evaluate the generalizability and transferability of EEG-based attention decoding across different recording conditions, participants, and task paradigms. To this end, we adopted two publicly available datasets that differ in experimental protocols but share compatible technical specifications, thereby enabling a controlled comparative analysis. \rev{The datasets were harmonized through a binary operational labeling scheme that distinguishes conditions of high protocol-defined task demand from conditions of rest or task disengagement, enabling consistent evaluation across scenarios.} This section outlines the rationale for dataset alignment, the strategies employed for cross-validation, and the experimental settings designed to assess within-dataset performance as well as cross-subject, cross-task, and cross-dataset generalization.
 
-All experiments were executed through a version-controlled computational workflow. For every run, the workflow stores the resolved configuration of data preparation, validation and model settings together with the run outputs needed to reconstruct the reported evaluation metrics. These records provide run-level provenance for the results and permit the correspondence between a reported metric and the experiment that produced it to be inspected. The complete implementation, experiment configurations and run-level artifacts are available at \url{https://github.com/sovetskiysn/eeg-validation-strategies}.
+All experiments were executed through a version-controlled computational workflow. For every run, the workflow stores the resolved configuration of data preparation, validation, and model settings together with the run outputs needed to reconstruct the reported evaluation metrics. These records provide run-level provenance and allow each reported metric to be traced to the experiment that produced it. The complete implementation, experiment configurations, and run-level artifacts are available at \url{https://github.com/sovetskiysn/eeg-validation-strategies}.
 
 \subsection*{Dataset alignment and integration rationale}
 
-Effective evaluation of cross-task and cross-dataset generalization relies on the availability of datasets that are compatible both technically and conceptually. In this study, we integrate two publicly available EEG datasets that differ in their original purpose and labeling schemes, yet retain sufficient technical and conceptual compatibility for a meaningful comparison.
+Effective evaluation of cross-task and cross-dataset generalization relies on the availability of datasets that are compatible both technically and conceptually. In this study, we used two publicly available EEG datasets that differ in their original purpose and labeling schemes, yet retain sufficient technical and conceptual compatibility for a meaningful comparison.
 
-A major strength of this dataset combination lies in their acquisition setup. Both datasets were recorded using Emotiv EEG systems with the same sampling rate (128~Hz) and voltage resolution, although their original electrode montages differed (14 versus 32 channels). For cross-dataset analyses, only the 12 channels common to both datasets were retained. Differences in EEG recording systems and electrode configurations can hinder cross-dataset transferability~\cite{lan2019domain}. Restricting the analysis to the shared channels substantially reduces this configuration-related mismatch, although it does not eliminate all acquisition-related distribution shifts. Within the limited set of publicly available datasets suitable for this comparison, this pair offered a comparatively compatible basis for the present comparative evaluation.
+A major strength of this dataset combination is the compatible acquisition setup of the two datasets. Both datasets were recorded using Emotiv EEG systems with the same sampling rate (128~Hz) and voltage resolution, although their original electrode montages differed (14 versus 32 channels). For cross-dataset analyses, only the 12 channels common to both datasets were retained. Differences in EEG recording systems and electrode configurations can hinder cross-dataset transferability~\cite{lan2019domain}. Restricting the analysis to the shared channels substantially reduces this configuration-related mismatch, although it does not eliminate all acquisition-related distribution shifts. Within the limited set of publicly available datasets suitable for this comparison, this pair offered a comparatively compatible basis for the present comparative evaluation.
 
-The conceptual rationale for combining the datasets rests on the cognitive conditions represented in their respective protocols. The mental attention-state dataset contains explicit attention-state labels (\textit{Focused}, \textit{Unfocused}, and \textit{Drowsy}) collected during a low-interaction simulation task, whereas SAM-40 was originally designed for stress assessment. Both capture cognitive conditions strongly tied to attentional processes. The SAM-40 dataset includes tasks widely recognized in cognitive neuroscience for eliciting high levels of attentional engagement:
+The conceptual rationale for combining the datasets rests on the cognitive conditions represented in their respective protocols. The mental attention-state dataset contains explicit attention-state labels (\textit{Focused}, \textit{Unfocused}, and \textit{Drowsy}) collected during a low-interaction simulation task, whereas SAM-40 was originally designed for stress assessment. Both include conditions involving attentional processes, although their original constructs differ. The SAM-40 dataset includes tasks widely recognized in cognitive neuroscience as requiring attentional engagement:
 \begin{itemize}
     \item \textbf{Stroop Color-Word Test}: probes both \textit{selective} and \textit{sustained attention}, requiring participants to suppress automatic reading responses and continually focus on the ink color throughout the task~\cite{macleod1991stroop, scarpina2017stroop, esterman2013zone}.
     \item \textbf{Mental arithmetic task}: demands \textit{sustained internal attention} and working memory for continuous manipulation of numerical information~\cite{grabner2007math, kitaura2017functional}.
@@ -248,10 +248,10 @@ The simulator-based and task-based datasets correspond, respectively, to the \te
 
 \subsection*{\revs{Validation strategies}}
 
-\rev{We evaluated the decoders under four validation protocols, each addressing a distinct generalization question. To preserve the independence of the training and test data, all windows originating from the same recording unit were assigned to the same partition. This prevents overlapping windows from being divided between training and test sets, reducing the risk of overly optimistic performance estimates due to temporal autocorrelation between neighboring EEG windows~\cite{chen2025hybrid}. The within-domain baseline estimates performance when training and test data share the same dataset and condition composition but originate from different recording units. The remaining protocols examine whether discriminative performance is retained when training and testing are separated by participant, task composition, or dataset. These protocols were applied only where the structure of each release supported their interpretation: multiple tasks in SAM-40 enabled cross-task validation. Model fitting was confined to the training data, and the resulting decoder was evaluated on held-out data without target-specific adaptation. Any class imbalance was addressed through inverse-frequency class weighting calculated independently within each training fold, while test data retained their observed class distribution.}
+\rev{We evaluated the decoders under four validation protocols, each addressing a distinct generalization question. To preserve the independence of the training and test data, all windows originating from the same recording unit were assigned to the same partition. This prevents overlapping windows from being divided between training and test sets, reducing the risk of overly optimistic performance estimates due to temporal autocorrelation between neighboring EEG windows~\cite{chen2025hybrid}. The within-domain baseline estimates performance when training and test data share the same dataset and condition composition but originate from different recording units. The remaining protocols examine whether discriminative performance is retained when training and testing are separated by participant, task composition, or dataset. Each protocol was used only where the structure of the relevant dataset supported its interpretation. For example, cross-task validation was possible only for SAM-40 because it included multiple task compositions. Model fitting was confined to the training data, and the resulting decoder was evaluated on held-out data without target-specific adaptation. Any class imbalance was addressed through inverse-frequency class weighting calculated independently within each training fold, while test data retained their observed class distribution.}
 
 \textbf{Baseline evaluation.}
-\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the SAM-40 dataset, and each task-specific composition of SAM-40. The grouping variable was the physical recording unit: one selected session in the mental attention-state dataset and one run-level recording unit in SAM-40, comprising all task recordings included in the analysis for that run. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. Keeping each unit intact prevented temporally adjacent or partially overlapping windows from the same acquisition from being assigned to opposite folds, thereby avoiding window-level temporal leakage. These estimates serve as within-domain comparators for the transfer protocols.}
+\rev{Reference performance was estimated using five-fold stratified group cross-validation, separately for the mental attention-state dataset, the SAM-40 dataset, and each task-specific composition of SAM-40. The grouping variable was the physical recording unit: a selected session in the mental attention-state dataset or a run-level recording unit in SAM-40. Each SAM-40 unit comprised all task recordings included in the analysis for that run. Training and test folds thus shared the dataset and condition composition and could contain data from the same participants, but never from the same recording unit. Keeping each unit intact prevented temporally adjacent or partially overlapping windows from the same acquisition from being assigned to opposite folds, thereby avoiding window-level temporal leakage. These estimates serve as within-domain comparators for the transfer protocols.}
 
 \textbf{Cross-subject validation.}
 \rev{In each leave-one-subject-out fold, the decoder was trained on all selected data from the remaining participants and tested on all selected data from the held-out participant. The resulting performance quantifies zero-shot generalization to an unseen participant.}
@@ -262,7 +262,7 @@ The simulator-based and task-based datasets correspond, respectively, to the \te
 \rev{The cross-task folds were also subject-disjoint. For each fold, the source composition from all but one participant formed the training set, whereas the target composition from the held-out participant formed the test set. The protocol thus evaluates the combined shift to an unseen participant and a different task composition, rather than within-participant transfer between tasks. This distinction prevents participant-specific EEG patterns from contributing to apparent cross-task generalization~\cite{kamrud2021vigilance,ke2021crosstask}.}
 
 \textbf{Cross-dataset validation.}
-\rev{To evaluate transfer between datasets, models were trained on all available data from a source composition and tested on a composition from the other dataset, in both transfer directions and without target-specific adaptation. SAM-40 was considered as a complete composition and through its task-specific compositions. Unlike the preceding protocols, cross-dataset validation changes several factors simultaneously, including the participant population, experimental paradigm, recording setup, and condition definitions. It therefore measures transfer under their compound distribution shift rather than attributing a performance change to any single factor~\cite{lan2019domain}. The common sampling rate, harmonized binary labels, and shared 12-channel montage establish a compatible input and prediction space, but do not remove the substantive differences between the two datasets.}
+\rev{To evaluate transfer between datasets, models were trained on all available data from a source composition and tested on a composition from the other dataset, in both transfer directions and without target-specific adaptation. SAM-40 was evaluated both as a complete composition and as task-specific compositions. Unlike the preceding protocols, cross-dataset validation changes several factors simultaneously, including the participant population, experimental paradigm, recording setup, and condition definitions. It therefore measures transfer under their compound distribution shift rather than attributing a performance change to any single factor~\cite{lan2019domain}. The common sampling rate, harmonized binary labels, and shared 12-channel montage establish a compatible input and prediction space, but do not remove the substantive differences between the two datasets.}
 
 \subsection*{Data preparation}
 
@@ -275,8 +275,8 @@ purpose was to place recordings in a common input space while limiting
 preprocessing itself as an additional source of variation. Differences between
 validation results are therefore interpreted against a fixed preparation
 procedure. The pipeline was instantiated as a fixed set of dataset
-preparations, that is, the analytical compositions on which every validation
-protocol was run and are collected in
+preparations, that is, the analytical compositions used in every validation
+protocol and listed in
 Table~\ref{tab:dataset_compositions}. The remainder of this subsection
 describes the selection, cleaning, alignment and segmentation steps that
 produced them.}
@@ -323,7 +323,7 @@ The ICA random state was fixed by the experiment-wide configuration.}
 \rev{\textbf{Channel alignment and window segmentation.} After signal cleaning, each
 recording was restricted to the 12 channels shared by
 the two datasets: F3, F4, F7, F8, FC5, FC6, O1, O2, P7, P8, T7 and T8. Each
-retained labelled block was segmented into 5-s windows with 0.5-s overlap.
+retained labeled block was segmented into 5-s windows with 0.5-s overlap.
 Every retained window inherited the label of its source block and metadata identifying its
 dataset, participant, session, task, run, recording unit and temporal onset.
 The recording-unit identifier was used by the validation protocols to ensure
@@ -342,7 +342,7 @@ recordings.}
 \subsection*{\revs{Models}}
 
 \rev{We evaluated five classifiers rather than relying on a single decoder to
-test whether the conclusions are robust to a change in modelling assumptions.
+test whether the conclusions are robust to a change in modeling assumptions.
 This makes the decoder an explicit factor of the design: a difference between
 validation protocols that is reproduced across models is more credibly
 attributed to the data and evaluation protocol than to the idiosyncrasies of
@@ -352,7 +352,7 @@ included because they learn task-relevant representations directly from the
 channel-by-time EEG windows, reducing reliance on a manually specified feature
 set. All models were trained to predict whether a window belonged to a
 high-demand or a low-demand condition in the sense of
-Table~\ref{tab:attention_label_mapping}}
+Table~\ref{tab:attention_label_mapping}.}
 
 \rev{Hyperparameters were fixed \textit{a priori} and held constant across
 datasets, task compositions, validation protocols and runs. No hyperparameter
@@ -376,7 +376,7 @@ standardized using the mean and standard deviation estimated from the training
 fold only.}
 
 \rev{XGBoost~\cite{chen2016xgboost} represents tree-based ensemble learning,
-allowing nonlinear relations and feature interactions to be modelled within the
+allowing nonlinear relations and feature interactions to be modeled within the
 same feature representation. It was also the decoder used in the originally
 submitted version of this study, preserving a direct point of comparison with
 those results. It received the same feature vectors without scaling. For both
@@ -456,7 +456,7 @@ and columns denote target compositions. Each nonmissing matrix cell reports
 balanced accuracy calculated separately from the held-out windows of each
 target participant and then averaged across target participants for the given
 decoder and direction. Off-diagonal cells represent zero-shot transfers without
-target-specific adaptation, whereas the grey diagonal reports the
+target-specific adaptation, whereas the gray diagonal reports the
 target-specific baseline estimated with five-fold stratified group validation
 that keeps recording units disjoint between training and test folds. For each
 target represented in a summary column, we first averaged participant-level
@@ -470,7 +470,7 @@ Figure~\ref{fig:baseline_vs_cross_subject} compares baseline and
 leave-one-subject-out cross-subject validation for the mental attention-state
 dataset and the SAM-40 dataset. For each decoder and scenario, balanced accuracy was
 calculated separately from the held-out windows of each target participant and
-then averaged across target participants, and the coloured lines show these
+then averaged across target participants, and the colored lines show these
 decoder-specific means. Black points show the mean of the five decoder-specific
 estimates. Their bars show paired 95\% percentile bootstrap intervals from
 10,000 target-participant resamples, with the same resample used for all
@@ -478,16 +478,17 @@ decoders to preserve their pairing.
 
 \input{figures/transfer_matrix}
 
-For cross-task transfer, the mean difference from the target-specific baseline,
-averaged across all five decoders, was $9.6$, $6.3$, $6.6$, and $3.1$
-percentage points lower for the Stroop, Arithmetic, and Mirror task
-compositions and the SAM-40 dataset, respectively. The mean decrease across these sources was
-$6.4$ percentage points. For cross-dataset transfer, the decoder-averaged
-decreases for the Stroop, Arithmetic, and Mirror task compositions, the
-SAM-40 dataset, and the mental attention-state dataset were $13.1$, $10.4$,
-$13.1$, $11.0$, and $20.9$ percentage points, respectively. The mean decrease was $13.7$ percentage
-points. Thus, zero-shot transfer reduced performance in every eligible
-comparison, with a larger reduction when training and test data came from
+For cross-task transfer, the mean decreases from the corresponding
+target-specific baselines, averaged across all five decoders, were $9.6$,
+$6.3$, $6.6$, and $3.1$ percentage points for the Stroop, Arithmetic, and
+Mirror task compositions and the SAM-40 dataset, respectively. The mean
+decrease across these targets was $6.4$ percentage points. For cross-dataset
+transfer, the decoder-averaged decreases for the Stroop, Arithmetic, and Mirror
+task compositions, the SAM-40 dataset, and the mental attention-state dataset
+were $13.1$, $10.4$, $13.1$, $11.0$, and $20.9$ percentage points,
+respectively. The mean decrease was $13.7$ percentage points. Thus, zero-shot
+transfer yielded lower performance in every eligible comparison, with a larger
+reduction when training and test data came from
 different datasets.
 
 \input{figures/baseline_vs_cross_subject}
@@ -507,7 +508,7 @@ which was above the upper bound of 69.7\%.
 
 To assess whether performance patterns across validation strategies depended on
 decoder choice, Figure~\ref{fig:scenario_accuracy_by_decoder} compares all
-validation scenarios across the five decoders. Each coloured point represents
+validation scenarios across the five decoders. Each colored point represents
 the balanced accuracy of one decoder, averaged across target participants in a
 given scenario. The black point and horizontal bar show the mean
 across the five decoders and its paired 95\% percentile bootstrap confidence
@@ -517,7 +518,7 @@ pairing.
 
 \input{figures/scenario_accuracy_by_decoder}
 
-Across the 27 scenarios, 42 of 135 coloured decoder points lay outside the
+Across the 27 scenarios, 42 of 135 decoder-specific estimates lay outside the
 corresponding 95\% bootstrap interval. Logistic Regression lay outside the
 interval in seven scenarios, with four points below and three above the
 interval. XGBoost lay outside the interval in four scenarios, with one point
@@ -571,7 +572,7 @@ the discriminability of that contrast in the target data itself. The resulting
 references also make it possible to evaluate whether subsequent
 transfer-learning, domain-adaptation, or personalization methods provide a
 meaningful improvement over matched zero-shot performance rather than merely
-achieving a favourable absolute score.
+achieving a favorable absolute score.
 
 \medskip
 

@@ -603,7 +603,7 @@ def craft_transfer_matrix_figure(scenario_glob: str) -> Figure:
     matrix_width, matrix_height = 0.54, 0.84
     group_header_height = 1.3
     header_height = 2 * group_header_height
-    source_left, decoder_left = -2.50, -1.25
+    source_left, decoder_left = -3.10, -1.85
     data_column_width = matrix_width / (len(column_specs) - source_left)
     data_left = matrix_left - source_left * data_column_width
     summary_left, summary_width = 0.62, 0.13

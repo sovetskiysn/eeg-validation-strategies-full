@@ -87,47 +87,58 @@ decoding: a comparative analysis on open datasets}
 \vspace{0.3cm}
 
 \noindent
-\textbf{[TODO --- working state of this letter; this banner is not part of the
-submission.]} Every response below is in one of three states. A response with no
-marker is backed both by the code in \texttt{python\_project/} and by text that is
-actually present in \texttt{manuscript\_clean/manuscript.tex}. A response
-followed by a \textbf{[TODO]} paragraph is only partly backed: the
-implementation exists, but the manuscript does not yet say so, or the numbers it
-refers to have not been computed. A response consisting only of \textbf{[TODO]}
-is not answered at all yet. The manuscript is mid-rewrite --- its Abstract,
-Background, Models and Results sections are cleared placeholders --- the full
-sweep in \texttt{python\_project/results/} is still running, and no analysis has
-been produced from it. Until that changes, no response here may cite a number, a
-table, a figure or a manuscript passage. All markers must be gone before the
-letter is uploaded.
-
-\vspace{0.3cm}
-\noindent
 Dear Editor and Reviewers,
 
 \vspace{0.2cm}
 \noindent
 We thank the Editor and the Reviewers for their careful evaluation of our
-manuscript and for their constructive comments. We have carefully considered all
-comments and are preparing a revised version of the manuscript that addresses
-the issues raised during peer review.
+manuscript and for the exceptional quality and depth of the feedback we
+received. We have considered every comment in detail, and the issues raised
+during peer review led us to rework the manuscript almost entirely rather than
+to revise it locally.
 
 \vspace{0.2cm}
 \noindent
-The major revisions will include:
+The major revisions are the following:
 
 \begin{itemize}
-	\item \textbf{[TODO --- major revision 1: redefinition of the target
-	      construct.]} The direction is settled --- the study claims
-	      discrimination between operationally defined experimental conditions
-	      rather than decoding of attention as a psychological construct --- but
-	      the manuscript does not yet carry it: Table~1 still names its classes
-	      ``High Attention'' and ``Low Attention'', and no label-mapping
-	      sensitivity analysis exists in the code. Only the exclusion of drowsy
-	      epochs from the primary analysis is in place. Rewrite this bullet
-	      together with the responses to MR1 and Comments~3.1, 3.2 and 4.5.
-	\item \emph{[Major revision 2 --- to be completed after the corresponding manuscript changes are finalized.]}
-	\item \emph{[Major revision 3 --- to be completed after the corresponding manuscript changes are finalized.]}
+	\item \textbf{Reformulated Introduction and study scope.} The Introduction
+	      was rewritten in full around an \textbf{explicit research goal}, the
+	      \textbf{knowledge gap} it addresses and a \textbf{contribution} the
+	      data can support: the paper now claims \textbf{discrimination between
+	      operationally defined experimental conditions rather than decoding of
+	      attention as a psychological construct}. ``Results and analysis'' 
+	      follows the same scope and is organized around \textbf{two focused
+	      questions} --- how performance behaves under increasingly stringent
+	      validation, and whether the effects hold across decoders --- each
+	      answered by a dedicated aggregate figure.
+	\item \textbf{Additional models and a sensitivity analysis across them.}
+	      The model set was expanded from the single gradient-boosting decoder
+	      to \textbf{five classifiers spanning the linear, tree-based and
+	      deep-learning families} --- \textbf{logistic regression},
+	      \textbf{XGBoost}, \textbf{ShallowFBCSPNet}, \textbf{EEGNet} and
+	      \textbf{EEG Conformer} --- and every scenario is now repeated with
+	      each of them, making the \textbf{decoder an explicit factor of the
+	      design}. An effect reproduced across all five is attributable to the
+	      data and the protocol rather than to one learner, which is what the
+	      \textbf{sensitivity analysis} in ``Performance consistency across
+	      decoders'' reports.
+	\item \textbf{Leakage-free validation throughout.} All identified sources
+	      of data leakage were eliminated, and every reported protocol is now
+	      free of leakage and of subject-identity confounds. The within-domain
+	      baseline is \textbf{grouped by the physical recording unit} --- a
+	      \textbf{session} in the mental attention-state dataset, a
+	      \textbf{run-level unit} in SAM-40, since the datasets define
+	      acquisition differently --- so overlapping windows from one
+	      acquisition never span folds. The \textbf{cross-session scenario was
+	      removed} and no cross-trial variant was introduced in its place.
+	      \textbf{Cross-task evaluation was made subject-disjoint}, training on
+	      the source composition of all but one participant and testing on the
+	      target composition of the held-out participant. The cross-dataset
+	      protocol drew no protocol-level objection and is unchanged; the
+	      concerns raised about it, label semantics and the reduced montage, are
+	      addressed by the corrected label mapping and the narrowed
+	      interpretation.
 	\item \emph{[Additional major revision, if needed.]}
 \end{itemize}
 
@@ -411,7 +422,7 @@ physical sessions. Cross-session validation therefore applies only to
 Dataset~A.
 
 \emph{Dataset compositions and class counts.} We added
-Table~\ref{tab:dataset_compositions}, which defines the full, task-only, and
+Table~2 in the revised manuscript, which defines the full, task-only, and
 two-task Dataset~B compositions by their retained conditions. It also reports
 the number of participants, recording units, and prepared pre-oversampling
 windows in the low- and high-attention classes for each composition.
@@ -485,7 +496,7 @@ audit of the metric calculations and reporting and identified an error in the
 previously reported metric values. We corrected the error and recomputed the
 results for all experimental scenarios under the revised analysis workflow.
 
-Revised Table~\ref{tab:scenario_metrics_logistic_regression} replaces accuracy and support-weighted recall with metrics
+Revised Tables~3--7 in the revised manuscript replace accuracy and support-weighted recall with metrics
 that make class-specific performance and class imbalance explicit: balanced
 accuracy, macro F1, Matthews correlation coefficient (MCC), ROC--AUC, and
 recall for the low- and high-demand classes separately. The revised values are
@@ -742,7 +753,7 @@ For the classical models, we specify the 108-dimensional feature
 representation, including log relative power in four frequency bands and five
 statistical features per channel. All data-dependent transformations are fitted
 on training data only. Model recipes and random seeds are fixed in advance
-(seed 42); no hyperparameter tuning was performed.
+(seed 42). No hyperparameter tuning was performed.
 
 \vspace{0.3cm}
 
@@ -993,7 +1004,7 @@ clinical scenarios.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We agree that extending the benchmark to a broader range of EEG paradigms would
+We agree that extending the study to a broader range of EEG paradigms would
 have strengthened the study. But in the revision, we refined the Introduction
 and study objective to focus on zero-shot transfer of protocol-defined
 attention-related contrasts between technically compatible datasets. Therefore,
@@ -1036,10 +1047,8 @@ this superficial manuscript currently lacks.
 \vspace{0.2cm}
 
 We thank the Reviewer for these helpful recommendations. We reviewed both
-papers and added them to the Introduction. They provide relevant methodological
-context on deep EEG decoding and motor-imagery benchmarks. We cite them as
-examples from a distinct motor-imagery setting and do not use them to make
-claims about the performance of the present attention-related benchmark.
+papers and cited them in the Introduction. They provide relevant methodological
+context on deep EEG decoding and motor-imagery benchmarks.
 
 \vspace{0.3cm}
 
@@ -1131,12 +1140,9 @@ necessary words to explain the direction of the transfer.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We thank the Reviewer for identifying these issues. We revised the participant
-description, corrected punctuation and capitalization in the task descriptions,
-and standardized task terminology throughout the manuscript. We also revised
-the Results presentation and now report directed source--target transfer
-comparisons explicitly. The earlier disjointed accuracy and F1 statement has
-been removed.
+We thank the Reviewer for this comment. We carefully revised the manuscript for
+grammar, punctuation, and clarity. We corrected the participant description,
+task descriptions, results wording, and source--target transfer directions.
 
 \vspace{0.3cm}
 
@@ -1233,16 +1239,17 @@ attention at all.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We clarify that ICA is fitted and applied using all EEG channels available in
-each original recording unit; the common 12-channel montage is selected only
-after artifact cleaning, before windowing and model fitting. The shared montage
-therefore standardizes the model input for cross-dataset comparison rather than
-reducing the dimensionality of the ICA decomposition.
-
-We nevertheless acknowledge a residual limitation: neither dataset provides an
-independent EOG channel, so frontal EEG channels serve only as EOG proxies. This
-does not provide ground-truth validation of ocular-artifact removal, and our
-interpretation does not attribute model decisions to cortical attention signals.
+We agree that the shared 12-channel montage reduces spatial information and
+limits ICA separation. Using the 12 electrodes shared by both datasets was
+necessary to create a valid common input space for cross-dataset analysis. We
+used MNE-BIDS-Pipeline for preprocessing, which removes non-shared channels
+before filtering and ICA. ICA cleaning and model fitting therefore both use the
+same 12-channel input. Eye-blink and muscle components identified by ICLabel
+with probability $\geq$0.80 were removed, but neither dataset includes
+independent EOG recordings. Residual ocular or muscle artifacts therefore
+cannot be ruled out. We now state this limitation explicitly and interpret the
+results as discrimination of protocol-defined conditions, not as evidence of
+decoding cortical attention networks.
 
 \vspace{0.3cm}
 
@@ -1269,12 +1276,14 @@ learning with poor experimental controls.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- feature attribution.]}
-Per-fold coefficients for logistic regression and feature importances for
-XGBoost are saved with the experiment outputs, but they have not yet been
-aggregated or reported in the manuscript. We will not claim an explainability
-analysis until these descriptive model-specific results are presented; they would
-not explain the decisions of the deep models.
+Thank you for the suggestion. In the revised manuscript, we added the Results
+subsection, ``Performance consistency across decoders,'' with a figure comparing
+all models across the research questions. This provides a broader assessment of
+whether transfer effects are consistent across decoders. We agree that
+feature-attribution analysis would be valuable, but given the scope of the full
+revision, we did not include a separate model-specific feature-importance
+analysis in this version. If the Reviewer considers this essential, we can add
+it.
 
 \vspace{0.3cm}
 
@@ -1305,12 +1314,32 @@ state of the art in electroencephalography decoding.
 \underline{\textbf{Response:}}
 \vspace{0.2cm}
 
-We appreciate the detailed assessment. The revision replaces the leaking
-baseline and the subject-confounded cross-task protocol, excludes the drowsy
-phase from classifier evaluation, adds linear and tree-based benchmarks alongside
-three EEG-specific deep architectures, and narrows the interpretation to
-protocol-defined conditions. The remaining limitations are stated explicitly in
-the point-by-point responses above.
+We sincerely appreciate this insightful and constructive assessment. We agree
+that the original manuscript did not sufficiently align its ambitious framing
+with the scope and rigor of the empirical study. The Reviewer's comments have
+prompted fundamental revisions throughout the paper.
+
+The manuscript was rewritten as a whole. The Introduction was reformulated
+around a clearly delimited objective and scope, replacing broad claims about
+paradigm-invariant EEG decoding with two specific research questions that the
+available data and experimental design can address rigorously. The Methods were
+correspondingly expanded: the model suite now covers linear, tree-based and
+EEG-specific deep architectures, the data-preparation and label-harmonization
+procedures are described explicitly and corrected, and the validation and
+cross-task protocols were reworked to remove leakage and subject-identity
+confounds. The Results section was written anew and is organized around two
+aggregate figures that answer the two research questions directly, with the
+interpretation narrowed to what the reported evidence supports. The specific
+changes, together with the remaining limitations, are documented in the
+point-by-point responses above, and the manuscript has undergone a comprehensive
+language and consistency revision.
+
+Overall, these changes have substantially transformed the manuscript in its
+framing, methodology, evaluation, and presentation. We are grateful for the
+Reviewer's detailed feedback, which helped us make the study more focused,
+transparent, and scientifically rigorous. We believe the revised version now
+delivers on the objectives stated in the Introduction and draws conclusions that
+are appropriately supported by the reported evidence.
 
 \textbf{[TODO --- final consistency audit.]}
 Before submission, the remaining manuscript TODOs, supporting diagnostics,
