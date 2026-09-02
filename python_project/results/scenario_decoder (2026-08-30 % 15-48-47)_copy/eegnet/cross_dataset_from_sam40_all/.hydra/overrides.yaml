@@ -1,3 +1,0 @@
-- +experiments/scenario=cross_dataset_from_sam40_all
-- +experiments/decoder=eegnet
-- +experiments=scenario_decoder

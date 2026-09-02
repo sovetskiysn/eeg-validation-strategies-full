@@ -1,3 +1,0 @@
-- +experiments/scenario=baseline_distinguishing
-- +experiments/decoder=eegnet
-- +experiments=scenario_decoder

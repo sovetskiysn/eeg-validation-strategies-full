@@ -11,9 +11,11 @@
 # `+experiments=...` choice below when switching the reproducible sweep.
 # Each preset switches Hydra into MULTIRUN itself, so no -m flag here.
 experiment:
-	uv run python scripts/run_experiment.py +experiments=scenario_decoder_maybe_new
+	uv run python scripts/run_experiment.py +experiments=scenario_decoder
 
-# The directory is an address of existing output, not an experiment override:
+# The directory is an address of existing output, not an experiment override.
+# Both ends have a default: the newest sweep in results/ is read, and analysis/
+# next to it is written.
 #   make analysis
 #   make analysis ANALYSIS_INPUT_DIR="results/scenario_decoder (...)" ANALYSIS_OUTPUT_DIR="../analysis"
 # Make exports the input and output paths to the analysis runner.

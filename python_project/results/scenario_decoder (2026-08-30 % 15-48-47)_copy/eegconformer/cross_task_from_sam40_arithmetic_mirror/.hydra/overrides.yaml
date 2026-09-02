@@ -1,3 +1,0 @@
-- +experiments/scenario=cross_task_from_sam40_arithmetic_mirror
-- +experiments/decoder=eegconformer
-- +experiments=scenario_decoder

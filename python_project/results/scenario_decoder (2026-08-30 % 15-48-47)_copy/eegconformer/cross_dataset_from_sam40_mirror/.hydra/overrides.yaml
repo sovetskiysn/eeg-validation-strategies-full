@@ -1,3 +1,0 @@
-- +experiments/scenario=cross_dataset_from_sam40_mirror
-- +experiments/decoder=eegconformer
-- +experiments=scenario_decoder

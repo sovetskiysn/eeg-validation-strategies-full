@@ -1,0 +1,58 @@
+% This source template is filled by python_project/src/analysis.py.
+% Generated tables belong in latex_documents/revision/manuscript_clean/tables/.
+\begingroup
+\singlespacing
+\normalsize
+% Add visible, compact spacing around task-transition arrows.
+\def\!{\mskip4mu}
+% Distribute the remaining width across the 12 internal cell-side paddings.
+\setlength{\tabcolsep}{\textwidth}
+\addtolength{\tabcolsep}{-12.5cm}
+\setlength{\tabcolsep}{0.0833333\tabcolsep}
+\renewcommand{\arraystretch}{1.0}
+\begin{table}[H]
+\centering
+\caption{\textbf{Performance metrics across experimental scenarios for EEGNet.}}
+\label{tab:scenario_metrics_eegnet}
+\begin{tabular}{@{}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{1.9cm}@{\hspace{\tabcolsep}}>{\fontsize{8}{9}\selectfont\raggedright\arraybackslash}m{4.2cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.4cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.9cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{0.7cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{1.1cm}>{\fontsize{8}{9}\selectfont\centering\arraybackslash}m{2.3cm}@{}}
+\hline
+{\fontsize{9}{10}\selectfont Scenario} & {\fontsize{9}{10}\selectfont Validation method} & {\fontsize{9}{10}\selectfont Balanced Accuracy} & {\fontsize{9}{10}\selectfont Macro F1} & {\fontsize{9}{10}\selectfont MCC} & {\fontsize{9}{10}\selectfont ROC AUC} & {\fontsize{9}{10}\selectfont Per-class Recall (Low/High)} \\
+\hline
+\multirow{5}{=}{Baseline (within)} & Stratified K-fold(Full A) & 0.67 & 0.66 & 0.34 & 0.74 & 0.57/0.76 \\
+ & Stratified K-fold(Full B) & 0.67 & 0.64 & 0.33 & 0.74 & 0.58/0.76 \\
+ & Stratified K-fold(B: Stroop) & 0.66 & 0.64 & 0.35 & 0.73 & 0.59/0.73 \\
+ & Stratified K-fold(B: Arithmetic) & 0.65 & 0.64 & 0.33 & 0.71 & 0.63/0.68 \\
+ & Stratified K-fold(B: Mirror) & 0.67 & 0.66 & 0.36 & 0.74 & 0.62/0.72 \\
+\hline
+\multirow{2}{=}{Cross-subject} & Leave-one-subject-out(Full A) & 0.65 & 0.63 & 0.32 & 0.76 & 0.62/0.68 \\
+ & Leave-one-subject-out(Full B) & 0.66 & 0.62 & 0.33 & 0.75 & 0.59/0.73 \\
+\hline
+\multirow{12}{=}{Cross-task (Dataset~B)} & Full B$\!\rightarrow\!$Stroop & 0.66 & 0.63 & 0.35 & 0.74 & 0.61/0.70 \\
+ & Full B$\!\rightarrow\!$Arithmetic & 0.65 & 0.62 & 0.33 & 0.73 & 0.59/0.70 \\
+ & Full B$\!\rightarrow\!$Mirror & 0.68 & 0.67 & 0.40 & 0.76 & 0.60/0.77 \\
+\cmidrule{2-7}
+ & Stroop$\!\rightarrow\!$Full B & 0.59 & 0.53 & 0.19 & 0.67 & 0.57/0.62 \\
+ & Stroop$\!\rightarrow\!$Arithmetic & 0.54 & 0.50 & 0.08 & 0.59 & 0.62/0.45 \\
+ & Stroop$\!\rightarrow\!$Mirror & 0.59 & 0.55 & 0.19 & 0.66 & 0.59/0.59 \\
+\cmidrule{2-7}
+ & Arithmetic$\!\rightarrow\!$Full B & 0.62 & 0.56 & 0.24 & 0.69 & 0.61/0.63 \\
+ & Arithmetic$\!\rightarrow\!$Stroop & 0.59 & 0.55 & 0.20 & 0.64 & 0.62/0.56 \\
+ & Arithmetic$\!\rightarrow\!$Mirror & 0.64 & 0.62 & 0.32 & 0.70 & 0.63/0.66 \\
+\cmidrule{2-7}
+ & Mirror$\!\rightarrow\!$Full B & 0.64 & 0.60 & 0.27 & 0.69 & 0.62/0.66 \\
+ & Mirror$\!\rightarrow\!$Stroop & 0.61 & 0.59 & 0.24 & 0.65 & 0.61/0.61 \\
+ & Mirror$\!\rightarrow\!$Arithmetic & 0.63 & 0.61 & 0.30 & 0.68 & 0.61/0.66 \\
+\hline
+\multirow{8}{=}{Cross-dataset} & Full A$\!\rightarrow\!$Full B & 0.47 & 0.34 & -0.07 & 0.46 & 0.61/0.32 \\
+ & Full B$\!\rightarrow\!$Full A & 0.51 & 0.48 & 0.04 & 0.53 & 0.30/0.72 \\
+\cmidrule{2-7}
+ & Full A$\!\rightarrow\!$Stroop & 0.45 & 0.37 & -0.13 & 0.39 & 0.60/0.29 \\
+ & Stroop$\!\rightarrow\!$Full A & 0.50 & 0.46 & 0.01 & 0.50 & 0.27/0.74 \\
+ & Full A$\!\rightarrow\!$Arithmetic & 0.49 & 0.43 & -0.00 & 0.52 & 0.58/0.40 \\
+ & Arithmetic$\!\rightarrow\!$Full A & 0.50 & 0.43 & 0.01 & 0.51 & 0.16/0.84 \\
+ & Full A$\!\rightarrow\!$Mirror & 0.46 & 0.38 & -0.10 & 0.46 & 0.60/0.32 \\
+ & Mirror$\!\rightarrow\!$Full A & 0.49 & 0.48 & -0.02 & 0.48 & 0.44/0.53 \\
+\hline
+\end{tabular}
+\end{table}
+\endgroup

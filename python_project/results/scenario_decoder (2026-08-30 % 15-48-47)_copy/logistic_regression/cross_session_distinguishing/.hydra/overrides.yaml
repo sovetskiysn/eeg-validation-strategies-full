@@ -1,3 +1,0 @@
-- +experiments/scenario=cross_session_distinguishing
-- +experiments/decoder=logistic_regression
-- +experiments=scenario_decoder

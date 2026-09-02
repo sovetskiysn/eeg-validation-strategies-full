@@ -1,3 +1,0 @@
-- +experiments/scenario=cross_session_distinguishing
-- +experiments/decoder=eegconformer
-- +experiments=scenario_decoder

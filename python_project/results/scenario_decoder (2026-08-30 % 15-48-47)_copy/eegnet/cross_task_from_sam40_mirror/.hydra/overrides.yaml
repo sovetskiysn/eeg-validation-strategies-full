@@ -1,3 +1,0 @@
-- +experiments/scenario=cross_task_from_sam40_mirror
-- +experiments/decoder=eegnet
-- +experiments=scenario_decoder

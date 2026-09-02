@@ -1,3 +1,0 @@
-- +experiments/scenario=cross_subject_distinguishing
-- +experiments/decoder=shallownet
-- +experiments=scenario_decoder

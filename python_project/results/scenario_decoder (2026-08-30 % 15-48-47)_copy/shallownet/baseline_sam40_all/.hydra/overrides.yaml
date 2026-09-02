@@ -1,3 +1,0 @@
-- +experiments/scenario=baseline_sam40_all
-- +experiments/decoder=shallownet
-- +experiments=scenario_decoder

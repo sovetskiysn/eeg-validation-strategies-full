@@ -169,8 +169,7 @@ seed для CV) и передаёт каждую сторону целиком �
 `+experiments=<preset>` и задают `hydra.sweeper.params`, `hydra.mode` и
 раскладку своего каталога в `results/`. Внутри неё лежат вложенные группы, а не
 runtime-узлы `cfg`: `experiments/decoder/` связывает представление с допустимым
-pipeline, `experiments/scenario/` и `experiments/scenario_maybe_new/` именуют
-научный состав данных. Их options используют `# @package _global_` и только
+pipeline, `experiments/scenario/` именует научный состав данных. Их options используют `# @package _global_` и только
 композируют группы верхнего уровня из `configs/`: после композиции узлов
 `cfg.decoder` и `cfg.scenario` нет. Реализации и числовые параметры внутри
 `configs/experiments/` не дублируются.
