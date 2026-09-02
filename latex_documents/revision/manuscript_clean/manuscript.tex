@@ -108,6 +108,19 @@
 \usepackage[aboveskip=1pt,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=off]{caption}
 \renewcommand{\figurename}{Fig}
 
+% Supporting information items are uploaded as separate files, so PLOS labels
+% them "S1 Table." rather than continuing the main table numbering. The
+% submission package replaces them with legend paragraphs carrying that label
+% (make prepare-plos-submission); this switch makes the working PDF and the
+% tracked-changes file, which still render the items inline, number them the
+% same way, so the in-text citations read alike in all three.
+\DeclareCaptionLabelFormat{plossupporting}{S#2 Table}
+\newcommand{\supportinginformationstyle}{%
+  \captionsetup[table]{labelformat=plossupporting,labelsep=period}%
+  \setcounter{table}{0}%
+  \renewcommand{\thetable}{\arabic{table}}%
+}
+
 % Please use the included `plos2025.bst` as your BibTeX style
 \bibliographystyle{plos2025}
 
@@ -436,7 +449,7 @@ performance across these strategies. It presents
 participant-level balanced accuracy, macro F1, MCC, ROC-AUC, and per-class
 recall for logistic regression, the interpretable reference decoder.
 Corresponding tables for XGBoost, EEGNet, ShallowFBCSPNet, and EEGConformer are
-provided in the Supporting Information.
+provided in S1 Table, S2 Table, S3 Table and S4 Table.
 
 \input{tables/scenario_metrics_logistic_regression}
 
@@ -618,6 +631,9 @@ model selection or parameter tuning.
 \bibliography{refs}
 
 \section*{Supporting information}
+
+\supportinginformationstyle
+
 
 \input{tables/scenario_metrics_xgboost}
 \input{tables/scenario_metrics_eegnet}

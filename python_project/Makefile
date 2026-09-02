@@ -1,6 +1,7 @@
 .PHONY: download standardize
 .PHONY: experiment
 .PHONY: analysis
+.PHONY: plos-submission
 .PHONY: full-pipeline
 .PHONY: clean-results clean-archive clean-bids clean-all
 
@@ -21,6 +22,12 @@ experiment:
 # Make exports the input and output paths to the analysis runner.
 analysis:
 	uv run python scripts/run_analysis.py
+
+# Repackages an already rendered manuscript into a PLOS submission project.
+# The manuscript side addresses both ends:
+#   make plos-submission PLOS_SOURCE_DIR=... PLOS_OUTPUT_DIR=...
+plos-submission:
+	uv run python scripts/prepare_plos_submission.py
 
 download:
 	uv run python scripts/run_download.py
