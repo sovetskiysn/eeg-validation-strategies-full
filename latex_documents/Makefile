@@ -7,16 +7,10 @@
 # and manuscript_clean/ is the editable source. Double spacing is required by
 # PLOS but may be commented out while working, so restore it before latexdiff.
 prepare-marked-manuscript:
-	BASELINE=initial_submission/main.tex
-	MANUSCRIPT=revision/manuscript_clean/manuscript.tex
-	MARKED=revision/manuscript_marked/manuscript-track-changes.tex
-	# Kept in lockstep with .vscode/settings.json so the tracked-changes source
-	# is generated with the same TeX Live release as the manuscript PDF.
-	IMAGE=texlive/texlive:TL2025-historic
-	sed -i -E 's/^%[[:space:]]*(\\usepackage\{setspace\}|\\doublespacing)[[:space:]]*$$/\1/' "$$MANUSCRIPT"
-	grep -qxF '\\doublespacing' "$$MANUSCRIPT" || { echo "$$MANUSCRIPT: \\doublespacing not found" >&2; exit 2; }
-	docker run --rm --user "$$(id -u):$$(id -g)" -v "$(CURDIR):/work" -w /work "$$IMAGE" \
-		latexdiff --encoding=utf8 --append-safecmd="rev,revs" "$$BASELINE" "$$MANUSCRIPT" > "$$MARKED"
+	uv run --project ../python_project python ../python_project/scripts/prepare_marked_manuscript.py \
+		--baseline initial_submission/main.tex \
+		--manuscript revision/manuscript_clean_plos/manuscript.tex \
+		--output-pdf revision/manuscript_marked/manuscript-track-changes.pdf
 
 # Render publication figures and tables directly into the working manuscript.
 # Example: make pull-artifacts ANALYSIS_INPUT_DIR="/abs/path/to/results"
