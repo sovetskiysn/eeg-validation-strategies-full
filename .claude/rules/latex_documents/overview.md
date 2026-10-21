@@ -18,7 +18,7 @@ paths:
 непропорционально сложной, текст статьи и объём заявлений можно осознанно
 адаптировать под эту границу. Не подгонять ни код, ни текст молча.
 
-Рамка утверждений задана введением `revision/manuscript_clean/manuscript.tex`.
+Рамка утверждений задана введением `revision2/manuscript_clean/manuscript.tex`.
 Results и Discussion не заявляют больше, чем она допускает: измерен контраст
 условий, заданный протоколом, а не уровень внимания, и провал переноса —
 утверждение о доступных датасетах, а не о существовании инвариантных маркеров.
@@ -40,11 +40,12 @@ latex_documents/
     Makefile                      # подготовительные цели и уборка (см. «Сборка»)
     reference_papers/             # PDF референсных статей (своё правило)
     initial_submission/           # поданная версия; baseline, read-only
-    revision/                     # материалы текущей ревизии
+    revision2/                    # раунд R2 (текущий): journal_feedback.md, manuscript_clean/, response_to_editor/
+    revision/                     # раунд R1, подан в журнал; снимок, не редактируется
         journal_feedback.md        # письмо редактора и рецензентов — первоисточник
         manuscript_clean/          # единственный редактируемый источник рукописи
         manuscript_marked/         # сгенерированный marked-вариант
-        response_to_reviewers/     # единственный редактируемый ответ
+        response_to_reviewers/     # ответ рецензентам R1 (снимок)
         submission_materials/      # тексты полей формы подачи и cover letter
         docs/                      # guidelines журнала + SOURCE.md с провенансом
     templates/                    # чистые шаблоны журнала и ответа рецензентам
@@ -101,8 +102,10 @@ latex_documents/
 
 ### Требования журнала не пересказываем здесь
 
-Текущий статус заявки, дедлайн и полный текст рецензий — в
-`revision/journal_feedback.md`; guidelines — в `revision/docs/`. Для
+Текущий статус заявки — в разделе «Статус подачи» `.claude/CLAUDE.md`. Полный
+текст писем журнала: по исходной подаче — `revision/journal_feedback.md`, по
+R1 (текущий раунд, дедлайн в письме) — `revision2/journal_feedback.md`;
+guidelines — в `revision/docs/`. Для
 проверки или правки манускрипта на соответствие требованиям PLOS
 (форматирование, структура, ссылки, required statements) используй скилл
 `plos-one-review`: он даёт актуальный разбор правил и типизированный отчёт.

@@ -1,0 +1,235 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Academic Paper Response Letter.
+% LaTeX Template
+% Version 1.0 (20/07/2023)
+%
+% This template refers to the toolbox tutorial (in Chinese):
+% https://liam.page/2016/07/22/using-the-tcolorbox-package-to-create-a-new-theorem-environment/
+% Please refer to the tutorial for your customization.
+%
+% Template license: Creative Commons CC BY 4.0
+%
+% Author: Yuhan Xie
+% Contact email: yhxie0107@gmail.com
+% Any revision advice is welcome!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage{times} % make the section title in Times New Roman
+
+\usepackage{booktabs}
+\usepackage{tabu}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=2.5cm,bottom=2cm,left=1.7cm,right=1.7cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{threeparttable}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{xurl} % allow long URLs to break across lines
+
+
+\usepackage[most]{tcolorbox}
+
+
+%% Comment box environment used throughout the letter
+\newtcbtheorem[auto counter]{cmt}{Comment}{
+	colbacktitle = black!60!white, colframe = black!60!white,
+	colback = black!5!white,
+	fonttitle=\bfseries,%fontupper=\itshape,
+}{t}
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Response to the Editor -- PONE-D-26-28965R1 (second revision)
+%
+% The decision letter (../journal_feedback.md) contains no reviewer comments,
+% only the Guest Editor's points, so the letter has one section:
+%   Additional Editor Comments ...  6 items
+% The decision's "Journal Requirements" paragraph is boilerplate about
+% reviewer-recommended citations; with no reviewer comments it needs no answer.
+%
+% Comment boxes quote the decision letter verbatim. The state of each response
+% is marked visibly in the body of the letter, never here: %-comments do not
+% reach the PDF that the authors actually read.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{center}
+{\Large\bfseries Response to the Editor}
+
+\vspace{0.2cm}
+Manuscript PONE-D-26-28965R1
+
+\vspace{0.1cm}
+\textit{Zero-shot generalization of EEG attention-state decoding across
+increasingly stringent validation strategies on open datasets}
+\end{center}
+
+\vspace{0.3cm}
+
+\noindent
+Dear Dr. Fathi Jouzdani,
+
+\vspace{0.2cm}
+\noindent
+\textbf{[TODO --- opening paragraph and summary of the revision.]}
+
+\vspace{0.2cm}
+\noindent
+Your comments are reproduced below and followed by our point-by-point
+responses, each indicating where in the revised manuscript the issue has been
+addressed.
+
+\vspace{0.4cm}
+\noindent
+Yours sincerely,
+
+\vspace{0.2cm}
+\noindent
+Sanzhar Sovet, Beibit Abdikenov, Manzura Zholdasova, Altyngul Kamzanova,
+Medet Mukushev and Almira Kustubayeva
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Editor comments
+\newpage
+\setcounter{tcb@cnt@cmt}{0}
+\section*{Additional Editor Comments}
+
+\vspace{0.4cm}
+
+%%%%%%%%%%%% Editor Comment 1 -- preprocessing and data leakage
+\begin{cmt}{}{}
+
+Preprocessing and data leakage: Please specify exactly which data are used to
+fit ICA and all other data-dependent preprocessing steps in each validation
+protocol. Clarify whether any information from held-out participants or target
+datasets contributes to preprocessing, feature transformation, model selection,
+or other fitted operations. Explain how the protocol supports the claim of
+zero-shot generalization without target-specific adaptation.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\textbf{[TODO --- response.]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Editor Comment 2 -- uncertainty and sample size
+\begin{cmt}{}{}
+
+Uncertainty and sample size: Please discuss the limitations imposed by the five
+participants in Dataset A. Clarify the unit of resampling used for confidence
+intervals and ensure that the uncertainty estimates reflect the independent
+sampling units. Avoid interpreting small differences between baseline and
+cross-subject estimates as evidence of equivalence.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\textbf{[TODO --- response.]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Editor Comment 3 -- comparability of validation protocols
+\begin{cmt}{}{}
+
+Comparability of validation protocols: Please explain the extent to which the
+validation comparisons isolate changes in participant identity, task
+composition, and dataset. Ensure that transfer results are compared with
+appropriate target-specific baselines and that the conclusions do not attribute
+observed differences to a single factor when several factors change
+simultaneously.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\textbf{[TODO --- response.]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Editor Comment 4 -- interpretation of attention labels
+\begin{cmt}{}{}
+
+Interpretation of attention labels: Please maintain a clear distinction between
+classifying the protocol-defined conditions and decoding attention as a general
+psychological construct. Discuss the potential influence of task demands and
+other differences between resting and active cognitive conditions.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\textbf{[TODO --- response.]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Editor Comment 5 -- ethics and reporting
+\begin{cmt}{}{}
+
+Ethics and reporting: Please clarify the ethical approval, consent, and
+exemption status applicable to the original datasets and the present secondary
+analysis, as appropriate. Ensure that the ethics statement is consistent with
+the submission metadata.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\textbf{[TODO --- response.]}
+
+\vspace{0.3cm}
+
+
+%%%%%%%%%%%% Editor Comment 6 -- final consistency check
+\begin{cmt}{}{}
+
+Final consistency check: Please verify that the final clean manuscript, figures,
+supplementary tables, and response letter contain consistent terminology,
+numerical results, and methodological descriptions.
+
+\end{cmt}
+\vspace{0.1cm}
+\noindent
+\underline{\textbf{Response:}}
+\vspace{0.2cm}
+
+\textbf{[TODO --- response.]}
+
+\vspace{0.3cm}
+
+
+\end{document}
