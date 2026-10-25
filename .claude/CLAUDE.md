@@ -72,7 +72,7 @@ latex_documents/
    строит R2: `revision2/manuscript_marked/manuscript-track-changes.pdf` — diff
    `revision2/manuscript_clean/` напрямую против поданной R1 (`revision/manuscript_clean/`); R1-сборка
    воспроизводится переопределением `BASELINE`/`MANUSCRIPT`/`MARKED_PDF` (см. комментарий в `Makefile`).
-   `make prepare-plos-submission` по умолчанию может собрать R2 в `revision2/manuscript_submitted/` —
+   `make prepare-plos-submission` по умолчанию собирает R2 из `revision2/manuscript_clean/` в `revision2/manuscript_clean_plos/` —
    самостоятельный пакет для Editorial Manager (рукопись без встроенных графиков, `figures/Fig<N>.tif`,
    `supporting_information/S<N>_Table.tex`), каталог создаётся при запуске и перезаписывается целиком при повторном.
    В R1 тот же пакет называется `revision/manuscript_clean_plos/` (снимок, не переименовывается).

@@ -38,7 +38,7 @@ pull-artifacts:
 # Example: make prepare-plos-submission OUTPUT=/tmp/plos
 prepare-plos-submission:
 	export PLOS_SOURCE_DIR="$$(realpath -m "$${SOURCE:-revision2/manuscript_clean}")"
-	export PLOS_OUTPUT_DIR="$$(realpath -m "$${OUTPUT:-revision2/manuscript_submitted}")"
+	export PLOS_OUTPUT_DIR="$$(realpath -m "$${OUTPUT:-revision2/manuscript_clean_plos}")"
 	$(MAKE) -C ../python_project plos-submission
 
 # Stray LaTeX artifacts left next to the sources by a hand-run build. Kept on
