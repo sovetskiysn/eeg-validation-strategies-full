@@ -22,7 +22,7 @@ def main() -> None:
     baseline = args.baseline.resolve()
     manuscript = args.manuscript.resolve()
     output_pdf = args.output_pdf.resolve()
-    project_root = baseline.parents[1]
+    project_root = Path(os.path.commonpath([baseline.parent, manuscript.parent]))
     manuscript_dir = manuscript.parent
 
     if not baseline.is_file():
@@ -30,8 +30,15 @@ def main() -> None:
     if not manuscript.is_file():
         raise FileNotFoundError(f"Manuscript not found: {manuscript}")
 
+    # The manuscript may include generated floats via ``\input``, while
+    # a submission-format baseline may have tables expanded inside a local
+    # ``\begingroup`` wrapper. Exclude either representation before latexdiff
+    # and restore the current floats afterwards, or a deleted wrapper can leave
+    # table-formatting commands inside a latexdiff deletion macro.
     float_pattern = re.compile(
-        r"\\begin\{(table|figure)\}.*?\\end\{\1\}", re.DOTALL
+        r"(?:\\begingroup\s*.*?\\begin\{(table|figure)\}.*?\\end\{\1\}"
+        r"\s*\\endgroup|\\begin\{(table|figure)\}.*?\\end\{\2\})",
+        re.DOTALL,
     )
 
     with tempfile.TemporaryDirectory(prefix="marked-manuscript-") as temporary_dir:
@@ -67,7 +74,7 @@ def main() -> None:
                     "--encoding=utf8",
                     "--type=CFONT",
                     "--graphics-markup=none",
-                    "--append-safecmd=rev,revs",
+                    "--append-textcmd=rev,revs",
                     "/tmp/marked/baseline.tex",
                     "/tmp/marked/manuscript.tex",
                 ],
@@ -76,6 +83,16 @@ def main() -> None:
             )
 
         diff_text = diff_path.read_text(encoding="utf-8")
+        # When latexdiff replaces the complete argument of a text command such
+        # as ``\rev{...}``, it can emit an internal ``\MBLOCKRIGHTBRACE``
+        # marker as a commented deletion command. That leaves the surrounding
+        # ``\DIFdel{`` without its closing brace and makes the marked
+        # manuscript uncompilable. Preserve the deleted command argument and
+        # close both the command and the deletion wrapper instead.
+        diff_text = diff_text.replace(
+            "}%DIFDELCMD < \\MBLOCKRIGHTBRACE\n%DIFDELCMD < %%%",
+            "}}",
+        )
         float_text = "\n\n".join(new_float_blocks)
         bibliography_marker = "\\bibliography{refs}"
         if bibliography_marker not in diff_text:

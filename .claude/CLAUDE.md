@@ -38,6 +38,7 @@ latex_documents/
 ├── revision2/                        # второй раунд ревизии (R2), текущий; см. «Статус подачи» ниже
 │   ├── journal_feedback.md           # решение по R1: письмо редактора
 │   ├── manuscript_clean/             # единственный редактируемый исходник рукописи
+│   ├── manuscript_marked/            # track-changes против R1 (make prepare-marked-manuscript)
 │   └── response_to_editor/           # редактируемый ответ редактору на R2 (рецензентов в R2 нет)
 ├── revision/                         # первый раунд ревизии (R1), уже подан; не редактируется
 │   ├── journal_feedback.md           # письмо редактора и отзывы рецензентов на исходную подачу
@@ -67,9 +68,22 @@ latex_documents/
    `response_to_editor/response_to_editor.tex` сделан из письма R1: оформление
    то же, содержание — только 6 Editor Comments (Journal Requirements в R2 — шаблонный абзац про цитирование по рекомендации рецензентов, рецензентов нет, поэтому убран); замечания
    процитированы дословно, ответы пока пустые (`[TODO --- response.]`). Правки R2 идут только в `revision2/`;
-   `revision/` остаётся снимком поданной R1. `Makefile` пока смотрит в `revision/`,
-   `submission_materials/` для R2 не заведены. Не решено: что служит baseline для track-changes R2 (поданная R1 или
-   `initial_submission/`).
+   `revision/` остаётся снимком поданной R1. `make prepare-marked-manuscript` по умолчанию
+   строит R2: `revision2/manuscript_marked/manuscript-track-changes.pdf` — diff
+   `revision2/manuscript_clean/` напрямую против поданной R1 (`revision/manuscript_clean/`); R1-сборка
+   воспроизводится переопределением `BASELINE`/`MANUSCRIPT`/`MARKED_PDF` (см. комментарий в `Makefile`).
+   `make prepare-plos-submission` по умолчанию может собрать R2 в `revision2/manuscript_submitted/` —
+   самостоятельный пакет для Editorial Manager (рукопись без встроенных графиков, `figures/Fig<N>.tif`,
+   `supporting_information/S<N>_Table.tex`), каталог создаётся при запуске и перезаписывается целиком при повторном.
+   В R1 тот же пакет называется `revision/manuscript_clean_plos/` (снимок, не переименовывается).
+   `pull-artifacts` пока смотрит в `revision/`, `submission_materials/` для R2 не заведены.
+
+**ORCID авторов.** В PLOS One ORCID не пишется в `manuscript.tex` (в шаблоне нет
+такого поля) — журнал берёт его из профиля автора в Editorial Manager, и в
+статье он появится, только если сам автор подтвердит его там.
+
+- Sanzhar Sovet (первый автор): `0009-0001-9036-278X` — https://orcid.org/0009-0001-9036-278X
+- Beibit Abdikenov (corresponding author): ORCID уже подтверждён в Editorial Manager.
 
 Структура `latex_documents/` динамична: по мере перехода от подготовки текста к подаче, редакторской оценке или ревизии могут появляться новые документы, каталоги и варианты рукописи. Дерево выше описывает текущую организацию, а не неизменяемый шаблон.
 

@@ -50,6 +50,7 @@
 \newtcbtheorem[auto counter]{cmt}{Comment}{
 	colbacktitle = black!60!white, colframe = black!60!white,
 	colback = black!5!white,
+	separator sign={},
 	fonttitle=\bfseries,%fontupper=\itshape,
 }{t}
 
@@ -57,13 +58,13 @@
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Response to the Editor -- PONE-D-26-28965R1 (second revision)
+% Response to the Editor: PONE-D-26-28965R1 (second revision)
 %
 % The decision letter (../journal_feedback.md) contains no reviewer comments,
 % only the Guest Editor's points, so the letter has one section:
 %   Additional Editor Comments ...  6 items
 % The decision's "Journal Requirements" paragraph is boilerplate about
-% reviewer-recommended citations; with no reviewer comments it needs no answer.
+% reviewer-recommended citations. With no reviewer comments it needs no answer.
 %
 % Comment boxes quote the decision letter verbatim. The state of each response
 % is marked visibly in the body of the letter, never here: %-comments do not
@@ -85,17 +86,18 @@ increasingly stringent validation strategies on open datasets}
 \vspace{0.3cm}
 
 \noindent
-Dear Dr. Fathi Jouzdani,
+Dear Dr. Jouzdani,
 
 \vspace{0.2cm}
 \noindent
-\textbf{[TODO --- opening paragraph and summary of the revision.]}
-
-\vspace{0.2cm}
-\noindent
-Your comments are reproduced below and followed by our point-by-point
-responses, each indicating where in the revised manuscript the issue has been
-addressed.
+Thank you for your careful assessment and constructive comments. We have revised
+the manuscript to clarify the preprocessing and validation protocols,
+participant-level uncertainty, the interpretation of transfer comparisons and
+protocol-defined labels, and the ethical basis of this secondary analysis. The
+revisions to the Results section clarify the presentation and interpretation of
+the existing findings; no new analyses were conducted, and no experiments were
+rerun or metrics recalculated. Your comments are reproduced below and followed
+by our point-by-point responses.
 
 \vspace{0.4cm}
 \noindent
@@ -114,7 +116,7 @@ Medet Mukushev and Almira Kustubayeva
 
 \vspace{0.4cm}
 
-%%%%%%%%%%%% Editor Comment 1 -- preprocessing and data leakage
+%%%%%%%%%%%% Editor Comment 1: preprocessing and data leakage
 \begin{cmt}{}{}
 
 Preprocessing and data leakage: Please specify exactly which data are used to
@@ -127,15 +129,39 @@ zero-shot generalization without target-specific adaptation.
 \end{cmt}
 \vspace{0.1cm}
 \noindent
-\underline{\textbf{Response:}}
+\underline{\textbf{Response}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- response.]}
+We thank the editor for raising this point. We clarified preprocessing and
+zero-shot evaluation in «Methodology» and «Validation strategies»,
+and aligned «Data preparation» with those revisions.
+
+In «Validation strategies», the opening paragraph now states the general
+rule for fitting ICA in the zero-shot protocols. Each of the four protocol
+descriptions then specifies which recordings were used for its ICA fits. The
+baseline description distinguishes the two datasets: ICA was fitted separately
+for each selected session in the mental attention-state dataset, whereas in
+SAM-40 it was fitted across a participant's selected trials and could span
+training and test folds. This shared decomposition may favor the SAM-40 baseline
+relative to the participant-disjoint protocols. The cross-subject, cross-task,
+and cross-dataset descriptions specify how ICA was fitted for held-out
+recordings and confirm that source and target recordings were never pooled in
+one fit.
+
+In «Methodology», we clarify that ICA cleaning was the only fitted step
+that used unlabeled target recordings. Feature transformation was applied in the
+same form to source and target recordings; standardization, class weights, and
+decoder parameters were determined from source training data only. Target
+labels were never used, and target data played no role in model selection,
+hyperparameter search, early stopping, checkpoint selection, decoder
+retraining, or tuning. Thus, \textit{zero-shot} refers to applying the
+source-trained decoder unchanged to target recordings, without target-guided
+decoder adaptation.
 
 \vspace{0.3cm}
 
 
-%%%%%%%%%%%% Editor Comment 2 -- uncertainty and sample size
+%%%%%%%%%%%% Editor Comment 2: uncertainty and sample size
 \begin{cmt}{}{}
 
 Uncertainty and sample size: Please discuss the limitations imposed by the five
@@ -147,15 +173,37 @@ cross-subject estimates as evidence of equivalence.
 \end{cmt}
 \vspace{0.1cm}
 \noindent
-\underline{\textbf{Response:}}
+\underline{\textbf{Response}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- response.]}
+Thank you for this comment. We revised «Generalization under increasingly
+stringent validation strategies» and «Performance consistency across
+decoders», both subsections of «Results and analysis», as well as «Discussion».
+These revisions clarify the confidence intervals, the interpretation of small
+differences between baseline and cross-subject validation, and the limitation
+imposed by the five participants in the mental attention-state dataset.
+
+In «Generalization under increasingly stringent validation strategies», the
+third paragraph explains that the 95\% intervals use 10,000 bootstrap resamples
+of target participants, with five participants in the mental attention-state
+dataset and 40 in SAM-40. The models are held fixed, and windows and folds are
+not resampled independently. The fifth paragraph reports the differences of
+0.1 and 2.0 percentage points between baseline and cross-subject performance as
+descriptive and states that they do not establish equivalence.
+
+In «Performance consistency across decoders», the first paragraph explains
+that the intervals shown across scenarios also use 10,000 resamples of target
+participants. Each resample uses the same participants for all five decoders.
+
+In «Discussion», the fourth paragraph's second limitation explains that the
+mental attention-state dataset has only five participants. This limits
+population generalization and the precision of participant-level bootstrap
+intervals, despite the large number of EEG windows per participant.
 
 \vspace{0.3cm}
 
 
-%%%%%%%%%%%% Editor Comment 3 -- comparability of validation protocols
+%%%%%%%%%%%% Editor Comment 3: comparability of validation protocols
 \begin{cmt}{}{}
 
 Comparability of validation protocols: Please explain the extent to which the
@@ -168,15 +216,40 @@ simultaneously.
 \end{cmt}
 \vspace{0.1cm}
 \noindent
-\underline{\textbf{Response:}}
+\underline{\textbf{Response}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- response.]}
+We thank the editor for raising this issue. We revised «Validation
+strategies», «Results and analysis», and «Discussion» to clarify what each
+validation comparison can show and how the transfer results should be
+interpreted.
+
+In «Validation strategies», the second paragraph distinguishes the
+baseline from the three zero-shot protocols and explains what changes in each
+comparison. The baseline holds out recording units but may include participants
+represented in training. Cross-subject validation keeps the condition
+composition unchanged, making the unseen participant the main shift. Cross-task
+validation changes both the participant and task composition; comparisons
+involving the full SAM-40 composition also have active tasks in common.
+Cross-dataset validation changes the participant population, experimental
+paradigm, recording setup, and condition definitions together. The paragraph
+states that each zero-shot result is compared with the baseline for its target
+composition and that differences involving cross-task or cross-dataset transfer
+cannot be attributed to one factor alone.
+
+In «Results and analysis», the sentence reporting the 6.4-point mean decrease now
+specifies that this summary includes both transfers between task-specific
+compositions and transfers involving the full SAM-40 composition, whose active
+tasks overlap with those of the task-specific compositions.
+
+In «Discussion», we state explicitly that the observed reductions cannot
+be attributed to task composition or dataset alone because several factors
+changed together.
 
 \vspace{0.3cm}
 
 
-%%%%%%%%%%%% Editor Comment 4 -- interpretation of attention labels
+%%%%%%%%%%%% Editor Comment 4: interpretation of attention labels
 \begin{cmt}{}{}
 
 Interpretation of attention labels: Please maintain a clear distinction between
@@ -187,15 +260,34 @@ other differences between resting and active cognitive conditions.
 \end{cmt}
 \vspace{0.1cm}
 \noindent
-\underline{\textbf{Response:}}
+\underline{\textbf{Response}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- response.]}
+We thank the editor for highlighting this distinction. We revised
+«Methodology» and «Discussion» to make clear that the analysis classifies
+protocol-defined conditions and to address differences between resting and
+active cognitive conditions.
+
+In «Methodology», the second paragraph states that the high- and
+low-attention labels denote protocol-defined conditions rather than
+independently validated levels of attention, and that they may reflect
+differences in task demands, arousal, sensory input, stress, or motor
+responses between resting and active conditions. It specifies that the
+analyses therefore assess whether decoders discriminate the specified
+protocol conditions, not whether they decode attention as a general
+psychological construct.
+
+In «Discussion», the fourth paragraph's first limitation now states that the
+reported accuracies reflect classification of the protocol-defined
+conditions rather than decoding of attention as a general psychological
+construct, and reiterates that task demands, stress, arousal, sensory input,
+or motor responses may also contribute, using the SAM-40 contrast of active
+tasks with rest while listening to music as an example.
 
 \vspace{0.3cm}
 
 
-%%%%%%%%%%%% Editor Comment 5 -- ethics and reporting
+%%%%%%%%%%%% Editor Comment 5: ethics and reporting
 \begin{cmt}{}{}
 
 Ethics and reporting: Please clarify the ethical approval, consent, and
@@ -206,15 +298,38 @@ the submission metadata.
 \end{cmt}
 \vspace{0.1cm}
 \noindent
-\underline{\textbf{Response:}}
+\underline{\textbf{Response}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- response.]}
+We thank the editor for this comment. In the text we added a new
+«Ethics statement» subsection under «Open-access datasets»,
+extended the description of each dataset to report the consent and ethical
+oversight documented in the original studies, and revised the opening of the
+«Methodology» section to state explicitly that this study is a
+secondary analysis of two publicly available datasets.
+
+For the mental attention-state dataset, the original study reported that
+participants were healthy university student volunteers who gave written
+informed consent after being informed of the study objectives and
+procedures, and that the study was conducted in accordance with the ethical
+guidelines of Mersin University. For SAM-40, the original study reported
+informed consent from all 40 participants and approval from the Institutional
+Ethics Committee of Gauhati University (GUIEC/2019/019, 15 October 2019),
+with voluntary and anonymous participation in compliance with the
+Declaration of Helsinki. Our «Ethics statement» makes clear that this work is a
+secondary analysis of these public recordings with no new data collection or
+participant contact, so no additional ethical approval or consent was
+required.
+
+\textbf{[TODO --- supervisor to confirm.]} Consistency between this statement
+and the submission metadata in Editorial Manager falls under the
+corresponding author's part of the submission, so we leave that confirmation
+to him.
 
 \vspace{0.3cm}
 
 
-%%%%%%%%%%%% Editor Comment 6 -- final consistency check
+%%%%%%%%%%%% Editor Comment 6: final consistency check
 \begin{cmt}{}{}
 
 Final consistency check: Please verify that the final clean manuscript, figures,
@@ -224,10 +339,14 @@ numerical results, and methodological descriptions.
 \end{cmt}
 \vspace{0.1cm}
 \noindent
-\underline{\textbf{Response:}}
+\underline{\textbf{Response}}
 \vspace{0.2cm}
 
-\textbf{[TODO --- response.]}
+Thank you for requesting a final consistency check. We reviewed the clean
+manuscript, figures, supplementary tables, and response letter. We aligned the descriptions of
+sampling, ICA fitting, SAM-40 recording units, model inputs, and the aggregation
+and comparison of transfer results, and checked terminology and numerical
+summaries across these materials.
 
 \vspace{0.3cm}
 

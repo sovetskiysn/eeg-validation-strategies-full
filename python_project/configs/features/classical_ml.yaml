@@ -2,26 +2,9 @@ name: classical_ml
 transform:
   _target_: mne_features.feature_extraction.FeatureExtractor
   sfreq: ${preparation.mne_bids_pipeline_config.raw_resample_sfreq}
-  # One fixed conventional feature representation for Logistic Regression and
-  # XGBoost.  The functions previously lived in spectral, entropy and
-  # statistical alternatives; keeping them together makes feature engineering
-  # part of the prespecified Classical ML decoder rather than a score-driven
-  # sweep dimension.
-  #
-  # The earlier 10-function set collapsed onto one dominant "energy /
-  # regularity" axis: on a 500-window sample from the distinguishing cache,
-  # std vs variance had r=0.94 (variance is std^2 by construction), and
-  # spect_entropy / app_entropy / samp_entropy / svd_entropy correlated
-  # r=0.77-0.98 with each other and r=-0.6..-0.9 with std/variance -- six
-  # names, effectively one measurement, with per-channel VIF up to 66.
-  # samp_entropy alone was kept from that cluster (it was designed to
-  # supersede app_entropy's bias, not complement it -- Richman & Moorman,
-  # 2000), together with variance. beta and gamma (13-30/30-45 Hz) were
-  # merged into one 13-45 Hz band: with pow_freq_bands' default
-  # normalize=True the five bands are compositional (sum to ~const per
-  # channel), and the two adjacent high-frequency bands alone still
-  # correlated r=0.92 post-merge. This set's worst per-channel VIF is 8
-  # (samp_entropy), most features <3.
+  # Fixed compact feature representation for Logistic Regression and XGBoost:
+  # four spectral bands and five conventional statistical/entropy measures
+  # per channel. The same extractor is used in every validation protocol.
   selected_funcs:
     - pow_freq_bands
     - samp_entropy
